@@ -20,12 +20,32 @@ resource "aws_lb_listener" "this" {
   protocol          = "HTTP"
 
   default_action {
-    type = "fixed-response"
+    type = "forward"
 
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Fixed response content"
-      status_code  = "200"
-    }
+    target_group_arn = aws_lb_target_group.this.arn
+  }
+}
+
+resource "aws_lb_target_group" "this" {
+  name = "${var.prefix}-tg"
+
+  deregistration_delay = 60
+  port                 = 80
+  protocol             = "HTTP"
+  target_type          = "ip"
+  vpc_id               = var.vpc_id
+
+  health_check {
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    matcher             = 200
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+
+  tags = {
+    Name = "${var.prefix}-tg"
   }
 }
