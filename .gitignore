@@ -1,6 +1,10 @@
 docs/design.png
 docs/todo.txt
 
+**/.terraform/*
+*.tfvars
+
+
 HELP.md
 .gradle
 build/
