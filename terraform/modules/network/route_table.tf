@@ -1,0 +1,42 @@
+# ---------------------------
+# パブリックサブネットのルートテーブル
+# ---------------------------
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name = "${var.prefix}-public-route-table"
+  }
+}
+
+resource "aws_route" "public_internet_gateway" {
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.this.id
+  route_table_id         = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public" {
+  for_each = var.azs
+
+  route_table_id = aws_route_table.public.id
+  subnet_id      = aws_subnet.public[each.key].id
+}
+
+
+# ---------------------------
+# プライベートサブネットのルートテーブル
+# ---------------------------
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name = "${var.prefix}-private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  for_each = var.azs
+
+  route_table_id = aws_route_table.private.id
+  subnet_id      = aws_subnet.private[each.key].id
+}
