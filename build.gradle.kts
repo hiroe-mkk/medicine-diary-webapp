@@ -39,6 +39,10 @@ tasks.withType<KotlinCompile> {
 tasks.withType<BootRun> {
 	mainClass.set("example.Application")
 	sourceResources(sourceSets["main"]) // 静的リソースを Automatic Restart の対象とする
+
+	if (findProperty("profiles") == "dev") {
+		jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005") // デバッグが可能な状態でアプリケーションを起動する
+	}
 }
 
 tasks.withType<Test> {

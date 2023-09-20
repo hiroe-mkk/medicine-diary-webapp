@@ -1,0 +1,14 @@
+# ローカル開発環境用
+version: '3.8'
+
+services:
+  springboot:
+    container_name: springboot-medicine-webapp
+    image: amazoncorretto:17
+    ports:
+      - '8080:8080'
+      - '5005:5005' # デバッグ用のポート
+    volumes:
+      - .:/project
+    working_dir: /project
+    command: ./gradlew bootRun -Pprofiles=dev
