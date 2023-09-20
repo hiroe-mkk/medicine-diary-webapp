@@ -21,3 +21,9 @@ module "alb" {
   ]
   subnets = module.network.aws_subnet_public_ids
 }
+
+module "ecs" {
+  source = "../../modules/ecs"
+
+  prefix = local.prefix
+}
