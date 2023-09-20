@@ -33,3 +33,9 @@ module "iam" {
 
   prefix = local.prefix
 }
+
+module "cloudwatch" {
+  source = "../../modules/cloudwatch"
+
+  prefix = local.prefix
+}
