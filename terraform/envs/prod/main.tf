@@ -10,3 +10,14 @@ module "security_group" {
   prefix = local.prefix
   vpc_id = module.network.aws_vpc_this_id
 }
+
+module "alb" {
+  source = "../../modules/alb"
+
+  prefix = local.prefix
+  security_groups = [
+    module.security_group.aws_security_group_web_id,
+    module.security_group.aws_security_group_vpc_id
+  ]
+  subnets = module.network.aws_subnet_public_ids
+}
