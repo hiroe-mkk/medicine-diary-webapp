@@ -25,7 +25,8 @@ module "alb" {
 module "ecs" {
   source = "../../modules/ecs"
 
-  prefix = local.prefix
+  prefix                              = local.prefix
+  aws_iam_role_ecs_task_execution_arn = module.iam.aws_iam_role_ecs_task_execution_arn
 }
 
 module "iam" {
