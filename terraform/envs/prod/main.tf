@@ -27,3 +27,9 @@ module "ecs" {
 
   prefix = local.prefix
 }
+
+module "iam" {
+  source = "../../modules/iam"
+
+  prefix = local.prefix
+}
