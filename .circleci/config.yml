@@ -18,9 +18,24 @@ jobs:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
           key: v1-dependencies-{{ checksum "build.gradle.kts" }}
+  build-app:
+    docker:
+      - image: cimg/openjdk:17.0.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}
+            - v1-dependencies-
+      - run: chmod +x ./gradlew
+      - run: ./gradlew bootJar
 
 workflows:
   version: 2.1
   test-build:
     jobs:
       - test-app
+      - build-app:
+          requires:
+            - test-app
