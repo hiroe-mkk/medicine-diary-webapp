@@ -1,5 +1,12 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": ""
+  "description": "",
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
 }

@@ -5,6 +5,7 @@ docs/todo.txt
 *.tfvars
 
 frontend/node_modules/
+src/main/resources/static/dist
 
 
 HELP.md
