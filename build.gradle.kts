@@ -27,6 +27,12 @@ dependencies {
 	// テンプレートエンジン
 	implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+	// セキュリティ
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+	testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.withType<ProcessResources> {
