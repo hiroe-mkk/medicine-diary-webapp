@@ -11,6 +11,17 @@ module.exports = {
     // ビルド成果物を出力する前に、出力ディレクトリをクリーンアップする
     clean: true,
   },
+  module: {
+    rules: [
+      {
+        // .js ファイルを Babel でトランスパイルする
+        test: /\.js$/,
+        loader: 'babel-loader',
+        // node_modules を対象外にする
+        exclude: /node_modules/,
+      },
+    ],
+  },
   resolve: {
     // モジュールを解決する際は node_modules から検索する
     modules: ['node_modules'],
