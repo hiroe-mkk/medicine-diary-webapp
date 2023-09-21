@@ -23,3 +23,33 @@ resource "aws_ecs_task_definition" "this" {
     Name = "${var.prefix}-service"
   }
 }
+
+resource "aws_ecs_service" "this" {
+  name = "${var.prefix}-service"
+
+  launch_type      = "FARGATE"
+  platform_version = "1.4.0"
+
+  cluster         = aws_ecs_cluster.this.arn
+  task_definition = aws_ecs_task_definition.this.arn
+
+  desired_count                      = var.desired_count
+  deployment_minimum_healthy_percent = 100
+  deployment_maximum_percent         = 200
+
+  network_configuration {
+    assign_public_ip = true
+    security_groups  = var.security_groups
+    subnets          = var.subnets
+  }
+
+  load_balancer {
+    container_name   = var.container_name
+    container_port   = var.container_port
+    target_group_arn = var.target_group_arn
+  }
+
+  tags = {
+    Name = "${var.prefix}-service"
+  }
+}

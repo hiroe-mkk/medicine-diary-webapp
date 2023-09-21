@@ -15,3 +15,28 @@ variable "cpu" {
   type    = string
   default = "512"
 }
+
+variable "security_groups" {
+  type = list(string)
+}
+
+variable "subnets" {
+  type = list(string)
+}
+
+variable "desired_count" {
+  type    = number
+  default = 1
+}
+
+variable "container_name" {
+  type = string
+}
+
+variable "container_port" {
+  type = string
+}
+
+variable "target_group_arn" {
+  type = string
+}
