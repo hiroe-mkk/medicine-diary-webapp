@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@8.2.1
+  aws-ecs: circleci/aws-ecs@3.2.0
 
 jobs:
   test-app:
@@ -62,3 +63,9 @@ workflows:
       - build-and-push-image:
           requires:
             - build-app
+      - aws-ecs/deploy-service-update:
+          requires:
+            - build-and-push-image
+          family: "${AWS_RESOURCE_NAME_PREFIX}-service"
+          cluster: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
+          container-image-name-updates: "container=springboot, image-and-tag=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${AWS_RESOURCE_NAME_PREFIX}:${CIRCLE_SHA1}"
