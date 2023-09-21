@@ -4,6 +4,8 @@ docs/todo.txt
 **/.terraform/*
 *.tfvars
 
+frontend/node_modules/
+
 
 HELP.md
 .gradle

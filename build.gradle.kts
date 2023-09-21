@@ -29,6 +29,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 }
 
+tasks.withType<ProcessResources> {
+	dependsOn(":frontend:npm_run_build") // リソースを処理する前に frontend サブモジュールのビルドを実行する
+}
+
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs += "-Xjsr305=strict"
