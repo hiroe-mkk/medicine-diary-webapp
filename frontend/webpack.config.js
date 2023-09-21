@@ -1,6 +1,7 @@
 const Webpack = require('webpack');
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
@@ -22,6 +23,10 @@ module.exports = {
     }),
     // .vue ファイルをビルドしてバンドルする
     new VueLoaderPlugin(),
+    // .css ファイルを .js ファイルとバンドルせずに、.css ファイルとして出力する
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].bundle.css',
+    }),
   ],
   module: {
     rules: [
@@ -41,6 +46,11 @@ module.exports = {
         // .vue ファイルの style をバンドルして style 要素として埋め込む
         test: /\.vue\.css$/,
         use: ['vue-style-loader', 'css-loader'],
+      },
+      {
+        // .css ファイルを .js ファイルとバンドルせずに、ファイルとして出力する
+        test: /(?<!\.vue)\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
