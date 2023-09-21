@@ -8,6 +8,7 @@ module.exports = {
   devtool: 'eval-cheap-module-source-map',
   entry: {
     vendor: ['vue'],
+    siteHeader: './src/main/js/siteHeader.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する
