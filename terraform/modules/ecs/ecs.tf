@@ -44,8 +44,8 @@ resource "aws_ecs_service" "this" {
   }
 
   load_balancer {
-    container_name   = var.container_name
-    container_port   = var.container_port
+    container_name   = "springboot"
+    container_port   = 8080
     target_group_arn = var.target_group_arn
   }
 

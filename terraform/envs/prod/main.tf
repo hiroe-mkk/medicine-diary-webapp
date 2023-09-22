@@ -30,8 +30,6 @@ module "ecs" {
   aws_iam_role_ecs_task_execution_arn = module.iam.aws_iam_role_ecs_task_execution_arn
   security_groups                     = [module.security_group.aws_security_group_vpc_id]
   subnets                             = module.network.aws_subnet_public_ids
-  container_name                      = "springboot"
-  container_port                      = 8080
   target_group_arn                    = module.alb.aws_lb_target_group_this_arn
 }
 

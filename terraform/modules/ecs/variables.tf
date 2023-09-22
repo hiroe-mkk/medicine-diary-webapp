@@ -29,14 +29,6 @@ variable "desired_count" {
   default = 1
 }
 
-variable "container_name" {
-  type = string
-}
-
-variable "container_port" {
-  type = string
-}
-
 variable "target_group_arn" {
   type = string
 }
