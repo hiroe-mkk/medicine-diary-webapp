@@ -21,12 +21,23 @@ internal class MypageControllerTest(@Autowired private val mockMvc: MockMvc) {
 
     @Test
     @DisplayName("マイページ画面を表示する")
-    fun displayMypagePage() { //TODO: ログイン済みの場合にのみログインに成功するように修正
+    fun displayMypagePage() {
         //when:
-        val actions = mockMvc.perform(get(PATH))
+        val actions = mockMvc.perform(get(PATH).with(oidcLogin()))
 
         //then:
         actions.andExpect(status().isOk)
             .andExpect(view().name("mypage"))
+    }
+
+    @Test
+    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+        //when:
+        val actions = mockMvc.perform(get(PATH))
+
+        //then:
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/"))
     }
 }

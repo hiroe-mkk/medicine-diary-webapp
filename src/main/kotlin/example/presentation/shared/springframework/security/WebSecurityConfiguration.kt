@@ -14,11 +14,13 @@ class WebSecurityConfiguration {
         http.authorizeHttpRequests {
             it.requestMatchers(toStaticResources().atCommonLocations()).permitAll() // 静的リソース
                 .requestMatchers("/dist/**").permitAll() // frontend サブプロジェクトのビルド成果物が格納されているディレクトリ
-                .requestMatchers("/", "/mypage").permitAll() //TODO: /mypage を認証必須に変更する
+                .requestMatchers("/").permitAll()
                 .anyRequest().authenticated()
         }.oauth2Login {
             it.defaultSuccessUrl("/mypage")
             it.failureUrl("/")
+        }.exceptionHandling {
+            it.authenticationEntryPoint(AuthenticationEntryPointImpl())
         }
 
         return http.build()
