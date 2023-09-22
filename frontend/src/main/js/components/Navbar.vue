@@ -33,24 +33,18 @@
           </a>
         </div>
 
-        <div class="navbar-item p-0" v-if="!props.isAuthenticated">
+        <div class="navbar-item pb-0" v-if="!props.isAuthenticated">
           <!-- Google でログイン ボタンに変更する -->
           <a
             class="button is-small is-rounded has-text-link-dark has-background-white is-hidden-touch"
             href="/oauth2/authorization/google"
           >
-            <span class="icon fas fa-lg is-flex is-align-items-center">
-              <i class="fa-solid fa-right-to-bracket"></i>
-            </span>
             <strong>ログイン</strong>
           </a>
           <a
             class="button is-small is-rounded has-text-white has-background-link-dark is-hidden-desktop"
             href="/oauth2/authorization/google"
           >
-            <span class="icon fas is-flex is-align-items-center">
-              <i class="fa-solid fa-right-to-bracket"></i>
-            </span>
             <strong>ログイン</strong>
           </a>
         </div>
