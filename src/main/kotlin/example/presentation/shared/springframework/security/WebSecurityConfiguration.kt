@@ -18,9 +18,11 @@ class WebSecurityConfiguration {
                 .anyRequest().authenticated()
         }.oauth2Login {
             it.defaultSuccessUrl("/mypage")
-            it.failureUrl("/")
+                .failureUrl("/")
         }.exceptionHandling {
             it.authenticationEntryPoint(AuthenticationEntryPointImpl())
+        }.logout {
+            it.logoutSuccessUrl("/")
         }
 
         return http.build()

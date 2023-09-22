@@ -26,7 +26,7 @@
     <div class="hero is-fullheight-with-navbar">
       <header id="header" class="hero-head">
         <navbar
-          th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}"
+          th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
         ></navbar>
       </header>
       <main class="hero-body has-background-info-light">

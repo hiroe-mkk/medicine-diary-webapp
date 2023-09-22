@@ -13,8 +13,8 @@
     </div>
 
     <div class="navbar-menu" :class="{ 'is-active': isOpened }">
-      <div class="navbar-end px-5">
-        <div class="navbar-item p-0" v-if="props.isAuthenticated">
+      <div class="navbar-end px-3">
+        <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
           <a class="has-text-white is-hidden-touch" href="/mypage">
             <span
               class="icon is-medium fas fa-2x is-flex is-align-items-center"
@@ -34,7 +34,7 @@
         </div>
 
         <div class="navbar-item pb-0" v-if="!props.isAuthenticated">
-          <!-- Google でログイン ボタンに変更する -->
+          <!-- TODO: Google でログイン ボタンに変更する -->
           <a
             class="button is-small is-rounded has-text-link-dark has-background-white is-hidden-touch"
             href="/oauth2/authorization/google"
@@ -48,6 +48,23 @@
             <strong>ログイン</strong>
           </a>
         </div>
+
+        <div class="navbar-item pb-0 mr-3" v-if="props.isAuthenticated">
+          <!-- TODO: 移動する -->
+          <form method="post" action="/logout">
+            <input name="_csrf" :value="props.csrf" hidden />
+            <button
+              class="button is-small is-rounded has-text-link-dark has-background-white is-hidden-touch"
+            >
+              <strong>ログアウト</strong>
+            </button>
+            <button
+              class="button is-small is-rounded has-text-white has-background-link-dark is-hidden-desktop"
+            >
+              <strong>ログアウト</strong>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </nav>
@@ -56,7 +73,7 @@
 <script setup>
 import { ref } from 'vue';
 
-const props = defineProps({ isAuthenticated: Boolean });
+const props = defineProps({ isAuthenticated: Boolean, csrf: String });
 
 const isOpened = ref(false);
 </script>
