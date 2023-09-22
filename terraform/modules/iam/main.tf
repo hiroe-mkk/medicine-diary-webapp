@@ -2,7 +2,7 @@
 # タスク実行ロール
 # ---------------------------
 resource "aws_iam_role" "ecs_task_execution" {
-  name = "medicine-ecs-task-execution"
+  name = "${var.prefix}-ecs-task-execution"
 
   assume_role_policy = jsonencode(
     {
@@ -20,7 +20,7 @@ resource "aws_iam_role" "ecs_task_execution" {
   )
 
   tags = {
-    Name = "medicine-ecs-task-execution"
+    Name = "${var.prefix}-ecs-task-execution"
   }
 }
 

@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
   springboot:
-    container_name: springboot-medicine-webapp
+    container_name: springboot-medicine-diary
     image: openjdk:17-jdk-slim-bullseye
     ports:
       - '8080:8080'

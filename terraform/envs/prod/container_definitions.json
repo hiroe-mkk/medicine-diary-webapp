@@ -1,7 +1,7 @@
 [
   {
     "name": "springboot",
-    "image": "549574754951.dkr.ecr.ap-northeast-1.amazonaws.com/medicine-webapp-prod:latest",
+    "image": "549574754951.dkr.ecr.ap-northeast-1.amazonaws.com/medicine-dairy-prod:latest",
     "portMappings": [
       {
         "containerPort": 8080
@@ -10,7 +10,7 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "/ecs/logs/medicine-webapp-prod/springboot",
+        "awslogs-group": "/ecs/logs/medicine-dairy-prod/springboot",
         "awslogs-region": "ap-northeast-1",
         "awslogs-stream-prefix": "ecs"
       }

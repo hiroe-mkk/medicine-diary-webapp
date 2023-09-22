@@ -1,5 +1,5 @@
 locals {
-  project = "medicine-webapp"
+  project = "medicine-diary"
   env     = "prod"
   prefix  = "${local.project}-${local.env}"
 }
