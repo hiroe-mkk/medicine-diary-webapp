@@ -1,12 +1,11 @@
 docs/design.png
 docs/todo.txt
 
+*.env
 **/.terraform/*
 *.tfvars
-
 frontend/node_modules/
 src/main/resources/static/dist
-
 
 HELP.md
 .gradle

@@ -11,4 +11,6 @@ services:
     volumes:
       - .:/project
     working_dir: /project
+    env_file:
+      - springboot.env
     command: ./gradlew bootRun -Pprofiles=dev
