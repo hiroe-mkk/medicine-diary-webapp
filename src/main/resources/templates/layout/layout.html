@@ -25,7 +25,9 @@
   <body>
     <div class="hero is-fullheight-with-navbar">
       <header id="header" class="hero-head">
-        <navbar></navbar>
+        <navbar
+          th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}"
+        ></navbar>
       </header>
       <main class="hero-body has-background-info-light">
         <div class="container is-widescreen">

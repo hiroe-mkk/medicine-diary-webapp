@@ -14,7 +14,7 @@
 
     <div class="navbar-menu" :class="{ 'is-active': isOpened }">
       <div class="navbar-end">
-        <div class="navbar-item pb-0 mr-3">
+        <div class="navbar-item pb-0 mr-3" v-if="!props.isAuthenticated">
           <!-- Google でログイン ボタンに変更する -->
           <a
             class="button is-small is-rounded has-text-link-dark has-background-white is-hidden-touch"
@@ -42,6 +42,8 @@
 
 <script setup>
 import { ref } from 'vue';
+
+const props = defineProps({ isAuthenticated: Boolean });
 
 const isOpened = ref(false);
 </script>
