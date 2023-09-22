@@ -17,7 +17,40 @@ resource "aws_ecs_task_definition" "this" {
   memory = var.memory
   cpu    = var.cpu
 
-  container_definitions = file("./container_definitions.json")
+  container_definitions = jsonencode(
+    [
+      {
+        name  = "springboot"
+        image = "${aws_ecr_repository.this.repository_url}:latest"
+
+        portMappings = [
+          {
+            containerPort = 8080
+          }
+        ]
+
+        "secrets" = [
+          {
+            "name"      = "OAUTH2_CLIENT_ID_GOOGLE"
+            "valueFrom" = "/${var.prefix}/springboot/oauth2_client_id_google"
+          },
+          {
+            "name"      = "OAUTH2_CLIENT_SECRET_GOOGLE"
+            "valueFrom" = "/${var.prefix}/springboot/oauth2_client_secret_google"
+          }
+        ]
+
+        logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            awslogs-group         = "/ecs/logs/${var.prefix}/springboot"
+            awslogs-region        = data.aws_region.current.id
+            awslogs-stream-prefix = "ecs"
+          }
+        }
+      }
+    ]
+  )
 
   tags = {
     Name = "${var.prefix}-service"
