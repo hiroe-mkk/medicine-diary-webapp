@@ -4,7 +4,7 @@ version: '3.8'
 services:
   springboot:
     container_name: springboot-medicine-webapp
-    image: amazoncorretto:17
+    image: openjdk:17-jdk-slim-bullseye
     ports:
       - '8080:8080'
       - '5005:5005' # デバッグ用のポート
