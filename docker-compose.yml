@@ -11,6 +11,7 @@ services:
     volumes:
       - .:/project
     working_dir: /project
-    env_file:
-      - springboot.env
+    environment:
+      GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
+      GOOGLE_OAUTH2_CLIENT_SECRET: ${GOOGLE_OAUTH2_CLIENT_SECRET}
     command: ./gradlew bootRun -Pprofiles=dev
