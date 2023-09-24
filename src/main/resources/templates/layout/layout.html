@@ -28,6 +28,11 @@
         <navbar
           th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
         ></navbar>
+        <resultmessage
+          th:attr="type=${resultMessage.type}, message=${resultMessage.message}, details=${resultMessage.details}?:''"
+          th:if="${resultMessage!=null}"
+        ></resultmessage>
+        <resultmessage th:if="${resultMessage==null}"></resultmessage>
       </header>
       <main class="hero-body has-background-info-light">
         <div class="container is-widescreen">
