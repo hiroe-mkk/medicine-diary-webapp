@@ -31,12 +31,12 @@ resource "aws_ecs_task_definition" "this" {
 
         "secrets" = [
           {
-            "name"      = "OAUTH2_CLIENT_ID_GOOGLE"
-            "valueFrom" = "/${var.prefix}/springboot/oauth2_client_id_google"
+            "name"      = "GOOGLE_OAUTH2_CLIENT_ID"
+            "valueFrom" = "/${var.prefix}/springboot/google_oauth2_client_id"
           },
           {
-            "name"      = "OAUTH2_CLIENT_SECRET_GOOGLE"
-            "valueFrom" = "/${var.prefix}/springboot/oauth2_client_secret_google"
+            "name"      = "GOOGLE_OAUTH2_CLIENT_SECRET"
+            "valueFrom" = "/${var.prefix}/springboot/google_oauth2_client_secret"
           }
         ]
 

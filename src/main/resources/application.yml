@@ -5,5 +5,5 @@ spring:
       client:
         registration:
           google:
-            clientId: ${OAUTH2_CLIENT_ID_GOOGLE}
-            clientSecret: ${OAUTH2_CLIENT_SECRET_GOOGLE}
+            clientId: ${GOOGLE_OAUTH2_CLIENT_ID}
+            clientSecret: ${GOOGLE_OAUTH2_CLIENT_SECRET}
