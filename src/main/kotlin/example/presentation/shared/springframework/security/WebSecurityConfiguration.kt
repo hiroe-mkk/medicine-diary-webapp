@@ -17,12 +17,12 @@ class WebSecurityConfiguration {
                 .requestMatchers("/").permitAll()
                 .anyRequest().authenticated()
         }.oauth2Login {
-            it.defaultSuccessUrl("/mypage")
-                .failureUrl("/")
+            it.successHandler(AuthenticationSuccessHandlerImpl())
+                .failureHandler(AuthenticationFailureHandlerImpl())
         }.exceptionHandling {
             it.authenticationEntryPoint(AuthenticationEntryPointImpl())
         }.logout {
-            it.logoutSuccessUrl("/")
+            it.logoutSuccessHandler(LogoutSuccessHandlerImpl())
         }
 
         return http.build()

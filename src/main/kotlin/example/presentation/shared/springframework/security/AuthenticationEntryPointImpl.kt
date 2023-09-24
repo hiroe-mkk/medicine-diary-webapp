@@ -1,5 +1,7 @@
 package example.presentation.shared.springframework.security
 
+import example.domain.shared.message.*
+import example.presentation.shared.springframework.mvc.*
 import jakarta.servlet.http.*
 import org.springframework.security.core.*
 import org.springframework.security.web.*
@@ -11,6 +13,10 @@ class AuthenticationEntryPointImpl : AuthenticationEntryPoint {
     override fun commence(request: HttpServletRequest,
                           response: HttpServletResponse,
                           authException: AuthenticationException?) {
-        response.sendRedirect("/")
+        // TODO: 存在しないエンドポイントに対するリクエストの場合は、NotFoundエラー画面にリダイレクトするように修正する
+        val redirectResolver = RedirectResolver(request, response)
+        redirectResolver.addFlashAttribute("resultMessage",
+                                           ResultMessage.error("認証情報の取得に失敗しました。"))
+        redirectResolver.sendRedirect("/")
     }
 }
