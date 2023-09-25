@@ -10,3 +10,9 @@ CREATE TABLE IF NOT EXISTS oauth2_credentials (
   UNIQUE(id_p, subject),
   FOREIGN KEY(account_id) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS profiles (
+  account_id VARCHAR(36) PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  FOREIGN KEY(account_id) REFERENCES accounts(account_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
