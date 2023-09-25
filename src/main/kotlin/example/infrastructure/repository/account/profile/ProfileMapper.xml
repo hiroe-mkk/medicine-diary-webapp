@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.repository.account.profile.ProfileMapper">
+    <select id="findOneByAccountId" resultMap="ProfileResultMap">
+        SELECT
+            account_id,
+            username
+        FROM
+            profiles
+        WHERE
+            account_id = #{accountId};
+    </select>
+
+    <insert id="saveProfile">
+        INSERT INTO profiles(
+            account_id,
+            username
+        )VALUES(
+            #{accountId},
+            #{username}
+        );
+    </insert>
+
+    <resultMap id="ProfileResultMap" type="Profile">
+        <constructor>
+            <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="AccountIdResultMap" type="AccountId">
+        <constructor>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="UsernameResultMap" type="Username">
+        <constructor>
+            <idArg column="username" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>
