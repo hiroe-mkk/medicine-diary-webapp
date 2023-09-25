@@ -17,9 +17,9 @@ internal class MyBatisAccountRepositoryTest(@Autowired private val accountMapper
     @Test
     fun afterSavingAccount_canFindById() {
         //given:
-        val account = Account(AccountId("testAccountId"),
-                              OAuth2Credential(IdP.GOOGLE, "testSubject"),
-                              Username("testUsername"))
+        val account = Account.reconstruct(AccountId("testAccountId"),
+                                          OAuth2Credential(IdP.GOOGLE, "testSubject"),
+                                          Username("testUsername"))
 
         //when:
         accountRepository.save(account)

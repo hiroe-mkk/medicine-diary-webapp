@@ -6,8 +6,6 @@ class AccountResultEntity(val accountId: AccountId,
                           val username: Username,
                           val credentialType: String) {
     fun toAccount(credential: Credential): Account {
-        return Account(accountId,
-                       credential,
-                       username)
+        return Account.reconstruct(accountId, credential, username)
     }
 }

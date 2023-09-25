@@ -13,7 +13,7 @@ class TestAccountInserter(private val accountRepository: AccountRepository) {
     fun createAndInsert(id: AccountId = AccountId("testAccountId$num"),
                         credential: Credential = OAuth2Credential(IdP.GOOGLE, "testSubject${num++}"),
                         username: Username = Username("testUsername")): Account {
-        val account = Account(id, credential, username)
+        val account = Account.reconstruct(id, credential, username)
         accountRepository.save(account)
         return account
     }
