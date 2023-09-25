@@ -5,7 +5,6 @@
     <select id="findOneAccountByAccountId" resultMap="AccountResultMap">
         SELECT
             account_id,
-            username,
             credential_type
         FROM
             accounts
@@ -34,11 +33,9 @@
     <insert id="saveAccount">
         INSERT INTO accounts(
             account_id,
-            username,
             credential_type
         )values(
             #{accountId},
-            #{username},
             #{credentialType}
         );
     </insert>
@@ -58,18 +55,12 @@
     <resultMap id="AccountResultMap" type="example.infrastructure.repository.account.AccountResultEntity">
         <constructor>
             <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
-            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
             <arg column="credential_type" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
         <constructor>
             <idArg column="account_id" javaType="String"/>
-        </constructor>
-    </resultMap>
-    <resultMap id="UsernameResultMap" type="Username">
-        <constructor>
-            <idArg column="username" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="Oauth2CredentialResultMap" type="Oauth2Credential">

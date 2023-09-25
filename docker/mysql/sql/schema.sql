@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS accounts (
   account_id VARCHAR(36) PRIMARY KEY,
-  username VARCHAR(50) NOT NULL,
   credential_type VARCHAR(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 

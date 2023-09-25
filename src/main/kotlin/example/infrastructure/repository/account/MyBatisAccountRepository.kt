@@ -41,7 +41,6 @@ class MyBatisAccountRepository(private val accountMapper: AccountMapper) : Accou
     override fun save(account: Account) {
         if (account.credential is OAuth2Credential) {
             accountMapper.saveAccount(account.id.value,
-                                      account.username.value,
                                       "OAuth2")
             accountMapper.saveOauth2Credential(account.id.value,
                                                account.credential.idP,

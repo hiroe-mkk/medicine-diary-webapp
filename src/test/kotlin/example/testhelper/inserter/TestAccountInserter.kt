@@ -11,9 +11,8 @@ class TestAccountInserter(private val accountRepository: AccountRepository) {
      * テスト用のアカウントを生成して、リポジトリに保存する
      */
     fun createAndInsert(id: AccountId = AccountId("testAccountId$num"),
-                        credential: Credential = OAuth2Credential(IdP.GOOGLE, "testSubject${num++}"),
-                        username: Username = Username("testUsername")): Account {
-        val account = Account.reconstruct(id, credential, username)
+                        credential: Credential = OAuth2Credential(IdP.GOOGLE, "testSubject${num++}")): Account {
+        val account = Account(id, credential)
         accountRepository.save(account)
         return account
     }

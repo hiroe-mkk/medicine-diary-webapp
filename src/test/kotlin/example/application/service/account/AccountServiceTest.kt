@@ -38,7 +38,6 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
 
             //then:
             assertThat(actual.credential).isEqualTo(credential)
-            assertThat(actual.username).isEqualTo(Username(""))
             // 作成されたアカウントがアカウントリポジトリに保存されている
             val foundAccount = accountRepository.findById(actual.id)
             assertThat(foundAccount).usingRecursiveComparison().isEqualTo(actual)
