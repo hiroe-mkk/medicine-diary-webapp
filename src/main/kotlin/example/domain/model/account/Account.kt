@@ -8,7 +8,7 @@ class Account private constructor(val id: AccountId,
                                   val username: Username) {
     companion object {
         fun create(accountId: AccountId, credential: Credential): Account {
-            return Account(accountId, credential, Username(""))
+            return Account(accountId, credential, Username.defaultUsername())
         }
 
         fun reconstruct(id: AccountId,

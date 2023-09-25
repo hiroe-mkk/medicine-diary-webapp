@@ -3,9 +3,14 @@ package example.infrastructure.repository.account
 import example.domain.model.account.*
 import example.domain.shared.exception.*
 import org.springframework.stereotype.*
+import java.util.*
 
 @Repository
 class MyBatisAccountRepository(private val accountMapper: AccountMapper) : AccountRepository {
+    override fun nextIdentity(): AccountId {
+        return AccountId(UUID.randomUUID().toString())
+    }
+
     override fun findById(accountId: AccountId): Account? {
         val accountResultEntity = accountMapper.findOneAccountByAccountId(accountId.value) ?: return null
         return accountResultEntity.toAccount(findCredential(accountResultEntity))
