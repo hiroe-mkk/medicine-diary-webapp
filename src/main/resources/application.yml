@@ -1,9 +1,16 @@
-# Spring
 spring:
   security:
     oauth2:
       client:
         registration:
           google:
-            clientId: ${GOOGLE_OAUTH2_CLIENT_ID}
-            clientSecret: ${GOOGLE_OAUTH2_CLIENT_SECRET}
+            clientId: '${GOOGLE_OAUTH2_CLIENT_ID}'
+            clientSecret: '${GOOGLE_OAUTH2_CLIENT_SECRET}'
+  datasource:
+    driverClassName: 'com.mysql.cj.jdbc.Driver'
+    url: 'jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE_NAME:medicine-diary}'
+    username: '${MYSQL_USERNAME:root}'
+    password: '${MYSQL_PASSWORD}'
+
+mybatis:
+  typeAliasesPackage: 'example.domain' # XML の中でクラスを指定する際、完全修飾名の記述を省略できるようにする

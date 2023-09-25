@@ -2,9 +2,25 @@
 version: '3.8'
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-medicine-diary
+    environment:
+      MYSQL_DATABASE: 'medicine-diary'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+      TZ: 'Asia/Tokyo'
+    ports:
+      - '13306:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
   springboot:
     container_name: springboot-medicine-diary
     image: openjdk:17-jdk-slim-bullseye
+    depends_on:
+      - mysql
     ports:
       - '8080:8080'
       - '5005:5005' # デバッグ用のポート
@@ -14,4 +30,9 @@ services:
     environment:
       GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
       GOOGLE_OAUTH2_CLIENT_SECRET: ${GOOGLE_OAUTH2_CLIENT_SECRET}
+      MYSQL_PORT: '13306'
+      MYSQL_PASSWORD: 'root'
     command: ./gradlew bootRun -Pprofiles=dev
+
+volumes:
+  mysql-data:

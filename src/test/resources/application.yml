@@ -1,0 +1,17 @@
+# 単体テスト用
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 'googleClientId'
+            clientSecret: 'googleClientSecret'
+  datasource:
+    driverClassName: 'com.mysql.cj.jdbc.Driver'
+    url: 'jdbc:mysql://localhost:23306/medicine-diary'
+    username: 'root'
+    password: 'root'
+
+mybatis:
+  typeAliasesPackage: 'example.domain' # XML の中でクラスを指定する際、完全修飾名の記述を省略できるようにする

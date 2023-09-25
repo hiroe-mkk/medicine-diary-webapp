@@ -12,6 +12,10 @@ java {
 	sourceCompatibility = JavaVersion.VERSION_17
 }
 
+sourceSets {
+    getByName("main").resources.srcDirs("src/main/kotlin") // mybatis SQL map XML ファイルを検知させる
+}
+
 repositories {
 	mavenCentral()
 }
@@ -33,6 +37,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 	testImplementation("org.springframework.security:spring-security-test")
+
+    // データベース
+    runtimeOnly("com.mysql:mysql-connector-j")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
+    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2")
 }
 
 tasks.withType<ProcessResources> {
