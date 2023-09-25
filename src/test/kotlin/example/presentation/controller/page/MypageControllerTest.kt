@@ -1,5 +1,6 @@
 package example.presentation.controller.page
 
+import example.testhelper.springframework.security.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.autoconfigure.web.servlet.*
@@ -20,10 +21,11 @@ internal class MypageControllerTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     @Test
+    @WithMockAuthenticatedAccount
     @DisplayName("マイページ画面を表示する")
     fun displayMypagePage() {
         //when:
-        val actions = mockMvc.perform(get(PATH).with(oidcLogin()))
+        val actions = mockMvc.perform(get(PATH))
 
         //then:
         actions.andExpect(status().isOk)
