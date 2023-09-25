@@ -7,8 +7,8 @@ import org.springframework.stereotype.*
 @Repository
 class MyBatisAccountRepository(private val accountMapper: AccountMapper) : AccountRepository {
     override fun findById(accountId: AccountId): Account? {
-        val accountResultEntity = accountMapper.findOneAccountByAccountId(accountId.value)
-        return accountResultEntity?.let { it.toAccount(findCredential(it)) }
+        val accountResultEntity = accountMapper.findOneAccountByAccountId(accountId.value) ?: return null
+        return accountResultEntity.toAccount(findCredential(accountResultEntity))
     }
 
     private fun findCredential(accountResultEntity: AccountResultEntity): Credential {
@@ -17,6 +17,20 @@ class MyBatisAccountRepository(private val accountMapper: AccountMapper) : Accou
             else     -> null
         }
         return result ?: throw AssertionFailException("クレデンシャルの取得に失敗しました。")
+    }
+
+    override fun findByCredential(credential: Credential): Account? {
+        val accountId = findAccountId(credential) ?: return null
+        val accountResultEntity = accountMapper.findOneAccountByAccountId(accountId.value)
+        return accountResultEntity?.toAccount(credential)
+    }
+
+    private fun findAccountId(credential: Credential): AccountId? {
+        return when (credential) {
+            is OAuth2Credential -> accountMapper.findOneAccountIdByOAuth2Credential(credential.idP,
+                                                                                    credential.subject)
+            else                -> null
+        }
     }
 
     override fun save(account: Account) {

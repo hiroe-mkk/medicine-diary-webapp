@@ -1,6 +1,7 @@
 package example.infrastructure.repository.account
 
 import example.domain.model.account.*
+import example.testhelper.inserter.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.mybatis.spring.boot.test.autoconfigure.*
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.*
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 組み込みデータベースへの置き換えを無効化する
 internal class MyBatisAccountRepositoryTest(@Autowired private val accountMapper: AccountMapper) {
     private val accountRepository: AccountRepository = MyBatisAccountRepository(accountMapper)
+    private val testAccountInserter: TestAccountInserter = TestAccountInserter(accountRepository)
 
     @Test
     fun afterSavingAccount_canFindById() {
@@ -25,5 +27,17 @@ internal class MyBatisAccountRepositoryTest(@Autowired private val accountMapper
 
         //then:
         assertThat(foundAccount).usingRecursiveComparison().isEqualTo(account)
+    }
+
+    @Test
+    fun findByCredential() {
+        //given:
+        val account = testAccountInserter.createAndInsert()
+
+        //when:
+        val actual = accountRepository.findByCredential(account.credential)
+
+        //then:
+        assertThat(actual).usingRecursiveComparison().isEqualTo(account)
     }
 }

@@ -9,6 +9,8 @@ interface AccountMapper {
 
     fun findOneOauth2CredentialByAccountId(accountId: String): OAuth2Credential?
 
+    fun findOneAccountIdByOAuth2Credential(idP: IdP, subject: String): AccountId?
+
     fun saveAccount(accountId: String,
                     username: String,
                     credentialType: String)
