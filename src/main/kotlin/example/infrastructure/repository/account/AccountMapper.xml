@@ -34,7 +34,7 @@
         INSERT INTO accounts(
             account_id,
             credential_type
-        )values(
+        )VALUES(
             #{accountId},
             #{credentialType}
         );
@@ -44,7 +44,7 @@
             account_id,
             id_p,
             subject
-        )values(
+        )VALUES(
             #{accountId},
             #{idP},
             #{subject}
