@@ -23,7 +23,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
 
     @BeforeEach
     internal fun setUp() {
-        val (createdAccount, createdProfile) = testAccountInserter.createAndInsert()
+        val (createdAccount, createdProfile) = testAccountInserter.insertAccountAndProfile()
         profile = createdProfile
         userSession = UserSessionFactory.create(createdAccount.id)
     }

@@ -11,12 +11,12 @@ class TestAccountInserter(private val accountRepository: AccountRepository,
     private var num: Int = 1
 
     /**
-     * テスト用のアカウントを生成して、リポジトリに保存する
+     * テスト用のアカウントとプロフィールを生成して、リポジトリに保存する
      */
-    fun createAndInsert(id: AccountId = AccountId("testAccountId$num"),
-                        credential: Credential = OAuth2Credential(IdP.GOOGLE,
-                                                                  "testSubject${num++}"),
-                        username: Username = Username("testUsername")): Pair<Account, Profile> {
+    fun insertAccountAndProfile(id: AccountId = AccountId("testAccountId$num"),
+                                credential: Credential = OAuth2Credential(IdP.GOOGLE,
+                                                                          "testSubject${num++}"),
+                                username: Username = Username("testUsername")): Pair<Account, Profile> {
         val account = Account.reconstruct(id, credential)
         val profile = Profile(account.id, username)
         accountRepository.save(account)

@@ -27,7 +27,7 @@ internal class MyBatisAccountRepositoryTest(@Autowired private val accountReposi
     @Test
     fun findByCredential() {
         //given:
-        val (account, _) = testAccountInserter.createAndInsert()
+        val (account, _) = testAccountInserter.insertAccountAndProfile()
 
         //when:
         val actual = accountRepository.findByCredential(account.credential)
