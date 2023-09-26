@@ -43,5 +43,23 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
             //then:
             actions.andExpect(status().isNoContent)
         }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("バリデーションエラーが発生した場合、ステータスコード400のレスポンスを返す")
+        fun validationErrorOccurs_returnsResponseWithStatus400() {
+            //given:
+            val invalidUsername = RandomString(31).nextString()
+
+            //when:
+            val actions = mockMvc.perform(post("${PATH}/username/change")
+                                              .with(csrf())
+                                              .param("username", invalidUsername))
+
+            //then:
+            actions.andExpect(status().isBadRequest)
+                .andExpect(header().string("Content-Type", "application/json"))
+                .andExpect(jsonPath("\$.fieldErrors.username").isNotEmpty)
+        }
     }
 }
