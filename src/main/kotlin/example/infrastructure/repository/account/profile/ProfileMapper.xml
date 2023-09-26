@@ -19,7 +19,8 @@
         )VALUES(
             #{accountId},
             #{username}
-        );
+        )ON DUPLICATE KEY UPDATE
+            username = #{username};
     </insert>
 
     <resultMap id="ProfileResultMap" type="Profile">

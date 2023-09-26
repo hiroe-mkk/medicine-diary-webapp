@@ -55,4 +55,35 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             assertThat(accountNotFoundException.accountId).isEqualTo(badUserSession.accountId)
         }
     }
+
+    @Nested
+    inner class ChangeUsernameTest {
+        private val usernameChangeCommand = UsernameChangeCommand("newTestUsername")
+
+        @Test
+        @DisplayName("ユーザー名を変更する")
+        fun changeUsername() {
+            //when:
+            profileService.changeUsername(usernameChangeCommand, userSession)
+
+            //then: 変更されたプロフィールが保存されている
+            val actual = profileRepository.findByAccountId(userSession.accountId)
+            val expected = Profile(userSession.accountId, Username("newTestUsername"))
+            assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
+        }
+
+        @Test
+        @DisplayName("アカウントが削除済みの場合、ユーザー名の変更に失敗する")
+        fun accountHasBeenDeleted_changingUsernameFails() {
+            //given:
+            val badUserSession = UserSessionFactory.create(AccountId("NonexistentId"))
+
+            //when:
+            val target: () -> Unit = { profileService.changeUsername(usernameChangeCommand, badUserSession) }
+
+            //then:
+            val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
+            assertThat(accountNotFoundException.accountId).isEqualTo(badUserSession.accountId)
+        }
+    }
 }

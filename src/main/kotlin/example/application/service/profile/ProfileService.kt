@@ -18,6 +18,15 @@ class ProfileService(private val profileRepository: ProfileRepository) {
         return ProfileDto.from(profile)
     }
 
+    /**
+     * ユーザー名を変更する
+     */
+    fun changeUsername(command: UsernameChangeCommand, userSession: UserSession) {
+        val profile = findProfileOrElseThrowException(userSession)
+        profile.changeUsername(command.validatedUsername)
+        profileRepository.save(profile)
+    }
+
     private fun findProfileOrElseThrowException(userSession: UserSession): Profile {
         return profileRepository.findByAccountId(userSession.accountId)
                ?: throw AccountNotFoundException(userSession.accountId)
