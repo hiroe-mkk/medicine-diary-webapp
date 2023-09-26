@@ -5,8 +5,8 @@ import example.domain.model.account.profile.*
 /**
  * アカウント
  */
-class Account(val id: AccountId,
-              val credential: Credential) {
+class Account private constructor(val id: AccountId,
+                                  val credential: Credential) {
     companion object {
         fun create(id: AccountId,
                    credential: Credential): Pair<Account, Profile> {
