@@ -1,6 +1,7 @@
 package example.testhelper.springframework.security
 
 import example.domain.model.account.*
+import example.domain.model.profile.*
 import example.presentation.shared.springframework.security.oauth2.*
 import example.presentation.shared.springframework.security.oauth2.oidc.*
 import example.testhelper.factory.*
@@ -23,7 +24,8 @@ import java.time.*
 @WithSecurityContext(factory = WithMockAuthenticatedAccount.TestOAuth2UserAccountFactory::class)
 annotation class WithMockAuthenticatedAccount(val accountId: String = "testAccountId") {
     @TestComponent
-    class TestOAuth2UserAccountFactory(private val accountRepository: AccountRepository)
+    class TestOAuth2UserAccountFactory(private val accountRepository: AccountRepository,
+                                       private val profileRepository: ProfileRepository)
         : WithSecurityContextFactory<WithMockAuthenticatedAccount> {
         override fun createSecurityContext(annotation: WithMockAuthenticatedAccount): SecurityContext {
             val accountId = AccountId(annotation.accountId)
@@ -32,8 +34,9 @@ annotation class WithMockAuthenticatedAccount(val accountId: String = "testAccou
         }
 
         private fun createAccount(accountId: AccountId): Account {
-            val account = TestAccountFactory.create(accountId)
+            val (account, profile) = TestAccountFactory.create(accountId)
             accountRepository.save(account)
+            profileRepository.save(profile)
             return account
         }
 

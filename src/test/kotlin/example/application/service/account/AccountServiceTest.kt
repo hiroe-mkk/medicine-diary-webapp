@@ -21,7 +21,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         @DisplayName("作成済みのアカウントを取得する")
         fun getAlreadyCreatedAccount() {
             //given:
-            val account = testAccountInserter.createAndInsert()
+            val (account, _) = testAccountInserter.createAndInsert()
 
             //when:
             val actual = accountService.findOrElseCreateAccount(account.credential)
