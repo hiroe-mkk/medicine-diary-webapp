@@ -1,6 +1,8 @@
 package example.application.service.account
 
 import example.domain.model.account.*
+import example.domain.model.account.profile.*
+import example.domain.model.profile.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -9,8 +11,9 @@ import org.springframework.beans.factory.annotation.*
 
 @MyBatisRepositoryTest
 internal class AccountServiceTest(@Autowired private val accountRepository: AccountRepository,
+                                  @Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val accountService: AccountService = AccountService(accountRepository)
+    private val accountService: AccountService = AccountService(accountRepository, profileRepository)
 
     @Nested
     inner class GetOrElseCreateAccountTest {
@@ -37,10 +40,15 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
             val actual = accountService.findOrElseCreateAccount(credential)
 
             //then:
-            assertThat(actual.credential).isEqualTo(credential)
-            // 作成されたアカウントがアカウントリポジトリに保存されている
+            val expected = Account.reconstruct(actual.id, credential)
+            assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
+            // 作成されたアカウントが保存されている
             val foundAccount = accountRepository.findById(actual.id)
-            assertThat(foundAccount).usingRecursiveComparison().isEqualTo(actual)
+            assertThat(foundAccount).usingRecursiveComparison().isEqualTo(expected)
+            // 作成されたプロフィールが保存されている
+            val foundProfile = profileRepository.findByAccountId(actual.id)
+            val expectedProfile = Profile(actual.id, Username(""))
+            assertThat(foundProfile).usingRecursiveComparison().isEqualTo(expectedProfile)
         }
     }
 }
