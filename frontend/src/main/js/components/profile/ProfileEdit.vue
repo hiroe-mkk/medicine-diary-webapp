@@ -67,16 +67,20 @@
       </div>
     </div>
   </div>
+
+  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 <script setup>
 import { ref, reactive } from 'vue';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({ username: String, csrf: String });
 
 const profile = reactive({ username: props.username });
 const isUsernameChangeModalActive = ref(false);
 const editingUsername = ref('');
+const resultMessage = ref(null);
 
 function activateUsernameChangeModal() {
   editingUsername.value = profile.username;
@@ -92,6 +96,7 @@ function submitUsernameChangeForm() {
     .then(() => {
       profile.username = editingUsername.value;
       isUsernameChangeModalActive.value = false;
+      resultMessage.value.activate('INFO', 'ユーザー名の変更が完了しました。');
     })
     .catch((error) => {
       // TODO

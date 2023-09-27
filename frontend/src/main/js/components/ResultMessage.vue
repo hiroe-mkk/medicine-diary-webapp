@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, defineExpose } from 'vue';
 import { ResultMessage } from '@main/js/composables/model/ResultMessage.js';
 
 const props = defineProps({
@@ -73,6 +73,8 @@ function activate(type, message, details) {
     }, 5000);
   }
 }
+
+defineExpose({ activate });
 </script>
 
 <style scoped>
