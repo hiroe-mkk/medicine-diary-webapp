@@ -61,5 +61,17 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
                 .andExpect(header().string("Content-Type", "application/json"))
                 .andExpect(jsonPath("\$.fieldErrors.username").isNotEmpty)
         }
+
+        @Test
+        @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
+        fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+            //when:
+            val actions = mockMvc.perform(post(PATH)
+                                              .with(csrf())
+                                              .param("username", newUsername))
+
+            //then:
+            actions.andExpect(status().isUnauthorized)
+        }
     }
 }
