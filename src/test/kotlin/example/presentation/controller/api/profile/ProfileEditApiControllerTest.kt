@@ -72,7 +72,7 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
         fun accountHasBeenDeleted_returnsResponseWithStatus404() {
             //then:
             val userSession = userSessionProvider.getUserSession()
-            accountService.deleteAccount(userSession!!)
+            accountService.deleteAccount(userSession)
 
             //when:
             val actions = mockMvc.perform(post(PATH)

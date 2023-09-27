@@ -19,7 +19,7 @@ class ProfileEditApiController(private val profileService: ProfileService,
     @PostMapping("/username/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeUsername(@Validated usernameChangeCommand: UsernameChangeCommand) {
-        val userSession = userSessionProvider.getUserSession() ?: throw UserSessionNotFoundException()
+        val userSession = userSessionProvider.getUserSession()
         profileService.changeUsername(usernameChangeCommand, userSession)
     }
 }

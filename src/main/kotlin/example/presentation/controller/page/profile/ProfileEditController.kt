@@ -15,7 +15,7 @@ class ProfileEditController(private val profileService: ProfileService,
      */
     @GetMapping
     fun displayProfileEditPage(model: Model): String {
-        val userSession = userSessionProvider.getUserSession() ?: throw UserSessionNotFoundException()
+        val userSession = userSessionProvider.getUserSession()
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
         return "profile/edit"
