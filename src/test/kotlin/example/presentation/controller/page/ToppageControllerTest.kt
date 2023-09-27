@@ -1,5 +1,6 @@
 package example.presentation.controller.page
 
+import example.testhelper.springframework.autoconfigure.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.autoconfigure.web.servlet.*
@@ -10,8 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ControllerTest
 internal class ToppageControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
         private const val PATH = "/"
