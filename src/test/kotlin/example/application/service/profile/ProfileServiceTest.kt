@@ -45,7 +45,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
 
         @Test
         @DisplayName("アカウントが見つからなかった場合、プロフィールの取得に失敗する")
-        fun accountNotFound_profileAcquisitionFails() {
+        fun accountNotFound_gettingProfileFails() {
             //given:
             val badUserSession = UserSessionFactory.create(AccountId("NonexistentId"))
 

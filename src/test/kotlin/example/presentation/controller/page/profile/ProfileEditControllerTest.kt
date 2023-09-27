@@ -19,8 +19,8 @@ internal class ProfileEditControllerTest(@Autowired private val mockMvc: MockMvc
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("プロフィールの取得に成功した場合、プロフィール編集画面を表示する")
-    fun profileAcquisitionSucceeds_displaysProfileEditPage() {
+    @DisplayName("プロフィール編集画面を表示する")
+    fun displaysProfileEditPage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
 
