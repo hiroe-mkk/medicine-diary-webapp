@@ -68,23 +68,6 @@
             <strong>ログイン</strong>
           </a>
         </div>
-
-        <div class="navbar-item pb-0 mr-3" v-if="props.isAuthenticated">
-          <!-- TODO: 移動する -->
-          <form method="post" action="/logout">
-            <input name="_csrf" :value="props.csrf" hidden />
-            <button
-              class="button is-small is-rounded has-text-link-dark has-background-white is-hidden-touch"
-            >
-              <strong>ログアウト</strong>
-            </button>
-            <button
-              class="button is-small is-rounded has-text-white has-background-link-dark is-hidden-desktop"
-            >
-              <strong>ログアウト</strong>
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   </nav>
@@ -103,6 +86,14 @@
         >
           <strong class="mx-6">プロフィール編集</strong>
         </a>
+
+        <form method="post" action="/logout">
+          <input name="_csrf" :value="props.csrf" hidden />
+          <button class="button is-dark is-fullwidth is-small mb-1">
+            <strong class="mx-6">ログアウト</strong>
+          </button>
+        </form>
+
         <button
           type="button"
           class="button is-dark is-fullwidth is-small has-text-danger mb-1"
