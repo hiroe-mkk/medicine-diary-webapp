@@ -45,8 +45,18 @@
                   v-model="editingUsername"
                   maxlength="30"
                   placeholder="ユーザー名"
+                  :class="{ 'is-danger': fieldErrors.contains('username') }"
                 />
               </div>
+              <p class="help" v-if="!fieldErrors.contains('username')">
+                ※30文字以内で入力してください。
+              </p>
+              <p
+                class="help is-danger"
+                v-for="error in fieldErrors.get('username')"
+              >
+                ※{{ error }}
+              </p>
             </div>
             <div class="field is-grouped is-grouped-centered">
               <p class="control">
@@ -72,7 +82,8 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { HttpRequestClient, HTTPRequestFailedError } from '@main/js/composables/HttpRequestClient.js';
+import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({ username: String, csrf: String });
@@ -80,9 +91,11 @@ const props = defineProps({ username: String, csrf: String });
 const profile = reactive({ username: props.username });
 const isUsernameChangeModalActive = ref(false);
 const editingUsername = ref('');
+const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
 
 function activateUsernameChangeModal() {
+  fieldErrors.clear();
   editingUsername.value = profile.username;
   isUsernameChangeModalActive.value = true;
 }
@@ -99,7 +112,15 @@ function submitUsernameChangeForm() {
       resultMessage.value.activate('INFO', 'ユーザー名の変更が完了しました。');
     })
     .catch((error) => {
-      // TODO
+      if (error instanceof HTTPRequestFailedError) {
+        if (error.status == 400) {
+          // バインドエラーが発生した場合
+          if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
+            fieldErrors.set(error.body.fieldErrors);
+            return;
+          }
+        }
+      }
     });
 }
 </script>
