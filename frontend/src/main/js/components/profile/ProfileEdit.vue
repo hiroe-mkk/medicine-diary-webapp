@@ -31,7 +31,11 @@
           ユーザー名を変更する
         </div>
         <section class="content">
-          <form class="form" method="post">
+          <form
+            class="form"
+            method="post"
+            @submit.prevent="submitUsernameChangeForm()"
+          >
             <div class="field">
               <div class="control">
                 <input
@@ -66,8 +70,9 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 
-const props = defineProps({ username: String });
+const props = defineProps({ username: String, csrf: String });
 
 const profile = reactive({ username: props.username });
 const isUsernameChangeModalActive = ref(false);
@@ -76,5 +81,20 @@ const editingUsername = ref('');
 function activateUsernameChangeModal() {
   editingUsername.value = profile.username;
   isUsernameChangeModalActive.value = true;
+}
+
+function submitUsernameChangeForm() {
+  const form = new URLSearchParams();
+  form.set('username', editingUsername.value);
+  form.set('_csrf', props.csrf);
+
+  HttpRequestClient.submitPostRequest('/api/profile/username/change', form)
+    .then(() => {
+      profile.username = editingUsername.value;
+      isUsernameChangeModalActive.value = false;
+    })
+    .catch((error) => {
+      // TODO
+    });
 }
 </script>

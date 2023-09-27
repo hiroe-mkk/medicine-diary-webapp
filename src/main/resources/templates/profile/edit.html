@@ -11,7 +11,7 @@
 
   <body>
     <div id="profileEdit" layout:fragment="content">
-      <edit th:attr="username=${profile.username}"></edit>
+      <edit th:attr="username=${profile.username}, csrf=${_csrf.token}"></edit>
     </div>
   </body>
 </html>
