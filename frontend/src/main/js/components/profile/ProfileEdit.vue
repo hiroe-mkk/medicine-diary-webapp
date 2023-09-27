@@ -82,7 +82,10 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue';
-import { HttpRequestClient, HTTPRequestFailedError } from '@main/js/composables/HttpRequestClient.js';
+import {
+  HttpRequestClient,
+  HTTPRequestFailedError,
+} from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
@@ -119,6 +122,10 @@ function submitUsernameChangeForm() {
             fieldErrors.set(error.body.fieldErrors);
             return;
           }
+        } else if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
         }
       }
     });
