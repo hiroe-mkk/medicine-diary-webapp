@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.*
 
 @MyBatisRepositoryTest
 internal class ProfileServiceTest(@Autowired private val profileRepository: ProfileRepository,
+                                  @Autowired private val accountRepository: AccountRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
     private val profileService: ProfileService = ProfileService(profileRepository)
+    private val accountService: AccountService = AccountService(accountRepository, profileRepository)
 
     private lateinit var userSession: UserSession
     private lateinit var profile: Profile
@@ -76,14 +78,14 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         @DisplayName("アカウントが削除済みの場合、ユーザー名の変更に失敗する")
         fun accountHasBeenDeleted_changingUsernameFails() {
             //given:
-            val badUserSession = UserSessionFactory.create(AccountId("NonexistentId"))
+            accountService.deleteAccount(userSession)
 
             //when:
-            val target: () -> Unit = { profileService.changeUsername(usernameChangeCommand, badUserSession) }
+            val target: () -> Unit = { profileService.changeUsername(usernameChangeCommand, userSession) }
 
             //then:
             val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
-            assertThat(accountNotFoundException.accountId).isEqualTo(badUserSession.accountId)
+            assertThat(accountNotFoundException.accountId).isEqualTo(userSession.accountId)
         }
     }
 }
