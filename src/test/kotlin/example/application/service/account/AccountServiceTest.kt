@@ -1,8 +1,10 @@
 package example.application.service.account
 
+import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.profile.*
+import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -50,5 +52,22 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
             val expectedProfile = Profile(actual.id, Username(""))
             assertThat(foundProfile).usingRecursiveComparison().isEqualTo(expectedProfile)
         }
+    }
+
+    @Test
+    @DisplayName("アカウントを削除する")
+    fun deleteAccount() {
+        //given:
+        val (account, _) = testAccountInserter.insertAccountAndProfile()
+        val userSession = UserSessionFactory.create(account.id)
+
+        //when:
+        accountService.deleteAccount(userSession)
+
+        //then:
+        val foundAccount = accountRepository.findById(userSession.accountId)
+        assertThat(foundAccount).isNull()
+        val foundProfile = profileRepository.findByAccountId(userSession.accountId)
+        assertThat(foundProfile).isNull()
     }
 }

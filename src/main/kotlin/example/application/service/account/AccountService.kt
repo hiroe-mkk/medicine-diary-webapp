@@ -1,5 +1,6 @@
 package example.application.service.account
 
+import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.profile.*
 import org.springframework.stereotype.*
@@ -24,5 +25,14 @@ class AccountService(private val accountRepository: AccountRepository,
         accountRepository.save(account)
         profileRepository.save(profile)
         return account
+    }
+
+    /**
+     * アカウントを削除する
+     */
+    fun deleteAccount(userSession: UserSession) {
+        val account = accountRepository.findById(userSession.accountId) ?: return
+        profileRepository.delete(account.id)
+        accountRepository.delete(account.id)
     }
 }
