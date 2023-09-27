@@ -1,7 +1,9 @@
 package example.presentation.controller.api.profile
 
+import example.application.service.account.*
 import example.domain.model.account.*
 import example.presentation.controller.page.profile.*
+import example.presentation.shared.usersession.*
 import example.testhelper.factory.*
 import example.testhelper.springframework.*
 import example.testhelper.springframework.autoconfigure.*
@@ -22,7 +24,9 @@ import org.springframework.web.multipart.*
 import java.io.*
 
 @ControllerTest
-internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                            @Autowired private val accountService: AccountService,
+                                            @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/profile"
     }
@@ -60,6 +64,23 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
             actions.andExpect(status().isBadRequest)
                 .andExpect(header().string("Content-Type", "application/json"))
                 .andExpect(jsonPath("\$.fieldErrors.username").isNotEmpty)
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("アカウントが削除済みの場合、ステータスコード404のレスポンスを返す")
+        fun accountHasBeenDeleted_returnsResponseWithStatus404() {
+            //then:
+            val userSession = userSessionProvider.getUserSession()
+            accountService.deleteAccount(userSession!!)
+
+            //when:
+            val actions = mockMvc.perform(post(PATH)
+                                              .with(csrf())
+                                              .param("username", newUsername))
+
+            //then:
+            actions.andExpect(status().isNotFound)
         }
 
         @Test
