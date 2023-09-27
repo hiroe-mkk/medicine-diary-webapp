@@ -9,6 +9,7 @@ module.exports = {
   entry: {
     vendor: ['vue'],
     siteHeader: './src/main/js/siteHeader.js',
+    profileEdit: './src/main/js/profileEdit.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する
