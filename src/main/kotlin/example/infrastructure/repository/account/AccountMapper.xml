@@ -51,6 +51,14 @@
         );
     </insert>
 
+    <delete id="deleteAccount">
+        DELETE FROM accounts
+        WHERE account_id = #{accountId};
+    </delete>
+    <delete id="deleteOauth2Credential">
+        DELETE FROM oauth2_credentials
+        WHERE account_id = #{accountId};
+    </delete>
 
     <resultMap id="AccountResultMap" type="example.infrastructure.repository.account.AccountResultEntity">
         <constructor>

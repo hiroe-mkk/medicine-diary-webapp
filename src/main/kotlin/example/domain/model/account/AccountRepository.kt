@@ -8,4 +8,6 @@ interface AccountRepository {
     fun findByCredential(credential: Credential): Account?
 
     fun save(account: Account)
+
+    fun delete(accountId: AccountId)
 }

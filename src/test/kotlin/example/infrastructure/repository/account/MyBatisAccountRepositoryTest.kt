@@ -1,6 +1,7 @@
 package example.infrastructure.repository.account
 
 import example.domain.model.account.*
+import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -34,5 +35,19 @@ internal class MyBatisAccountRepositoryTest(@Autowired private val accountReposi
 
         //then:
         assertThat(actual).usingRecursiveComparison().isEqualTo(account)
+    }
+
+    @Test
+    fun canDeleteAccount() {
+        //given:
+        val (account, _) = TestAccountFactory.create()
+        accountRepository.save(account)
+
+        //when:
+        accountRepository.delete(account.id)
+
+        //then:
+        val foundAccount = accountRepository.findById(account.id)
+        assertThat(foundAccount).isNull()
     }
 }

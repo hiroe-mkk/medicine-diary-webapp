@@ -15,4 +15,8 @@ interface AccountMapper {
 
     fun saveOauth2Credential(accountId: String,
                              idP: IdP, subject: String)
+
+    fun deleteAccount(accountId: String)
+
+    fun deleteOauth2Credential(accountId: String)
 }
