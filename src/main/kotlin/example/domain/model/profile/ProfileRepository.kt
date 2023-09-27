@@ -7,4 +7,6 @@ interface ProfileRepository {
     fun findByAccountId(accountId: AccountId): Profile?
 
     fun save(profile: Profile)
+
+    fun delete(accountId: AccountId)
 }

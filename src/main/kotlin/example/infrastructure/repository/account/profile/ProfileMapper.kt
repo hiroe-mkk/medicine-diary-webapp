@@ -8,4 +8,6 @@ interface ProfileMapper {
     fun findOneByAccountId(accountId: String): Profile?
 
     fun saveProfile(accountId: String, username: String)
+
+    fun deleteProfile(accountId: String)
 }

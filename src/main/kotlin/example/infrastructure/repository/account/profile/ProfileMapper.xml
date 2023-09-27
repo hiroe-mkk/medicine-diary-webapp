@@ -23,6 +23,11 @@
             username = #{username};
     </insert>
 
+    <delete id="deleteProfile">
+        DELETE FROM profiles
+        WHERE account_id = #{accountId};
+    </delete>
+
     <resultMap id="ProfileResultMap" type="Profile">
         <constructor>
             <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
