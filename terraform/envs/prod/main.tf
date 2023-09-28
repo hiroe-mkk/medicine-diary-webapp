@@ -44,3 +44,9 @@ module "cloudwatch" {
 
   prefix = local.prefix
 }
+
+module "routing" {
+  source = "../../modules/routing"
+
+  prefix = local.prefix
+}
