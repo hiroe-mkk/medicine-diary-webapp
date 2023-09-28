@@ -1,7 +1,7 @@
-output "aws_security_group_web_id" {
-  value = aws_security_group.web.id
+output "aws_security_group_alb_id" {
+  value = aws_security_group.alb.id
 }
 
-output "aws_security_group_vpc_id" {
-  value = aws_security_group.vpc.id
+output "aws_security_group_webapp_id" {
+  value = aws_security_group.webapp.id
 }

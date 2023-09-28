@@ -48,7 +48,7 @@ resource "aws_lb_target_group" "this" {
   name = "${var.prefix}-tg"
 
   deregistration_delay = 60
-  port                 = 80
+  port                 = 8080
   protocol             = "HTTP"
   target_type          = "ip"
   vpc_id               = var.vpc_id
