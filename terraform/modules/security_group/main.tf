@@ -85,3 +85,25 @@ resource "aws_security_group_rule" "webapp-egress" {
   protocol          = "all"
   source_security_group_id = aws_security_group.rds.id
 }
+
+
+# ---------------------------
+# RDS のセキュリティグループ
+# ---------------------------
+resource "aws_security_group" "rds" {
+  name   = "${var.prefix}-rds-sg"
+  vpc_id = var.vpc_id
+
+  tags = {
+    Name = "${var.prefix}-rds-sg"
+  }
+}
+
+resource "aws_security_group_rule" "rds-ingress" {
+  security_group_id        = aws_security_group.rds.id
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.webapp.id
+}
