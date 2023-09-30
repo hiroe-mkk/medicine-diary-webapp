@@ -31,6 +31,10 @@ resource "aws_ecs_task_definition" "this" {
 
         "secrets" = [
           {
+            "name" = "PROFILES"
+            "valueFrom" = "/${var.prefix}/springboot/profiles"
+          },
+          {
             "name"      = "GOOGLE_OAUTH2_CLIENT_ID"
             "valueFrom" = "/${var.prefix}/springboot/google_oauth2_client_id"
           },
