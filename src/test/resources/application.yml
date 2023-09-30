@@ -9,7 +9,7 @@ spring:
             clientSecret: 'googleClientSecret'
   datasource:
     driverClassName: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://localhost:23306/medicine_diary'
+    url: 'jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:23306}/medicine_diary'
     username: 'root'
     password: 'root'
   # TODO: flyway を利用するように変更する
