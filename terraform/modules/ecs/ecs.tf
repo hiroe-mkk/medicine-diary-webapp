@@ -37,6 +37,22 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "GOOGLE_OAUTH2_CLIENT_SECRET"
             "valueFrom" = "/${var.prefix}/springboot/google_oauth2_client_secret"
+          },
+          {
+            "name"      = "MYSQL_HOST"
+            "valueFrom" = "/${var.prefix}/springboot/mysql_host"
+          },
+          {
+            "name"      = "MYSQL_DATABASE_NAME"
+            "valueFrom" = "/${var.prefix}/springboot/mysql_database_name"
+          },
+          {
+            "name"      = "MYSQL_USERNAME"
+            "valueFrom" = "/${var.prefix}/springboot/mysql_username"
+          },
+          {
+            "name"      = "MYSQL_PASSWORD"
+            "valueFrom" = "/${var.prefix}/springboot/mysql_password"
           }
         ]
 
