@@ -15,6 +15,31 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+  minio:
+    image: minio/minio:RELEASE.2023-08-09T23-30-22Z
+    container_name: minio-medicine-diary-test
+    environment:
+      MINIO_ROOT_USER: 'root'
+      MINIO_ROOT_PASSWORD: 'root-password'
+    ports:
+      - '19000:9000'
+      - '19090:9090' # コンソール用のポート
+    volumes:
+      - minio-data:/data
+    command: ['server', '/data', '--console-address', ':9090']
+  createbuckets:
+    image: minio/mc:RELEASE.2023-08-01T23-30-57Z.hotfix.09b6cd70
+    container_name: createbuckets-medicine-diary-test
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      mc alias set myminio http://minio:9000 root root-password;
+      mc mb --ignore-existing myminio/medicine-diary;
+      mc anonymous set download myminio/medicine-diary;
+      exit 0;"
 
 volumes:
   mysql-data:
+  minio-data:

@@ -4,3 +4,9 @@ spring:
     url: 'jdbc:mysql://localhost:13306/medicine_diary'
     username: 'root'
     password: 'root'
+
+minio:
+  user: 'root'
+  password: 'root-password'
+  endpoint: 'http://localhost:19000'
+  bucketName: 'medicine-diary'

@@ -20,3 +20,9 @@ spring:
 
 mybatis:
   typeAliasesPackage: 'example.domain' # XML の中でクラスを指定する際、完全修飾名の記述を省略できるようにする
+
+minio:
+  user: 'root'
+  password: 'root-password'
+  endpoint: 'http://localhost:19000'
+  bucketName: 'medicine-diary'
