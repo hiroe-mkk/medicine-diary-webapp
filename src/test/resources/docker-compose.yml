@@ -6,7 +6,7 @@ services:
     image: mysql:8.0
     container_name: mysql-medicine-diary-test
     environment:
-      MYSQL_DATABASE: 'medicine-diary'
+      MYSQL_DATABASE: 'medicine_diary'
       MYSQL_ROOT_USER: 'root'
       MYSQL_ROOT_PASSWORD: 'root'
       TZ: 'Asia/Tokyo'

@@ -9,7 +9,7 @@ spring:
             clientSecret: 'googleClientSecret'
   datasource:
     driverClassName: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://localhost:23306/medicine-diary'
+    url: 'jdbc:mysql://localhost:23306/medicine_diary'
     username: 'root'
     password: 'root'
 

@@ -8,7 +8,7 @@ spring:
             clientSecret: '${GOOGLE_OAUTH2_CLIENT_SECRET}'
   datasource:
     driverClassName: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE_NAME:medicine-diary}'
+    url: 'jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE_NAME:medicine_diary}'
     username: '${MYSQL_USERNAME:root}'
     password: '${MYSQL_PASSWORD}'
 
