@@ -10,7 +10,7 @@ object TestAccountFactory {
                username: Username = Username("testUsername"),
                profileImageFullPath: ProfileImageFullPath? = null): Pair<Account, Profile> {
         val account = Account.reconstruct(id, credential)
-        val profile = Profile(account.id, username, profileImageFullPath)
+        val profile = Profile.reconstruct(account.id, username, profileImageFullPath)
         return Pair(account, profile)
     }
 }

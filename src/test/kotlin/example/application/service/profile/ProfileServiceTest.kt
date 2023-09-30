@@ -69,7 +69,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
 
             //then: 変更されたプロフィールが保存されている
             val actual = profileRepository.findByAccountId(userSession.accountId)
-            val expected = Profile(userSession.accountId, Username("newTestUsername"), null)
+            val expected = Profile.reconstruct(userSession.accountId, Username("newTestUsername"), null)
             assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
         }
 
