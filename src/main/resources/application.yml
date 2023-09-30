@@ -11,6 +11,11 @@ spring:
     url: 'jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE_NAME:medicine_diary}'
     username: '${MYSQL_USERNAME:root}'
     password: '${MYSQL_PASSWORD}'
+  # TODO: flyway を利用するように変更する
+  sql:
+    init:
+      mode: always
+      encoding: utf-8
 
 mybatis:
   typeAliasesPackage: 'example.domain' # XML の中でクラスを指定する際、完全修飾名の記述を省略できるようにする
