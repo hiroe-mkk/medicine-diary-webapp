@@ -1,8 +1,7 @@
-package example.infrastructure.repository.account.profile
+package example.infrastructure.repository.profile
 
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
-import example.domain.model.profile.*
 import org.springframework.stereotype.*
 
 @Repository

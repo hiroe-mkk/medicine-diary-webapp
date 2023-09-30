@@ -2,7 +2,7 @@ package example.application.service.account
 
 import example.application.shared.usersession.*
 import example.domain.model.account.*
-import example.domain.model.profile.*
+import example.domain.model.account.profile.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 

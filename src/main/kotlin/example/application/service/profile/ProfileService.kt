@@ -3,7 +3,6 @@ package example.application.service.profile
 import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
-import example.domain.model.profile.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 

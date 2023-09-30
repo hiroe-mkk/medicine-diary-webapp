@@ -2,7 +2,6 @@ package example.testhelper.inserter
 
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
-import example.domain.model.profile.*
 import org.springframework.boot.test.context.*
 
 @TestComponent

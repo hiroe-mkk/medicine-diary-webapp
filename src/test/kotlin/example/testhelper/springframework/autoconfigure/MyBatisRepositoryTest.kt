@@ -1,9 +1,9 @@
 package example.testhelper.springframework.autoconfigure
 
 import example.domain.model.account.*
-import example.domain.model.profile.*
+import example.domain.model.account.profile.*
 import example.infrastructure.repository.account.*
-import example.infrastructure.repository.account.profile.*
+import example.infrastructure.repository.profile.*
 import org.mybatis.spring.boot.test.autoconfigure.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.test.autoconfigure.jdbc.*

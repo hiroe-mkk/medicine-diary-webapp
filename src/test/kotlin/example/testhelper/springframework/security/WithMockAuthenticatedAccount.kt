@@ -1,7 +1,7 @@
 package example.testhelper.springframework.security
 
 import example.domain.model.account.*
-import example.domain.model.profile.*
+import example.domain.model.account.profile.*
 import example.presentation.shared.springframework.security.oauth2.*
 import example.presentation.shared.springframework.security.oauth2.oidc.*
 import example.testhelper.factory.*

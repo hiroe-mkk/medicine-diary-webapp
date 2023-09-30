@@ -1,4 +1,4 @@
-package example.domain.model.profile
+package example.domain.model.account.profile
 
 import example.domain.model.account.*
 import example.domain.model.account.profile.*

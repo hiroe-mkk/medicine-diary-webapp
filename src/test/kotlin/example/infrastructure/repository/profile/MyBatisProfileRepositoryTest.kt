@@ -1,7 +1,7 @@
-package example.infrastructure.repository.account.profile
+package example.infrastructure.repository.profile
 
 import example.domain.model.account.*
-import example.domain.model.profile.*
+import example.domain.model.account.profile.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
