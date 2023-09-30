@@ -41,3 +41,13 @@ module "routing" {
   vpc_id          = module.network.aws_vpc_this_id
   subnets         = module.network.aws_subnet_public_ids
 }
+
+module "db" {
+  source = "../../modules/db"
+
+  prefix                 = local.prefix
+  db_subnet_group_name   = module.network.aws_db_subnet_group_this_id
+  vpc_security_group_ids = [module.security_group.aws_security_group_rds_id]
+  availability_zone      = "ap-northeast-1a"
+  db_name                = local.prefix_with_underscore
+}
