@@ -15,6 +15,10 @@ class Profile(val accountId: AccountId, // TODO: ProfileId クラスを定義す
     var profileImageFullPath: ProfileImageFullPath? = profileImageFullPath
         private set
 
+    companion object {
+        fun create(accountId: AccountId): Profile = Profile(accountId, Username.creteDefaultUsername(), null)
+    }
+
     fun changeUsername(newUsername: Username) {
         this.username = newUsername
     }
