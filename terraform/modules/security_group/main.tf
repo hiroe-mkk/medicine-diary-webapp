@@ -80,10 +80,10 @@ resource "aws_security_group_rule" "webapp-ingress" {
 resource "aws_security_group_rule" "webapp-egress" {
   security_group_id = aws_security_group.webapp.id
   type              = "egress"
-  from_port         = 3306
-  to_port           = 3306
+  from_port         = 0
+  to_port           = 0
   protocol          = "all"
-  source_security_group_id = aws_security_group.rds.id
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 
