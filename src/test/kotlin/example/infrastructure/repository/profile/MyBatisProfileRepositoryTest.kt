@@ -2,6 +2,7 @@ package example.infrastructure.repository.profile
 
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.account.profile.profileimage.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -25,6 +26,20 @@ internal class MyBatisProfileRepositoryTest(@Autowired private val profileReposi
 
         //then:
         assertThat(foundProfile).usingRecursiveComparison().isEqualTo(profile)
+    }
+
+    @Test
+    fun saveProfileWithProfileImageFullPath() {
+        //given:
+        val profileImageFullPath = ProfileImageFullPath("rootPath", "/relativePath")
+        val (account, profile) = testAccountInserter.insertAccountAndProfile(profileImageFullPath = profileImageFullPath)
+
+        //when:
+        profileRepository.save(profile)
+
+        //then:
+        val actual = profileRepository.findByAccountId(account.id)!!.profileImageFullPath
+        assertThat(actual).isEqualTo(profileImageFullPath)
     }
 
     @Test

@@ -4,8 +4,7 @@
 <mapper namespace="example.infrastructure.repository.profile.ProfileMapper">
     <select id="findOneByAccountId" resultMap="ProfileResultMap">
         SELECT
-            account_id,
-            username
+            <include refid="AllColumns"/>
         FROM
             profiles
         WHERE
@@ -14,13 +13,16 @@
 
     <insert id="saveProfile">
         INSERT INTO profiles(
-            account_id,
-            username
+            <include refid="AllColumns"/>
         )VALUES(
             #{accountId},
-            #{username}
+            #{username},
+            #{profileImageRootPath, jdbcType=VARCHAR},
+            #{profileImageRelativePath, jdbcType=VARCHAR}
         )ON DUPLICATE KEY UPDATE
-            username = #{username};
+            username = #{username},
+            profile_image_root_path = #{profileImageRootPath, jdbcType=VARCHAR},
+            profile_image_relative_path = #{profileImageRelativePath, jdbcType=VARCHAR};
     </insert>
 
     <delete id="deleteProfile">
@@ -28,10 +30,19 @@
         WHERE account_id = #{accountId};
     </delete>
 
+
+    <sql id="AllColumns">
+        account_id,
+        username,
+        profile_image_root_path,
+        profile_image_relative_path
+    </sql>
+
     <resultMap id="ProfileResultMap" type="Profile">
         <constructor>
             <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
+            <arg column="{profile_image_root_path, profile_image_relative_path}" javaType="ProfileImageFullPath" resultMap="ProfileImageFullPathResultMap"/>
         </constructor>
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
@@ -42,6 +53,12 @@
     <resultMap id="UsernameResultMap" type="Username">
         <constructor>
             <idArg column="username" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="ProfileImageFullPathResultMap" type="ProfileImageFullPath">
+        <constructor>
+            <idArg column="profile_image_root_path" javaType="String"></idArg>
+            <idArg column="profile_image_relative_path" javaType="String"></idArg>
         </constructor>
     </resultMap>
 </mapper>

@@ -11,7 +11,10 @@ class MyBatisProfileRepository(private val profileMapper: ProfileMapper) : Profi
     }
 
     override fun save(profile: Profile) {
-        profileMapper.saveProfile(profile.accountId.value, profile.username.value)
+        profileMapper.saveProfile(profile.accountId.value,
+                                  profile.username.value,
+                                  profile.profileImageFullPath?.rootPath,
+                                  profile.profileImageFullPath?.relativePath)
     }
 
     override fun delete(accountId: AccountId) {

@@ -11,7 +11,7 @@ class Account private constructor(val id: AccountId,
         fun create(id: AccountId,
                    credential: Credential): Pair<Account, Profile> {
             val account = Account(id, credential)
-            val profile = Profile(id, Username.creteDefaultUsername())
+            val profile = Profile(id, Username.creteDefaultUsername(), null)
             return Pair(account, profile)
         }
 

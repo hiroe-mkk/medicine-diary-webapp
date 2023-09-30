@@ -7,7 +7,10 @@ import org.apache.ibatis.annotations.*
 interface ProfileMapper {
     fun findOneByAccountId(accountId: String): Profile?
 
-    fun saveProfile(accountId: String, username: String)
+    fun saveProfile(accountId: String,
+                    username: String,
+                    profileImageRootPath: String?,
+                    profileImageRelativePath: String?)
 
     fun deleteProfile(accountId: String)
 }

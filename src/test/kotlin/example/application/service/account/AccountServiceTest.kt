@@ -48,7 +48,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
             assertThat(foundAccount).usingRecursiveComparison().isEqualTo(expected)
             // 作成されたプロフィールが保存されている
             val foundProfile = profileRepository.findByAccountId(actual.id)
-            val expectedProfile = Profile(actual.id, Username(""))
+            val expectedProfile = Profile(actual.id, Username(""), null)
             assertThat(foundProfile).usingRecursiveComparison().isEqualTo(expectedProfile)
         }
     }
