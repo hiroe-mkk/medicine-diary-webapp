@@ -105,9 +105,20 @@
         <div class="title is-5 has-text-link-dark has-text-centered">
           プロフィール画像を変更する
         </div>
-        <form class="form" method="post" enctype="multipart/form-data">
-          <div class="container mb-2" ref="trimmingContainer"></div>
-          <div class="file is-small is-info is-centered p-3">
+        <form
+          class="form"
+          method="post"
+          enctype="multipart/form-data"
+          @submit.prevent="submitProfileImageChangeForm()"
+        >
+          <div class="container" ref="trimmingContainer"></div>
+          <p
+            class="help is-danger"
+            v-for="error in fieldErrors.get('profileImage')"
+          >
+            ※{{ error }}
+          </p>
+          <div class="file is-small is-info is-centered">
             <label class="file-label">
               <input
                 class="file-input"
@@ -115,14 +126,17 @@
                 accept="image/*"
                 @change="fileSelected($event)"
               />
-              <span class="file-cta">
-                <span class="file-label is-rounded">ファイルを選択する</span>
+              <span
+                class="file-cta"
+                v-show="!profileImageTrimmingManager.isTrimming"
+              >
+                <span class="file-label is-rounded">ファイルを選択する </span>
               </span>
             </label>
           </div>
           <div
             class="field is-grouped is-grouped-centered"
-            v-show="ProfileImageTrimmingManager.isTrimming"
+            v-show="profileImageTrimmingManager.isTrimming"
           >
             <p class="control">
               <button class="button is-small is-rounded is-link">完了</button>
@@ -169,7 +183,7 @@ const editingUsername = ref('');
 
 const isProfileImageChangeModalActive = ref(false);
 const trimmingContainer = ref(null);
-const profileImageTrimmingManager = new ProfileImageTrimmingManager();
+const profileImageTrimmingManager = reactive(new ProfileImageTrimmingManager());
 
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
@@ -209,6 +223,7 @@ function submitUsernameChangeForm() {
 }
 
 function activateProfileImageChangeModal() {
+  fieldErrors.clear();
   profileImageTrimmingManager.destroy();
   isProfileImageChangeModalActive.value = true;
 }
@@ -219,6 +234,38 @@ function fileSelected(event) {
 
   profileImageTrimmingManager.setFile(file, trimmingContainer.value);
   event.target.value = ''; // 続けて同じファイルが選択された場合に change イベントを発火させるために必要
+}
+
+async function submitProfileImageChangeForm() {
+  const result = await profileImageTrimmingManager.result();
+  const form = new FormData();
+  form.set('profileImage', result);
+  form.set('_csrf', props.csrf);
+
+  HttpRequestClient.submitPostRequest('/api/profile/profileimage/change', form)
+    .then(() => {
+      profile.profileImage = URL.createObjectURL(result);
+      isProfileImageChangeModalActive.value = false;
+      resultMessage.value.activate(
+        'INFO',
+        'プロフィール画像の変更が完了しました。'
+      );
+    })
+    .catch((error) => {
+      if (error instanceof HTTPRequestFailedError) {
+        if (error.status == 400) {
+          // バインドエラーが発生した場合
+          if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
+            fieldErrors.set(error.body.fieldErrors);
+            return;
+          }
+        } else if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        }
+      }
+    });
 }
 </script>
 

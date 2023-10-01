@@ -23,7 +23,7 @@ export class ProfileImageTrimmingManager {
   }
 
   result() {
-    if (!this.isTrimming()) return;
+    if (!this.isTrimming) return;
 
     return this._croppie
       .result({
