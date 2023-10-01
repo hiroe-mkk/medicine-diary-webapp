@@ -19,7 +19,7 @@ export class HTTPRequestFailedError extends Error {
   }
 
   isBodyEmpty() {
-    return this.body === {};
+    return this.body === undefined;
   }
 }
 
@@ -32,10 +32,11 @@ async function parseResponse(response) {
 }
 
 // HTTP レスポンスからコンテンツタイプが JSON のボディを抽出する
+// ボディが空だった場合は、undefined を返す。
 async function extractJsonBody(response) {
   const contentType = response.headers.get('Content-Type');
   if (contentType != null && contentType.indexOf('json') != -1) {
     return await response.json();
   }
-  return {};
+  return undefined;
 }
