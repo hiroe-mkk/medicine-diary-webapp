@@ -95,4 +95,70 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
             actions.andExpect(status().isUnauthorized)
         }
     }
+
+
+    @Nested
+    inner class ChangeProfileImageTest {
+        private val multipartFile = TestProfileImageFactory.createMultipartFile() as MockMultipartFile
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("プロフィール画像の変更に成功した場合、ステータスコード204のレスポンスを返す")
+        fun profileImageChangeSucceeds_returnsResponseWithStatus204() {
+            val actions = mockMvc.perform(multipart("${PATH}/profileimage/change")
+                                              .file(multipartFile)
+                                              .with(csrf()))
+
+            //then:
+            actions.andExpect(status().isNoContent)
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("バリデーションエラーが発生した場合、ステータスコード400のレスポンスを返す")
+        fun validationErrorOccurs_returnsResponseWithStatus400() {
+            //given:
+            val invalidMultipartFile =
+                    TestProfileImageFactory.createMultipartFile(type = MediaType.IMAGE_PNG) as MockMultipartFile
+
+            //when:
+            val actions = mockMvc.perform(multipart("${PATH}/profileimage/change")
+                                              .file(invalidMultipartFile)
+                                              .with(csrf()))
+
+            //then:
+            actions.andExpect(status().isBadRequest)
+                .andExpect(header().string("Content-Type", "application/json"))
+                .andExpect(jsonPath("\$.fieldErrors.profileImage").isNotEmpty)
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("アカウントが削除済みの場合、ステータスコード404のレスポンスを返す")
+        fun accountHasBeenDeleted_returnsResponseWithStatus404() {
+            //then:
+            val userSession = userSessionProvider.getUserSession()
+            accountService.deleteAccount(userSession)
+
+            //when:
+            val actions = mockMvc.perform(multipart("${PATH}/profileimage/change")
+                                              .file(multipartFile)
+                                              .with(csrf()))
+
+            //then:
+            actions.andExpect(status().isNotFound)
+        }
+
+        @Test
+        @DisplayName("未認証ユーザからリクエストされた場合、ステータスコード401のレスポンスを返す")
+        fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+            //when:
+            val actions = mockMvc.perform(multipart("${PATH}/profileimage/change")
+                                              .file(multipartFile)
+                                              .with(csrf()))
+
+            //then:
+            actions.andExpect(status().isUnauthorized)
+        }
+    }
 }

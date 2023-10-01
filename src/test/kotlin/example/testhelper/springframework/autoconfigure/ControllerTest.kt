@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional
  * Controller クラスをテストする場合に利用可能なアノテーション
  */
 @SpringBootTest
+@EnableMockObjectStorageClient
 @EnableTestDataInserter
 @Transactional
 @AutoConfigureMockMvc
