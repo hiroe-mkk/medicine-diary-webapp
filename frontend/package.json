@@ -21,6 +21,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "croppie": "^2.6.5",
     "vue": "^3.3.4"
   }
 }
