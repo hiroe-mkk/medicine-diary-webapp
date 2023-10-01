@@ -28,4 +28,8 @@ class Profile private constructor(val accountId: AccountId, // TODO: ProfileId ã
     fun changeUsername(newUsername: Username) {
         this.username = newUsername
     }
+
+    fun changeProfileImage(newProfileImageFullPath: ProfileImageFullPath) {
+        this.profileImageFullPath = newProfileImageFullPath
+    }
 }

@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
 
 	// テンプレートエンジン
 	implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1")

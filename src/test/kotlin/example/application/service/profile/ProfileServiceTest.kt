@@ -1,22 +1,28 @@
 package example.application.service.profile
 
+import com.ninjasquad.springmockk.*
 import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.account.profile.profileimage.*
+import example.infrastructure.storage.shared.objectstrage.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import io.mockk.*
 import org.assertj.core.api.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
+import java.util.*
 
 @MyBatisRepositoryTest
 internal class ProfileServiceTest(@Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val accountRepository: AccountRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val profileService: ProfileService = ProfileService(profileRepository)
+    private val profileImageStorage: ProfileImageStorage = mockk(relaxed = true)
+    private val profileService: ProfileService = ProfileService(profileRepository, profileImageStorage)
     private val accountService: AccountService = AccountService(accountRepository, profileRepository)
 
     private lateinit var userSession: UserSession
@@ -85,6 +91,49 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             //then:
             val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
             assertThat(accountNotFoundException.accountId).isEqualTo(userSession.accountId)
+        }
+    }
+
+    @Nested
+    inner class ChangeProfileImageTest {
+        private val profileImageChangeCommand = TestProfileImageFactory.createProfileImageChangeCommand()
+
+        @BeforeEach
+        internal fun setUp() {
+            every {
+                profileImageStorage.createPath()
+            } returns ProfileImageFullPath("rootPath", "/profileimage/newProfileImage")
+        }
+
+        @Test
+        @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
+        fun profileImageIsNull_changingProfileImageSucceeds() {
+            //when:
+            val newProfileImagePath = profileService.changeProfileImage(profileImageChangeCommand, userSession)
+
+            //then:
+            val profile = profileRepository.findByAccountId(userSession.accountId)!!
+            assertThat(profile.profileImageFullPath).isEqualTo(newProfileImagePath)
+            verify(exactly = 0) { profileImageStorage.delete(any()) }
+            verify(exactly = 1) { profileImageStorage.upload(any()) }
+        }
+
+        @Test
+        @DisplayName("プロフィール画像が設定済みの場合、プロフィール画像の変更に成功する")
+        fun profileImageIsNotNull_changingProfileImageSucceeds() {
+            //given:
+            val oldProfileImageFullPath = ProfileImageFullPath("rootPath", "/profileimage/oldProfileImage")
+            profile.changeProfileImage(oldProfileImageFullPath)
+            profileRepository.save(profile)
+
+            //when:
+            val newProfileImageFullPath = profileService.changeProfileImage(profileImageChangeCommand, userSession)
+
+            //then:
+            val profile = profileRepository.findByAccountId(userSession.accountId)!!
+            assertThat(profile.profileImageFullPath).isEqualTo(newProfileImageFullPath)
+            verify(exactly = 1) { profileImageStorage.upload(any()) }
+            verify(exactly = 1) { profileImageStorage.delete(oldProfileImageFullPath) }
         }
     }
 }
