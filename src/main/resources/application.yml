@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: ${PROFILES:local}
+  servlet:
+    multipart:
+      maxFileSize: 512000 # アップロードを許可する1ファイルの最大バイト数 500KB
+      maxRequestSize: 614400 # multipart/form-data リクエストの Content-Length の最大値 600KB
+      fileSizeThreshold: 0 # アップロードされたファイルの中身を、一時ファイルとして保存するかの閾値
   security:
     oauth2:
       client:
