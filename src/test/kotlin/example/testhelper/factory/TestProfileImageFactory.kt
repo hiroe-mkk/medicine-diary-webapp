@@ -15,8 +15,8 @@ object TestProfileImageFactory {
         return ProfileImageChangeCommand(createMultipartFile(type, size))
     }
 
-    private fun createMultipartFile(type: MediaType = defaultType,
-                                    size: Int = defaultSize): MultipartFile {
+    fun createMultipartFile(type: MediaType = defaultType,
+                            size: Int = defaultSize): MultipartFile {
         val content = ByteArrayInputStream(ByteArray(size))
         return MockMultipartFile("profileImage", "profileImage.jpg", type.toString(), content)
     }
