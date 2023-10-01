@@ -1,7 +1,6 @@
 package example.infrastructure.storage.shared.objectstrage.minio
 
 import example.domain.model.account.profile.profileimage.*
-import example.domain.model.profileimage.*
 import example.domain.shared.type.*
 import io.minio.*
 import io.minio.errors.*

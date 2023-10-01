@@ -1,5 +1,10 @@
 <template>
   <div class="content has-text-centered">
+    <div class="is-flex is-justify-content-center">
+      <figure class="image is-128x128" v-if="profile.profileImage !== undefined">
+        <img class="is-rounded" :src="profile.profileImage" />
+      </figure>
+    </div>
     <strong class="is-size-4 has-text-grey-dark">
       {{ profile.username }}
     </strong>
@@ -13,6 +18,14 @@
         @click="activateUsernameChangeModal()"
       >
         <strong class="has-text-grey">ユーザー名</strong>
+        <span class="icon is-small">
+          <i class="fa-solid fa-greater-than"></i>
+        </span>
+      </div>
+      <div
+        class="panel-block has-text-grey has-background-white is-flex is-justify-content-space-between is-clickable"
+      >
+        <strong class="has-text-grey">プロフィール画像</strong>
         <span class="icon is-small">
           <i class="fa-solid fa-greater-than"></i>
         </span>
@@ -89,9 +102,16 @@ import {
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
-const props = defineProps({ username: String, csrf: String });
+const props = defineProps({
+  username: String,
+  profileImage: String,
+  csrf: String,
+});
 
-const profile = reactive({ username: props.username });
+const profile = reactive({
+  username: props.username,
+  profileImage: props.profileImage,
+});
 const isUsernameChangeModalActive = ref(false);
 const editingUsername = ref('');
 const fieldErrors = reactive(new FieldErrors());

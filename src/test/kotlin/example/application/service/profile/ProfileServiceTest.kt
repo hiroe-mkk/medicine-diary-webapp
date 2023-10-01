@@ -44,7 +44,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             val actual = profileService.findProfile(userSession)
 
             //then:
-            val expected = ProfileDto(profile.username)
+            val expected = ProfileDto(profile.username, profile.profileImageFullPath)
             assertThat(actual).isEqualTo(expected)
         }
 
