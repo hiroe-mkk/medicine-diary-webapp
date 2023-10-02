@@ -11,14 +11,17 @@
   <body>
     <div layout:fragment="content" th:remove="tag">
       <div class="content has-text-centered">
-        <p class="subtitle is-5 has-text-weight-semibold">
+        <p class="subtitle is-4 has-text-weight-semibold">
           システムエラーが発生しました。
         </p>
-        <div class="block">
-          <a class="is-underlined is-info has-text-weight-semibold" th:href="@{/}">
-            トップページに戻る
-          </a>
-        </div>
+        <p class="subtitle is-5">
+          お手数ですが、最初から再度お試しください。
+        </p>
+          <div class="block">
+            <a class="is-underlined is-info has-text-weight-semibold" th:href="@{/}">
+              トップページに戻る
+            </a>
+          </div>
       </div>
     </div>
   </body>
