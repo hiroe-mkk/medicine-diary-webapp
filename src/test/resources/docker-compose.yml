@@ -16,7 +16,7 @@ services:
       - mysql-data:/var/lib/mysql
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
   minio:
-    image: minio/minio:RELEASE.2023-08-09T23-30-22Z
+    image: minio/minio:RELEASE.2023-09-30T07-02-29Z
     container_name: minio-medicine-diary-test
     environment:
       MINIO_ROOT_USER: 'root'
@@ -28,7 +28,7 @@ services:
       - minio-data:/data
     command: ['server', '/data', '--console-address', ':9090']
   createbuckets:
-    image: minio/mc:RELEASE.2023-08-01T23-30-57Z.hotfix.09b6cd70
+    image: minio/mc:RELEASE.2023-09-29T16-41-22Z
     container_name: createbuckets-medicine-diary-test
     depends_on:
       - minio
