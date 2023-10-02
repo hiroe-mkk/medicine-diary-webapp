@@ -162,7 +162,7 @@
 import { ref, reactive } from 'vue';
 import {
   HttpRequestClient,
-  HTTPRequestFailedError,
+  HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { ProfileImageTrimmingManager } from '@main/js/composables/model/ProfileImageTrimmingManager.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
@@ -240,7 +240,7 @@ function submitForm(url, form, successHandler) {
       successHandler();
     })
     .catch((error) => {
-      if (error instanceof HTTPRequestFailedError) {
+      if (error instanceof HttpRequestFailedError) {
         if (error.status == 400) {
           // バインドエラーが発生した場合
           if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {

@@ -6,7 +6,7 @@ export class HttpRequestClient {
 }
 
 // HTTP リクエストに失敗したことを示すエラー
-export class HTTPRequestFailedError extends Error {
+export class HttpRequestFailedError extends Error {
   constructor(status, body) {
     super();
     this.status = status;
@@ -26,7 +26,7 @@ export class HTTPRequestFailedError extends Error {
 // HTTP レスポンスを解析する
 async function parseResponse(response) {
   const body = await extractJsonBody(response);
-  if (!response.ok) throw new HTTPRequestFailedError(response.status, body);
+  if (!response.ok) throw new HttpRequestFailedError(response.status, body);
 
   return body;
 }

@@ -1,6 +1,6 @@
 import {
   HttpRequestClient,
-  HTTPRequestFailedError,
+  HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 
 describe('HttpRequestClientTest', () => {
@@ -46,6 +46,6 @@ describe('HttpRequestClientTest', () => {
       HttpRequestClient.submitPostRequest('/api/profile/username/change', form);
 
     //then:
-    expect(target).rejects.toThrowError(HTTPRequestFailedError);
+    expect(target).rejects.toThrowError(HttpRequestFailedError);
   });
 });
