@@ -2,8 +2,10 @@ package example.infrastructure.storage.shared.objectstrage.minio
 
 
 import io.minio.*
+import org.springframework.context.annotation.*
 import org.springframework.stereotype.*
 
+@Profile("local")
 @Component
 class MinioClientProvider(private val minioProperties: MinioProperties) {
     private val minioClient: MinioClient = create()

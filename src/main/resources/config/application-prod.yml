@@ -4,3 +4,10 @@ spring:
     url: 'jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE_NAME}'
     username: '${MYSQL_USERNAME}'
     password: '${MYSQL_PASSWORD}'
+
+aws:
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
+  bucketName: ${AWS_S3_BUCKET}
+  s3RootUrl: ${AWS_S3_ROOT_URL}

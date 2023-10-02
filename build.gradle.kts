@@ -21,6 +21,10 @@ repositories {
 }
 
 dependencies {
+    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.529"))
+}
+
+dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
@@ -29,9 +33,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 
-	// テンプレートエンジン
-	implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // AWS
+    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.529"))
+    implementation("com.amazonaws:aws-java-sdk-s3")
 
 	// セキュリティ
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -46,8 +50,12 @@ dependencies {
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2")
     implementation("io.minio:minio:8.5.4")
 
-	// バリデータ
-	implementation("org.springframework.boot:spring-boot-starter-validation")
+    // バリデータ
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    // テンプレートエンジン
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 }
 
 tasks.withType<ProcessResources> {
