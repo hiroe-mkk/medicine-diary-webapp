@@ -20,7 +20,7 @@
         <div class="message-body">
           <div class="content">
             <div class="has-text-centered m-2">
-              <strong class="is-5 mb-1">
+              <strong class="is-4 mb-1">
                 {{ resultMessage.message }}
               </strong>
               <br />
