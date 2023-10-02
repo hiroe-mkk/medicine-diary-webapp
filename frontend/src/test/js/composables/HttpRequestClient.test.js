@@ -48,4 +48,53 @@ describe('HttpRequestClientTest', () => {
     //then:
     expect(target).rejects.toThrowError(HttpRequestFailedError);
   });
+
+  test('getMessage', async () => {
+    //given:
+    const body = {
+      error: {
+        message: '薬が見つかりませんでした。',
+        details: '既に削除されている可能性があります。',
+      },
+    };
+    const httpRequestFailedError = new HttpRequestFailedError(404, body);
+
+    //when:
+    const actual = httpRequestFailedError.getMessage();
+
+    //then:
+    expect(actual).toEqual(
+      '薬が見つかりませんでした。(既に削除されている可能性があります。)'
+    );
+  });
+  
+  test('detailsIsNotContained, gettingMessageSucceeds', async () => {
+    //given:
+    const body = {
+      error: {
+        message: '薬が見つかりませんでした。',
+      },
+    };
+    const httpRequestFailedError = new HttpRequestFailedError(404, body);
+
+    //when:
+    const actual = httpRequestFailedError.getMessage();
+
+    //then:
+    expect(actual).toEqual('薬が見つかりませんでした。');
+  });
+  
+  test('messageIsNotContained, gettingMessageSucceeds', async () => {
+    //given:
+    const body = {
+      fieldErrors: { username: ['30文字以内で入力してください。'] },
+    };
+    const httpRequestFailedError = new HttpRequestFailedError(400, body);
+
+    //when:
+    const actual = httpRequestFailedError.getMessage();
+
+    //then:
+    expect(actual).toEqual('');
+  });
 });

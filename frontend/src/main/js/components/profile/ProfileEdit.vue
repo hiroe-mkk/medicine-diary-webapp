@@ -251,8 +251,28 @@ function submitForm(url, form, successHandler) {
           // 認証エラーが発生した場合
           location.reload();
           return;
+        } else if (error.status == 500) {
+          resultMessage.value.activate(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
         }
       }
+
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
     });
 }
 </script>

@@ -21,6 +21,22 @@ export class HttpRequestFailedError extends Error {
   isBodyEmpty() {
     return this.body === undefined;
   }
+
+  hasMessage() {
+    if (this.isBodyEmpty()) return false;
+
+    return (
+      this.body.error !== undefined && this.body.error.message !== undefined
+    );
+  }
+
+  getMessage() {
+    if (!this.hasMessage()) return '';
+
+    const message = this.body.error.message;
+    const details = this.body.error.details;
+    return details === undefined ? message : `${message}(${details})`;
+  }
 }
 
 // HTTP レスポンスを解析する
