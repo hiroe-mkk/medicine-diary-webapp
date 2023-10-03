@@ -6,8 +6,5 @@ spring:
     password: '${MYSQL_PASSWORD}'
 
 aws:
-  accessKey: ${AWS_ACCESS_KEY}
-  secretKey: ${AWS_SECRET_KEY}
-  region: ${AWS_REGION}
-  bucketName: ${AWS_S3_BUCKET}
-  s3RootUrl: ${AWS_S3_ROOT_URL}
+  bucketName: '${AWS_S3_BUCKET}'
+  s3RootUrl: "AWS_S3_ROOT_URL" # TODO

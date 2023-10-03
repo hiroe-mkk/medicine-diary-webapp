@@ -12,6 +12,7 @@ resource "aws_ecs_task_definition" "this" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
+  task_role_arn      = aws_iam_role.ecs_task.arn
   execution_role_arn = aws_iam_role.ecs_task_execution.arn
 
   memory = var.memory
@@ -57,6 +58,10 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "MYSQL_PASSWORD"
             "valueFrom" = "/${var.prefix}/springboot/mysql_password"
+          },
+          {
+            "name"      = "AWS_S3_BUCKET"
+            "valueFrom" = "/${var.prefix}/springboot/aws_s3_bucket"
           }
         ]
 

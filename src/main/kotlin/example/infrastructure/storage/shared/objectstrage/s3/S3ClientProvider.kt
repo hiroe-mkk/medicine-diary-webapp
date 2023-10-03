@@ -7,13 +7,8 @@ import org.springframework.stereotype.*
 
 @Profile("prod")
 @Component
-class S3ClientProvider(private val s3Properties: S3Properties) {
+class S3ClientProvider {
     fun getS3Client(): AmazonS3 {
-        val credentials = BasicAWSCredentials(s3Properties.accessKey,
-                                              s3Properties.secretKey)
-        return AmazonS3ClientBuilder.standard()
-            .withCredentials(AWSStaticCredentialsProvider(credentials))
-            .withRegion(s3Properties.region)
-            .build()
+        return AmazonS3ClientBuilder.defaultClient()
     }
 }
