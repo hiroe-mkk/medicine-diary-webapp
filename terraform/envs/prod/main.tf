@@ -14,17 +14,10 @@ module "security_group" {
 module "ecs" {
   source = "../../modules/ecs"
 
-  prefix                              = local.prefix
-  aws_iam_role_ecs_task_execution_arn = module.iam.aws_iam_role_ecs_task_execution_arn
-  security_groups                     = [module.security_group.aws_security_group_webapp_id]
-  subnets                             = module.network.aws_subnet_public_ids
-  target_group_arn                    = module.routing.aws_lb_target_group_this_arn
-}
-
-module "iam" {
-  source = "../../modules/iam"
-
-  prefix = local.prefix
+  prefix           = local.prefix
+  security_groups  = [module.security_group.aws_security_group_webapp_id]
+  subnets          = module.network.aws_subnet_public_ids
+  target_group_arn = module.routing.aws_lb_target_group_this_arn
 }
 
 module "cloudwatch" {

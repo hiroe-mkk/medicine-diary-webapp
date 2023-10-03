@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "this" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
-  execution_role_arn = var.aws_iam_role_ecs_task_execution_arn
+  execution_role_arn = aws_iam_role.ecs_task_execution.arn
 
   memory = var.memory
   cpu    = var.cpu
@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "this" {
 
         "secrets" = [
           {
-            "name" = "PROFILES"
+            "name"      = "PROFILES"
             "valueFrom" = "/${var.prefix}/springboot/profiles"
           },
           {
