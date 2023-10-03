@@ -44,3 +44,9 @@ module "db" {
   availability_zone      = "ap-northeast-1a"
   db_name                = local.prefix_with_underscore
 }
+
+module "s3" {
+  source = "../../modules/s3"
+
+  prefix = local.prefix
+}
