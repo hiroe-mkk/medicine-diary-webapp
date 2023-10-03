@@ -4,7 +4,7 @@ resource "aws_acm_certificate" "root" {
   validation_method = "DNS"
 
   tags = {
-    Name = "${var.prefix}-okusuri-nikki-kk-link"
+    Name = "${var.prefix}-certificate"
   }
 
   lifecycle {
