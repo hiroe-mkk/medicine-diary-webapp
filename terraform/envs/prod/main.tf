@@ -18,6 +18,7 @@ module "ecs" {
   security_groups  = [module.security_group.aws_security_group_webapp_id]
   subnets          = module.network.aws_subnet_public_ids
   target_group_arn = module.routing.aws_lb_target_group_this_arn
+  resource         = module.s3.aws_s3_bucket_customer_data_arn
 }
 
 module "cloudwatch" {

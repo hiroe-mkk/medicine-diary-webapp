@@ -28,3 +28,7 @@ variable "desired_count" {
 variable "target_group_arn" {
   type = string
 }
+
+variable "resource" {
+  type = string
+}
