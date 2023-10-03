@@ -43,7 +43,7 @@ resource "aws_db_instance" "this" {
   auto_minor_version_upgrade = false
   maintenance_window         = "fri:18:00-fri:19:00"
 
-  deletion_protection = false
+  deletion_protection = false // TODO: trueに変更する
 
   lifecycle {
     ignore_changes = [password]
