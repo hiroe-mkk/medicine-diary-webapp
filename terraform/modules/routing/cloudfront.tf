@@ -7,6 +7,8 @@ resource "aws_cloudfront_distribution" "customer_data" {
 
   enabled = true
 
+  aliases = ["image.${data.aws_route53_zone.this.name}"]
+
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.cloudfront.arn
     ssl_support_method       = "sni-only"
