@@ -31,6 +31,7 @@ module "routing" {
   source = "../../modules/routing"
 
   prefix          = local.prefix
+  root_domain     = local.root_domain
   security_groups = [module.security_group.aws_security_group_alb_id]
   vpc_id          = module.network.aws_vpc_this_id
   subnets         = module.network.aws_subnet_public_ids

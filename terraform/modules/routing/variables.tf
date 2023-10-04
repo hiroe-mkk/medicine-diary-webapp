@@ -2,6 +2,10 @@ variable "prefix" {
   type = string
 }
 
+variable "root_domain" {
+  type = string
+}
+
 variable "security_groups" {
   type = list(string)
 }
