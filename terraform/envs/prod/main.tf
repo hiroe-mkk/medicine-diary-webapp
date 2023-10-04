@@ -36,6 +36,14 @@ module "routing" {
   subnets         = module.network.aws_subnet_public_ids
 }
 
+module "cloudfront" {
+  source = "../../modules/cloudfront"
+
+  prefix                                                  = local.prefix
+  aws_s3_bucket_customer_data_id                          = module.s3.aws_s3_bucket_customer_data_id
+  aws_s3_bucket_customer_data_bucket_regional_domain_name = module.s3.aws_s3_bucket_customer_data_bucket_regional_domain_name
+}
+
 module "db" {
   source = "../../modules/db"
 
@@ -49,5 +57,6 @@ module "db" {
 module "s3" {
   source = "../../modules/s3"
 
-  prefix = local.prefix
+  prefix                                        = local.prefix
+  aws_cloudfront_distribution_customer_data_arn = module.cloudfront.aws_cloudfront_distribution_customer_data_arn
 }
