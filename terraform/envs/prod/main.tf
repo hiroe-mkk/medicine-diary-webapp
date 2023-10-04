@@ -30,6 +30,11 @@ module "cloudwatch" {
 module "routing" {
   source = "../../modules/routing"
 
+  providers = {
+    aws                 = aws
+    aws.virginia-region = aws.virginia-region
+  }
+
   prefix                                                  = local.prefix
   root_domain                                             = local.root_domain
   security_groups                                         = [module.security_group.aws_security_group_alb_id]

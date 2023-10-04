@@ -8,7 +8,9 @@ resource "aws_cloudfront_distribution" "customer_data" {
   enabled = true
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate.cloudfront.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1"
   }
 
   default_cache_behavior {
