@@ -12,7 +12,7 @@
   <body>
     <div id="profileEdit" layout:fragment="content">
       <edit
-        th:attr="username=${profile.username}, profile-image=${profile.profileImageFullPath}, csrf=${_csrf.token}"
+        th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
       ></edit>
     </div>
   </body>

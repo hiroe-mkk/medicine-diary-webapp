@@ -17,9 +17,9 @@ class TestAccountInserter(private val accountRepository: AccountRepository,
                                 credential: Credential = OAuth2Credential(IdP.GOOGLE,
                                                                           "testSubject${num++}"),
                                 username: Username = Username("testUsername"),
-                                profileImageFullPath: ProfileImageFullPath? = null): Pair<Account, Profile> {
+                                profileImageURL: ProfileImageURL? = null): Pair<Account, Profile> {
         val account = Account.reconstruct(id, credential)
-        val profile = Profile.reconstruct(account.id, username, profileImageFullPath)
+        val profile = Profile.reconstruct(account.id, username, profileImageURL)
         accountRepository.save(account)
         profileRepository.save(profile)
         return Pair(account, profile)

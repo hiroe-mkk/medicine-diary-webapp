@@ -15,22 +15,22 @@ class S3ObjectStorageClient(private val s3Properties: S3Properties,
         return s3Properties.endpoint
     }
 
-    override fun put(fullPath: FullPath, fileContent: FileContent) {
+    override fun put(URL: URL, fileContent: FileContent) {
         val objectMetadata = ObjectMetadata().also {
             it.contentType = fileContent.type.toString()
             it.contentLength = fileContent.size.toLong()
         }
         val putObjectRequest = PutObjectRequest(s3Properties.bucketName,
-                                                convertToObjectName(fullPath),
+                                                convertToObjectName(URL),
                                                 fileContent.content,
                                                 objectMetadata)
 
         amazonS3.putObject(putObjectRequest)
     }
 
-    override fun remove(fullPath: FullPath) {
-        amazonS3.deleteObject(s3Properties.bucketName, convertToObjectName(fullPath))
+    override fun remove(URL: URL) {
+        amazonS3.deleteObject(s3Properties.bucketName, convertToObjectName(URL))
     }
 
-    private fun convertToObjectName(fullPath: FullPath): String = fullPath.path.substring(1)
+    private fun convertToObjectName(URL: URL): String = URL.path.substring(1)
 }

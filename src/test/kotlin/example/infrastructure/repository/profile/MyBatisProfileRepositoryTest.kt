@@ -29,17 +29,17 @@ internal class MyBatisProfileRepositoryTest(@Autowired private val profileReposi
     }
 
     @Test
-    fun saveProfileWithProfileImageFullPath() {
+    fun saveProfileWithProfileImageURL() {
         //given:
-        val profileImageFullPath = ProfileImageFullPath("endpoint", "/path")
-        val (account, profile) = testAccountInserter.insertAccountAndProfile(profileImageFullPath = profileImageFullPath)
+        val profileImageURL = ProfileImageURL("endpoint", "/path")
+        val (account, profile) = testAccountInserter.insertAccountAndProfile(profileImageURL = profileImageURL)
 
         //when:
         profileRepository.save(profile)
 
         //then:
-        val actual = profileRepository.findByAccountId(account.id)!!.profileImageFullPath
-        assertThat(actual).isEqualTo(profileImageFullPath)
+        val actual = profileRepository.findByAccountId(account.id)!!.profileImageURL
+        assertThat(actual).isEqualTo(profileImageURL)
     }
 
     @Test

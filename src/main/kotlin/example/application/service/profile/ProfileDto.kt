@@ -4,9 +4,9 @@ import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
 
 data class ProfileDto(val username: Username,
-                      val profileImageFullPath: ProfileImageFullPath?) {
+                      val profileImageURL: ProfileImageURL?) {
     companion object {
         fun from(profile: Profile): ProfileDto = ProfileDto(profile.username,
-                                                            profile.profileImageFullPath)
+                                                            profile.profileImageURL)
     }
 }

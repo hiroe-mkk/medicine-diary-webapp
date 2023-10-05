@@ -9,8 +9,8 @@ interface ProfileMapper {
 
     fun saveProfile(accountId: String,
                     username: String,
-                    profileImageEndpoint: String?,
-                    profileImagePath: String?)
+                    profileImageURLEndpoint: String?,
+                    profileImageURLPath: String?)
 
     fun deleteProfile(accountId: String)
 }

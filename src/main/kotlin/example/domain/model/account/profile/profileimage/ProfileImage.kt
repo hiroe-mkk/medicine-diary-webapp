@@ -5,5 +5,5 @@ import example.domain.shared.type.*
 /**
  * プロフィール画像
  */
-class ProfileImage(val path: ProfileImageFullPath,
+class ProfileImage(val path: ProfileImageURL,
                    val fileContent: FileContent)

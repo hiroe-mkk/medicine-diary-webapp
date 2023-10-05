@@ -32,19 +32,19 @@ class ProfileService(private val profileRepository: ProfileRepository,
      * プロフィール画像を変更する
      */
     fun changeProfileImage(command: ProfileImageChangeCommand,
-                           userSession: UserSession): ProfileImageFullPath {
+                           userSession: UserSession): ProfileImageURL {
         val profile = findProfileOrElseThrowException(userSession)
 
-        profile.profileImageFullPath?.let { profileImageStorage.delete(it) }
+        profile.profileImageURL?.let { profileImageStorage.delete(it) }
 
-        val profileImageFullPath = profileImageStorage.createPath()
-        profile.changeProfileImage(profileImageFullPath)
+        val profileImageURL = profileImageStorage.createURL()
+        profile.changeProfileImage(profileImageURL)
         profileRepository.save(profile)
 
-        val profileImage = ProfileImage(profileImageFullPath, command.validatedFileContent())
+        val profileImage = ProfileImage(profileImageURL, command.validatedFileContent())
         profileImageStorage.upload(profileImage)
 
-        return profileImageFullPath
+        return profileImageURL
     }
 
     private fun findProfileOrElseThrowException(userSession: UserSession): Profile {

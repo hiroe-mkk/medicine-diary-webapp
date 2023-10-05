@@ -5,7 +5,7 @@ import example.domain.shared.type.*
 interface ObjectStorageClient {
     fun getEndpoint(): String
 
-    fun put(fullPath: FullPath, fileContent: FileContent)
+    fun put(URL: URL, fileContent: FileContent)
 
-    fun remove(fullPath: FullPath)
+    fun remove(URL: URL)
 }

@@ -1,9 +1,9 @@
 package example.domain.model.account.profile.profileimage
 
 interface ProfileImageStorage {
-    fun createPath(): ProfileImageFullPath
+    fun createURL(): ProfileImageURL
 
     fun upload(profileImage: ProfileImage)
 
-    fun delete(profileImageFullPath: ProfileImageFullPath)
+    fun delete(profileImageURL: ProfileImageURL)
 }

@@ -17,12 +17,12 @@
         )VALUES(
             #{accountId},
             #{username},
-            #{profileImageEndpoint, jdbcType=VARCHAR},
-            #{profileImagePath, jdbcType=VARCHAR}
+            #{profileImageURLEndpoint, jdbcType=VARCHAR},
+            #{profileImageURLPath, jdbcType=VARCHAR}
         )ON DUPLICATE KEY UPDATE
             username = #{username},
-            profile_image_endpoint = #{profileImageEndpoint, jdbcType=VARCHAR},
-            profile_image_path = #{profileImagePath, jdbcType=VARCHAR};
+            profile_image_url_endpoint = #{profileImageURLEndpoint, jdbcType=VARCHAR},
+            profile_image_url_path = #{profileImageURLPath, jdbcType=VARCHAR};
     </insert>
 
     <delete id="deleteProfile">
@@ -34,15 +34,15 @@
     <sql id="AllColumns">
         account_id,
         username,
-        profile_image_endpoint,
-        profile_image_path
+        profile_image_url_endpoint,
+        profile_image_url_path
     </sql>
 
     <resultMap id="ProfileResultMap" type="Profile">
         <constructor>
             <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
-            <arg column="{profile_image_endpoint, profile_image_path}" javaType="ProfileImageFullPath" resultMap="ProfileImageFullPathResultMap"/>
+            <arg column="{profile_image_url_endpoint, profile_image_url_path}" javaType="ProfileImageURL" resultMap="ProfileImageURLResultMap"/>
         </constructor>
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
@@ -55,10 +55,10 @@
             <idArg column="username" javaType="String"/>
         </constructor>
     </resultMap>
-    <resultMap id="ProfileImageFullPathResultMap" type="ProfileImageFullPath">
+    <resultMap id="ProfileImageURLResultMap" type="ProfileImageURL">
         <constructor>
-            <idArg column="profile_image_endpoint" javaType="String"></idArg>
-            <idArg column="profile_image_path" javaType="String"></idArg>
+            <idArg column="profile_image_url_endpoint" javaType="String"></idArg>
+            <idArg column="profile_image_url_path" javaType="String"></idArg>
         </constructor>
     </resultMap>
 </mapper>

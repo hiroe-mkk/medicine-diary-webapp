@@ -14,10 +14,10 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
         return minioProperties.endpoint + "/" + minioProperties.bucketName
     }
 
-    override fun put(fullPath: FullPath, fileContent: FileContent) {
+    override fun put(URL: URL, fileContent: FileContent) {
         minioClient.putObject(PutObjectArgs.builder()
                                   .bucket(minioProperties.bucketName)
-                                  .`object`(convertToObjectName(fullPath))
+                                  .`object`(convertToObjectName(URL))
                                   .stream(fileContent.content,
                                           fileContent.size.toLong(),
                                           -1)
@@ -25,12 +25,12 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                   .build())
     }
 
-    override fun remove(fullPath: FullPath) {
+    override fun remove(URL: URL) {
         minioClient.removeObject(RemoveObjectArgs.builder()
                                      .bucket(minioProperties.bucketName)
-                                     .`object`(convertToObjectName(fullPath))
+                                     .`object`(convertToObjectName(URL))
                                      .build())
     }
 
-    private fun convertToObjectName(fullPath: FullPath): String = fullPath.path.substring(1)
+    private fun convertToObjectName(URL: URL): String = URL.path.substring(1)
 }

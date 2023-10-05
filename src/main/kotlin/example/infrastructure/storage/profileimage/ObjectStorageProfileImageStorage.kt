@@ -7,16 +7,16 @@ import java.util.*
 
 @Component
 class ObjectStorageProfileImageStorage(private val objectStorageClient: ObjectStorageClient) : ProfileImageStorage {
-    override fun createPath(): ProfileImageFullPath {
+    override fun createURL(): ProfileImageURL {
         val path = "/profileimage/${UUID.randomUUID()}"
-        return ProfileImageFullPath(objectStorageClient.getEndpoint(), path)
+        return ProfileImageURL(objectStorageClient.getEndpoint(), path)
     }
 
     override fun upload(profileImage: ProfileImage) {
         objectStorageClient.put(profileImage.path, profileImage.fileContent)
     }
 
-    override fun delete(profileImageFullPath: ProfileImageFullPath) {
-        objectStorageClient.remove(profileImageFullPath)
+    override fun delete(profileImageURL: ProfileImageURL) {
+        objectStorageClient.remove(profileImageURL)
     }
 }

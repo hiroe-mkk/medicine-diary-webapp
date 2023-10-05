@@ -8,11 +8,11 @@ import example.domain.model.account.profile.profileimage.*
  */
 class Profile private constructor(val accountId: AccountId, // TODO: ProfileId クラスを定義するべきか再考する
                                   username: Username,
-                                  profileImageFullPath: ProfileImageFullPath?) {
+                                  profileImageURL: ProfileImageURL?) {
     var username: Username = username
         private set
 
-    var profileImageFullPath: ProfileImageFullPath? = profileImageFullPath
+    var profileImageURL: ProfileImageURL? = profileImageURL
         private set
 
     companion object {
@@ -20,8 +20,8 @@ class Profile private constructor(val accountId: AccountId, // TODO: ProfileId �
 
         fun reconstruct(accountId: AccountId,
                         username: Username,
-                        profileImageFullPath: ProfileImageFullPath?): Profile {
-            return Profile(accountId, username, profileImageFullPath)
+                        profileImageURL: ProfileImageURL?): Profile {
+            return Profile(accountId, username, profileImageURL)
         }
     }
 
@@ -29,7 +29,7 @@ class Profile private constructor(val accountId: AccountId, // TODO: ProfileId �
         this.username = newUsername
     }
 
-    fun changeProfileImage(newProfileImageFullPath: ProfileImageFullPath) {
-        this.profileImageFullPath = newProfileImageFullPath
+    fun changeProfileImage(newProfileURL: ProfileImageURL) {
+        this.profileImageURL = newProfileURL
     }
 }

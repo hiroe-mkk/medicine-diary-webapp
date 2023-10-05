@@ -44,7 +44,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             val actual = profileService.findProfile(userSession)
 
             //then:
-            val expected = ProfileDto(profile.username, profile.profileImageFullPath)
+            val expected = ProfileDto(profile.username, profile.profileImageURL)
             assertThat(actual).isEqualTo(expected)
         }
 
@@ -101,19 +101,19 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         @BeforeEach
         internal fun setUp() {
             every {
-                profileImageStorage.createPath()
-            } returns ProfileImageFullPath("endpoint", "/profileimage/newProfileImage")
+                profileImageStorage.createURL()
+            } returns ProfileImageURL("endpoint", "/profileimage/newProfileImage")
         }
 
         @Test
         @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
         fun profileImageIsNull_changingProfileImageSucceeds() {
             //when:
-            val newProfileImagePath = profileService.changeProfileImage(profileImageChangeCommand, userSession)
+            val newProfileImageURL = profileService.changeProfileImage(profileImageChangeCommand, userSession)
 
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
-            assertThat(profile.profileImageFullPath).isEqualTo(newProfileImagePath)
+            assertThat(profile.profileImageURL).isEqualTo(newProfileImageURL)
             verify(exactly = 0) { profileImageStorage.delete(any()) }
             verify(exactly = 1) { profileImageStorage.upload(any()) }
         }
@@ -122,18 +122,18 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         @DisplayName("プロフィール画像が設定済みの場合、プロフィール画像の変更に成功する")
         fun profileImageIsNotNull_changingProfileImageSucceeds() {
             //given:
-            val oldProfileImageFullPath = ProfileImageFullPath("endpoint", "/profileimage/oldProfileImage")
-            profile.changeProfileImage(oldProfileImageFullPath)
+            val oldProfileImageURL = ProfileImageURL("endpoint", "/profileimage/oldProfileImage")
+            profile.changeProfileImage(oldProfileImageURL)
             profileRepository.save(profile)
 
             //when:
-            val newProfileImageFullPath = profileService.changeProfileImage(profileImageChangeCommand, userSession)
+            val newProfileImageURL = profileService.changeProfileImage(profileImageChangeCommand, userSession)
 
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
-            assertThat(profile.profileImageFullPath).isEqualTo(newProfileImageFullPath)
+            assertThat(profile.profileImageURL).isEqualTo(newProfileImageURL)
             verify(exactly = 1) { profileImageStorage.upload(any()) }
-            verify(exactly = 1) { profileImageStorage.delete(oldProfileImageFullPath) }
+            verify(exactly = 1) { profileImageStorage.delete(oldProfileImageURL) }
         }
     }
 }
