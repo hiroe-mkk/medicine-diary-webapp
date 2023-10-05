@@ -2,12 +2,12 @@ variable "prefix" {
   type = string
 }
 
-variable "db_subnet_group_name" {
+variable "db_subnet_group_this_id" {
   type = string
 }
 
-variable "vpc_security_group_ids" {
-  type = list(string)
+variable "security_group_rds_id" {
+  type = string
 }
 
 variable "availability_zone" {

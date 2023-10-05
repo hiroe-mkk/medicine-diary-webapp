@@ -99,7 +99,7 @@ resource "aws_iam_policy" "s3" {
             "s3:GetObject",
             "s3:DeleteObject"
           ],
-          "Resource" : "arn:aws:s3:::${var.resource}/*"
+          "Resource" : "arn:aws:s3:::${var.s3_bucket_customer_data_arn}/*"
         }
       ]
     }

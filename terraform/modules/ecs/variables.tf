@@ -12,11 +12,11 @@ variable "cpu" {
   default = "512"
 }
 
-variable "security_groups" {
-  type = list(string)
+variable "security_group_webapp_id" {
+  type = string
 }
 
-variable "subnets" {
+variable "subnet_public_ids" {
   type = list(string)
 }
 
@@ -25,7 +25,7 @@ variable "desired_count" {
   default = 1
 }
 
-variable "target_group_arn" {
+variable "lb_target_group_this_arn" {
   type = string
 }
 

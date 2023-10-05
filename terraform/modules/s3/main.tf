@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "customer_data" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = [var.aws_cloudfront_distribution_customer_data_arn]
+      values   = [var.cloudfront_distribution_customer_data_arn]
     }
   }
 
@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "customer_data" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = [var.aws_iam_role_ecs_task_arn]
+      identifiers = [var.iam_role_ecs_task_arn]
     }
     actions = [
       "s3:PutObject",

@@ -101,14 +101,14 @@ resource "aws_ecs_service" "this" {
 
   network_configuration {
     assign_public_ip = true
-    security_groups  = var.security_groups
-    subnets          = var.subnets
+    security_groups  = [var.security_group_webapp_id]
+    subnets          = var.subnet_public_ids
   }
 
   load_balancer {
     container_name   = "springboot"
     container_port   = 8080
-    target_group_arn = var.target_group_arn
+    target_group_arn = var.lb_target_group_this_arn
   }
 
   tags = {

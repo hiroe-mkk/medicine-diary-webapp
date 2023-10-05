@@ -3,7 +3,7 @@
 # ---------------------------
 resource "aws_security_group" "alb" {
   name   = "${var.prefix}-alb-sg"
-  vpc_id = var.vpc_id
+  vpc_id = var.vpc_this_id
 
   tags = {
     Name = "${var.prefix}-alb-sg"
@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "alb-egress" {
 # ---------------------------
 resource "aws_security_group" "webapp" {
   name   = "${var.prefix}-webapp-sg"
-  vpc_id = var.vpc_id
+  vpc_id = var.vpc_this_id
 
   tags = {
     Name = "${var.prefix}-webapp-sg"
@@ -92,7 +92,7 @@ resource "aws_security_group_rule" "webapp-egress" {
 # ---------------------------
 resource "aws_security_group" "rds" {
   name   = "${var.prefix}-rds-sg"
-  vpc_id = var.vpc_id
+  vpc_id = var.vpc_this_id
 
   tags = {
     Name = "${var.prefix}-rds-sg"

@@ -6,8 +6,8 @@ resource "aws_lb" "this" {
   enable_deletion_protection = false
   idle_timeout               = 60
 
-  security_groups = var.security_groups
-  subnets         = var.subnets
+  security_groups = [var.security_group_alb_id]
+  subnets         = var.subnet_public_ids
 
   tags = {
     Name = "${var.prefix}-alb"
@@ -51,7 +51,7 @@ resource "aws_lb_target_group" "this" {
   port                 = 8080
   protocol             = "HTTP"
   target_type          = "ip"
-  vpc_id               = var.vpc_id
+  vpc_id               = var.vpc_this_id
 
   health_check {
     path                = "/"

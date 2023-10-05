@@ -15,9 +15,9 @@ resource "aws_db_instance" "this" {
 
   multi_az = false
 
-  db_subnet_group_name   = var.db_subnet_group_name
+  db_subnet_group_name   = var.db_subnet_group_this_id
   publicly_accessible    = false
-  vpc_security_group_ids = var.vpc_security_group_ids
+  vpc_security_group_ids = [var.security_group_rds_id]
   availability_zone      = var.availability_zone
   port                   = 3306
 
