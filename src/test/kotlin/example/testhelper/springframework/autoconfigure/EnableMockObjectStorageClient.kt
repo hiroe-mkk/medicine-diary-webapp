@@ -20,7 +20,7 @@ annotation class EnableMockObjectStorageClient {
 
         @Bean
         fun objectStorageClient(): ObjectStorageClient {
-            every { mockObjectStorageClient.getRootPath() } returns "rootPath"
+            every { mockObjectStorageClient.getEndpoint() } returns "endpoint"
             return mockObjectStorageClient
         }
     }

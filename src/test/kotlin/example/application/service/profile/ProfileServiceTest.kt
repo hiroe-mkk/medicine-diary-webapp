@@ -102,7 +102,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         internal fun setUp() {
             every {
                 profileImageStorage.createPath()
-            } returns ProfileImageFullPath("rootPath", "/profileimage/newProfileImage")
+            } returns ProfileImageFullPath("endpoint", "/profileimage/newProfileImage")
         }
 
         @Test
@@ -122,7 +122,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         @DisplayName("プロフィール画像が設定済みの場合、プロフィール画像の変更に成功する")
         fun profileImageIsNotNull_changingProfileImageSucceeds() {
             //given:
-            val oldProfileImageFullPath = ProfileImageFullPath("rootPath", "/profileimage/oldProfileImage")
+            val oldProfileImageFullPath = ProfileImageFullPath("endpoint", "/profileimage/oldProfileImage")
             profile.changeProfileImage(oldProfileImageFullPath)
             profileRepository.save(profile)
 

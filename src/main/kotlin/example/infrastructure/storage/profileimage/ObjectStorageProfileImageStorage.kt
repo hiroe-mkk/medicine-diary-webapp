@@ -8,8 +8,8 @@ import java.util.*
 @Component
 class ObjectStorageProfileImageStorage(private val objectStorageClient: ObjectStorageClient) : ProfileImageStorage {
     override fun createPath(): ProfileImageFullPath {
-        val relativePath = "/profileimage/${UUID.randomUUID()}"
-        return ProfileImageFullPath(objectStorageClient.getRootPath(), relativePath)
+        val path = "/profileimage/${UUID.randomUUID()}"
+        return ProfileImageFullPath(objectStorageClient.getEndpoint(), path)
     }
 
     override fun upload(profileImage: ProfileImage) {

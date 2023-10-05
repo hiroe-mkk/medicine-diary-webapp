@@ -11,7 +11,7 @@ import org.springframework.stereotype.*
 @Component
 class S3ObjectStorageClient(private val s3Properties: S3Properties,
                             private val amazonS3: AmazonS3) : ObjectStorageClient {
-    override fun getRootPath(): String {
+    override fun getEndpoint(): String {
         return s3Properties.endpoint
     }
 
@@ -32,5 +32,5 @@ class S3ObjectStorageClient(private val s3Properties: S3Properties,
         amazonS3.deleteObject(s3Properties.bucketName, convertToObjectName(fullPath))
     }
 
-    private fun convertToObjectName(fullPath: FullPath): String = fullPath.relativePath.substring(1)
+    private fun convertToObjectName(fullPath: FullPath): String = fullPath.path.substring(1)
 }

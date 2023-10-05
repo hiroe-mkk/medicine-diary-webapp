@@ -31,7 +31,7 @@ internal class MyBatisProfileRepositoryTest(@Autowired private val profileReposi
     @Test
     fun saveProfileWithProfileImageFullPath() {
         //given:
-        val profileImageFullPath = ProfileImageFullPath("rootPath", "/relativePath")
+        val profileImageFullPath = ProfileImageFullPath("endpoint", "/path")
         val (account, profile) = testAccountInserter.insertAccountAndProfile(profileImageFullPath = profileImageFullPath)
 
         //when:

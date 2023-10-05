@@ -10,7 +10,7 @@ import org.springframework.stereotype.*
 @Component
 class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                private val minioClient: MinioClient) : ObjectStorageClient {
-    override fun getRootPath(): String {
+    override fun getEndpoint(): String {
         return minioProperties.endpoint + "/" + minioProperties.bucketName
     }
 
@@ -32,5 +32,5 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                      .build())
     }
 
-    private fun convertToObjectName(fullPath: FullPath): String = fullPath.relativePath.substring(1)
+    private fun convertToObjectName(fullPath: FullPath): String = fullPath.path.substring(1)
 }

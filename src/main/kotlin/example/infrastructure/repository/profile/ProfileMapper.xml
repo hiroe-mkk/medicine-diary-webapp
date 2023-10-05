@@ -17,12 +17,12 @@
         )VALUES(
             #{accountId},
             #{username},
-            #{profileImageRootPath, jdbcType=VARCHAR},
-            #{profileImageRelativePath, jdbcType=VARCHAR}
+            #{profileImageEndpoint, jdbcType=VARCHAR},
+            #{profileImagePath, jdbcType=VARCHAR}
         )ON DUPLICATE KEY UPDATE
             username = #{username},
-            profile_image_root_path = #{profileImageRootPath, jdbcType=VARCHAR},
-            profile_image_relative_path = #{profileImageRelativePath, jdbcType=VARCHAR};
+            profile_image_endpoint = #{profileImageEndpoint, jdbcType=VARCHAR},
+            profile_image_path = #{profileImagePath, jdbcType=VARCHAR};
     </insert>
 
     <delete id="deleteProfile">
@@ -34,15 +34,15 @@
     <sql id="AllColumns">
         account_id,
         username,
-        profile_image_root_path,
-        profile_image_relative_path
+        profile_image_endpoint,
+        profile_image_path
     </sql>
 
     <resultMap id="ProfileResultMap" type="Profile">
         <constructor>
             <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
-            <arg column="{profile_image_root_path, profile_image_relative_path}" javaType="ProfileImageFullPath" resultMap="ProfileImageFullPathResultMap"/>
+            <arg column="{profile_image_endpoint, profile_image_path}" javaType="ProfileImageFullPath" resultMap="ProfileImageFullPathResultMap"/>
         </constructor>
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
@@ -57,8 +57,8 @@
     </resultMap>
     <resultMap id="ProfileImageFullPathResultMap" type="ProfileImageFullPath">
         <constructor>
-            <idArg column="profile_image_root_path" javaType="String"></idArg>
-            <idArg column="profile_image_relative_path" javaType="String"></idArg>
+            <idArg column="profile_image_endpoint" javaType="String"></idArg>
+            <idArg column="profile_image_path" javaType="String"></idArg>
         </constructor>
     </resultMap>
 </mapper>

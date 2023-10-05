@@ -5,5 +5,5 @@ import example.domain.shared.type.*
 /**
  * プロフィール画像フルパス
  */
-class ProfileImageFullPath(rootPath: String,
-                           relativePath: String) : FullPath(rootPath, relativePath)
+class ProfileImageFullPath(endpoint: String,
+                           path: String) : FullPath(endpoint, path)
