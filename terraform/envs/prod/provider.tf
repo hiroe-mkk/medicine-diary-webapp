@@ -10,8 +10,15 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "virginia-region"
+  alias  = "virginia"
   region = "us-east-1"
+
+  default_tags {
+    tags = {
+      Project     = local.project
+      Environment = local.env
+    }
+  }
 }
 
 terraform {
@@ -19,7 +26,7 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = "~> 5.17.0"
-      configuration_aliases = [aws, aws.virginia-region]
+      configuration_aliases = [aws, aws.virginia]
     }
   }
   required_version = "1.5.7"

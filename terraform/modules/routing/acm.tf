@@ -15,9 +15,8 @@ resource "aws_acm_certificate_validation" "root" {
   certificate_arn = aws_acm_certificate.root.arn
 }
 
-
 resource "aws_acm_certificate" "cloudfront" {
-  provider          = aws.virginia-region
+  provider          = aws.virginia
   domain_name       = "image.${data.aws_route53_zone.this.name}"
   validation_method = "DNS"
 
@@ -31,6 +30,6 @@ resource "aws_acm_certificate" "cloudfront" {
 }
 
 resource "aws_acm_certificate_validation" "cloudfront" {
-  provider        = aws.virginia-region
+  provider        = aws.virginia
   certificate_arn = aws_acm_certificate.cloudfront.arn
 }

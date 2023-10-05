@@ -39,8 +39,7 @@ module "routing" {
   source = "../../modules/routing"
 
   providers = {
-    aws                 = aws
-    aws.virginia-region = aws.virginia-region
+    aws.virginia = aws.virginia
   }
 
   prefix                                              = local.prefix
