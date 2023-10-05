@@ -2,7 +2,9 @@ package example.testhelper.springframework.autoconfigure
 
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.medicine.*
 import example.infrastructure.repository.account.*
+import example.infrastructure.repository.medicine.*
 import example.infrastructure.repository.profile.*
 import org.mybatis.spring.boot.test.autoconfigure.*
 import org.springframework.beans.factory.annotation.*
@@ -18,11 +20,15 @@ import org.springframework.context.annotation.*
 @Import(MyBatisRepositoryTest.Configuration::class)
 annotation class MyBatisRepositoryTest {
     class Configuration(private val accountMapper: AccountMapper,
-                        private val profileMapper: ProfileMapper) {
+                        private val profileMapper: ProfileMapper,
+                        private val medicineMapper: MedicineMapper) {
         @Bean
         fun accountRepository(): AccountRepository = MyBatisAccountRepository(accountMapper)
 
         @Bean
         fun profileRepository(): ProfileRepository = MyBatisProfileRepository(profileMapper)
+
+        @Bean
+        fun medicineRepository(): MedicineRepository = MyBatisMedicineRepository(medicineMapper)
     }
 }
