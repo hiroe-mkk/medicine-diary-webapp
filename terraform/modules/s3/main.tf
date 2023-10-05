@@ -32,6 +32,20 @@ data "aws_iam_policy_document" "customer_data" {
       values   = [var.aws_cloudfront_distribution_customer_data_arn]
     }
   }
+
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [var.aws_iam_role_ecs_task_arn]
+    }
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject"
+    ]
+    resources = ["${aws_s3_bucket.customer_data.arn}/*"]
+  }
 }
 
 resource "aws_s3_bucket_policy" "bucket" {

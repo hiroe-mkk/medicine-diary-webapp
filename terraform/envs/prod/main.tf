@@ -59,4 +59,5 @@ module "s3" {
 
   prefix                                        = local.prefix
   aws_cloudfront_distribution_customer_data_arn = module.routing.aws_cloudfront_distribution_customer_data_arn
+  aws_iam_role_ecs_task_arn                     = module.ecs.aws_iam_role_ecs_task_arn
 }
