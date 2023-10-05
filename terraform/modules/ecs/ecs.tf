@@ -62,6 +62,10 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "AWS_S3_BUCKET"
             "valueFrom" = "/${var.prefix}/springboot/aws_s3_bucket"
+          },
+          {
+            "name"      = "AWS_S3_ENDPOINT"
+            "valueFrom" = "/${var.prefix}/springboot/aws_s3_endpoint"
           }
         ]
 

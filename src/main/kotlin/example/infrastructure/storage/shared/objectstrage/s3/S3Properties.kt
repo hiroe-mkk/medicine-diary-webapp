@@ -4,8 +4,6 @@ import org.springframework.boot.context.properties.*
 import org.springframework.context.annotation.*
 
 @Profile("prod")
-@ConfigurationProperties(prefix = "aws")
-data class S3Properties(val s3RootUrl: String,
-                        val bucketName: String) {
-    val rootPath: String = "$s3RootUrl/$bucketName"
-}
+@ConfigurationProperties(prefix = "aws.s3")
+data class S3Properties(val endpoint: String,
+                        val bucketName: String)

@@ -12,7 +12,7 @@ import org.springframework.stereotype.*
 class S3ObjectStorageClient(private val s3Properties: S3Properties,
                             private val amazonS3: AmazonS3) : ObjectStorageClient {
     override fun getRootPath(): String {
-        return s3Properties.rootPath
+        return s3Properties.endpoint
     }
 
     override fun put(fullPath: FullPath, fileContent: FileContent) {

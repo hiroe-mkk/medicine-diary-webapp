@@ -6,5 +6,6 @@ spring:
     password: '${MYSQL_PASSWORD}'
 
 aws:
-  bucketName: '${AWS_S3_BUCKET}'
-  s3RootUrl: "AWS_S3_ROOT_URL" # TODO
+  s3:
+    endpoint: '${AWS_S3_ROOT_PATH}'
+    bucketName: '${AWS_S3_BUCKET}'
