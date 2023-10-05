@@ -29,6 +29,10 @@ variable "target_group_arn" {
   type = string
 }
 
-variable "resource" {
+variable "iam_role_ecs_task_arn" {
+  type = string
+}
+
+variable "iam_role_ecs_task_execution_arn" {
   type = string
 }
