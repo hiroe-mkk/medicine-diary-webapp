@@ -8,6 +8,4 @@ import org.springframework.context.annotation.*
 data class MinioProperties(val user: String,
                            val password: String,
                            val endpoint: String,
-                           val bucketName: String) {
-    val rootPath: String = "$endpoint/$bucketName"
-}
+                           val bucketName: String)

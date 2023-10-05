@@ -11,7 +11,7 @@ import org.springframework.stereotype.*
 class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                private val minioClient: MinioClient) : ObjectStorageClient {
     override fun getRootPath(): String {
-        return minioProperties.rootPath
+        return minioProperties.endpoint + "/" + minioProperties.bucketName
     }
 
     override fun put(fullPath: FullPath, fileContent: FileContent) {
