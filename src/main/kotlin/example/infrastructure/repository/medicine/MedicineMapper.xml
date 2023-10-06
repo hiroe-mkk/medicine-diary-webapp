@@ -68,6 +68,21 @@
         ;
     </insert>
 
+    <delete id="deleteOneMedicine">
+        DELETE FROM medicines
+        WHERE medicine_id = #{medicineId};
+    </delete>
+
+    <delete id="deleteAllTimingOptions">
+        DELETE FROM timing_options
+        WHERE medicine_id = #{medicineId};
+    </delete>
+
+    <delete id="deleteAllEffects">
+        DELETE FROM effects
+        WHERE medicine_id = #{medicineId};
+    </delete>
+
     <resultMap id="MedicineEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>

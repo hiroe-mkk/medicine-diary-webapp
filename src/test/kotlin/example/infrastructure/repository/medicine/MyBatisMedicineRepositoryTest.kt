@@ -1,5 +1,6 @@
 package example.infrastructure.repository.medicine
 
+import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -10,13 +11,21 @@ import java.time.*
 
 @MyBatisRepositoryTest
 internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepository: MedicineRepository,
+                                             @Autowired private val medicineInserter: TestMedicineInserter,
                                              @Autowired private val testAccountInserter: TestAccountInserter) {
+    private lateinit var accountId: AccountId
+
+    @BeforeEach
+    internal fun setUp() {
+        val (account, _) = testAccountInserter.insertAccountAndProfile()
+        accountId = account.id
+    }
+
     @Test
     fun afterSavingMedicine_canFindById() {
         //given:
-        val (account, _) = testAccountInserter.insertAccountAndProfile()
         val medicine = Medicine(MedicineId("testMedicineId"),
-                                account.id,
+                                accountId,
                                 "ロキソニンS",
                                 "錠",
                                 Dosage(1.0),
@@ -31,5 +40,18 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
 
         //then:
         assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(medicine)
+    }
+
+    @Test
+    fun canDeleteMedicine() {
+        //given:
+        val medicine = medicineInserter.insert(accountId)
+
+        //when:
+        medicineRepository.delete(medicine.id)
+
+        //then:
+        val foundMedicine = medicineRepository.findById(medicine.id)
+        assertThat(foundMedicine).isNull()
     }
 }

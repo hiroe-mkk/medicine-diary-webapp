@@ -4,4 +4,6 @@ interface MedicineRepository {
     fun findById(medicineId: MedicineId): Medicine?
 
     fun save(medicine: Medicine)
+
+    fun delete(medicineId: MedicineId)
 }

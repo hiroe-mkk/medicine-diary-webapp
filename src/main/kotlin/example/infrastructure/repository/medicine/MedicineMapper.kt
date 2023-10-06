@@ -23,4 +23,10 @@ interface MedicineMapper {
 
     fun saveAllEffects(medicineId: String,
                        effects: Collection<OrderedEntity<String>>)
+
+    fun deleteOneMedicine(medicineId: String)
+
+    fun deleteAllTimingOptions(medicineId: String)
+
+    fun deleteAllEffects(medicineId: String)
 }

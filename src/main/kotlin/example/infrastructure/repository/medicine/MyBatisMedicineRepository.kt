@@ -38,4 +38,10 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         medicineMapper.saveAllEffects(medicine.id.value,
                                       OrderedEntitiesConverter.convert(effects))
     }
+
+    override fun delete(medicineId: MedicineId) {
+        medicineMapper.deleteAllTimingOptions(medicineId.value)
+        medicineMapper.deleteAllEffects(medicineId.value)
+        medicineMapper.deleteOneMedicine(medicineId.value)
+    }
 }
