@@ -2,19 +2,27 @@ package example.application.service.medicine
 
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
+import example.domain.shared.type.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import io.mockk.*
 import io.mockk.impl.annotations.*
+import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
+import java.time.*
 
 @MyBatisRepositoryTest
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter) {
-    private val medicineService: MedicineService = MedicineService(medicineRepository)
+    @MockK
+    private lateinit var localDateTimeProvider: LocalDateTimeProvider
+
+    @InjectMockKs
+    private lateinit var medicineService: MedicineService
 
     private lateinit var userSession: UserSession
 
@@ -74,6 +82,34 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
+        }
+    }
+
+    @Nested
+    inner class RegisterMedicineTest {
+        @Test
+        @DisplayName("薬を登録する")
+        fun registerMedicine() {
+            //given:
+            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand()
+            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
+            every { localDateTimeProvider.now() } returns localDateTime
+
+            //when:
+            val medicineId = medicineService.registerMedicine(command, userSession)
+
+            //then:
+            val foundMedicine = medicineRepository.findById(medicineId)
+            val expected = Medicine(medicineId,
+                                    userSession.accountId,
+                                    command.validatedName,
+                                    command.validatedTakingUnit,
+                                    command.validatedDosage,
+                                    command.validatedAdministration,
+                                    command.validatedEffects,
+                                    command.validatedPrecautions,
+                                    localDateTime)
+            assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }
     }
 }

@@ -3,9 +3,14 @@ package example.infrastructure.repository.medicine
 import example.domain.model.medicine.*
 import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
+import java.util.*
 
 @Repository
 class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : MedicineRepository {
+    override fun createMedicineId(): MedicineId {
+        return MedicineId(UUID.randomUUID().toString())
+    }
+
     override fun findById(medicineId: MedicineId): Medicine? {
         return medicineMapper.findOneByMedicineId(medicineId.value)?.toMedicine()
     }
