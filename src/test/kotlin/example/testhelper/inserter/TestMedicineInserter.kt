@@ -7,13 +7,13 @@ import java.time.*
 
 @TestComponent
 class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
-    private val num: Int = 1
+    private var num: Int = 1
 
     /**
      * テスト用の薬を生成して、リポジトリに保存する
      */
     fun insert(owner: AccountId,
-               medicineId: MedicineId = MedicineId("testMedicineId$num"),
+               medicineId: MedicineId = MedicineId("testMedicineId${num++}"),
                name: String = "ロキソニンS",
                takingUnit: String = "錠",
                dosage: Dosage = Dosage(1.0),

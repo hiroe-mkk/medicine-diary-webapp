@@ -4,24 +4,26 @@
 <mapper namespace="example.infrastructure.repository.medicine.MedicineMapper">
     <select id="findOneByMedicineId" resultMap="MedicineEntityResultMap">
         SELECT
-            medicines.medicine_id AS medicine_id,
-            medicines.owner AS owner,
-            medicines.name AS name,
-            medicines.taking_unit AS taking_unit,
-            medicines.quantity AS quantity,
-            medicines.times_per_day AS times_per_day,
-            medicines.precautions AS precautions,
-            medicines.registered_at AS registered_at,
-            effects.ordering AS effect_ordering,
-            effects.effect AS effect,
-            timing_options.ordering AS timing_option_ordering,
-            timing_options.timing_option AS timing_option
+            <include refid="AllColumns"/>
         FROM
             medicines
             LEFT OUTER JOIN effects USING(medicine_id)
             LEFT OUTER JOIN timing_options USING(medicine_id)
         WHERE
             medicine_id = #{medicineId};
+    </select>
+
+    <select id="findAllByAccountId" resultMap="MedicineEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medicines
+            LEFT OUTER JOIN effects USING(medicine_id)
+            LEFT OUTER JOIN timing_options USING(medicine_id)
+        WHERE
+            owner = #{accountId}
+        ORDER BY
+            registered_at DESC;
     </select>
 
     <insert id="saveOneMedicine">
@@ -82,6 +84,21 @@
         DELETE FROM effects
         WHERE medicine_id = #{medicineId};
     </delete>
+
+    <sql id="AllColumns">
+        medicines.medicine_id AS medicine_id,
+        medicines.owner AS owner,
+        medicines.name AS name,
+        medicines.taking_unit AS taking_unit,
+        medicines.quantity AS quantity,
+        medicines.times_per_day AS times_per_day,
+        medicines.precautions AS precautions,
+        medicines.registered_at AS registered_at,
+        effects.ordering AS effect_ordering,
+        effects.effect AS effect,
+        timing_options.ordering AS timing_option_ordering,
+        timing_options.timing_option AS timing_option
+    </sql>
 
     <resultMap id="MedicineEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
         <constructor>

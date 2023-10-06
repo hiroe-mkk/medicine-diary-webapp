@@ -11,7 +11,7 @@ import java.time.*
 
 @MyBatisRepositoryTest
 internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepository: MedicineRepository,
-                                             @Autowired private val medicineInserter: TestMedicineInserter,
+                                             @Autowired private val testMedicineInserter: TestMedicineInserter,
                                              @Autowired private val testAccountInserter: TestAccountInserter) {
     private lateinit var accountId: AccountId
 
@@ -43,9 +43,25 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
     }
 
     @Test
+    fun findAllMedicineByAccountId() {
+        //given:
+        val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
+        val medicine1 = testMedicineInserter.insert(accountId, registeredAt = localDateTime)
+        val medicine2 = testMedicineInserter.insert(accountId, registeredAt = localDateTime.plusDays(1))
+        val medicine3 = testMedicineInserter.insert(accountId, registeredAt = localDateTime.plusDays(2))
+
+        //when:
+        val actual = medicineRepository.findByAccountId(accountId)
+
+        //then:
+        val expected = arrayOf(medicine3.id, medicine2.id, medicine1.id)
+        assertThat(actual.map { it.id }).containsExactly(*expected)
+    }
+
+    @Test
     fun canDeleteMedicine() {
         //given:
-        val medicine = medicineInserter.insert(accountId)
+        val medicine = testMedicineInserter.insert(accountId)
 
         //when:
         medicineRepository.delete(medicine.id)

@@ -9,6 +9,8 @@ import java.time.*
 interface MedicineMapper {
     fun findOneByMedicineId(medicineId: String): MedicineResultEntity?
 
+    fun findAllByAccountId(accountId: String): List<MedicineResultEntity>
+
     fun saveOneMedicine(medicineId: String,
                         owner: String,
                         name: String,
@@ -27,6 +29,5 @@ interface MedicineMapper {
     fun deleteOneMedicine(medicineId: String)
 
     fun deleteAllTimingOptions(medicineId: String)
-
     fun deleteAllEffects(medicineId: String)
 }

@@ -1,5 +1,6 @@
 package example.infrastructure.repository.medicine
 
+import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
@@ -13,6 +14,10 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
 
     override fun findById(medicineId: MedicineId): Medicine? {
         return medicineMapper.findOneByMedicineId(medicineId.value)?.toMedicine()
+    }
+
+    override fun findByAccountId(accountId: AccountId): List<Medicine> {
+        return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }
     }
 
     override fun save(medicine: Medicine) {
