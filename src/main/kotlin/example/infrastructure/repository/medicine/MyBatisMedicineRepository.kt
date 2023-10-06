@@ -24,8 +24,8 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         medicineMapper.saveOneMedicine(medicine.id.value,
                                        medicine.owner.value,
                                        medicine.name,
-                                       medicine.takingUnit,
                                        medicine.dosage.quantity,
+                                       medicine.dosage.takingUnit,
                                        medicine.administration.timesPerDay,
                                        medicine.precautions,
                                        medicine.registeredAt)

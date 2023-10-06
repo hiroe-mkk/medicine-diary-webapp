@@ -31,8 +31,8 @@
             medicine_id,
             owner,
             name,
-            taking_unit,
             quantity,
+            taking_unit,
             times_per_day,
             precautions,
             registered_at
@@ -40,8 +40,8 @@
             #{medicineId},
             #{owner},
             #{name},
-            #{takingUnit},
             #{quantity},
+            #{takingUnit},
             #{timesPerDay},
             #{precautions},
             #{registeredAt}
@@ -89,8 +89,8 @@
         medicines.medicine_id AS medicine_id,
         medicines.owner AS owner,
         medicines.name AS name,
-        medicines.taking_unit AS taking_unit,
         medicines.quantity AS quantity,
+        medicines.taking_unit AS taking_unit,
         medicines.times_per_day AS times_per_day,
         medicines.precautions AS precautions,
         medicines.registered_at AS registered_at,
@@ -105,8 +105,7 @@
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="owner" javaType="AccountId" resultMap="OwnerResultMap"/>
             <arg column="name" javaType="String"/>
-            <arg column="taking_unit" javaType="String"/>
-            <arg column="quantity" javaType="Dosage" resultMap="DosageResultMap"/>
+            <arg column="{quantity, taking_unit}" javaType="Dosage" resultMap="DosageResultMap"/>
             <arg column="times_per_day" javaType="_int"/>
             <arg column="precautions" javaType="String"/>
             <arg column="registered_at" javaType="java.time.LocalDateTime"/>
@@ -130,6 +129,7 @@
     <resultMap id="DosageResultMap" type="Dosage">
         <constructor>
             <idArg column="quantity" javaType="_double"/>
+            <arg column="taking_unit" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="TimingOptionOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">

@@ -5,7 +5,6 @@ import java.time.*
 
 data class MedicineDetailDto(val medicineId: MedicineId,
                              val name: String,
-                             val takingUnit: String,
                              val dosage: Dosage,
                              val administration: Administration,
                              val effects: Effects,
@@ -15,7 +14,6 @@ data class MedicineDetailDto(val medicineId: MedicineId,
         fun from(medicine: Medicine): MedicineDetailDto {
             return MedicineDetailDto(medicine.id,
                                      medicine.name,
-                                     medicine.takingUnit,
                                      medicine.dosage,
                                      medicine.administration,
                                      medicine.effects,

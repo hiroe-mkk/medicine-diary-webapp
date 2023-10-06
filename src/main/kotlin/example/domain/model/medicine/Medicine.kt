@@ -9,7 +9,6 @@ import java.time.*
 class Medicine(val id: MedicineId,
                val owner: AccountId,
                val name: String,
-               val takingUnit: String,
                val dosage: Dosage,
                val administration: Administration,
                val effects: Effects,

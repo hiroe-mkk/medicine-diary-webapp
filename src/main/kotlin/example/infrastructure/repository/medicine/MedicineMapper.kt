@@ -14,8 +14,8 @@ interface MedicineMapper {
     fun saveOneMedicine(medicineId: String,
                         owner: String,
                         name: String,
-                        takingUnit: String,
                         quantity: Double,
+                        takingUnit: String,
                         timesPerDay: Int,
                         precautions: String,
                         registeredAt: LocalDateTime)
