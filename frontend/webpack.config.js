@@ -8,6 +8,7 @@ module.exports = {
   devtool: 'eval-cheap-module-source-map',
   entry: {
     vendor: ['vue'],
+    style: './src/main/css/style.css',
     siteHeader: './src/main/js/siteHeader.js',
     profileEdit: './src/main/js/profileEdit.js',
   },

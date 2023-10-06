@@ -6,6 +6,7 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <link rel="stylesheet" th:href="@{/dist/css/style.bundle.css}" />
   </head>
 
   <body>
@@ -46,6 +47,19 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="bottom-right-button">
+        <a class="button is-rounded has-background-info-dark" th:href="@{/medicines/register}">
+          <p
+            class="icon is-medium fas fa-lg has-text-white is-flex is-align-items-center"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </p>
+        </a>
+        <p class="is-size-7 has-text-weight-bold is-small has-text-info-dark">
+          お薬登録
+        </p>
       </div>
     </div>
   </body>
