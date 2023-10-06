@@ -1,11 +1,52 @@
 <!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-</head>
+  <body>
+    <div layout:fragment="content" th:remove="tag">
+      <div class="content has-text-centered">
+        <h1 class="title is-4 icon-text has-text-grey-dark">
+          <span>お薬</span>
+          <span class="icon mx-2">
+            <i class="fa-solid fa-capsules"></i>
+          </span>
+        </h1>
+      </div>
 
-<body>
-
-</body>
-
+      <div class="container is-max-desktop">
+        <div
+          class="media px-6"
+          th:each="medicineOverview:${medicineOverviews}"
+          th:object="${medicineOverview}"
+        >
+          <div class="media-content">
+            <div class="content has-text-grey-dark">
+              <a
+                class="is-size-5 is-info has-text-weight-bold is-underlined"
+                th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
+                th:text="*{name}"
+              ></a>
+              <div class="has-text-right">
+                <p class="mb-1" th:text="*{administration}"></p>
+                <p class="mb-2" th:text="*{dosage}"></p>
+              </div>
+              <div class="tags mt-2 mb-0">
+                <span
+                  class="tag is-warning is-rounded has-text-weight-bold"
+                  th:each="effect:*{effects.values}"
+                  th:text="${effect}"
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
