@@ -20,7 +20,7 @@ class AccountService(private val accountRepository: AccountRepository,
     }
 
     private fun createAccount(credential: Credential): Account {
-        val accountId = accountRepository.nextIdentity()
+        val accountId = accountRepository.createAccountId()
         val (account, profile) = Account.create(accountId, credential)
         accountRepository.save(account)
         profileRepository.save(profile)

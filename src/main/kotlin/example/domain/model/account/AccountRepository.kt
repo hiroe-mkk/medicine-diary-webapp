@@ -1,7 +1,7 @@
 package example.domain.model.account
 
 interface AccountRepository {
-    fun nextIdentity(): AccountId
+    fun createAccountId(): AccountId
 
     fun findById(accountId: AccountId): Account?
 

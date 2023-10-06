@@ -7,7 +7,7 @@ import java.util.*
 
 @Repository
 class MyBatisAccountRepository(private val accountMapper: AccountMapper) : AccountRepository {
-    override fun nextIdentity(): AccountId {
+    override fun createAccountId(): AccountId {
         return AccountId(UUID.randomUUID().toString())
     }
 
