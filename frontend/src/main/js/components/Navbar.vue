@@ -32,6 +32,24 @@
             <strong>マイページ</strong>
           </a>
         </div>
+        <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
+          <a class="has-text-white is-hidden-touch" href="/medicines">
+            <span
+              class="icon is-medium fas fa-2x is-flex is-align-items-center"
+            >
+              <i class="fa-solid fa-capsules"></i>
+            </span>
+          </a>
+          <a
+            class="icon-text has-text-link-dark is-hidden-desktop"
+            href="/medicines"
+          >
+            <span class="icon fas fa-lg is-flex is-align-items-center">
+              <i class="fa-solid fa-capsules"></i>
+            </span>
+            <strong>お薬</strong>
+          </a>
+        </div>
         <div class="navbar-item pb-0 mr-3" v-if="props.isAuthenticated">
           <a
             class="has-text-white is-hidden-touch"
