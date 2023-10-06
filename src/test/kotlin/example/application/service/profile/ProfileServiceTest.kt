@@ -11,6 +11,8 @@ import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
+import io.mockk.impl.annotations.*
+import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
@@ -21,9 +23,14 @@ import java.util.*
 internal class ProfileServiceTest(@Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val accountRepository: AccountRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val profileImageStorage: ProfileImageStorage = mockk(relaxed = true)
-    private val profileService: ProfileService = ProfileService(profileRepository, profileImageStorage)
-    private val accountService: AccountService = AccountService(accountRepository, profileRepository)
+    @MockK(relaxed = true)
+    private lateinit var profileImageStorage: ProfileImageStorage
+
+    @InjectMockKs
+    private lateinit var profileService: ProfileService
+
+    @InjectMockKs
+    private lateinit var accountService: AccountService
 
     private lateinit var userSession: UserSession
     private lateinit var profile: Profile
