@@ -10,7 +10,7 @@ interface MedicineMapper {
     fun findOneByMedicineId(medicineId: String): MedicineResultEntity?
 
     fun saveOneMedicine(medicineId: String,
-                        accountId: String,
+                        owner: String,
                         name: String,
                         takingUnit: String,
                         quantity: Double,

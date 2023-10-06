@@ -22,14 +22,14 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 CREATE TABLE IF NOT EXISTS medicines (
   medicine_id VARCHAR(36) PRIMARY KEY,
-  account_id VARCHAR(36) NOT NULL,
+  owner VARCHAR(36) NOT NULL,
   name VARCHAR(30) NOT NULL,
   taking_unit VARCHAR(10) NOT NULL,
   quantity DOUBLE NOT NULL,
   times_per_day INT NOT NULL,
   precautions VARCHAR(500) NOT NULL,
   registered_at TIMESTAMP NOT NULL,
-  FOREIGN KEY(account_id) REFERENCES accounts(account_id)
+  FOREIGN KEY(owner) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE IF NOT EXISTS timing_options (

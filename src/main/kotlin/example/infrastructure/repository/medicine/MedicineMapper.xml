@@ -5,7 +5,7 @@
     <select id="findOneByMedicineId" resultMap="MedicineEntityResultMap">
         SELECT
             medicines.medicine_id AS medicine_id,
-            medicines.account_id AS account_id,
+            medicines.owner AS owner,
             medicines.name AS name,
             medicines.taking_unit AS taking_unit,
             medicines.quantity AS quantity,
@@ -27,7 +27,7 @@
     <insert id="saveOneMedicine">
         INSERT INTO medicines(
             medicine_id,
-            account_id,
+            owner,
             name,
             taking_unit,
             quantity,
@@ -36,7 +36,7 @@
             registered_at
         )VALUES(
             #{medicineId},
-            #{accountId},
+            #{owner},
             #{name},
             #{takingUnit},
             #{quantity},
@@ -86,7 +86,7 @@
     <resultMap id="MedicineEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
-            <arg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="owner" javaType="AccountId" resultMap="OwnerResultMap"/>
             <arg column="name" javaType="String"/>
             <arg column="taking_unit" javaType="String"/>
             <arg column="quantity" javaType="Dosage" resultMap="DosageResultMap"/>
@@ -105,9 +105,9 @@
             <idArg column="medicine_id" javaType="String"/>
         </constructor>
     </resultMap>
-    <resultMap id="AccountIdResultMap" type="AccountId">
+    <resultMap id="OwnerResultMap" type="AccountId">
         <constructor>
-            <idArg column="account_id" javaType="String"/>
+            <idArg column="owner" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="DosageResultMap" type="Dosage">

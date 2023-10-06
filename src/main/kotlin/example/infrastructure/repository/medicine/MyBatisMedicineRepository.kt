@@ -12,7 +12,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
 
     override fun save(medicine: Medicine) {
         medicineMapper.saveOneMedicine(medicine.id.value,
-                                       medicine.accountId.value,
+                                       medicine.owner.value,
                                        medicine.name,
                                        medicine.takingUnit,
                                        medicine.dosage.quantity,

@@ -6,7 +6,7 @@ import example.infrastructure.repository.shared.*
 import java.time.*
 
 class MedicineResultEntity(val medicineId: MedicineId,
-                           val accountId: AccountId,
+                           val owner: AccountId,
                            val name: String,
                            val takingUnit: String,
                            val dosage: Dosage,
@@ -19,7 +19,7 @@ class MedicineResultEntity(val medicineId: MedicineId,
 
     fun toMedicine(): Medicine {
         return Medicine(medicineId,
-                        accountId,
+                        owner,
                         name,
                         takingUnit,
                         dosage,

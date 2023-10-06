@@ -7,7 +7,7 @@ import java.time.*
  * 薬
  */
 class Medicine(val id: MedicineId,
-               val accountId: AccountId,
+               val owner: AccountId,
                val name: String,
                val takingUnit: String,
                val dosage: Dosage,

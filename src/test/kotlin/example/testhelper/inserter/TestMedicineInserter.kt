@@ -12,7 +12,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
     /**
      * テスト用の薬を生成して、リポジトリに保存する
      */
-    fun insert(accountId: AccountId,
+    fun insert(owner: AccountId,
                medicineId: MedicineId = MedicineId("testMedicineId$num"),
                name: String = "ロキソニンS",
                takingUnit: String = "錠",
@@ -22,7 +22,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                precautions: String = "服用間隔は4時間以上開けること。",
                registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {
         val medicine = Medicine(medicineId,
-                                accountId,
+                                owner,
                                 name,
                                 takingUnit,
                                 dosage,
