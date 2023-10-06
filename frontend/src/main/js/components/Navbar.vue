@@ -1,5 +1,5 @@
 <template>
-  <nav id="navbar" class="navbar is-fixed-top has-background-link-dark">
+  <nav id="navbar" class="navbar is-fixed-top has-background-info-dark">
     <div class="navbar-brand is-flex is-justify-content-space-between">
       <span
         class="navbar-burger has-text-white"
@@ -80,7 +80,7 @@
             <strong>ログイン</strong>
           </a>
           <a
-            class="button is-small is-rounded has-text-white has-background-link-dark is-hidden-desktop"
+            class="button is-small is-rounded has-text-white has-background-info-dark is-hidden-desktop"
             href="/oauth2/authorization/google"
           >
             <strong>ログイン</strong>
