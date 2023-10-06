@@ -59,7 +59,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬が見つからなかった場合、薬の取得に失敗する")
         fun medicineNotFound_gettingMedicineFails() {
             //given:
-            val badMedicineId = MedicineId("NonExistentId")
+            val badMedicineId = MedicineId("NonexistentId")
 
             //when:
             val target: () -> Unit = { medicineService.findMedicine(badMedicineId, userSession) }
@@ -149,6 +149,52 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedPrecautions,
                                     localDateTime)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
+        }
+    }
+
+    @Nested
+    inner class DeleteMedicineTest {
+        @Test
+        @DisplayName("薬を削除する")
+        fun deleteMedicine() {
+            //given:
+            val medicine = testMedicineInserter.insert(userSession.accountId)
+
+            //when:
+            medicineService.deleteMedicine(medicine.id, userSession)
+
+            //then:
+            val foundMedicine = medicineRepository.findById(medicine.id)
+            assertThat(foundMedicine).isNull()
+        }
+
+        @Test
+        @DisplayName("薬が見つからなかった場合、薬の削除に失敗する")
+        fun medicineNotFound_deletingMedicineFails() {
+            //given:
+            val badMedicineId = MedicineId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = { medicineService.deleteMedicine(badMedicineId, userSession) }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+        }
+
+        @Test
+        @DisplayName("ユーザーが所有していない薬の場合、薬の削除に失敗する")
+        fun medicineIsNotOwnedByUser_deletingMedicineFails() {
+            //given:
+            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
+            val medicine = testMedicineInserter.insert(anotherAccount.id)
+
+            //when:
+            val target: () -> Unit = { medicineService.deleteMedicine(medicine.id, userSession) }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
 }
