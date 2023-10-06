@@ -14,6 +14,7 @@ class ProfileService(private val profileRepository: ProfileRepository,
     /**
      * プロフィールを取得する
      */
+    @Transactional(readOnly = true)
     fun findProfile(userSession: UserSession): ProfileDto {
         val profile = findProfileOrElseThrowException(userSession)
         return ProfileDto.from(profile)
