@@ -14,4 +14,6 @@ class Medicine(val id: MedicineId,
                val administration: Administration,
                val effects: Effects,
                val precautions: String,
-               val registeredAt: LocalDateTime)
+               val registeredAt: LocalDateTime) {
+    fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
+}
