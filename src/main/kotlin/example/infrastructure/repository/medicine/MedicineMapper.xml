@@ -107,7 +107,7 @@
             <arg column="name" javaType="String"/>
             <arg column="{quantity, taking_unit}" javaType="Dosage" resultMap="DosageResultMap"/>
             <arg column="times_per_day" javaType="_int"/>
-            <arg column="precautions" javaType="String"/>
+            <arg column="precautions" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="registered_at" javaType="java.time.LocalDateTime"/>
         </constructor>
         <id column="medicine_id"/>
@@ -130,6 +130,11 @@
         <constructor>
             <idArg column="quantity" javaType="_double"/>
             <arg column="taking_unit" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="NoteResultMap" type="Note">
+        <constructor>
+            <idArg column="precautions" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="TimingOptionOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">

@@ -2,6 +2,7 @@ package example.infrastructure.repository.medicine
 
 import example.domain.model.account.*
 import example.domain.model.medicine.*
+import example.domain.shared.type.*
 import example.infrastructure.repository.shared.*
 import java.time.*
 
@@ -10,7 +11,7 @@ class MedicineResultEntity(val medicineId: MedicineId,
                            val name: String,
                            val dosage: Dosage,
                            val timesPerDay: Int,
-                           val precautions: String,
+                           val precautions: Note,
                            val registeredAt: LocalDateTime) {
     // MyBatis ではコレクションをコンストラクタに渡すことができない
     val timingOptions: List<OrderedEntity<Timing>> = mutableListOf()

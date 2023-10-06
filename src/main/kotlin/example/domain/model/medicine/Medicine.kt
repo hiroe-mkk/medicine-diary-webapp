@@ -1,6 +1,7 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
+import example.domain.shared.type.*
 import java.time.*
 
 /**
@@ -12,7 +13,7 @@ class Medicine(val id: MedicineId,
                val dosage: Dosage,
                val administration: Administration,
                val effects: Effects,
-               val precautions: String,
+               val precautions: Note,
                val registeredAt: LocalDateTime) {
     fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
 }

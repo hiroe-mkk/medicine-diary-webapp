@@ -2,6 +2,7 @@ package example.infrastructure.repository.medicine
 
 import example.domain.model.account.*
 import example.domain.model.medicine.*
+import example.domain.shared.type.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -30,7 +31,7 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
                                 Dosage(1.0, "錠"),
                                 Administration(3, emptyList()),
                                 Effects(listOf("頭痛", "解熱", "肩こり")),
-                                "服用間隔は4時間以上開けること。",
+                                Note("服用間隔は4時間以上開けること。"),
                                 LocalDateTime.of(2020, 1, 1, 0, 0))
 
         //when:

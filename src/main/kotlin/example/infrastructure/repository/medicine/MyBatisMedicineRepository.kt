@@ -27,7 +27,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
                                        medicine.dosage.quantity,
                                        medicine.dosage.takingUnit,
                                        medicine.administration.timesPerDay,
-                                       medicine.precautions,
+                                       medicine.precautions.value,
                                        medicine.registeredAt)
         saveAllTimingOptions(medicine)
         saveAllEffects(medicine)

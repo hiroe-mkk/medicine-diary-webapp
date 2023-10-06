@@ -1,6 +1,7 @@
 package example.application.service.medicine
 
 import example.domain.model.medicine.*
+import example.domain.shared.type.*
 import jakarta.validation.*
 import jakarta.validation.constraints.*
 
@@ -26,7 +27,7 @@ class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入力�
     val validatedDosage: Dosage = Dosage(quantity, takingUnit.trim())
     val validatedAdministration: Administration = Administration(timesPerDay, timingOptions)
     val validatedEffects: Effects = Effects(effects.map(Effect::value))
-    val validatedPrecautions: String = precautions.trim()
+    val validatedPrecautions: Note = Note(precautions.trim())
 
     // List のバリデーションを行うために必要
     data class Effect(@field:Size(max = 30,
