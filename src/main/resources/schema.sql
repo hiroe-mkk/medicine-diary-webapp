@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS oauth2_credentials (
 
 CREATE TABLE IF NOT EXISTS profiles (
   account_id VARCHAR(36) PRIMARY KEY,
-  username VARCHAR(50) NOT NULL,
+  username VARCHAR(30) NOT NULL,
   profile_image_url_endpoint VARCHAR(50),
   profile_image_url_path VARCHAR(100),
   FOREIGN KEY(account_id) REFERENCES accounts(account_id)
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS timing_options (
 CREATE TABLE IF NOT EXISTS effects (
   medicine_id VARCHAR(36),
   ordering INT,
-  effect VARCHAR(20) NOT NULL,
+  effect VARCHAR(30) NOT NULL,
   PRIMARY KEY(medicine_id, ordering),
   FOREIGN KEY(medicine_id) REFERENCES medicines(medicine_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
