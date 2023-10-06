@@ -33,4 +33,16 @@ class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入力�
                                   message = "※{max}文字以内で入力してください。") val value: String) {
         override fun toString(): String = value
     }
+
+    companion object {
+        fun initialize(): MedicineBasicInfoInputCommand {
+            return MedicineBasicInfoInputCommand("",
+                                                 0.0,
+                                                 "",
+                                                 0,
+                                                 emptyList(),
+                                                 emptyList(),
+                                                 "")
+        }
+    }
 }
