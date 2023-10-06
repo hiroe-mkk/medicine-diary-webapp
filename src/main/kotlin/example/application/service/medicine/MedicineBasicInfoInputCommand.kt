@@ -5,29 +5,35 @@ import example.domain.shared.type.*
 import jakarta.validation.*
 import jakarta.validation.constraints.*
 
-class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入力してください。")
-                                    @field:Size(max = 30, message = "※{max}文字以内で入力してください。")
-                                    private val name: String,
-                                    @field:NotNull(message = "※必ず入力してください。")
-                                    @field:Min(value = 0, message = "※{value}以上の数値を入力してください。")
-                                    private val quantity: Double = 0.0,
-                                    @field:NotEmpty(message = "※必ず入力してください。")
-                                    @field:Size(max = 10, message = "※{max}文字以内で入力してください。")
-                                    private val takingUnit: String,
-                                    @field:NotNull(message = "※必ず入力してください。")
-                                    @field:Min(value = 1, message = "※{value}以上の数値を入力してください。")
-                                    private val timesPerDay: Int = 0,
-                                    private val timingOptions: List<Timing> = emptyList(),
-                                    @field:Valid
-                                    private val effects: List<@Valid Effect> = emptyList(),
-                                    @field:NotEmpty(message = "※必ず入力してください。")
-                                    @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
-                                    private val precautions: String) {
+data class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入力してください。")
+                                         @field:Size(max = 30, message = "※{max}文字以内で入力してください。")
+                                         val name: String,
+                                         @field:NotNull(message = "※必ず入力してください。")
+                                         @field:Digits(integer = 5, fraction = 3,
+                                                       message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
+                                         @field:DecimalMin(value = "0.001", message = "※{value}以上の数値を入力してください。")
+                                         val quantity: Double?,
+                                         @field:NotEmpty(message = "※必ず入力してください。")
+                                         @field:Size(max = 10, message = "※{max}文字以内で入力してください。")
+                                         val takingUnit: String,
+                                         @field:NotNull(message = "※必ず入力してください。")
+                                         @field:Min(value = 1, message = "※{value}以上の数値を入力してください。")
+                                         @field:Max(value = 100, message = "※{value}以下の数値を入力してください。")
+                                         val timesPerDay: Int?,
+                                         val timingOptions: List<Timing> = emptyList(),
+                                         @field:Valid
+                                         val effects: List<@Valid Effect> = emptyList(),
+                                         @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
+                                         val precautions: String) {
     val validatedName: String = name.trim()
-    val validatedDosage: Dosage = Dosage(quantity, takingUnit.trim())
-    val validatedAdministration: Administration = Administration(timesPerDay, timingOptions)
+    val validatedDosage: Dosage = Dosage(quantity ?: 0.0, takingUnit.trim())
+    val validatedAdministration: Administration = Administration(timesPerDay ?: 0, timingOptions)
     val validatedEffects: Effects = Effects(effects.map(Effect::value))
     val validatedPrecautions: Note = Note(precautions.trim())
+
+    fun isTimingSelected(timing: String): Boolean {
+        return timingOptions.contains(Timing.valueOf(timing))
+    }
 
     // List のバリデーションを行うために必要
     data class Effect(@field:Size(max = 30,
