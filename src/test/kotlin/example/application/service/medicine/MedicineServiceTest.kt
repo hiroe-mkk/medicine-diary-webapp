@@ -86,6 +86,45 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     }
 
     @Nested
+    inner class GetMedicineOverviewsTest {
+        @Test
+        @DisplayName("薬概要一覧を取得する")
+        fun findAllMedicineOverviews() {
+            //given:
+            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
+            val medicine1 = testMedicineInserter.insert(owner = userSession.accountId, registeredAt = localDateTime)
+            val medicine2 = testMedicineInserter.insert(owner = userSession.accountId,
+                                                        registeredAt = localDateTime.plusDays(1))
+            val medicine3 = testMedicineInserter.insert(owner = userSession.accountId,
+                                                        registeredAt = localDateTime.plusDays(2))
+
+            //when:
+            val actual = medicineService.findAllMedicineOverviews(userSession)
+
+            //then:
+            val expected = arrayOf(MedicineOverviewDto(medicine3.id,
+                                                       medicine3.name,
+                                                       medicine3.takingUnit,
+                                                       medicine3.dosage,
+                                                       medicine3.administration,
+                                                       medicine3.effects),
+                                   MedicineOverviewDto(medicine2.id,
+                                                       medicine2.name,
+                                                       medicine2.takingUnit,
+                                                       medicine2.dosage,
+                                                       medicine2.administration,
+                                                       medicine2.effects),
+                                   MedicineOverviewDto(medicine1.id,
+                                                       medicine1.name,
+                                                       medicine1.takingUnit,
+                                                       medicine1.dosage,
+                                                       medicine1.administration,
+                                                       medicine1.effects))
+            assertThat(actual).containsExactly(*expected)
+        }
+    }
+
+    @Nested
     inner class RegisterMedicineTest {
         @Test
         @DisplayName("薬を登録する")

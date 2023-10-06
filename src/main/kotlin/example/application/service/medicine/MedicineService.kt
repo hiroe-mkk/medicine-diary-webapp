@@ -20,6 +20,15 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * 薬概要一覧を取得する
+     */
+    @Transactional(readOnly = true)
+    fun findAllMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
+        val medicines = medicineRepository.findByAccountId(userSession.accountId)
+        return medicines.map { MedicineOverviewDto.from(it) }
+    }
+
+    /**
      * 薬を登録する
      */
     fun registerMedicine(medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
