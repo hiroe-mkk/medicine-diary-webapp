@@ -33,36 +33,36 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     }
 
     @Nested
-    inner class GetMedicineTest {
+    inner class GetMedicineDetailTest {
         @Test
-        @DisplayName("薬を取得する")
-        fun getMedicine() {
+        @DisplayName("薬詳細を取得する")
+        fun getMedicineDetail() {
             //given:
             val medicine = testMedicineInserter.insert(userSession.accountId)
 
             //when:
-            val actual = medicineService.findMedicine(medicine.id, userSession)
+            val actual = medicineService.findMedicineDetail(medicine.id, userSession)
 
             //then:
-            val expected = MedicineDto(medicine.id,
-                                       medicine.name,
-                                       medicine.takingUnit,
-                                       medicine.dosage,
-                                       medicine.administration,
-                                       medicine.effects,
-                                       medicine.precautions,
-                                       medicine.registeredAt)
+            val expected = MedicineDetailDto(medicine.id,
+                                             medicine.name,
+                                             medicine.takingUnit,
+                                             medicine.dosage,
+                                             medicine.administration,
+                                             medicine.effects,
+                                             medicine.precautions,
+                                             medicine.registeredAt)
             assertThat(actual).isEqualTo(expected)
         }
 
         @Test
-        @DisplayName("薬が見つからなかった場合、薬の取得に失敗する")
-        fun medicineNotFound_gettingMedicineFails() {
+        @DisplayName("薬が見つからなかった場合、薬詳細の取得に失敗する")
+        fun medicineNotFound_gettingMedicineDetailFails() {
             //given:
             val badMedicineId = MedicineId("NonexistentId")
 
             //when:
-            val target: () -> Unit = { medicineService.findMedicine(badMedicineId, userSession) }
+            val target: () -> Unit = { medicineService.findMedicineDetail(badMedicineId, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
@@ -70,14 +70,14 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         }
 
         @Test
-        @DisplayName("ユーザーが所有していない薬の場合、薬の取得に失敗する")
-        fun medicineIsNotOwnedByUser_gettingMedicineFails() {
+        @DisplayName("ユーザーが所有していない薬の場合、薬詳細の取得に失敗する")
+        fun medicineIsNotOwnedByUser_gettingMedicineDetailFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
 
             //when:
-            val target: () -> Unit = { medicineService.findMedicine(medicine.id, userSession) }
+            val target: () -> Unit = { medicineService.findMedicineDetail(medicine.id, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)

@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.*
 class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider) {
     /**
-     * 薬を取得する
+     * 薬詳細を取得する
      */
     @Transactional(readOnly = true)
-    fun findMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
+    fun findMedicineDetail(medicineId: MedicineId, userSession: UserSession): MedicineDetailDto {
         val medicine = findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
-        return MedicineDto.from(medicine)
+        return MedicineDetailDto.from(medicine)
     }
 
     /**
