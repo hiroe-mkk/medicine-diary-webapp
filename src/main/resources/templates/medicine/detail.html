@@ -60,6 +60,16 @@
           <li>
             <a
               class="is-small is-link"
+              th:href="@{/medicines/{medicineId}/update(medicineId=*{medicineId})}"
+            >
+              <span class="icon fas fa-2x is-flex is-align-items-center">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="is-small is-link"
               @click="isDeletionConfirmationModalActive = true"
             >
               <span class="icon fas fa-2x is-flex is-align-items-center">
