@@ -33,14 +33,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     fun registerMedicine(medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
                          userSession: UserSession): MedicineId {
-        val medicine = Medicine(medicineRepository.createMedicineId(),
-                                userSession.accountId,
-                                medicineBasicInfoInputCommand.validatedName,
-                                medicineBasicInfoInputCommand.validatedDosage,
-                                medicineBasicInfoInputCommand.validatedAdministration,
-                                medicineBasicInfoInputCommand.validatedEffects,
-                                medicineBasicInfoInputCommand.validatedPrecautions,
-                                localDateTimeProvider.now())
+        val medicine = Medicine.create(medicineRepository.createMedicineId(),
+                                       userSession.accountId,
+                                       medicineBasicInfoInputCommand.validatedName,
+                                       medicineBasicInfoInputCommand.validatedDosage,
+                                       medicineBasicInfoInputCommand.validatedAdministration,
+                                       medicineBasicInfoInputCommand.validatedEffects,
+                                       medicineBasicInfoInputCommand.validatedPrecautions,
+                                       localDateTimeProvider.now())
         medicineRepository.save(medicine)
         return medicine.id
     }

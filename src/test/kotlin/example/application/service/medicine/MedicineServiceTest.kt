@@ -50,6 +50,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                              medicine.administration,
                                              medicine.effects,
                                              medicine.precautions,
+                                             medicine.medicineImageURL,
                                              medicine.registeredAt)
             assertThat(actual).isEqualTo(expected)
         }
@@ -105,16 +106,19 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                                        medicine3.name,
                                                        medicine3.dosage,
                                                        medicine3.administration,
+                                                       medicine3.medicineImageURL,
                                                        medicine3.effects),
                                    MedicineOverviewDto(medicine2.id,
                                                        medicine2.name,
                                                        medicine2.dosage,
                                                        medicine2.administration,
+                                                       medicine2.medicineImageURL,
                                                        medicine2.effects),
                                    MedicineOverviewDto(medicine1.id,
                                                        medicine1.name,
                                                        medicine1.dosage,
                                                        medicine1.administration,
+                                                       medicine1.medicineImageURL,
                                                        medicine1.effects))
             assertThat(actual).containsExactly(*expected)
         }
@@ -142,6 +146,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedAdministration,
                                     command.validatedEffects,
                                     command.validatedPrecautions,
+                                    null,
                                     localDateTime)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }
@@ -168,6 +173,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedAdministration,
                                     command.validatedEffects,
                                     command.validatedPrecautions,
+                                    medicine.medicineImageURL,
                                     medicine.registeredAt)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }

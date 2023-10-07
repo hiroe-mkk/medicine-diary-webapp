@@ -3,6 +3,7 @@ package example.testhelper.factory
 import example.application.service.medicine.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
+import example.domain.model.medicine.medicineImage.*
 import example.domain.shared.type.*
 import java.time.*
 
@@ -22,6 +23,7 @@ object TestMedicineFactory {
                administration: Administration = Administration(defaultTimesPerDay, defaultTimingOptions),
                effects: Effects = Effects(defaultEffects),
                precautions: Note = Note(defaultPrecautions),
+               medicineImageURL: MedicineImageURL? = null,
                registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {
         return Medicine(medicineId,
                         accountId,
@@ -30,6 +32,7 @@ object TestMedicineFactory {
                         administration,
                         effects,
                         precautions,
+                        medicineImageURL,
                         registeredAt)
     }
 

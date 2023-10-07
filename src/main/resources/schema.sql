@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS medicines (
   taking_unit VARCHAR(10) NOT NULL,
   times_per_day INT NOT NULL,
   precautions VARCHAR(500) NOT NULL,
+  medicine_image_url_endpoint VARCHAR(50),
+  medicine_image_url_path VARCHAR(100),
   registered_at TIMESTAMP NOT NULL,
   FOREIGN KEY(owner) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

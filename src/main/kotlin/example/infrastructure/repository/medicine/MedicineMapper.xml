@@ -35,6 +35,8 @@
             taking_unit,
             times_per_day,
             precautions,
+            medicine_image_url_endpoint,
+            medicine_image_url_path,
             registered_at
         )VALUES(
             #{medicineId},
@@ -44,13 +46,17 @@
             #{takingUnit},
             #{timesPerDay},
             #{precautions},
+            #{medicineImageURLEndpoint, jdbcType=VARCHAR},
+            #{medicineImageURLPath, jdbcType=VARCHAR},
             #{registeredAt}
         )ON DUPLICATE KEY UPDATE
             name = #{name},
             quantity = #{quantity},
             taking_unit = #{takingUnit},
             times_per_day = #{timesPerDay},
-            precautions = #{precautions};
+            precautions = #{precautions},
+            medicine_image_url_endpoint = #{medicineImageURLEndpoint, jdbcType=VARCHAR},
+            medicine_image_url_path = #{medicineImageURLPath, jdbcType=VARCHAR};
     </insert>
     <insert id="insertAllTimingOptions">
         INSERT INTO timing_options(
@@ -98,6 +104,8 @@
         medicines.taking_unit AS taking_unit,
         medicines.times_per_day AS times_per_day,
         medicines.precautions AS precautions,
+        medicines.medicine_image_url_endpoint AS medicine_image_url_endpoint,
+        medicines.medicine_image_url_path AS medicine_image_url_path,
         medicines.registered_at AS registered_at,
         effects.ordering AS effect_ordering,
         effects.effect AS effect,
@@ -113,6 +121,7 @@
             <arg column="{quantity, taking_unit}" javaType="Dosage" resultMap="DosageResultMap"/>
             <arg column="times_per_day" javaType="_int"/>
             <arg column="precautions" javaType="Note" resultMap="NoteResultMap"/>
+            <arg column="{medicine_image_url_endpoint, medicine_image_url_path}" javaType="MedicineImageURL" resultMap="MedicineImageURLResultMap"/>
             <arg column="registered_at" javaType="java.time.LocalDateTime"/>
         </constructor>
         <id column="medicine_id"/>
@@ -140,6 +149,12 @@
     <resultMap id="NoteResultMap" type="Note">
         <constructor>
             <idArg column="precautions" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineImageURLResultMap" type="MedicineImageURL">
+        <constructor>
+            <idArg column="medicine_image_url_endpoint" javaType="String"/>
+            <idArg column="medicine_image_url_path" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="TimingOptionOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">

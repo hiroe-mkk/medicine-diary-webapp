@@ -32,6 +32,7 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
                                 Administration(3, emptyList()),
                                 Effects(listOf("頭痛", "解熱", "肩こり")),
                                 Note("服用間隔は4時間以上開けること。"),
+                                null,
                                 LocalDateTime.of(2020, 1, 1, 0, 0))
 
         //when:

@@ -18,6 +18,8 @@ interface MedicineMapper {
                           takingUnit: String,
                           timesPerDay: Int,
                           precautions: String,
+                          medicineImageURLEndpoint: String?,
+                          medicineImageURLPath: String?,
                           registeredAt: LocalDateTime)
 
     fun insertAllTimingOptions(medicineId: String,

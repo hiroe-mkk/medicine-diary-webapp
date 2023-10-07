@@ -1,6 +1,7 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
+import example.domain.model.medicine.medicineImage.*
 import example.domain.shared.type.*
 import java.time.*
 
@@ -14,6 +15,7 @@ class Medicine(val id: MedicineId,
                administration: Administration,
                effects: Effects,
                precautions: Note,
+               medicineImageURL: MedicineImageURL?,
                val registeredAt: LocalDateTime) {
     var name: String = name
         private set
@@ -25,6 +27,29 @@ class Medicine(val id: MedicineId,
         private set
     var precautions: Note = precautions
         private set
+    var medicineImageURL: MedicineImageURL? = medicineImageURL
+        private set
+
+    companion object {
+        fun create(id: MedicineId,
+                   owner: AccountId,
+                   name: String,
+                   dosage: Dosage,
+                   administration: Administration,
+                   effects: Effects,
+                   precautions: Note,
+                   registeredAt: LocalDateTime): Medicine {
+            return Medicine(id,
+                            owner,
+                            name,
+                            dosage,
+                            administration,
+                            effects,
+                            precautions,
+                            null,
+                            registeredAt)
+        }
+    }
 
     fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
 
