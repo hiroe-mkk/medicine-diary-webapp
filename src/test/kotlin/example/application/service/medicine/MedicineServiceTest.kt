@@ -148,6 +148,63 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     }
 
     @Nested
+    inner class UpdateMedicineBasicInfoTest {
+        @Test
+        @DisplayName("薬の基本情報を更新する")
+        fun updateMedicineBasicInfo() {
+            //given:
+            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand(medicine)
+
+            //when:
+            medicineService.updateMedicineBasicInfo(medicine.id, command, userSession)
+
+            //then:
+            val foundMedicine = medicineRepository.findById(medicine.id)
+            val expected = Medicine(medicine.id,
+                                    medicine.owner,
+                                    command.validatedName,
+                                    command.validatedDosage,
+                                    command.validatedAdministration,
+                                    command.validatedEffects,
+                                    command.validatedPrecautions,
+                                    medicine.registeredAt)
+            assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
+        }
+
+        @Test
+        @DisplayName("薬が見つからなかった場合、薬の基本情報の更新に失敗する")
+        fun medicineNotFound_updatingMedicineBasicInfoFails() {
+            //given:
+            val badMedicineId = MedicineId("nonexistentId")
+            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand()
+
+            //when:
+            val target: () -> Unit = { medicineService.updateMedicineBasicInfo(badMedicineId, command, userSession) }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+        }
+
+        @Test
+        @DisplayName("ユーザーが所有していない薬の場合、薬の基本情報の更新に失敗する")
+        fun medicineIsNotOwnedByUser_updatingMedicineBasicInfoFails() {
+            //given:
+            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
+            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand(medicine)
+
+            //when:
+            val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
+        }
+    }
+
+    @Nested
     inner class DeleteMedicineTest {
         @Test
         @DisplayName("薬を削除する")

@@ -15,7 +15,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findMedicineDetail(medicineId: MedicineId, userSession: UserSession): MedicineDetailDto {
-        val medicine = findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
+        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
         return MedicineDetailDto.from(medicine)
     }
 
@@ -46,11 +46,31 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * 薬の基本情報を更新する
+     */
+    fun updateMedicineBasicInfo(medicineId: MedicineId,
+                                medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
+                                userSession: UserSession) {
+        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        medicine.changeBasicInfo(medicineBasicInfoInputCommand.validatedName,
+                                 medicineBasicInfoInputCommand.validatedDosage,
+                                 medicineBasicInfoInputCommand.validatedAdministration,
+                                 medicineBasicInfoInputCommand.validatedEffects,
+                                 medicineBasicInfoInputCommand.validatedPrecautions)
+        medicineRepository.save(medicine)
+    }
+
+    /**
      * 薬を削除する
      */
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
+        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
         medicineRepository.delete(medicine.id)
+    }
+
+    private fun findMedicineOrElseThrowException(medicineId: MedicineId,
+                                                 userSession: UserSession): Medicine {
+        return findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
     }
 
     private fun findMedicineOwnedBy(medicineId: MedicineId, userSession: UserSession): Medicine? {

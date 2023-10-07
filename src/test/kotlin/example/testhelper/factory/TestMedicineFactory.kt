@@ -48,4 +48,14 @@ object TestMedicineFactory {
                                              effects.map(MedicineBasicInfoInputCommand::Effect),
                                              precautions)
     }
+
+    fun createMedicineBasicInfoInputCommand(medicine: Medicine): MedicineBasicInfoInputCommand {
+        return MedicineBasicInfoInputCommand("${medicine.name}[CHANGED]",
+                                             medicine.dosage.quantity + 1,
+                                             "${medicine.dosage.takingUnit}[CHANGED]",
+                                             medicine.administration.timesPerDay + 1,
+                                             emptyList(),
+                                             emptyList(),
+                                             "${medicine.precautions}[CHANGED]")
+    }
 }
