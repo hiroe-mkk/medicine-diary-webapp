@@ -57,7 +57,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 薬の基本情報を更新する
+     * 薬基本情報を更新する
      */
     fun updateMedicineBasicInfo(medicineId: MedicineId,
                                 medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,

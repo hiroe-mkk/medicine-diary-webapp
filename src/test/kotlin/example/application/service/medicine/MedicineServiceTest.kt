@@ -160,7 +160,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     @Nested
     inner class UpdateMedicineBasicInfoTest {
         @Test
-        @DisplayName("薬の基本情報を更新する")
+        @DisplayName("薬基本情報を更新する")
         fun updateMedicineBasicInfo() {
             //given:
             val medicine = testMedicineInserter.insert(userSession.accountId)
@@ -184,7 +184,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         }
 
         @Test
-        @DisplayName("薬が見つからなかった場合、薬の基本情報の更新に失敗する")
+        @DisplayName("薬が見つからなかった場合、薬基本情報の更新に失敗する")
         fun medicineNotFound_updatingMedicineBasicInfoFails() {
             //given:
             val badMedicineId = MedicineId("nonexistentId")
@@ -199,7 +199,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         }
 
         @Test
-        @DisplayName("ユーザーが所有していない薬の場合、薬の基本情報の更新に失敗する")
+        @DisplayName("ユーザーが所有していない薬の場合、薬基本情報の更新に失敗する")
         fun medicineIsNotOwnedByUser_updatingMedicineBasicInfoFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()

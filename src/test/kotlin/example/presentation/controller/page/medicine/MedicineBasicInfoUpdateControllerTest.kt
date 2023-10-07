@@ -16,19 +16,19 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: MockMvc,
-                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                            @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                     @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                     @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/medicines/{medicineId}/update"
+        private const val PATH = "/medicines/{medicineId}/basicinfo/update"
     }
 
     @Nested
-    inner class DisplayMedicineUpdatePageTest {
+    inner class DisplayMedicineBasicInfoUpdatePageTest {
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("薬更新画面を表示する")
-        fun displayMedicineUpdatePage() {
+        @DisplayName("薬基本情報更新画面を表示する")
+        fun displayMedicineBasicInfoUpdatePage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
             val medicine = testMedicineInserter.insert(userSession.accountId)
@@ -38,13 +38,13 @@ internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: Mock
 
             //then:
             actions.andExpect(status().isOk)
-                .andExpect(view().name("medicine/form"))
+                .andExpect(view().name("medicine/basicInfoForm"))
         }
 
         @Test
         @WithMockAuthenticatedAccount
         @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
-        fun medicineDetailNotFound_displayNotFoundErrorPage() {
+        fun medicineNotFound_displayNotFoundErrorPage() {
             //given:
             val badMedicineId = MedicineId("NonexistentId")
 
@@ -72,7 +72,7 @@ internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: Mock
     }
 
     @Nested
-    inner class UpdateMedicineTest {
+    inner class UpdateMedicineBasicInfoTest {
         private val name = "ロキソニンS"
         private val takingUnit = "錠"
         private val quantity = 1.0
@@ -82,8 +82,8 @@ internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: Mock
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("薬の更新に成功した場合、薬詳細画面にリダイレクトする")
-        fun medicineUpdateSucceeds_redirectToMedicineDetailPage() {
+        @DisplayName("薬基本情報の更新に成功した場合、薬詳細画面にリダイレクトする")
+        fun medicineBasicInfoUpdateSucceeds_redirectToMedicineDetailPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
             val medicine = testMedicineInserter.insert(userSession.accountId)
@@ -108,8 +108,8 @@ internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: Mock
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("バリデーションエラーが発生した場合、薬更新画面を再表示する")
-        fun validationErrorOccurs_redisplayMedicineUpdatePage() {
+        @DisplayName("バリデーションエラーが発生した場合、薬基本情報更新画面を再表示する")
+        fun validationErrorOccurs_redisplayMedicineBasicInfoUpdatePage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
             val medicine = testMedicineInserter.insert(userSession.accountId)
@@ -130,13 +130,13 @@ internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: Mock
 
             //then:
             actions.andExpect(status().isOk)
-                .andExpect(view().name("medicine/form"))
+                .andExpect(view().name("medicine/basicInfoForm"))
         }
 
         @Test
         @WithMockAuthenticatedAccount
         @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
-        fun medicineDetailNotFound_displayNotFoundErrorPage() {
+        fun medicineNotFound_displayNotFoundErrorPage() {
             //given:
             val badMedicineId = MedicineId("NonexistentId")
 

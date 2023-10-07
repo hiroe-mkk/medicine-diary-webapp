@@ -30,7 +30,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
     @GetMapping
     fun displayMedicineRegistrationPage(model: Model): String {
         model.addAttribute("form", MedicineBasicInfoInputCommand.initialize())
-        return "medicine/form"
+        return "medicine/basicInfoForm"
     }
 
     /**
@@ -40,7 +40,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
     fun registerMedicine(@ModelAttribute("form") @Validated medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
                          bindingResult: BindingResult,
                          redirectAttributes: RedirectAttributes): String {
-        if (bindingResult.hasErrors()) return "medicine/form"
+        if (bindingResult.hasErrors()) return "medicine/basicInfoForm"
 
         medicineService.registerMedicine(medicineBasicInfoInputCommand,
                                          userSessionProvider.getUserSession())
