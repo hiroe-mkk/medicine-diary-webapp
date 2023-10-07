@@ -65,14 +65,11 @@
                   :class="{ 'is-danger': fieldErrors.contains('username') }"
                 />
               </div>
-              <p class="help" v-if="!fieldErrors.contains('username')">
-                ※30文字以内で入力してください。
-              </p>
               <p
                 class="help is-danger"
                 v-for="error in fieldErrors.get('username')"
               >
-                ※{{ error }}
+                {{ error }}
               </p>
             </div>
             <div class="field is-grouped is-grouped-centered">

@@ -10,7 +10,7 @@ import kotlin.reflect.*
 @Target(AnnotationTarget.FIELD)
 @Constraint(validatedBy = [FileMaxSize.Validator::class])
 annotation class FileMaxSize(val value: Int,
-                             val message: String = "上限サイズを超過しています。",
+                             val message: String = "※上限サイズを超過しています。",
                              val groups: Array<KClass<out Any>> = [],
                              val payload: Array<KClass<out Payload>> = []) {
     class Validator : ConstraintValidator<FileMaxSize, MultipartFile> {
