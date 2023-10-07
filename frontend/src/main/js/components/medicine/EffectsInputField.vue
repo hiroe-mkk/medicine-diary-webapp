@@ -1,6 +1,6 @@
 <template>
   <div
-    class="notification mb-0"
+    class="notification py-3 px-5"
     :class="{
       'has-background-white-bis': !hasErrors,
       'has-background-danger-light': hasErrors,
@@ -45,41 +45,39 @@
   <div class="modal" :class="{ 'is-active': isEditModalActive }">
     <div class="modal-background" @click="isEditModalActive = false"></div>
     <div class="modal-content">
-      <div class="notification is-white">
+      <div class="notification p-3 is-white">
         <div class="is-size-5 has-text-link-dark has-text-centered">効能</div>
-        <section class="content">
-          <div class="field">
-            <div class="control">
-              <input
-                class="input is-info"
-                type="text"
-                v-model="editingEffect.value"
-                maxlength="30"
-                placeholder="例) 頭痛"
-              />
-            </div>
+        <div class="field mb-3">
+          <div class="control">
+            <input
+              class="input is-info"
+              type="text"
+              v-model="editingEffect.value"
+              maxlength="30"
+              placeholder="例) 頭痛"
+            />
           </div>
-          <div class="field is-grouped is-grouped-centered">
-            <p class="control">
-              <button
-                type="button"
-                class="button is-small is-rounded is-link"
-                @click="editCompleted()"
-              >
-                完了
-              </button>
-            </p>
-            <p class="control">
-              <button
-                type="button"
-                class="button is-small is-rounded is-danger"
-                @click="isEditModalActive = false"
-              >
-                キャンセル
-              </button>
-            </p>
-          </div>
-        </section>
+        </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button
+              type="button"
+              class="button is-small is-rounded is-link"
+              @click="editCompleted()"
+            >
+              完了
+            </button>
+          </p>
+          <p class="control">
+            <button
+              type="button"
+              class="button is-small is-rounded is-danger"
+              @click="isEditModalActive = false"
+            >
+              キャンセル
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   </div>

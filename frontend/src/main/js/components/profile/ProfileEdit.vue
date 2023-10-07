@@ -43,51 +43,49 @@
       @click="isUsernameChangeModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification is-white">
+      <div class="notification p-3 is-white">
         <div class="is-size-5 has-text-link-dark has-text-centered">
           ユーザー名を変更する
         </div>
-        <section class="content">
-          <form
-            class="form"
-            method="post"
-            @submit.prevent="submitUsernameChangeForm()"
-          >
-            <div class="field">
-              <div class="control">
-                <input
-                  class="input is-info"
-                  type="text"
-                  name="username"
-                  v-model="editingUsername"
-                  maxlength="30"
-                  placeholder="ユーザー名"
-                  :class="{ 'is-danger': fieldErrors.contains('username') }"
-                />
-              </div>
-              <p
-                class="help is-danger"
-                v-for="error in fieldErrors.get('username')"
+        <form
+          class="form"
+          method="post"
+          @submit.prevent="submitUsernameChangeForm()"
+        >
+          <div class="field m-3">
+            <div class="control">
+              <input
+                class="input is-info"
+                type="text"
+                name="username"
+                v-model="editingUsername"
+                maxlength="30"
+                placeholder="ユーザー名"
+                :class="{ 'is-danger': fieldErrors.contains('username') }"
+              />
+            </div>
+            <p
+              class="help is-danger"
+              v-for="error in fieldErrors.get('username')"
+            >
+              {{ error }}
+            </p>
+          </div>
+          <div class="field is-grouped is-grouped-centered">
+            <p class="control">
+              <button class="button is-small is-rounded is-link">完了</button>
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                class="button is-small is-rounded is-danger"
+                @click="isUsernameChangeModalActive = false"
               >
-                {{ error }}
-              </p>
-            </div>
-            <div class="field is-grouped is-grouped-centered">
-              <p class="control">
-                <button class="button is-small is-rounded is-link">完了</button>
-              </p>
-              <p class="control">
-                <button
-                  type="button"
-                  class="button is-small is-rounded is-danger"
-                  @click="isUsernameChangeModalActive = false"
-                >
-                  キャンセル
-                </button>
-              </p>
-            </div>
-          </form>
-        </section>
+                キャンセル
+              </button>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -98,7 +96,7 @@
       @click="isProfileImageChangeModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification has-background-white-bis has-text-centered">
+      <div class="notification p-3 has-background-white-bis has-text-centered">
         <div class="is-size-5 has-text-link-dark has-text-centered">
           プロフィール画像を変更する
         </div>
@@ -108,14 +106,17 @@
           enctype="multipart/form-data"
           @submit.prevent="submitProfileImageChangeForm()"
         >
-          <div class="container" ref="trimmingContainer"></div>
+          <div class="container m-3" ref="trimmingContainer"></div>
           <p
             class="help is-danger"
             v-for="error in fieldErrors.get('profileImage')"
           >
             ※{{ error }}
           </p>
-          <div class="file is-small is-info is-centered">
+          <div
+            class="file m-3 is-small is-info is-centered"
+            v-show="!profileImageTrimmingManager.isTrimming"
+          >
             <label class="file-label">
               <input
                 class="file-input"
@@ -123,10 +124,7 @@
                 accept="image/*"
                 @change="fileSelected($event)"
               />
-              <span
-                class="file-cta"
-                v-show="!profileImageTrimmingManager.isTrimming"
-              >
+              <span class="file-cta">
                 <span class="file-label is-rounded">ファイルを選択する </span>
               </span>
             </label>
