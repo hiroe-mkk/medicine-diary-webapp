@@ -21,7 +21,10 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     override fun save(medicine: Medicine) {
-        medicineMapper.insertOneMedicine(medicine.id.value,
+        medicineMapper.deleteAllTimingOptions(medicine.id.value)
+        medicineMapper.deleteAllEffects(medicine.id.value)
+
+        medicineMapper.upsertOneMedicine(medicine.id.value,
                                          medicine.owner.value,
                                          medicine.name,
                                          medicine.dosage.quantity,

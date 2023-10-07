@@ -59,6 +59,25 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
     }
 
     @Test
+    fun canUpdateMedicine() {
+        //given:
+        val medicine = testMedicineInserter.insert(accountId)
+        medicine.changeBasicInfo("${medicine.name}[CHANGED]",
+                                 Dosage(medicine.dosage.quantity + 1,
+                                        "${medicine.dosage.takingUnit}[CHANGED]"),
+                                 Administration(medicine.administration.timesPerDay + 1, emptyList()),
+                                 Effects(medicine.effects.values.plus("[CHANGED]")),
+                                 Note("${medicine.precautions}[CHANGED]"))
+
+        //when:
+        medicineRepository.save(medicine)
+
+        //then:
+        val foundMedicine = medicineRepository.findById(medicine.id)
+        assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(medicine)
+    }
+
+    @Test
     fun canDeleteMedicine() {
         //given:
         val medicine = testMedicineInserter.insert(accountId)

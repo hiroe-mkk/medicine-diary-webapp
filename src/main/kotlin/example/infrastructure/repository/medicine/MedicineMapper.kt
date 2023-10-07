@@ -11,7 +11,7 @@ interface MedicineMapper {
 
     fun findAllByAccountId(accountId: String): List<MedicineResultEntity>
 
-    fun insertOneMedicine(medicineId: String,
+    fun upsertOneMedicine(medicineId: String,
                           owner: String,
                           name: String,
                           quantity: Double,

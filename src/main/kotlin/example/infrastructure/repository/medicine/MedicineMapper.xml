@@ -26,7 +26,7 @@
             registered_at DESC;
     </select>
 
-    <insert id="insertOneMedicine">
+    <insert id="upsertOneMedicine">
         INSERT INTO medicines(
             medicine_id,
             owner,
@@ -45,7 +45,12 @@
             #{timesPerDay},
             #{precautions},
             #{registeredAt}
-        );
+        )ON DUPLICATE KEY UPDATE
+            name = #{name},
+            quantity = #{quantity},
+            taking_unit = #{takingUnit},
+            times_per_day = #{timesPerDay},
+            precautions = #{precautions};
     </insert>
     <insert id="insertAllTimingOptions">
         INSERT INTO timing_options(
