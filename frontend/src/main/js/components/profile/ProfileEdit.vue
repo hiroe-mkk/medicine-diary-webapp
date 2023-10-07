@@ -44,7 +44,7 @@
     ></div>
     <div class="modal-content">
       <div class="notification is-white">
-        <div class="title is-5 has-text-link-dark has-text-centered">
+        <div class="is-size-5 has-text-link-dark has-text-centered">
           ユーザー名を変更する
         </div>
         <section class="content">
@@ -99,7 +99,7 @@
     ></div>
     <div class="modal-content">
       <div class="notification has-background-white-bis has-text-centered">
-        <div class="title is-5 has-text-link-dark has-text-centered">
+        <div class="is-size-5 has-text-link-dark has-text-centered">
           プロフィール画像を変更する
         </div>
         <form

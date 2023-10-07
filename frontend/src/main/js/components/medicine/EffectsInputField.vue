@@ -46,7 +46,7 @@
     <div class="modal-background" @click="isEditModalActive = false"></div>
     <div class="modal-content">
       <div class="notification is-white">
-        <div class="title is-5 has-text-link-dark has-text-centered">効能</div>
+        <div class="is-size-5 has-text-link-dark has-text-centered">効能</div>
         <section class="content">
           <div class="field">
             <div class="control">

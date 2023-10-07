@@ -6,7 +6,7 @@
   >
     <div class="message-body p-3">
       <div class="content">
-        <strong class="title is-6">
+        <strong>
           {{ resultMessage.message }}
         </strong>
       </div>
@@ -20,11 +20,11 @@
         <div class="message-body">
           <div class="content">
             <div class="has-text-centered m-2">
-              <strong class="is-4 mb-1">
+              <strong class="is-size-5 mb-1">
                 {{ resultMessage.message }}
               </strong>
               <br />
-              <small class="is-6">{{ resultMessage.details }}</small>
+              <small>{{ resultMessage.details }}</small>
             </div>
             <div class="has-text-right">
               <button
