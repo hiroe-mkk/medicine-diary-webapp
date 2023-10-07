@@ -26,7 +26,7 @@
             registered_at DESC;
     </select>
 
-    <insert id="saveOneMedicine">
+    <insert id="insertOneMedicine">
         INSERT INTO medicines(
             medicine_id,
             owner,
@@ -47,7 +47,7 @@
             #{registeredAt}
         );
     </insert>
-    <insert id="saveAllTimingOptions">
+    <insert id="insertAllTimingOptions">
         INSERT INTO timing_options(
             medicine_id,
             ordering,
@@ -58,7 +58,7 @@
             </foreach>
         ;
     </insert>
-    <insert id="saveAllEffects">
+    <insert id="insertAllEffects">
         INSERT INTO effects(
             medicine_id,
             ordering,

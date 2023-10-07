@@ -11,7 +11,7 @@
             account_id = #{accountId};
     </select>
 
-    <insert id="saveProfile">
+    <insert id="upsertProfile">
         INSERT INTO profiles(
             <include refid="AllColumns"/>
         )VALUES(

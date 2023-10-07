@@ -7,10 +7,10 @@ import org.apache.ibatis.annotations.*
 interface ProfileMapper {
     fun findOneByAccountId(accountId: String): Profile?
 
-    fun saveProfile(accountId: String,
-                    username: String,
-                    profileImageURLEndpoint: String?,
-                    profileImageURLPath: String?)
+    fun upsertProfile(accountId: String,
+                      username: String,
+                      profileImageURLEndpoint: String?,
+                      profileImageURLPath: String?)
 
     fun deleteProfile(accountId: String)
 }

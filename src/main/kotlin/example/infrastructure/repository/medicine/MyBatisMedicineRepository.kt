@@ -21,14 +21,14 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     override fun save(medicine: Medicine) {
-        medicineMapper.saveOneMedicine(medicine.id.value,
-                                       medicine.owner.value,
-                                       medicine.name,
-                                       medicine.dosage.quantity,
-                                       medicine.dosage.takingUnit,
-                                       medicine.administration.timesPerDay,
-                                       medicine.precautions.value,
-                                       medicine.registeredAt)
+        medicineMapper.insertOneMedicine(medicine.id.value,
+                                         medicine.owner.value,
+                                         medicine.name,
+                                         medicine.dosage.quantity,
+                                         medicine.dosage.takingUnit,
+                                         medicine.administration.timesPerDay,
+                                         medicine.precautions.value,
+                                         medicine.registeredAt)
         saveAllTimingOptions(medicine)
         saveAllEffects(medicine)
     }
@@ -37,16 +37,16 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         val timingOptions = medicine.administration.timingOptions
         if (timingOptions.isEmpty()) return
 
-        medicineMapper.saveAllTimingOptions(medicine.id.value,
-                                            OrderedEntitiesConverter.convert(timingOptions))
+        medicineMapper.insertAllTimingOptions(medicine.id.value,
+                                              OrderedEntitiesConverter.convert(timingOptions))
     }
 
     private fun saveAllEffects(medicine: Medicine) {
         val effects = medicine.effects.values
         if (effects.isEmpty()) return
 
-        medicineMapper.saveAllEffects(medicine.id.value,
-                                      OrderedEntitiesConverter.convert(effects))
+        medicineMapper.insertAllEffects(medicine.id.value,
+                                        OrderedEntitiesConverter.convert(effects))
     }
 
     override fun delete(medicineId: MedicineId) {

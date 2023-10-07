@@ -11,20 +11,20 @@ interface MedicineMapper {
 
     fun findAllByAccountId(accountId: String): List<MedicineResultEntity>
 
-    fun saveOneMedicine(medicineId: String,
-                        owner: String,
-                        name: String,
-                        quantity: Double,
-                        takingUnit: String,
-                        timesPerDay: Int,
-                        precautions: String,
-                        registeredAt: LocalDateTime)
+    fun insertOneMedicine(medicineId: String,
+                          owner: String,
+                          name: String,
+                          quantity: Double,
+                          takingUnit: String,
+                          timesPerDay: Int,
+                          precautions: String,
+                          registeredAt: LocalDateTime)
 
-    fun saveAllTimingOptions(medicineId: String,
-                             timingOptions: Collection<OrderedEntity<Timing>>)
+    fun insertAllTimingOptions(medicineId: String,
+                               timingOptions: Collection<OrderedEntity<Timing>>)
 
-    fun saveAllEffects(medicineId: String,
-                       effects: Collection<OrderedEntity<String>>)
+    fun insertAllEffects(medicineId: String,
+                         effects: Collection<OrderedEntity<String>>)
 
     fun deleteOneMedicine(medicineId: String)
 

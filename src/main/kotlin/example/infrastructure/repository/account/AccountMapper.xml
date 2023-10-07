@@ -30,7 +30,7 @@
             account_id = #{accountId};
     </select>
 
-    <insert id="saveAccount">
+    <insert id="insertAccount">
         INSERT INTO accounts(
             account_id,
             credential_type
@@ -39,7 +39,7 @@
             #{credentialType}
         );
     </insert>
-    <insert id="saveOauth2Credential">
+    <insert id="insertOauth2Credential">
         INSERT INTO oauth2_credentials(
             account_id,
             id_p,
