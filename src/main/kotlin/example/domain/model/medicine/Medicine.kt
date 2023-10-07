@@ -64,4 +64,8 @@ class Medicine(val id: MedicineId,
         this.effects = newEffects
         this.precautions = newPrecautions
     }
+
+    fun changeMedicineImage(medicineImageURL: MedicineImageURL) {
+        this.medicineImageURL = medicineImageURL
+    }
 }
