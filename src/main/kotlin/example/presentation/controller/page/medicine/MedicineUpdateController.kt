@@ -38,4 +38,23 @@ class MedicineUpdateController(private val medicineService: MedicineService,
         model.addAttribute("form", command)
         return "medicine/form"
     }
+
+    /**
+     * 薬を更新する
+     */
+    @PostMapping
+    fun updateMedicine(@PathVariable medicineId: MedicineId,
+                       @ModelAttribute("form") @Validated medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
+                       bindingResult: BindingResult,
+                       redirectAttributes: RedirectAttributes): String {
+        if (bindingResult.hasErrors()) return "medicine/form"
+
+        medicineService.updateMedicineBasicInfo(medicineId,
+                                                medicineBasicInfoInputCommand,
+                                                userSessionProvider.getUserSession())
+        redirectAttributes.addFlashAttribute("resultMessage",
+                                             ResultMessage.info("薬の更新が完了しました。"))
+        redirectAttributes.addAttribute("medicineId", medicineId)
+        return "redirect:/medicines/{medicineId}"
+    }
 }

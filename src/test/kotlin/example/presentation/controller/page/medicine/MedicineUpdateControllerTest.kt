@@ -7,6 +7,8 @@ import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
+import org.springframework.security.test.web.servlet.request.*
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
 import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
@@ -64,6 +66,117 @@ internal class MedicineUpdateControllerTest(@Autowired private val mockMvc: Mock
             val actions = mockMvc.perform(get(PATH, medicineId))
 
             //then:
+            actions.andExpect(status().isFound)
+                .andExpect(redirectedUrl("/"))
+        }
+    }
+
+    @Nested
+    inner class UpdateMedicineTest {
+        private val name = "ロキソニンS"
+        private val takingUnit = "錠"
+        private val quantity = 1.0
+        private val timesPerDay = 2
+        private val effects = arrayOf("頭痛", "解熱", "肩こり", "歯痛")
+        private val precautions = "再度症状があらわれた場合には3回目を服用できます。"
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("薬の更新に成功した場合、薬詳細画面にリダイレクトする")
+        fun medicineUpdateSucceeds_redirectToMedicineDetailPage() {
+            //given:
+            val userSession = userSessionProvider.getUserSession()
+            val medicine = testMedicineInserter.insert(userSession.accountId)
+
+            //when:
+            val actions = mockMvc.perform(post(PATH, medicine.id)
+                                              .with(csrf())
+                                              .param("name", name)
+                                              .param("quantity", quantity.toString())
+                                              .param("takingUnit", takingUnit)
+                                              .param("timesPerDay", timesPerDay.toString())
+                                              .param("effects", effects[0])
+                                              .param("effects", effects[1])
+                                              .param("effects", effects[2])
+                                              .param("effects", effects[3])
+                                              .param("precautions", precautions))
+
+            //then:
+            actions.andExpect(status().isFound)
+                .andExpect(redirectedUrl("/medicines/${medicine.id}"))
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("バリデーションエラーが発生した場合、薬更新画面を再表示する")
+        fun validationErrorOccurs_redisplayMedicineUpdatePage() {
+            //given:
+            val userSession = userSessionProvider.getUserSession()
+            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val invalidName = ""
+
+            //when:
+            val actions = mockMvc.perform(post(PATH, medicine.id)
+                                              .with(csrf())
+                                              .param("name", invalidName)
+                                              .param("quantity", quantity.toString())
+                                              .param("takingUnit", takingUnit)
+                                              .param("timesPerDay", timesPerDay.toString())
+                                              .param("effects", effects[0])
+                                              .param("effects", effects[1])
+                                              .param("effects", effects[2])
+                                              .param("effects", effects[3])
+                                              .param("precautions", precautions))
+
+            //then:
+            actions.andExpect(status().isOk)
+                .andExpect(view().name("medicine/form"))
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
+        fun medicineDetailNotFound_displayNotFoundErrorPage() {
+            //given:
+            val badMedicineId = MedicineId("NonexistentId")
+
+            //when:
+            val actions = mockMvc.perform(post(PATH, badMedicineId)
+                                              .with(csrf())
+                                              .param("name", name)
+                                              .param("quantity", quantity.toString())
+                                              .param("takingUnit", takingUnit)
+                                              .param("timesPerDay", timesPerDay.toString())
+                                              .param("effects", effects[0])
+                                              .param("effects", effects[1])
+                                              .param("effects", effects[2])
+                                              .param("effects", effects[3])
+                                              .param("precautions", precautions))
+
+            //then:
+            actions.andExpect(status().isNotFound)
+                .andExpect(view().name("error/notFoundError"))
+        }
+
+        @Test
+        @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
+        fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+            //given:
+            val medicineId = MedicineId("medicineId")
+
+            //when:
+            val actions = mockMvc.perform(post(PATH, medicineId)
+                                              .with(csrf())
+                                              .param("name", name)
+                                              .param("quantity", quantity.toString())
+                                              .param("takingUnit", takingUnit)
+                                              .param("timesPerDay", timesPerDay.toString())
+                                              .param("effects", effects[0])
+                                              .param("effects", effects[1])
+                                              .param("effects", effects[2])
+                                              .param("effects", effects[3])
+                                              .param("precautions", precautions))
+
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/"))
         }
