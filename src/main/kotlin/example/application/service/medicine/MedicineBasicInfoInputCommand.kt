@@ -31,16 +31,6 @@ data class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入
     val validatedEffects: Effects = Effects(effects.map(Effect::value))
     val validatedPrecautions: Note = Note(precautions.trim())
 
-    fun isTimingSelected(timing: String): Boolean {
-        return timingOptions.contains(Timing.valueOf(timing))
-    }
-
-    // List のバリデーションを行うために必要
-    data class Effect(@field:Size(max = 30,
-                                  message = "※{max}文字以内で入力してください。") val value: String) {
-        override fun toString(): String = value
-    }
-
     companion object {
         fun initialize(): MedicineBasicInfoInputCommand {
             return MedicineBasicInfoInputCommand("",
@@ -51,5 +41,25 @@ data class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入
                                                  emptyList(),
                                                  "")
         }
+
+        fun initialize(medicine: Medicine): MedicineBasicInfoInputCommand {
+            return MedicineBasicInfoInputCommand(medicine.name,
+                                                 medicine.dosage.quantity,
+                                                 medicine.dosage.takingUnit,
+                                                 medicine.administration.timesPerDay,
+                                                 medicine.administration.timingOptions,
+                                                 medicine.effects.values.map(::Effect),
+                                                 medicine.precautions.value)
+        }
+    }
+
+    fun isTimingSelected(timing: String): Boolean {
+        return timingOptions.contains(Timing.valueOf(timing))
+    }
+
+    // List のバリデーションを行うために必要
+    data class Effect(@field:Size(max = 30,
+                                  message = "※{max}文字以内で入力してください。") val value: String) {
+        override fun toString(): String = value
     }
 }

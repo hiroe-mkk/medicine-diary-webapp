@@ -46,6 +46,15 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * 初期化された MedicineBasicInfoInputCommand インスタンスを取得する
+     */
+    fun getInitializedMedicineBasicInfoInputCommand(medicineId: MedicineId,
+                                                    userSession: UserSession): MedicineBasicInfoInputCommand {
+        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        return MedicineBasicInfoInputCommand.initialize(medicine)
+    }
+
+    /**
      * 薬の基本情報を更新する
      */
     fun updateMedicineBasicInfo(medicineId: MedicineId,
