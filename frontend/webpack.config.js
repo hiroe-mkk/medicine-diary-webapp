@@ -12,6 +12,7 @@ module.exports = {
     siteHeader: './src/main/js/siteHeader.js',
     profileEdit: './src/main/js/profileEdit.js',
     medicineForm: './src/main/js/medicineForm.js',
+    medicineDetail: './src/main/js/medicineDetail.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する

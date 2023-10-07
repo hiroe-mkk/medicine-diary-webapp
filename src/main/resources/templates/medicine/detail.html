@@ -6,6 +6,8 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/medicineDetail.bundle.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/dist/css/style.bundle.css}" />
   </head>
 
   <body>
@@ -47,6 +49,71 @@
               th:each="effect:*{effects.values}"
               th:text="${effect}"
             ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="medicineDetail" layout:fragment="footer">
+      <div class="tabs is-fullwidth has-background-info-light">
+        <ul>
+          <li>
+            <a
+              class="is-small is-link"
+              @click="isDeletionConfirmationModalActive = true"
+            >
+              <span class="icon fas fa-2x is-flex is-align-items-center">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        class="modal"
+        :class="{ 'is-active': isDeletionConfirmationModalActive }"
+      >
+        <div
+          class="modal-background"
+          @click="isDeletionConfirmationModalActive = false"
+        ></div>
+        <div class="modal-content is-flex is-justify-content-center">
+          <div class="message is-inline-block is-danger">
+            <div class="message-body">
+              <div class="content">
+                <div class="has-text-centered mb-2">
+                  <strong class="is-size-5 mb-1">本当に削除しますか？</strong>
+                  <br />
+                  <small>
+                    薬を削除すると、服薬記録を含む薬に関する全ての情報が削除されます。
+                    <br />本当に削除しますか？
+                  </small>
+                </div>
+                <form
+                  class="form"
+                  method="post"
+                  th:action="@{/medicines/{medicineId}/delete(medicineId=*{medicineId})}"
+                >
+                  <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <button class="button is-small is-rounded is-danger">
+                        はい
+                      </button>
+                    </p>
+                    <p class="control">
+                      <button
+                        type="button"
+                        class="button is-small is-rounded is-link"
+                        @click="isDeletionConfirmationModalActive = false"
+                      >
+                        いいえ
+                      </button>
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
