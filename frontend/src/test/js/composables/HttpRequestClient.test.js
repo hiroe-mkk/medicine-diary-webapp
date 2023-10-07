@@ -53,7 +53,7 @@ describe('HttpRequestClientTest', () => {
     //given:
     const body = {
       error: {
-        message: '薬が見つかりませんでした。',
+        message: 'お薬が見つかりませんでした。',
         details: '既に削除されている可能性があります。',
       },
     };
@@ -64,15 +64,15 @@ describe('HttpRequestClientTest', () => {
 
     //then:
     expect(actual).toEqual(
-      '薬が見つかりませんでした。(既に削除されている可能性があります。)'
+      'お薬が見つかりませんでした。(既に削除されている可能性があります。)'
     );
   });
-  
+
   test('detailsIsNotContained, gettingMessageSucceeds', async () => {
     //given:
     const body = {
       error: {
-        message: '薬が見つかりませんでした。',
+        message: 'お薬が見つかりませんでした。',
       },
     };
     const httpRequestFailedError = new HttpRequestFailedError(404, body);
@@ -81,9 +81,9 @@ describe('HttpRequestClientTest', () => {
     const actual = httpRequestFailedError.getMessage();
 
     //then:
-    expect(actual).toEqual('薬が見つかりませんでした。');
+    expect(actual).toEqual('お薬が見つかりませんでした。');
   });
-  
+
   test('messageIsNotContained, gettingMessageSucceeds', async () => {
     //given:
     const body = {

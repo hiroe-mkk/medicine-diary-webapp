@@ -45,7 +45,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
         medicineService.registerMedicine(medicineBasicInfoInputCommand,
                                          userSessionProvider.getUserSession())
         redirectAttributes.addFlashAttribute("resultMessage",
-                                             ResultMessage.info("薬の登録が完了しました。"))
+                                             ResultMessage.info("お薬の登録が完了しました。"))
         return "redirect:/medicines"
     }
 }

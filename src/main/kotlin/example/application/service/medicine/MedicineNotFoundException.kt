@@ -7,4 +7,4 @@ import example.domain.shared.exception.*
  * 薬が見つからなかったことを示す例外
  */
 class MedicineNotFoundException(val medicineId: MedicineId)
-    : ResourceNotFoundException("薬が見つかりませんでした。", medicineId)
+    : ResourceNotFoundException("お薬が見つかりませんでした。", medicineId)

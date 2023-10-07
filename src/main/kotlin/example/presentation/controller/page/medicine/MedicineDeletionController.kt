@@ -21,7 +21,7 @@ class MedicineDeletionController(private val medicineService: MedicineService,
         medicineService.deleteMedicine(medicineId,
                                        userSessionProvider.getUserSession())
         redirectAttributes.addFlashAttribute("resultMessage",
-                                             ResultMessage.info("薬の削除が完了しました。"))
+                                             ResultMessage.info("お薬の削除が完了しました。"))
         return "redirect:/medicines"
     }
 }
