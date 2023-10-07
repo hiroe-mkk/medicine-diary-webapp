@@ -19,7 +19,7 @@
       </div>
 
       <div class="container is-max-desktop">
-        <div class="notification is-white py-2">
+        <div class="notification py-3 px-5 is-white">
           <div class="content">
             <div class="my-3">
               <p
@@ -58,10 +58,7 @@
       <div class="tabs is-fullwidth has-background-info-light">
         <ul>
           <li>
-            <a
-              class="is-small is-link"
-              th:href="@{/medicines/{medicineId}/update(medicineId=*{medicineId})}"
-            >
+            <a class="is-small is-link" @click="isEditModalActive = true">
               <span class="icon fas fa-2x is-flex is-align-items-center">
                 <i class="fa-regular fa-pen-to-square"></i>
               </span>
@@ -78,6 +75,34 @@
             </a>
           </li>
         </ul>
+      </div>
+
+      <div class="modal" :class="{ 'is-active': isEditModalActive }">
+        <div class="modal-background" @click="isEditModalActive = false"></div>
+        <div class="modal-content is-flex is-justify-content-center">
+          <div class="content">
+            <a
+              class="button is-dark is-fullwidth is-small mb-1"
+              th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
+            >
+              <strong class="mx-6">お薬基本情報を更新する</strong>
+            </a>
+            <button
+              type="button"
+              class="button is-dark is-fullwidth is-small mb-1"
+              @click="isEditModalActive = false"
+            >
+              <strong class="mx-6">お薬画像を変更する</strong>
+            </button>
+            <button
+              type="button"
+              class="button is-dark is-fullwidth is-small has-text-danger mb-1"
+              @click="isEditModalActive = false"
+            >
+              <strong class="mx-6">キャンセル</strong>
+            </button>
+          </div>
+        </div>
       </div>
 
       <div

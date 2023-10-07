@@ -4,6 +4,7 @@ createApp({
   data() {
     return {
       isDeletionConfirmationModalActive: false,
+      isEditModalActive: false,
     };
   },
 }).mount('#medicineDetail');
