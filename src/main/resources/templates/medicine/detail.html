@@ -11,7 +11,11 @@
   </head>
 
   <body>
-    <div th:object="${medicineDetail}" layout:fragment="content">
+    <div
+      id="medicineDetail"
+      th:object="${medicineDetail}"
+      layout:fragment="content"
+    >
       <div class="content has-text-centered">
         <h1 class="is-size-5 has-text-grey-dark">
           <span th:text="*{name}"> </span>
@@ -52,29 +56,29 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <div id="medicineDetail" layout:fragment="footer">
-      <div class="tabs is-fullwidth has-background-info-light">
-        <ul>
-          <li>
-            <a class="is-small is-link" @click="isEditModalActive = true">
-              <span class="icon fas fa-2x is-flex is-align-items-center">
-                <i class="fa-regular fa-pen-to-square"></i>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="is-small is-link"
-              @click="isDeletionConfirmationModalActive = true"
-            >
-              <span class="icon fas fa-2x is-flex is-align-items-center">
-                <i class="fa-solid fa-trash-can"></i>
-              </span>
-            </a>
-          </li>
-        </ul>
+      <div class="bottom-fullwidth">
+        <div class="tabs is-fullwidth has-background-info-light pb-0">
+          <ul>
+            <li>
+              <a class="is-small is-link pb-5" @click="isEditModalActive = true">
+                <span class="icon fas fa-2x is-flex is-align-items-center">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="is-small is-link pb-5"
+                @click="isDeletionConfirmationModalActive = true"
+              >
+                <span class="icon fas fa-2x is-flex is-align-items-center">
+                  <i class="fa-solid fa-trash-can"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="modal" :class="{ 'is-active': isEditModalActive }">

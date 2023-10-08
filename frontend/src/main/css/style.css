@@ -3,3 +3,10 @@
   bottom: 1.2rem;
   right: 1.5rem;
 }
+
+.bottom-fullwidth {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
