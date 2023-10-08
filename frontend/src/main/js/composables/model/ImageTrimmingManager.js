@@ -15,8 +15,8 @@ export class ImageTrimmingManager {
     const objectURL = URL.createObjectURL(file);
     const croppieOption = {
       url: objectURL,
-      viewport: { width: 300, height: 300 },
-      boundary: { width: 305, height: 305 },
+      viewport: { width: 250, height: 250 },
+      boundary: { width: 255, height: 255 },
       enableOrientation: true,
     };
     this._croppie = new Croppie(container, croppieOption);

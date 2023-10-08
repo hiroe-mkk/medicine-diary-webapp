@@ -15,16 +15,32 @@
         <div class="is-size-5 has-text-link-dark has-text-centered">
           {{ `${props.imageName}を変更する` }}
         </div>
+        <div class="content m-3 has-text-centered">
+          <div
+            class="is-flex is-justify-content-center"
+            v-if="!imageTrimmingManager.isTrimming && image !== undefined"
+          >
+            <figure class="image is-128x128">
+              <img :src="image" />
+            </figure>
+          </div>
+          <div
+            ref="trimmingContainer"
+            v-show="imageTrimmingManager.isTrimming"
+          ></div>
+          <p
+            class="help is-danger"
+            v-for="error in fieldErrors.get('profileImage')"
+          >
+            {{ error }}
+          </p>
+        </div>
         <form
           class="form"
           method="post"
           enctype="multipart/form-data"
           @submit.prevent="submitForm()"
         >
-          <div class="container m-3" ref="trimmingContainer"></div>
-          <p class="help is-danger" v-for="error in fieldErrors.get('image')">
-            {{ error }}
-          </p>
           <div
             class="file m-3 is-small is-info is-centered"
             v-show="!imageTrimmingManager.isTrimming"
