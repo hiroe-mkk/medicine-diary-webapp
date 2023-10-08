@@ -1,36 +1,33 @@
 <template>
-  <div class="is-flex is-justify-content-center">
-    <figure class="image is-128x128" v-if="profileImage.url !== ''">
-      <img class="is-rounded" :src="profileImage.url" />
+  <div class="is-flex is-justify-content-center" v-if="image !== undefined">
+    <figure class="image is-128x128">
+      <img class="is-rounded" :src="image" />
     </figure>
   </div>
 
-  <div class="modal" :class="{ 'is-active': isProfileImageChangeModalActive }">
+  <div class="modal" :class="{ 'is-active': isImageChangeModalActive }">
     <div
       class="modal-background"
-      @click="isProfileImageChangeModalActive = false"
+      @click="isImageChangeModalActive = false"
     ></div>
     <div class="modal-content">
       <div class="notification p-3 has-background-white-bis has-text-centered">
         <div class="is-size-5 has-text-link-dark has-text-centered">
-          プロフィール画像を変更する
+          {{ `${props.imageName}を変更する` }}
         </div>
         <form
           class="form"
           method="post"
           enctype="multipart/form-data"
-          @submit.prevent="submitProfileImageChangeForm()"
+          @submit.prevent="submitForm()"
         >
           <div class="container m-3" ref="trimmingContainer"></div>
-          <p
-            class="help is-danger"
-            v-for="error in fieldErrors.get('profileImage')"
-          >
+          <p class="help is-danger" v-for="error in fieldErrors.get('image')">
             {{ error }}
           </p>
           <div
             class="file m-3 is-small is-info is-centered"
-            v-show="!profileImageTrimmingManager.isTrimming"
+            v-show="!imageTrimmingManager.isTrimming"
           >
             <label class="file-label">
               <input
@@ -46,7 +43,7 @@
           </div>
           <div
             class="field is-grouped is-grouped-centered"
-            v-show="profileImageTrimmingManager.isTrimming"
+            v-show="imageTrimmingManager.isTrimming"
           >
             <p class="control">
               <button class="button is-small is-rounded is-link">完了</button>
@@ -55,7 +52,7 @@
               <button
                 type="button"
                 class="button is-small is-rounded is-danger"
-                @click="isProfileImageChangeModalActive = false"
+                @click="isImageChangeModalActive = false"
               >
                 キャンセル
               </button>
@@ -77,50 +74,52 @@ import {
 } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
-import { ProfileImageTrimmingManager } from '@main/js/composables/model/ProfileImageTrimmingManager.js';
+import { ImageTrimmingManager } from '@main/js/composables/model/ImageTrimmingManager.js';
 
 const props = defineProps({
-  profileImage: String,
+  image: String,
   csrf: String,
+  executePath: String,
+  imageName: String,
 });
 
 defineExpose({ activate });
 
-const profileImage = reactive({ url: props.profileImage });
-const isProfileImageChangeModalActive = ref(false);
+const image = ref(props.image);
+const isImageChangeModalActive = ref(false);
 const trimmingContainer = ref(null);
-const profileImageTrimmingManager = reactive(new ProfileImageTrimmingManager());
+const imageTrimmingManager = reactive(new ImageTrimmingManager());
 
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
 
 function activate() {
   fieldErrors.clear();
-  profileImageTrimmingManager.destroy();
-  isProfileImageChangeModalActive.value = true;
+  imageTrimmingManager.destroy();
+  isImageChangeModalActive.value = true;
 }
 
 function fileSelected(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  profileImageTrimmingManager.setFile(file, trimmingContainer.value);
+  imageTrimmingManager.setFile(file, trimmingContainer.value);
   event.target.value = ''; // 続けて同じファイルが選択された場合に change イベントを発火させるために必要
 }
 
-async function submitProfileImageChangeForm() {
-  const result = await profileImageTrimmingManager.result();
+async function submitForm() {
+  const result = await imageTrimmingManager.result();
   const form = new FormData();
-  form.set('profileImage', result);
+  form.set('image', result);
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest('/api/profile/profileimage/change', form)
+  HttpRequestClient.submitPostRequest(props.executePath, form)
     .then(() => {
-      profileImage.url = URL.createObjectURL(result);
-      isProfileImageChangeModalActive.value = false;
+      image.value = URL.createObjectURL(result);
+      isImageChangeModalActive.value = false;
       resultMessage.value.activate(
         'INFO',
-        'プロフィール画像の変更が完了しました。'
+        `${props.imageName}の変更が完了しました。`
       );
     })
     .catch((error) => {

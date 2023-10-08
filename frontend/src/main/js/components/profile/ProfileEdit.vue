@@ -2,8 +2,10 @@
   <div class="content has-text-centered">
     <ChangeableImage
       ref="changeableImage"
-      :profile-image="props.profileImage"
+      :image="props.profileImage"
       :csrf="props.csrf"
+      executePath="/api/profile/profileimage/change"
+      imageName="プロフィール画像"
     ></ChangeableImage>
     <strong class="is-size-4 has-text-grey-dark">
       {{ username }}

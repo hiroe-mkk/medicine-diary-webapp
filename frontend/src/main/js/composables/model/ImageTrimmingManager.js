@@ -1,6 +1,6 @@
 import Croppie from 'croppie/croppie.js';
 
-export class ProfileImageTrimmingManager {
+export class ImageTrimmingManager {
   constructor() {
     this._croppie = null;
   }

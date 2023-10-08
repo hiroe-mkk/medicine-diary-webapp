@@ -8,10 +8,10 @@ import org.springframework.web.multipart.*
 class ProfileImageChangeCommand(@field:FileNotEmpty
                                 @field:FileMaxSize(300 * 1024) // 300KB
                                 @field:FileType([MediaType.IMAGE_JPEG_VALUE])
-                                val profileImage: MultipartFile?) {
+                                val image: MultipartFile?) {
     fun validatedFileContent(): FileContent {
-        return FileContent(MediaType.parseMediaType(checkNotNull(profileImage?.contentType)),
-                           checkNotNull(profileImage?.size!!.toInt()),
-                           checkNotNull(profileImage?.inputStream))
+        return FileContent(MediaType.parseMediaType(checkNotNull(image?.contentType)),
+                           checkNotNull(image?.size!!.toInt()),
+                           checkNotNull(image?.inputStream))
     }
 }

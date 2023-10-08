@@ -18,6 +18,6 @@ object TestMedicineImageFactory {
     fun createMultipartFile(type: MediaType = defaultType,
                             size: Int = defaultSize): MultipartFile {
         val content = ByteArrayInputStream(ByteArray(size))
-        return MockMultipartFile("medicineImage", "medicineImage.jpg", type.toString(), content)
+        return MockMultipartFile("image", "medicineImage.jpg", type.toString(), content)
     }
 }
