@@ -10,7 +10,7 @@ data class Administration(val timesPerDay: Int,
 
         val timingOptionsStr = timingOptions.joinToString(transform = { it.str },
                                                           separator = "、",
-                                                          prefix = "(", postfix = ")")
-        return "1日 ${timesPerDay}回${timingOptionsStr}"
+                                                          prefix = "( ", postfix = " )")
+        return "1日 ${timesPerDay}回 $timingOptionsStr"
     }
 }
