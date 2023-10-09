@@ -1,23 +1,23 @@
 package example.testhelper.factory
 
-import example.application.service.medicine.*
+import example.application.shared.command.*
 import org.springframework.http.*
 import org.springframework.mock.web.*
 import org.springframework.web.multipart.*
 import java.io.*
 
-object TestMedicineImageFactory {
+object TestImageFactory {
     private val defaultType: MediaType = MediaType.IMAGE_JPEG
     private val defaultSize: Int = 1024
 
-    fun createMedicineImageChangeCommand(type: MediaType = defaultType,
-                                         size: Int = defaultSize): MedicineImageChangeCommand {
-        return MedicineImageChangeCommand(createMultipartFile(type, size))
+    fun createImageChangeCommand(type: MediaType = defaultType,
+                                 size: Int = defaultSize): ImageChangeCommand {
+        return ImageChangeCommand(createMultipartFile(type, size))
     }
 
     fun createMultipartFile(type: MediaType = defaultType,
                             size: Int = defaultSize): MultipartFile {
         val content = ByteArrayInputStream(ByteArray(size))
-        return MockMultipartFile("image", "medicineImage.jpg", type.toString(), content)
+        return MockMultipartFile("image", "image.jpg", type.toString(), content)
     }
 }

@@ -103,7 +103,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
 
     @Nested
     inner class ChangeProfileImageTest {
-        private val profileImageChangeCommand = TestProfileImageFactory.createProfileImageChangeCommand()
+        private val imageChangeCommand = TestImageFactory.createImageChangeCommand()
 
         @BeforeEach
         internal fun setUp() {
@@ -116,7 +116,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
         fun profileImageIsNull_changingProfileImageSucceeds() {
             //when:
-            val newProfileImageURL = profileService.changeProfileImage(profileImageChangeCommand, userSession)
+            val newProfileImageURL = profileService.changeProfileImage(imageChangeCommand, userSession)
 
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
@@ -134,7 +134,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             profileRepository.save(profile)
 
             //when:
-            val newProfileImageURL = profileService.changeProfileImage(profileImageChangeCommand, userSession)
+            val newProfileImageURL = profileService.changeProfileImage(imageChangeCommand, userSession)
 
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!

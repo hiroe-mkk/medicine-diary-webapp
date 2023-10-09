@@ -99,7 +99,7 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
 
     @Nested
     inner class ChangeProfileImageTest {
-        private val multipartFile = TestProfileImageFactory.createMultipartFile() as MockMultipartFile
+        private val multipartFile = TestImageFactory.createMultipartFile() as MockMultipartFile
 
         @Test
         @WithMockAuthenticatedAccount
@@ -119,7 +119,7 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
         fun validationErrorOccurs_returnsResponseWithStatus400() {
             //given:
             val invalidMultipartFile =
-                    TestProfileImageFactory.createMultipartFile(type = MediaType.IMAGE_PNG) as MockMultipartFile
+                    TestImageFactory.createMultipartFile(type = MediaType.IMAGE_PNG) as MockMultipartFile
 
             //when:
             val actions = mockMvc.perform(multipart("${PATH}/profileimage/change")
@@ -129,7 +129,7 @@ internal class ProfileEditApiControllerTest(@Autowired private val mockMvc: Mock
             //then:
             actions.andExpect(status().isBadRequest)
                 .andExpect(header().string("Content-Type", "application/json"))
-                .andExpect(jsonPath("\$.fieldErrors.profileImage").isNotEmpty)
+                .andExpect(jsonPath("\$.fieldErrors.image").isNotEmpty)
         }
 
         @Test

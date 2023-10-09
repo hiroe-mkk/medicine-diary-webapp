@@ -3,6 +3,7 @@ package example.presentation.controller.api.profile
 import example.application.service.*
 import example.application.service.account.*
 import example.application.service.profile.*
+import example.application.shared.command.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
@@ -28,8 +29,8 @@ class ProfileEditApiController(private val profileService: ProfileService,
      */
     @PostMapping("/profileimage/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun changeProfileImage(@Validated profileImageChangeCommand: ProfileImageChangeCommand) {
-        profileService.changeProfileImage(profileImageChangeCommand,
+    fun changeProfileImage(@Validated imageChangeCommand: ImageChangeCommand) {
+        profileService.changeProfileImage(imageChangeCommand,
                                           userSessionProvider.getUserSession())
     }
 }

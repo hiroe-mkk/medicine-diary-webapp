@@ -1,6 +1,7 @@
 package example.presentation.controller.api.medicine
 
 import example.application.service.medicine.*
+import example.application.shared.command.*
 import example.domain.model.medicine.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
@@ -18,9 +19,9 @@ class MedicineImageChangeApiController(private val medicineService: MedicineServ
     @PostMapping("/medicineimage/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeMedicineImage(@PathVariable medicineId: MedicineId,
-                            @Validated medicineImageChangeCommand: MedicineImageChangeCommand) {
+                            @Validated imageChangeCommand: ImageChangeCommand) {
         medicineService.changeMedicineImage(medicineId,
-                                            medicineImageChangeCommand,
+                                            imageChangeCommand,
                                             userSessionProvider.getUserSession())
     }
 }

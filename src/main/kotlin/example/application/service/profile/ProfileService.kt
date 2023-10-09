@@ -1,6 +1,7 @@
 package example.application.service.profile
 
 import example.application.service.account.*
+import example.application.shared.command.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
@@ -32,7 +33,7 @@ class ProfileService(private val profileRepository: ProfileRepository,
     /**
      * プロフィール画像を変更する
      */
-    fun changeProfileImage(command: ProfileImageChangeCommand,
+    fun changeProfileImage(command: ImageChangeCommand,
                            userSession: UserSession): ProfileImageURL {
         val profile = findProfileOrElseThrowException(userSession)
 

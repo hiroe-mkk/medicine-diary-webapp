@@ -20,7 +20,7 @@ internal class FileTypeTest(@Autowired val validator: Validator) {
                "application/pdf, true")
     fun canDetectInvalidMultipartFile(mediaType: String, result: Boolean) {
         //given:
-        val file = TestProfileImageFactory.createMultipartFile(type = MediaType.parseMediaType(mediaType))
+        val file = TestImageFactory.createMultipartFile(type = MediaType.parseMediaType(mediaType))
         val form = Form(file)
         val bindException = BindException(form, "form")
 

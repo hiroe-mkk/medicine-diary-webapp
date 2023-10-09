@@ -28,7 +28,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
         private const val PATH = "/api/medicines/{medicineId}/medicineimage/change"
     }
 
-    private val multipartFile = TestMedicineImageFactory.createMultipartFile() as MockMultipartFile
+    private val multipartFile = TestImageFactory.createMultipartFile() as MockMultipartFile
 
     @Test
     @WithMockAuthenticatedAccount
@@ -53,8 +53,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
     fun validationErrorOccurs_returnsResponseWithStatus400() {
         //given:
         val medicineId = MedicineId("medicineId")
-        val invalidMultipartFile =
-                TestMedicineImageFactory.createMultipartFile(type = MediaType.IMAGE_PNG) as MockMultipartFile
+        val invalidMultipartFile = TestImageFactory.createMultipartFile(type = MediaType.IMAGE_PNG) as MockMultipartFile
 
         //when:
         val actions = mockMvc.perform(multipart(PATH, medicineId)
@@ -64,7 +63,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
         //then:
         actions.andExpect(status().isBadRequest)
             .andExpect(header().string("Content-Type", "application/json"))
-            .andExpect(jsonPath("\$.fieldErrors.medicineImage").isNotEmpty)
+            .andExpect(jsonPath("\$.fieldErrors.image").isNotEmpty)
     }
 
     @Test

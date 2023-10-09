@@ -1,5 +1,6 @@
 package example.application.service.medicine
 
+import example.application.shared.command.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
@@ -73,7 +74,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬画像を変更する
      */
     fun changeMedicineImage(medicineId: MedicineId,
-                            command: MedicineImageChangeCommand,
+                            command: ImageChangeCommand,
                             userSession: UserSession): MedicineImageURL {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
 

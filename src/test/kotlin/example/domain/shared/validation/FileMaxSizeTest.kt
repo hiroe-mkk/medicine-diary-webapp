@@ -20,7 +20,7 @@ internal class FileMaxSizeTest(@Autowired val validator: Validator) {
                "1025, true")
     fun canDetectInvalidMultipartFile(size: Int, result: Boolean) {
         //given:
-        val file = TestProfileImageFactory.createMultipartFile(size = size)
+        val file = TestImageFactory.createMultipartFile(size = size)
         val form = Form(file)
         val bindException = BindException(form, "form")
 
