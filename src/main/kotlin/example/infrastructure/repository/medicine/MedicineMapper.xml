@@ -116,7 +116,7 @@
     <resultMap id="MedicineEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
-            <arg column="owner" javaType="AccountId" resultMap="OwnerResultMap"/>
+            <arg column="owner" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="name" javaType="String"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="taking_unit" javaType="String"/>
@@ -136,7 +136,7 @@
             <idArg column="medicine_id" javaType="String"/>
         </constructor>
     </resultMap>
-    <resultMap id="OwnerResultMap" type="AccountId">
+    <resultMap id="AccountIdResultMap" type="AccountId">
         <constructor>
             <idArg column="owner" javaType="String"/>
         </constructor>
