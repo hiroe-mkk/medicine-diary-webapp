@@ -1,7 +1,7 @@
 package example.domain.model.medicine
 
 /**
- * 服薬するタイミング
+ * 服用するタイミング
  */
 enum class Timing(val str: String) {
     IN_THE_MORNING("朝"),
