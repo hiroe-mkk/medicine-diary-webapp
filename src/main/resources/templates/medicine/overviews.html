@@ -26,6 +26,14 @@
           th:each="medicineOverview:${medicineOverviews}"
           th:object="${medicineOverview}"
         >
+          <div class="media-left" th:if="*{medicineImageURL != null}">
+            <a
+              class="image is-96x96"
+              th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
+            >
+              <img th:src="*{medicineImageURL}" />
+            </a>
+          </div>
           <div class="media-content">
             <div class="content has-text-grey-dark">
               <a
