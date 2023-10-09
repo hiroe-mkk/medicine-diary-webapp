@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.repository.takingrecord.TakingRecordMapper">
+    <select id="findOneByTakingRecordId" resultMap="TakingRecordResultEntityResultMap">
+        SELECT
+            taking_records.taking_record_id AS taking_record_id,
+            taking_records.account_id AS account_id,
+            taking_records.medicine_id AS medicine_id,
+            taking_records.quantity AS quantity,
+            taking_records.note AS note,
+            taking_records.taken_at AS taken_at,
+            symptoms.ordering AS ordering,
+            symptoms.symptom AS symptom,
+            symptoms.before_taking AS before_taking,
+            symptoms.after_taking AS after_taking
+        FROM
+            taking_records
+            LEFT OUTER JOIN symptoms USING(taking_record_id)
+        WHERE
+            taking_record_id = #{takingRecordId};
+    </select>
+
+    <insert id="insertOneTakingRecord">
+        INSERT INTO taking_records(
+            taking_record_id,
+            account_id,
+            medicine_id,
+            quantity,
+            note,
+            taken_at
+        )VALUES(
+            #{takingRecordId},
+            #{accountId},
+            #{medicineId},
+            #{quantity},
+            #{note},
+            #{takenAt}
+        );
+    </insert>
+
+    <insert id="insertAllSymptoms">
+        INSERT INTO symptoms(
+            taking_record_id,
+            ordering,
+            symptom,
+            before_taking,
+            after_taking
+        )VALUES
+            <foreach collection="symptoms" item="item" separator=",">
+                (#{takingRecordId},
+                 #{item.ordering},
+                 #{item.value.symptom},
+                 #{item.value.beforeTaking},
+                 #{item.value.afterTaking, jdbcType=VARCHAR})
+            </foreach>
+        ;
+    </insert>
+
+    <resultMap id="TakingRecordResultEntityResultMap" type="example.infrastructure.repository.takingrecord.TakingRecordResultEntity">
+        <constructor>
+            <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
+            <arg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
+            <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
+            <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
+            <arg column="taken_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+        <id column="taking_record_id"/>
+        <association column="{ordering, symptom, before_taking, after_taking}" property="symptoms"
+                     javaType="example.infrastructure.repository.shared.OrderedEntity" resultMap="SymptomsOrderedEntityResultMap"/>
+    </resultMap>
+    <resultMap id="TakingRecordIdResultMap" type="TakingRecordId">
+        <constructor>
+            <idArg column="taking_record_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="AccountIdResultMap" type="AccountId">
+        <constructor>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineIdResultMap" type="MedicineId">
+        <constructor>
+            <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="DoseResultMap" type="Dose">
+        <constructor>
+            <idArg column="quantity" javaType="_double"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="NoteResultMap" type="Note">
+        <constructor>
+            <idArg column="note" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="SymptomsOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">
+        <constructor>
+            <idArg column="ordering" javaType="_int"/>
+            <arg column="{symptom, before_taking, after_taking}" resultMap="FollowUpResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="FollowUpResultMap" type="FollowUp">
+        <constructor>
+            <arg column="symptom" javaType="String"/>
+            <arg column="before_taking" javaType="ConditionLevel"/>
+            <arg column="after_taking" javaType="ConditionLevel"/>
+        </constructor>
+    </resultMap>
+</mapper>

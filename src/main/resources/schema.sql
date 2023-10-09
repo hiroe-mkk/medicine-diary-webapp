@@ -49,3 +49,25 @@ CREATE TABLE IF NOT EXISTS effects (
   PRIMARY KEY(medicine_id, ordering),
   FOREIGN KEY(medicine_id) REFERENCES medicines(medicine_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+
+CREATE TABLE IF NOT EXISTS taking_records (
+  taking_record_id VARCHAR(36) PRIMARY KEY,
+  account_id VARCHAR(36),
+  medicine_id VARCHAR(36),
+  quantity DOUBLE NOT NULL,
+  note VARCHAR(500) NOT NULL,
+  taken_at TIMESTAMP NOT NULL,
+  FOREIGN KEY(account_id) REFERENCES accounts(account_id),
+  FOREIGN KEY(medicine_id) REFERENCES medicines(medicine_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS symptoms (
+  taking_record_id VARCHAR(36),
+  ordering INT,
+  symptom VARCHAR(30) NOT NULL,
+  before_taking VARCHAR(15) NOT NULL,
+  after_taking VARCHAR(15),
+  PRIMARY KEY(taking_record_id, ordering),
+  FOREIGN KEY(taking_record_id) REFERENCES taking_records(taking_record_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
