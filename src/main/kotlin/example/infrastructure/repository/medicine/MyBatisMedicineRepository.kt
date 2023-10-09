@@ -21,9 +21,6 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     override fun save(medicine: Medicine) {
-        medicineMapper.deleteAllTimingOptions(medicine.id.value)
-        medicineMapper.deleteAllEffects(medicine.id.value)
-
         medicineMapper.upsertOneMedicine(medicine.id.value,
                                          medicine.owner.value,
                                          medicine.name,
@@ -34,11 +31,12 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
                                          medicine.medicineImageURL?.endpoint,
                                          medicine.medicineImageURL?.path,
                                          medicine.registeredAt)
-        saveAllTimingOptions(medicine)
-        saveAllEffects(medicine)
+        upsertAllTimingOptions(medicine)
+        upsertAllEffects(medicine)
     }
 
-    private fun saveAllTimingOptions(medicine: Medicine) {
+    private fun upsertAllTimingOptions(medicine: Medicine) {
+        medicineMapper.deleteAllTimingOptions(medicine.id.value)
         val timingOptions = medicine.dosageAndAdministration.timingOptions
         if (timingOptions.isEmpty()) return
 
@@ -46,7 +44,8 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
                                               OrderedEntitiesConverter.convert(timingOptions))
     }
 
-    private fun saveAllEffects(medicine: Medicine) {
+    private fun upsertAllEffects(medicine: Medicine) {
+        medicineMapper.deleteAllEffects(medicine.id.value)
         val effects = medicine.effects.values
         if (effects.isEmpty()) return
 
