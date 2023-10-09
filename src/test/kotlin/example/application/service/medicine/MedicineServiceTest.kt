@@ -234,7 +234,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val foundMedicine = medicineRepository.findById(medicine.id)!!
             assertThat(foundMedicine.medicineImageURL).isEqualTo(newMedicineImageURL)
             verify(exactly = 0) { medicineImageStorage.delete(any()) }
-            verify(exactly = 1) { medicineImageStorage.upload(any()) }
+            verify(exactly = 1) { medicineImageStorage.upload(newMedicineImageURL, any()) }
         }
 
         @Test
@@ -253,7 +253,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val foundMedicine = medicineRepository.findById(medicine.id)!!
             assertThat(foundMedicine.medicineImageURL).isEqualTo(newMedicineImageURL)
-            verify(exactly = 1) { medicineImageStorage.upload(any()) }
+            verify(exactly = 1) { medicineImageStorage.upload(newMedicineImageURL, any()) }
             verify(exactly = 1) { medicineImageStorage.delete(oldMedicineImageURL) }
         }
 

@@ -82,9 +82,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         val medicineImageURL = medicineImageStorage.createURL()
         medicine.changeMedicineImage(medicineImageURL)
         medicineRepository.save(medicine)
-
-        val medicineImage = MedicineImage(medicineImageURL, command.validatedFileContent())
-        medicineImageStorage.upload(medicineImage)
+        medicineImageStorage.upload(medicineImageURL, command.validatedFileContent())
 
         return medicineImageURL
     }
