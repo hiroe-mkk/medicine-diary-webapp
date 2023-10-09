@@ -17,4 +17,8 @@ interface TakingRecordMapper {
                               takenAt: LocalDateTime)
 
     fun insertAllSymptoms(takingRecordId: String, symptoms: Collection<OrderedEntity<FollowUp>>)
+
+    fun deleteAllSymptoms(takingRecordId: String)
+
+    fun deleteOneTakingRecord(takingRecordId: String)
 }

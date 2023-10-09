@@ -27,4 +27,9 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
         takingRecordMapper.insertAllSymptoms(takingRecord.id.value,
                                              OrderedEntitiesConverter.convert(symptoms))
     }
+
+    override fun delete(takingRecordId: TakingRecordId) {
+        takingRecordMapper.deleteAllSymptoms(takingRecordId.value)
+        takingRecordMapper.deleteOneTakingRecord(takingRecordId.value)
+    }
 }

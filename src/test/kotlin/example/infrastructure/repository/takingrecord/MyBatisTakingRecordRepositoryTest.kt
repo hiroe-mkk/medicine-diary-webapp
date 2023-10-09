@@ -13,6 +13,7 @@ import java.time.*
 
 @MyBatisRepositoryTest
 internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
+                                                 @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
                                                  @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                  @Autowired private val testAccountInserter: TestAccountInserter) {
     private lateinit var accountId: AccountId
@@ -44,5 +45,18 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
 
         //then:
         assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(takingRecord)
+    }
+
+    @Test
+    fun canDeleteTakingRecord() {
+        //given:
+        val takingRecord = testTakingRecordInserter.insert(accountId, medicineId)
+
+        //when:
+        takingRecordRepository.delete(takingRecord.id)
+
+        //then:
+        val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
+        assertThat(foundTakingRecord).isNull()
     }
 }

@@ -57,6 +57,16 @@
         ;
     </insert>
 
+    <delete id="deleteOneTakingRecord">
+        DELETE FROM taking_records
+        WHERE taking_record_id = #{takingRecordId};
+    </delete>
+
+    <delete id="deleteAllSymptoms">
+        DELETE FROM symptoms
+        WHERE taking_record_id = #{takingRecordId};
+    </delete>
+
     <resultMap id="TakingRecordResultEntityResultMap" type="example.infrastructure.repository.takingrecord.TakingRecordResultEntity">
         <constructor>
             <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
