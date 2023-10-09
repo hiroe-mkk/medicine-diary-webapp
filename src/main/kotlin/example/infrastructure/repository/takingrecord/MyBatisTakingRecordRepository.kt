@@ -11,16 +11,17 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
     }
 
     override fun save(takingRecord: TakingRecord) {
-        takingRecordMapper.insertOneTakingRecord(takingRecord.id.value,
+        takingRecordMapper.upsertOneTakingRecord(takingRecord.id.value,
                                                  takingRecord.accountId.value,
                                                  takingRecord.medicineId.value,
                                                  takingRecord.dose.quantity,
                                                  takingRecord.note.value,
                                                  takingRecord.takenAt)
-        insertAllSymptoms(takingRecord)
+        upsertAllSymptoms(takingRecord)
     }
 
-    private fun insertAllSymptoms(takingRecord: TakingRecord) {
+    private fun upsertAllSymptoms(takingRecord: TakingRecord) {
+        takingRecordMapper.deleteAllSymptoms(takingRecord.id.value)
         val symptoms = takingRecord.symptoms.values
         if (symptoms.isEmpty()) return
 

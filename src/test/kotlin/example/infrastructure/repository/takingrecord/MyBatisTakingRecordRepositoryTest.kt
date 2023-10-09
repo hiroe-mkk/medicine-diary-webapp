@@ -48,6 +48,25 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
     }
 
     @Test
+    fun canUpdateTakingRecord() {
+        //given:
+        val takingRecord = testTakingRecordInserter.insert(accountId, medicineId)
+        takingRecord.modify(testMedicineInserter.insert(accountId).id,
+                            Dose(2.0),
+                            Symptoms(listOf(FollowUp("頭痛",
+                                                     ConditionLevel.A_LITTLE_BAD,
+                                                     null))),
+                            Note(""))
+
+        //when:
+        takingRecordRepository.save(takingRecord)
+
+        //then:
+        val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
+        assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(takingRecord)
+    }
+
+    @Test
     fun canDeleteTakingRecord() {
         //given:
         val takingRecord = testTakingRecordInserter.insert(accountId, medicineId)

@@ -9,7 +9,7 @@ import java.time.*
 interface TakingRecordMapper {
     fun findOneByTakingRecordId(takingRecordId: String): TakingRecordResultEntity?
 
-    fun insertOneTakingRecord(takingRecordId: String,
+    fun upsertOneTakingRecord(takingRecordId: String,
                               accountId: String,
                               medicineId: String,
                               quantity: Double,

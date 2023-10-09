@@ -21,7 +21,7 @@
             taking_record_id = #{takingRecordId};
     </select>
 
-    <insert id="insertOneTakingRecord">
+    <insert id="upsertOneTakingRecord">
         INSERT INTO taking_records(
             taking_record_id,
             account_id,
@@ -36,7 +36,10 @@
             #{quantity},
             #{note},
             #{takenAt}
-        );
+        )ON DUPLICATE KEY UPDATE
+            medicine_id = #{medicineId},
+            quantity = #{quantity},
+            note = #{note};
     </insert>
 
     <insert id="insertAllSymptoms">
