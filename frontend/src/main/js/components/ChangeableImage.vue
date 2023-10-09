@@ -12,6 +12,13 @@
     ></div>
     <div class="modal-content">
       <div class="notification p-3 has-background-white-bis has-text-centered">
+        <div class="has-text-right">
+          <button
+            class="delete"
+            type="button"
+            @click="isImageChangeModalActive = false"
+          ></button>
+        </div>
         <div class="is-size-5 has-text-link-dark has-text-centered">
           {{ `${props.imageName}を変更する` }}
         </div>

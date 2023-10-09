@@ -46,6 +46,13 @@
     <div class="modal-background" @click="isEditModalActive = false"></div>
     <div class="modal-content">
       <div class="notification p-3 is-white">
+        <div class="has-text-right">
+          <button
+            class="delete"
+            type="button"
+            @click="isEditModalActive = false"
+          ></button>
+        </div>
         <div class="is-size-5 has-text-link-dark has-text-centered">効能</div>
         <div class="field mb-3">
           <div class="control">

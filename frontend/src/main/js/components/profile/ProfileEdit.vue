@@ -45,6 +45,13 @@
     ></div>
     <div class="modal-content">
       <div class="notification p-3 is-white">
+        <div class="has-text-right">
+          <button
+            class="delete"
+            type="button"
+            @click="isUsernameChangeModalActive = false"
+          ></button>
+        </div>
         <div class="is-size-5 has-text-link-dark has-text-centered">
           ユーザー名を変更する
         </div>
