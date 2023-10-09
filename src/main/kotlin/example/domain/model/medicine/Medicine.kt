@@ -11,17 +11,14 @@ import java.time.*
 class Medicine(val id: MedicineId,
                val owner: AccountId,
                name: String,
-               dosage: Dosage,
-               administration: Administration,
+               dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
                precautions: Note,
                medicineImageURL: MedicineImageURL?,
                val registeredAt: LocalDateTime) {
     var name: String = name
         private set
-    var dosage: Dosage = dosage
-        private set
-    var administration: Administration = administration
+    var dosageAndAdministration: DosageAndAdministration = dosageAndAdministration
         private set
     var effects: Effects = effects
         private set
@@ -34,16 +31,14 @@ class Medicine(val id: MedicineId,
         fun create(id: MedicineId,
                    owner: AccountId,
                    name: String,
-                   dosage: Dosage,
-                   administration: Administration,
+                   dosageAndAdministration: DosageAndAdministration,
                    effects: Effects,
                    precautions: Note,
                    registeredAt: LocalDateTime): Medicine {
             return Medicine(id,
                             owner,
                             name,
-                            dosage,
-                            administration,
+                            dosageAndAdministration,
                             effects,
                             precautions,
                             null,
@@ -54,13 +49,11 @@ class Medicine(val id: MedicineId,
     fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
 
     fun changeBasicInfo(newName: String,
-                        newDosage: Dosage,
-                        newAdministration: Administration,
+                        newDosageAndAdministration: DosageAndAdministration,
                         newEffects: Effects,
                         newPrecautions: Note) {
         this.name = newName
-        this.dosage = newDosage
-        this.administration = newAdministration
+        this.dosageAndAdministration = newDosageAndAdministration
         this.effects = newEffects
         this.precautions = newPrecautions
     }

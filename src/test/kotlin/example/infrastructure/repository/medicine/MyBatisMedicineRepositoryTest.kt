@@ -28,8 +28,7 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
         val medicine = Medicine(MedicineId("testMedicineId"),
                                 accountId,
                                 "ロキソニンS",
-                                Dosage(1.0, "錠"),
-                                Administration(3, emptyList()),
+                                DosageAndAdministration(Dose(1.0), "錠", 3, emptyList()),
                                 Effects(listOf("頭痛", "解熱", "肩こり")),
                                 Note("服用間隔は4時間以上開けること。"),
                                 null,
@@ -64,9 +63,10 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
         //given:
         val medicine = testMedicineInserter.insert(accountId)
         medicine.changeBasicInfo("${medicine.name}[CHANGED]",
-                                 Dosage(medicine.dosage.quantity + 1,
-                                        "${medicine.dosage.takingUnit}[CHANGED]"),
-                                 Administration(medicine.administration.timesPerDay + 1, emptyList()),
+                                 DosageAndAdministration(Dose(1.0),
+                                                         "錠",
+                                                         medicine.dosageAndAdministration.timesPerDay + 1,
+                                                         emptyList()),
                                  Effects(medicine.effects.values.plus("[CHANGED]")),
                                  Note("${medicine.precautions}[CHANGED]"))
 

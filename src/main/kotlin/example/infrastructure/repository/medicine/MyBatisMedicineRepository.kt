@@ -27,9 +27,9 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         medicineMapper.upsertOneMedicine(medicine.id.value,
                                          medicine.owner.value,
                                          medicine.name,
-                                         medicine.dosage.quantity,
-                                         medicine.dosage.takingUnit,
-                                         medicine.administration.timesPerDay,
+                                         medicine.dosageAndAdministration.dose.quantity,
+                                         medicine.dosageAndAdministration.takingUnit,
+                                         medicine.dosageAndAdministration.timesPerDay,
                                          medicine.precautions.value,
                                          medicine.medicineImageURL?.endpoint,
                                          medicine.medicineImageURL?.path,
@@ -39,7 +39,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     private fun saveAllTimingOptions(medicine: Medicine) {
-        val timingOptions = medicine.administration.timingOptions
+        val timingOptions = medicine.dosageAndAdministration.timingOptions
         if (timingOptions.isEmpty()) return
 
         medicineMapper.insertAllTimingOptions(medicine.id.value,

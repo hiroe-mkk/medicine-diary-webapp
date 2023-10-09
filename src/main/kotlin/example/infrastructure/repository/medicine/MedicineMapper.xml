@@ -118,7 +118,8 @@
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="owner" javaType="AccountId" resultMap="OwnerResultMap"/>
             <arg column="name" javaType="String"/>
-            <arg column="{quantity, taking_unit}" javaType="Dosage" resultMap="DosageResultMap"/>
+            <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
+            <arg column="taking_unit" javaType="String"/>
             <arg column="times_per_day" javaType="_int"/>
             <arg column="precautions" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="{medicine_image_url_endpoint, medicine_image_url_path}" javaType="MedicineImageURL" resultMap="MedicineImageURLResultMap"/>
@@ -140,10 +141,9 @@
             <idArg column="owner" javaType="String"/>
         </constructor>
     </resultMap>
-    <resultMap id="DosageResultMap" type="Dosage">
+    <resultMap id="DoseResultMap" type="Dose">
         <constructor>
             <idArg column="quantity" javaType="_double"/>
-            <arg column="taking_unit" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="NoteResultMap" type="Note">

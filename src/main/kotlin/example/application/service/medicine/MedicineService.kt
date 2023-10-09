@@ -38,8 +38,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         val medicine = Medicine.create(medicineRepository.createMedicineId(),
                                        userSession.accountId,
                                        medicineBasicInfoInputCommand.validatedName,
-                                       medicineBasicInfoInputCommand.validatedDosage,
-                                       medicineBasicInfoInputCommand.validatedAdministration,
+                                       medicineBasicInfoInputCommand.validatedDosageAndAdministration,
                                        medicineBasicInfoInputCommand.validatedEffects,
                                        medicineBasicInfoInputCommand.validatedPrecautions,
                                        localDateTimeProvider.now())
@@ -64,8 +63,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                                 userSession: UserSession) {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
         medicine.changeBasicInfo(medicineBasicInfoInputCommand.validatedName,
-                                 medicineBasicInfoInputCommand.validatedDosage,
-                                 medicineBasicInfoInputCommand.validatedAdministration,
+                                 medicineBasicInfoInputCommand.validatedDosageAndAdministration,
                                  medicineBasicInfoInputCommand.validatedEffects,
                                  medicineBasicInfoInputCommand.validatedPrecautions)
         medicineRepository.save(medicine)

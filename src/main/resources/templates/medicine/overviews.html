@@ -41,9 +41,18 @@
                 th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
                 th:text="*{name}"
               ></a>
-              <div class="has-text-right">
-                <p class="mb-1" th:text="*{administration}"></p>
-                <p class="mb-2" th:text="*{dosage}"></p>
+              <div
+                class="has-text-right"
+                th:object="${medicineOverview.dosageAndAdministration}"
+              >
+                <p class="mb-2" th:text="'1回 ' + *{dose} + *{takingUnit}"></p>
+                <p class="mb-2">
+                  <span th:text="'1日 ' + *{timesPerDay} + '回'"></span>
+                  ( <span
+                    th:each="timing:*{timingOptions}"
+                    th:text=" ${timing.str}"
+                  ></span> )
+                </p>
               </div>
               <div class="tags mt-2 mb-0">
                 <span

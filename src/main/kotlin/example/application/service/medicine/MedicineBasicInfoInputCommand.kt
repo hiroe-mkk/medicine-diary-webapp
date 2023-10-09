@@ -26,8 +26,11 @@ data class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入
                                          @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
                                          val precautions: String) {
     val validatedName: String = name.trim()
-    val validatedDosage: Dosage = Dosage(quantity ?: 0.0, takingUnit.trim())
-    val validatedAdministration: Administration = Administration(timesPerDay ?: 0, timingOptions)
+    val validatedDosageAndAdministration: DosageAndAdministration =
+            DosageAndAdministration(Dose(quantity ?: 0.0),
+                                    "錠",
+                                    timesPerDay ?: 0,
+                                    timingOptions)
     val validatedEffects: Effects = Effects(effects.map(Effect::value))
     val validatedPrecautions: Note = Note(precautions.trim())
 
@@ -44,10 +47,10 @@ data class MedicineBasicInfoInputCommand(@field:NotEmpty(message = "※必ず入
 
         fun initialize(medicine: Medicine): MedicineBasicInfoInputCommand {
             return MedicineBasicInfoInputCommand(medicine.name,
-                                                 medicine.dosage.quantity,
-                                                 medicine.dosage.takingUnit,
-                                                 medicine.administration.timesPerDay,
-                                                 medicine.administration.timingOptions,
+                                                 medicine.dosageAndAdministration.dose.quantity,
+                                                 medicine.dosageAndAdministration.takingUnit,
+                                                 medicine.dosageAndAdministration.timesPerDay,
+                                                 medicine.dosageAndAdministration.timingOptions,
                                                  medicine.effects.values.map(::Effect),
                                                  medicine.precautions.value)
         }
