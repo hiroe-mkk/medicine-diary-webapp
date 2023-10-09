@@ -34,14 +34,13 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     /**
      * 薬を登録する
      */
-    fun registerMedicine(medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
-                         userSession: UserSession): MedicineId {
+    fun registerMedicine(command: MedicineBasicInfoInputCommand, userSession: UserSession): MedicineId {
         val medicine = Medicine.create(medicineRepository.createMedicineId(),
                                        userSession.accountId,
-                                       medicineBasicInfoInputCommand.validatedName,
-                                       medicineBasicInfoInputCommand.validatedDosageAndAdministration,
-                                       medicineBasicInfoInputCommand.validatedEffects,
-                                       medicineBasicInfoInputCommand.validatedPrecautions,
+                                       command.validatedName,
+                                       command.validatedDosageAndAdministration,
+                                       command.validatedEffects,
+                                       command.validatedPrecautions,
                                        localDateTimeProvider.now())
         medicineRepository.save(medicine)
         return medicine.id
@@ -60,13 +59,13 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬基本情報を更新する
      */
     fun updateMedicineBasicInfo(medicineId: MedicineId,
-                                medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
+                                command: MedicineBasicInfoInputCommand,
                                 userSession: UserSession) {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
-        medicine.changeBasicInfo(medicineBasicInfoInputCommand.validatedName,
-                                 medicineBasicInfoInputCommand.validatedDosageAndAdministration,
-                                 medicineBasicInfoInputCommand.validatedEffects,
-                                 medicineBasicInfoInputCommand.validatedPrecautions)
+        medicine.changeBasicInfo(command.validatedName,
+                                 command.validatedDosageAndAdministration,
+                                 command.validatedEffects,
+                                 command.validatedPrecautions)
         medicineRepository.save(medicine)
     }
 
