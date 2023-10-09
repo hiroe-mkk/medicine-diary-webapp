@@ -1,6 +1,7 @@
 package example.infrastructure.storage.profileimage
 
 import example.domain.model.account.profile.profileimage.*
+import example.domain.shared.type.*
 import example.infrastructure.storage.shared.objectstrage.*
 import org.springframework.stereotype.*
 import java.util.*
@@ -12,8 +13,8 @@ class ObjectStorageProfileImageStorage(private val objectStorageClient: ObjectSt
         return ProfileImageURL(objectStorageClient.getEndpoint(), path)
     }
 
-    override fun upload(profileImage: ProfileImage) {
-        objectStorageClient.put(profileImage.path, profileImage.fileContent)
+    override fun upload(profileImageURL: ProfileImageURL, fileContent: FileContent) {
+        objectStorageClient.put(profileImageURL, fileContent)
     }
 
     override fun delete(profileImageURL: ProfileImageURL) {

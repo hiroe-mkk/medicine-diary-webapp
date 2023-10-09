@@ -122,7 +122,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
             assertThat(profile.profileImageURL).isEqualTo(newProfileImageURL)
             verify(exactly = 0) { profileImageStorage.delete(any()) }
-            verify(exactly = 1) { profileImageStorage.upload(any()) }
+            verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
         }
 
         @Test
@@ -139,7 +139,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
             assertThat(profile.profileImageURL).isEqualTo(newProfileImageURL)
-            verify(exactly = 1) { profileImageStorage.upload(any()) }
+            verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
             verify(exactly = 1) { profileImageStorage.delete(oldProfileImageURL) }
         }
     }

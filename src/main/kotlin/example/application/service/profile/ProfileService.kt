@@ -42,9 +42,7 @@ class ProfileService(private val profileRepository: ProfileRepository,
         val profileImageURL = profileImageStorage.createURL()
         profile.changeProfileImage(profileImageURL)
         profileRepository.save(profile)
-
-        val profileImage = ProfileImage(profileImageURL, command.validatedFileContent())
-        profileImageStorage.upload(profileImage)
+        profileImageStorage.upload(profileImageURL, command.validatedFileContent())
 
         return profileImageURL
     }
