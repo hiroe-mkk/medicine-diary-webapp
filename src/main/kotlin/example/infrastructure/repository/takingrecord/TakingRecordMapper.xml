@@ -4,21 +4,37 @@
 <mapper namespace="example.infrastructure.repository.takingrecord.TakingRecordMapper">
     <select id="findOneByTakingRecordId" resultMap="TakingRecordResultEntityResultMap">
         SELECT
-            taking_records.taking_record_id AS taking_record_id,
-            taking_records.account_id AS account_id,
-            taking_records.medicine_id AS medicine_id,
-            taking_records.quantity AS quantity,
-            taking_records.note AS note,
-            taking_records.taken_at AS taken_at,
-            symptoms.ordering AS ordering,
-            symptoms.symptom AS symptom,
-            symptoms.before_taking AS before_taking,
-            symptoms.after_taking AS after_taking
+            <include refid="AllColumns"/>
         FROM
             taking_records
             LEFT OUTER JOIN symptoms USING(taking_record_id)
         WHERE
             taking_record_id = #{takingRecordId};
+    </select>
+
+    <select id="countByMedicineId" resultType="_long">
+        SELECT
+            COUNT(*)
+        FROM
+            taking_records
+        WHERE
+            medicine_id = #{medicineId};
+    </select>
+
+    <select id="findAllByMedicineId" resultMap="TakingRecordResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            taking_records
+            LEFT OUTER JOIN symptoms USING(taking_record_id)
+        WHERE
+            medicine_id = #{medicineId}
+        ORDER BY
+            taken_at DESC
+        LIMIT
+            #{pageSize}
+        OFFSET
+            #{offset};
     </select>
 
     <insert id="upsertOneTakingRecord">
@@ -69,6 +85,19 @@
         DELETE FROM symptoms
         WHERE taking_record_id = #{takingRecordId};
     </delete>
+
+    <sql id="AllColumns">
+        taking_records.taking_record_id AS taking_record_id,
+        taking_records.account_id AS account_id,
+        taking_records.medicine_id AS medicine_id,
+        taking_records.quantity AS quantity,
+        taking_records.note AS note,
+        taking_records.taken_at AS taken_at,
+        symptoms.ordering AS ordering,
+        symptoms.symptom AS symptom,
+        symptoms.before_taking AS before_taking,
+        symptoms.after_taking AS after_taking
+    </sql>
 
     <resultMap id="TakingRecordResultEntityResultMap" type="example.infrastructure.repository.takingrecord.TakingRecordResultEntity">
         <constructor>
