@@ -6,6 +6,8 @@
       :csrf="props.csrf"
       executePath="/api/profile/profileimage/change"
       imageName="プロフィール画像"
+      :isRounded="true"
+      :isFixedSize="true"
     ></ChangeableImage>
     <strong class="is-size-4 has-text-grey-dark">
       {{ username }}
