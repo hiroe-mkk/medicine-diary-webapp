@@ -48,14 +48,14 @@ class Medicine(val id: MedicineId,
 
     fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
 
-    fun changeBasicInfo(newName: String,
-                        newDosageAndAdministration: DosageAndAdministration,
-                        newEffects: Effects,
-                        newPrecautions: Note) {
-        this.name = newName
-        this.dosageAndAdministration = newDosageAndAdministration
-        this.effects = newEffects
-        this.precautions = newPrecautions
+    fun changeBasicInfo(name: String,
+                        dosageAndAdministration: DosageAndAdministration,
+                        effects: Effects,
+                        precautions: Note) {
+        this.name = name
+        this.dosageAndAdministration = dosageAndAdministration
+        this.effects = effects
+        this.precautions = precautions
     }
 
     fun changeMedicineImage(medicineImageURL: MedicineImageURL) {
