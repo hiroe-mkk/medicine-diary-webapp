@@ -247,4 +247,54 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             assertThrows<OperationNotPermittedException>(target)
         }
     }
+
+    @Nested
+    inner class DeleteTakingRecordTest {
+        private lateinit var takingRecord: TakingRecord
+
+        @BeforeEach
+        internal fun setUp() {
+            takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
+        }
+
+        @Test
+        @DisplayName("服用記録を削除する")
+        fun deleteTakingRecord() {
+            //when:
+            takingRecordService.deleteTakingRecord(takingRecord.id, userSession)
+
+            //then:
+            val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
+            assertThat(foundTakingRecord).isNull()
+        }
+
+        @Test
+        @DisplayName("服用記録が見つからなかった場合、服用記録の削除に失敗する")
+        fun takingRecordNotFound_deletingTakingRecordFails() {
+            //given:
+            val badTakingRecordId = TakingRecordId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = { takingRecordService.deleteTakingRecord(badTakingRecordId, userSession) }
+
+            //then:
+            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
+            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(badTakingRecordId)
+        }
+
+        @Test
+        @DisplayName("ユーザーが記録していない服用記録の場合、服用記録の修正に失敗する")
+        fun takingRecordIsNotRecordedByUser_deletingTakingRecordFails() {
+            //given:
+            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
+            val takingRecord = testTakingRecordInserter.insert(anotherAccount.id, medicine.id)
+
+            //when:
+            val target: () -> Unit = { takingRecordService.deleteTakingRecord(takingRecord.id, userSession) }
+
+            //then:
+            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
+            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(takingRecord.id)
+        }
+    }
 }

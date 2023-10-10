@@ -53,6 +53,14 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
         takingRecordRepository.save(takingRecord)
     }
 
+    /**
+     * 服用記録を削除する
+     */
+    fun deleteTakingRecord(takingRecordId: TakingRecordId, userSession: UserSession) {
+        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
+        takingRecordRepository.delete(takingRecord.id)
+    }
+
     private fun findTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,
                                                      userSession: UserSession): TakingRecord {
         return findTakingRecordBy(takingRecordId, userSession) ?: throw TakingRecordNotFoundException(takingRecordId)
