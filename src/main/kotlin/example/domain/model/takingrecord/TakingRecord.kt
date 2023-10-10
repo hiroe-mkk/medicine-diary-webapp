@@ -24,6 +24,8 @@ class TakingRecord(val id: TakingRecordId,
     var note: Note = note
         private set
 
+    fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
+
     fun modify(newMedicineId: MedicineId,
                newDose: Dose,
                newSymptoms: Symptoms,
