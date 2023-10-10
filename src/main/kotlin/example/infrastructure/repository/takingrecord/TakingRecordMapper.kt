@@ -14,7 +14,7 @@ interface TakingRecordMapper {
     fun findAllByMedicineId(medicineId: String, pageSize: Int, offset: Long): List<TakingRecordResultEntity>
 
     fun upsertOneTakingRecord(takingRecordId: String,
-                              accountId: String,
+                              recorder: String,
                               medicineId: String,
                               quantity: Double,
                               note: String,

@@ -22,7 +22,7 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
 
     override fun save(takingRecord: TakingRecord) {
         takingRecordMapper.upsertOneTakingRecord(takingRecord.id.value,
-                                                 takingRecord.accountId.value,
+                                                 takingRecord.recorder.value,
                                                  takingRecord.medicineId.value,
                                                  takingRecord.dose.quantity,
                                                  takingRecord.note.value,

@@ -53,12 +53,12 @@ CREATE TABLE IF NOT EXISTS effects (
 
 CREATE TABLE IF NOT EXISTS taking_records (
   taking_record_id VARCHAR(36) PRIMARY KEY,
-  account_id VARCHAR(36),
+  recorder VARCHAR(36),
   medicine_id VARCHAR(36),
   quantity DOUBLE NOT NULL,
   note VARCHAR(500) NOT NULL,
   taken_at TIMESTAMP NOT NULL,
-  FOREIGN KEY(account_id) REFERENCES accounts(account_id),
+  FOREIGN KEY(recorder) REFERENCES accounts(account_id),
   FOREIGN KEY(medicine_id) REFERENCES medicines(medicine_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 

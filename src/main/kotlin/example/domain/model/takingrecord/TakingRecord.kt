@@ -9,7 +9,7 @@ import java.time.*
  * 服用記録
  */
 class TakingRecord(val id: TakingRecordId,
-                   val accountId: AccountId,
+                   val recorder: AccountId,
                    medicineId: MedicineId,
                    dose: Dose,
                    symptoms: Symptoms,

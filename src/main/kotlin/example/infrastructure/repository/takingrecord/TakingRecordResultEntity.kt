@@ -8,7 +8,7 @@ import example.infrastructure.repository.shared.*
 import java.time.*
 
 class TakingRecordResultEntity(val takingRecordId: TakingRecordId,
-                               val accountId: AccountId,
+                               val recorder: AccountId,
                                val medicineId: MedicineId,
                                val dose: Dose,
                                val note: Note,
@@ -18,7 +18,7 @@ class TakingRecordResultEntity(val takingRecordId: TakingRecordId,
 
     fun toTakingRecord(): TakingRecord {
         return TakingRecord(takingRecordId,
-                            accountId,
+                            recorder,
                             medicineId,
                             dose,
                             Symptoms(OrderedEntitiesConverter.restore(symptoms)),

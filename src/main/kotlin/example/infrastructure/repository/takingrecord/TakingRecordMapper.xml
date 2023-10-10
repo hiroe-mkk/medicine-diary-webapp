@@ -40,14 +40,14 @@
     <insert id="upsertOneTakingRecord">
         INSERT INTO taking_records(
             taking_record_id,
-            account_id,
+            recorder,
             medicine_id,
             quantity,
             note,
             taken_at
         )VALUES(
             #{takingRecordId},
-            #{accountId},
+            #{recorder},
             #{medicineId},
             #{quantity},
             #{note},
@@ -88,7 +88,7 @@
 
     <sql id="AllColumns">
         taking_records.taking_record_id AS taking_record_id,
-        taking_records.account_id AS account_id,
+        taking_records.recorder AS recorder,
         taking_records.medicine_id AS medicine_id,
         taking_records.quantity AS quantity,
         taking_records.note AS note,
@@ -102,7 +102,7 @@
     <resultMap id="TakingRecordResultEntityResultMap" type="example.infrastructure.repository.takingrecord.TakingRecordResultEntity">
         <constructor>
             <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
-            <arg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="recorder" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
@@ -119,7 +119,7 @@
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
         <constructor>
-            <idArg column="account_id" javaType="String"/>
+            <idArg column="recorder" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="MedicineIdResultMap" type="MedicineId">
