@@ -122,13 +122,13 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
             //then:
             val foundTakingRecord = takingRecordRepository.findById(newTakingRecordId)
-            val expected = TakingRecord(newTakingRecordId,
-                                        userSession.accountId,
-                                        medicine.id,
-                                        command.validatedDose,
-                                        command.validSymptoms,
-                                        command.validatedNote,
-                                        localDateTime)
+            val expected = TakingRecord.reconstruct(newTakingRecordId,
+                                                    userSession.accountId,
+                                                    medicine.id,
+                                                    command.validatedDose,
+                                                    command.validSymptoms,
+                                                    command.validatedNote,
+                                                    localDateTime)
             assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 

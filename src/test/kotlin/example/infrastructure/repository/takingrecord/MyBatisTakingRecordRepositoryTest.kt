@@ -30,15 +30,15 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
     @Test
     fun afterSavingTakingRecord_canFindById() {
         //given:
-        val takingRecord = TakingRecord(TakingRecordId("testTakingRecordId"),
-                                        accountId,
-                                        medicineId,
-                                        Dose(1.0),
-                                        Symptoms(listOf(FollowUp("頭痛",
-                                                                 ConditionLevel.A_LITTLE_BAD,
-                                                                 ConditionLevel.GOOD))),
-                                        Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"),
-                                        LocalDateTime.of(2020, 1, 1, 7, 0))
+        val takingRecord = TakingRecord.reconstruct(TakingRecordId("testTakingRecordId"),
+                                                    accountId,
+                                                    medicineId,
+                                                    Dose(1.0),
+                                                    Symptoms(listOf(FollowUp("頭痛",
+                                                                             ConditionLevel.A_LITTLE_BAD,
+                                                                             ConditionLevel.GOOD))),
+                                                    Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"),
+                                                    LocalDateTime.of(2020, 1, 1, 7, 0))
 
         //when:
         takingRecordRepository.save(takingRecord)

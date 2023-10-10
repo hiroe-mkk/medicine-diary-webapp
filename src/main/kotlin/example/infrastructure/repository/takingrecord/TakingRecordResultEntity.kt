@@ -17,12 +17,12 @@ class TakingRecordResultEntity(val takingRecordId: TakingRecordId,
     val symptoms: List<OrderedEntity<FollowUp>> = mutableListOf()
 
     fun toTakingRecord(): TakingRecord {
-        return TakingRecord(takingRecordId,
-                            recorder,
-                            medicineId,
-                            dose,
-                            Symptoms(OrderedEntitiesConverter.restore(symptoms)),
-                            note,
-                            takenAt)
+        return TakingRecord.reconstruct(takingRecordId,
+                                        recorder,
+                                        medicineId,
+                                        dose,
+                                        Symptoms(OrderedEntitiesConverter.restore(symptoms)),
+                                        note,
+                                        takenAt)
     }
 }

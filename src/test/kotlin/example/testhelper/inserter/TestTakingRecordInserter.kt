@@ -23,13 +23,13 @@ class TestTakingRecordInserter(private val takingRecordRepository: TakingRecordR
                                                              ConditionLevel.GOOD))),
                note: Note = Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"),
                takenAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): TakingRecord {
-        val takingRecord = TakingRecord(takingRecordId,
-                                        accountId,
-                                        medicineId,
-                                        dose,
-                                        symptoms,
-                                        note,
-                                        takenAt)
+        val takingRecord = TakingRecord.reconstruct(takingRecordId,
+                                                    accountId,
+                                                    medicineId,
+                                                    dose,
+                                                    symptoms,
+                                                    note,
+                                                    takenAt)
         takingRecordRepository.save(takingRecord)
         return takingRecord
     }

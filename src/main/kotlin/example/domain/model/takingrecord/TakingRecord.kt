@@ -9,13 +9,13 @@ import java.time.*
 /**
  * 服用記録
  */
-class TakingRecord(val id: TakingRecordId,
-                   val recorder: AccountId,
-                   medicineId: MedicineId,
-                   dose: Dose,
-                   symptoms: Symptoms,
-                   note: Note,
-                   val takenAt: LocalDateTime) {
+class TakingRecord private constructor(val id: TakingRecordId,
+                                       val recorder: AccountId,
+                                       medicineId: MedicineId,
+                                       dose: Dose,
+                                       symptoms: Symptoms,
+                                       note: Note,
+                                       val takenAt: LocalDateTime) {
     var medicineId: MedicineId = medicineId
         private set
     var dose: Dose = dose
@@ -36,6 +36,16 @@ class TakingRecord(val id: TakingRecordId,
             if (medicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録を追加することはできません。")
 
             return TakingRecord(takingRecordId, recorder, medicine.id, dose, symptoms, note, takenAt)
+        }
+
+        fun reconstruct(takingRecordId: TakingRecordId,
+                        recorder: AccountId,
+                        medicineId: MedicineId,
+                        dose: Dose,
+                        symptoms: Symptoms,
+                        note: Note,
+                        takenAt: LocalDateTime): TakingRecord {
+            return TakingRecord(takingRecordId, recorder, medicineId, dose, symptoms, note, takenAt)
         }
     }
 
