@@ -56,8 +56,8 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         }
 
         @Test
-        @DisplayName("アカウントが見つからなかった場合、プロフィールの取得に失敗する")
-        fun accountNotFound_gettingProfileFails() {
+        @DisplayName("プロフィールが見つからなかった場合、プロフィールの取得に失敗する")
+        fun profileNotFound_gettingProfileFails() {
             //given:
             val badUserSession = UserSessionFactory.create(AccountId("NonexistentId"))
 
@@ -65,8 +65,8 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             val target: () -> Unit = { profileService.findProfile(badUserSession) }
 
             //then:
-            val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
-            assertThat(accountNotFoundException.accountId).isEqualTo(badUserSession.accountId)
+            val profileNotFoundException = assertThrows<ProfileNotFoundException>(target)
+            assertThat(profileNotFoundException.accountId).isEqualTo(badUserSession.accountId)
         }
     }
 
@@ -87,8 +87,8 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         }
 
         @Test
-        @DisplayName("アカウントが削除済みの場合、ユーザー名の変更に失敗する")
-        fun accountHasBeenDeleted_changingUsernameFails() {
+        @DisplayName("プロフィールが見つからなかった場合、ユーザー名の変更に失敗する")
+        fun profileNotFound_changingUsernameFails() {
             //given:
             accountService.deleteAccount(userSession)
 
@@ -96,8 +96,8 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             val target: () -> Unit = { profileService.changeUsername(usernameChangeCommand, userSession) }
 
             //then:
-            val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
-            assertThat(accountNotFoundException.accountId).isEqualTo(userSession.accountId)
+            val profileNotFoundException = assertThrows<ProfileNotFoundException>(target)
+            assertThat(profileNotFoundException.accountId).isEqualTo(userSession.accountId)
         }
     }
 

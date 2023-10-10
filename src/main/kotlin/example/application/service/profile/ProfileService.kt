@@ -1,6 +1,5 @@
 package example.application.service.profile
 
-import example.application.service.account.*
 import example.application.shared.command.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
@@ -49,6 +48,6 @@ class ProfileService(private val profileRepository: ProfileRepository,
 
     private fun findProfileOrElseThrowException(userSession: UserSession): Profile {
         return profileRepository.findByAccountId(userSession.accountId)
-               ?: throw AccountNotFoundException(userSession.accountId)
+               ?: throw ProfileNotFoundException(userSession.accountId)
     }
 }
