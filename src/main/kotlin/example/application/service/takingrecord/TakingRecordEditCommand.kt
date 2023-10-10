@@ -5,6 +5,9 @@ import example.domain.model.takingrecord.*
 import example.domain.shared.type.*
 import jakarta.validation.*
 import jakarta.validation.constraints.*
+import org.springframework.format.annotation.*
+import java.time.*
+import java.time.temporal.*
 
 /**
  * 服用記録の追加と修正に利用される Command クラス
@@ -19,11 +22,16 @@ data class TakingRecordEditCommand(@field:NotEmpty(message = "※必ず入力し
                                    @field:Valid
                                    val symptoms: List<@Valid FollowUpInputField> = emptyList(),
                                    @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
-                                   val note: String) {
+                                   val note: String,
+                                   @field:NotNull(message = "※必ず入力してください。")
+                                   @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                   val takenAt: LocalDateTime?) {
     val validatedTakenMedicine: MedicineId = MedicineId(takenMedicine)
     val validatedDose: Dose = Dose(quantity ?: 0.0)
     val validSymptoms: Symptoms = Symptoms(symptoms.map { it.toFollowUp() })
     val validatedNote: Note = Note(note.trim())
+    val validatedTakenAt: LocalDateTime = takenAt?.truncatedTo(ChronoUnit.MINUTES)
+                                          ?: LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
 
     data class FollowUpInputField(@field:Size(max = 30,
                                               message = "※{max}文字以内で入力してください。")

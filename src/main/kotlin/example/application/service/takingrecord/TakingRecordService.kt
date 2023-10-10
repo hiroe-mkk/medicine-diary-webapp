@@ -4,7 +4,6 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
-import example.domain.shared.type.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
@@ -12,8 +11,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
                           private val medicineRepository: MedicineRepository,
-                          private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory,
-                          private val localDateTimeProvider: LocalDateTimeProvider) {
+                          private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory) {
     /**
      * 服用記録を取得する
      */
@@ -34,7 +32,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
                                                command.validatedDose,
                                                command.validSymptoms,
                                                command.validatedNote,
-                                               localDateTimeProvider.now())
+                                               command.validatedTakenAt)
         takingRecordRepository.save(takingRecord)
         return takingRecord.id
     }
@@ -50,7 +48,8 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
         takingRecord.modify(medicine,
                             command.validatedDose,
                             command.validSymptoms,
-                            command.validatedNote)
+                            command.validatedNote,
+                            command.validatedTakenAt)
         takingRecordRepository.save(takingRecord)
     }
 

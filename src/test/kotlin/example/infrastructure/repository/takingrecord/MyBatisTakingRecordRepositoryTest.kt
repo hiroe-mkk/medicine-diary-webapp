@@ -81,7 +81,8 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
                             Symptoms(listOf(FollowUp("頭痛",
                                                      ConditionLevel.A_LITTLE_BAD,
                                                      ConditionLevel.GOOD))),
-                            Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"))
+                            Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"),
+                            LocalDateTime.of(2020, 1, 1, 10, 0))
 
         //when:
         takingRecordRepository.save(takingRecord)

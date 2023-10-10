@@ -14,7 +14,6 @@ import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
-import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -27,14 +26,11 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                        @Autowired private val testAccountInserter: TestAccountInserter,
                                        @Autowired private val testMedicineInserter: TestMedicineInserter,
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    @MockK
-    private lateinit var localDateTimeProvider: LocalDateTimeProvider
-
     private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory =
             TakingRecordDetailDtoFactory(profileRepository, medicineRepository)
 
-    @InjectMockKs
-    private lateinit var takingRecordService: TakingRecordService
+    private val takingRecordService: TakingRecordService =
+            TakingRecordService(takingRecordRepository, medicineRepository, takingRecordDetailDtoFactory)
 
     private lateinit var userSession: UserSession
     private lateinit var usersProfile: Profile
@@ -105,13 +101,6 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
     @Nested
     inner class AddTakingRecordTest {
-        private val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-
-        @BeforeEach
-        internal fun setUp() {
-            every { localDateTimeProvider.now() } returns localDateTime
-        }
-
         @Test
         @DisplayName("服用記録を追加する")
         fun addTakingRecord() {
@@ -130,7 +119,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                                     command.validatedDose,
                                                     command.validSymptoms,
                                                     command.validatedNote,
-                                                    localDateTime)
+                                                    command.validatedTakenAt)
             assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 
@@ -193,7 +182,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                                     command.validatedDose,
                                                     command.validSymptoms,
                                                     command.validatedNote,
-                                                    takingRecord.takenAt)
+                                                    command.validatedTakenAt)
             assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 

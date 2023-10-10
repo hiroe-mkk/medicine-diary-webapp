@@ -15,7 +15,7 @@ class TakingRecord private constructor(val id: TakingRecordId,
                                        dose: Dose,
                                        symptoms: Symptoms,
                                        note: Note,
-                                       val takenAt: LocalDateTime) {
+                                       takenAt: LocalDateTime) {
     var takenMedicine: MedicineId = takenMedicine
         private set
     var dose: Dose = dose
@@ -23,6 +23,8 @@ class TakingRecord private constructor(val id: TakingRecordId,
     var symptoms: Symptoms = symptoms
         private set
     var note: Note = note
+        private set
+    var takenAt: LocalDateTime = takenAt
         private set
 
     companion object {
@@ -51,12 +53,13 @@ class TakingRecord private constructor(val id: TakingRecordId,
 
     fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
 
-    fun modify(takenMedicine: Medicine, dose: Dose, symptoms: Symptoms, note: Note) {
+    fun modify(takenMedicine: Medicine, dose: Dose, symptoms: Symptoms, note: Note, takenAt: LocalDateTime) {
         if (takenMedicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
 
         this.takenMedicine = takenMedicine.id
         this.dose = dose
         this.symptoms = symptoms
         this.note = note
+        this.takenAt = takenAt
     }
 }

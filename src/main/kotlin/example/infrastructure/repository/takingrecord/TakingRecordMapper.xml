@@ -55,7 +55,8 @@
         )ON DUPLICATE KEY UPDATE
             taken_medicine = #{takenMedicine},
             quantity = #{quantity},
-            note = #{note};
+            note = #{note},
+            taken_at = #{takenAt};
     </insert>
 
     <insert id="insertAllSymptoms">
