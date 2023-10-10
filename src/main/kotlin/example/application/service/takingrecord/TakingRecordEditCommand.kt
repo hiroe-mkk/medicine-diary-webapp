@@ -33,6 +33,16 @@ data class TakingRecordEditCommand(@field:NotEmpty(message = "※必ず入力し
     val validatedTakenAt: LocalDateTime = takenAt?.truncatedTo(ChronoUnit.MINUTES)
                                           ?: LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
 
+    companion object {
+        fun initialize(): TakingRecordEditCommand {
+            return TakingRecordEditCommand("",
+                                           0.0,
+                                           emptyList(),
+                                           "",
+                                           LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
+        }
+    }
+
     data class FollowUpInputField(@field:Size(max = 30,
                                               message = "※{max}文字以内で入力してください。")
                                   val symptom: String,
