@@ -51,13 +51,12 @@ class TakingRecord private constructor(val id: TakingRecordId,
 
     fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
 
-    fun modify(newMedicineId: MedicineId,
-               newDose: Dose,
-               newSymptoms: Symptoms,
-               newNote: Note) {
-        this.medicineId = newMedicineId
-        this.dose = newDose
-        this.symptoms = newSymptoms
-        this.note = newNote
+    fun modify(medicine: Medicine, dose: Dose, symptoms: Symptoms, note: Note) {
+        if (medicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
+
+        this.medicineId = medicine.id
+        this.dose = dose
+        this.symptoms = symptoms
+        this.note = note
     }
 }

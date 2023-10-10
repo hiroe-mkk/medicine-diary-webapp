@@ -14,4 +14,14 @@ object TestTakingRecordEditCommandFactory {
                                        note: String = ""): TakingRecordEditCommand {
         return TakingRecordEditCommand(medicineId, quantity, symptoms, note)
     }
+
+    fun createCompletedModificationCommand(medicineId: String = "testMedicineId",
+                                           quantity: Double? = 2.0,
+                                           symptoms: List<FollowUpInputField> =
+                                                   listOf(FollowUpInputField("頭痛",
+                                                                             ConditionLevel.A_LITTLE_BAD,
+                                                                             ConditionLevel.GOOD)),
+                                           note: String = "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"): TakingRecordEditCommand {
+        return TakingRecordEditCommand(medicineId, quantity, symptoms, note)
+    }
 }

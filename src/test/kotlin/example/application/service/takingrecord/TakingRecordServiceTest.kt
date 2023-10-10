@@ -1,5 +1,6 @@
 package example.application.service.takingrecord
 
+import com.ninjasquad.springmockk.*
 import example.application.service.medicine.*
 import example.application.service.takingrecord.TakingRecordDetailDto.*
 import example.application.shared.usersession.*
@@ -115,7 +116,8 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         @DisplayName("服用記録を追加する")
         fun addTakingRecord() {
             //given:
-            val command = TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = medicine.id.value)
+            val command =
+                    TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = medicine.id.value)
 
             //when:
             val newTakingRecordId = takingRecordService.addTakingRecord(command, userSession)
@@ -137,7 +139,8 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         fun medicineNotFound_addingTakingRecordFails() {
             //given:
             val badMedicineId = MedicineId("NonexistentId")
-            val command = TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = badMedicineId.value)
+            val command =
+                    TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = badMedicineId.value)
 
             //when:
             val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }
@@ -153,10 +156,103 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
-            val command = TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = medicine.id.value)
+            val command =
+                    TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = medicine.id.value)
 
             //when:
             val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }
+
+            //then:
+            assertThrows<OperationNotPermittedException>(target)
+        }
+    }
+
+    @Nested
+    inner class ModifyTakingRecordTest {
+        private lateinit var takingRecord: TakingRecord
+        private lateinit var command: TakingRecordEditCommand
+
+        @BeforeEach
+        internal fun setUp() {
+            takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
+            val newTakenMedicine = testMedicineInserter.insert(userSession.accountId).id.value
+            command = TestTakingRecordEditCommandFactory.createCompletedModificationCommand(newTakenMedicine)
+        }
+
+        @Test
+        @DisplayName("服用記録を修正する")
+        fun modifyTakingRecord() {
+            //when:
+            takingRecordService.modifyTakingRecord(takingRecord.id, command, userSession)
+
+            //then:
+            val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
+            val expected = TakingRecord.reconstruct(takingRecord.id,
+                                                    userSession.accountId,
+                                                    command.validatedMedicineId,
+                                                    command.validatedDose,
+                                                    command.validSymptoms,
+                                                    command.validatedNote,
+                                                    takingRecord.takenAt)
+            assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
+        }
+
+        @Test
+        @DisplayName("服用記録が見つからなかった場合、服用記録の修正に失敗する")
+        fun takingRecordNotFound_modifyingTakingRecordFails() {
+            //given:
+            val badTakingRecordId = TakingRecordId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = { takingRecordService.modifyTakingRecord(badTakingRecordId, command, userSession) }
+
+            //then:
+            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
+            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(badTakingRecordId)
+        }
+
+        @Test
+        @DisplayName("ユーザーが記録していない服用記録の場合、服用記録の修正に失敗する")
+        fun takingRecordIsNotRecordedByUser_modifyingTakingRecordFails() {
+            //given:
+            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
+            val takingRecord = testTakingRecordInserter.insert(anotherAccount.id, medicine.id)
+
+            //when:
+            val target: () -> Unit = { takingRecordService.modifyTakingRecord(takingRecord.id, command, userSession) }
+
+            //then:
+            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
+            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(takingRecord.id)
+        }
+
+        @Test
+        @DisplayName("薬が見つからなかった場合、服用記録の修正に失敗する")
+        fun medicineNotFound_modifyingTakingRecordFails() {
+            //given:
+            val badMedicineId = MedicineId("NonexistentId")
+            val command = TestTakingRecordEditCommandFactory.createCompletedModificationCommand(
+                    medicineId = badMedicineId.value)
+
+            //when:
+            val target: () -> Unit = { takingRecordService.modifyTakingRecord(takingRecord.id, command, userSession) }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+        }
+
+        @Test
+        @DisplayName("薬の所有者が服用記録の記録者と異なる場合、服用記録の修正に失敗する")
+        fun ownerIsDifferentFromRecorder_modifyingTakingRecordFails() {
+            //given:
+            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
+            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val command = TestTakingRecordEditCommandFactory.createCompletedModificationCommand(
+                    medicineId = medicine.id.value)
+
+            //when:
+            val target: () -> Unit = { takingRecordService.modifyTakingRecord(takingRecord.id, command, userSession) }
 
             //then:
             assertThrows<OperationNotPermittedException>(target)

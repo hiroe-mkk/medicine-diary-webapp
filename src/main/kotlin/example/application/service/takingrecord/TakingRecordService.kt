@@ -27,8 +27,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 服用記録を追加する
      */
     fun addTakingRecord(command: TakingRecordEditCommand, userSession: UserSession): TakingRecordId {
-        val medicine = medicineRepository.findById(command.validatedMedicineId)
-                       ?: throw MedicineNotFoundException(command.validatedMedicineId)
+        val medicine = findMedicineOrElseThrowException(command.validatedMedicineId)
         val takingRecord = TakingRecord.create(takingRecordRepository.createTakingRecordId(),
                                                userSession.accountId,
                                                medicine,
@@ -40,6 +39,21 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
         return takingRecord.id
     }
 
+    /**
+     * 服用記録を修正する
+     */
+    fun modifyTakingRecord(takingRecordId: TakingRecordId,
+                           command: TakingRecordEditCommand,
+                           userSession: UserSession) {
+        val medicine = findMedicineOrElseThrowException(command.validatedMedicineId)
+        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
+        takingRecord.modify(medicine,
+                            command.validatedDose,
+                            command.validSymptoms,
+                            command.validatedNote)
+        takingRecordRepository.save(takingRecord)
+    }
+
     private fun findTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,
                                                      userSession: UserSession): TakingRecord {
         return findTakingRecordBy(takingRecordId, userSession) ?: throw TakingRecordNotFoundException(takingRecordId)
@@ -49,5 +63,9 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
                                    userSession: UserSession): TakingRecord? {
         val takingRecord = takingRecordRepository.findById(takingRecordId) ?: return null
         return if (takingRecord.isRecordedBy(userSession.accountId)) takingRecord else null
+    }
+
+    private fun findMedicineOrElseThrowException(medicineId: MedicineId): Medicine {
+        return (medicineRepository.findById(medicineId) ?: throw MedicineNotFoundException(medicineId))
     }
 }

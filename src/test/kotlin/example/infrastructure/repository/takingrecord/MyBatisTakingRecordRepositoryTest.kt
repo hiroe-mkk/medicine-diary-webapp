@@ -76,7 +76,7 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
     fun canUpdateTakingRecord() {
         //given:
         val takingRecord = testTakingRecordInserter.insert(accountId, medicineId)
-        takingRecord.modify(testMedicineInserter.insert(accountId).id,
+        takingRecord.modify(testMedicineInserter.insert(accountId),
                             Dose(2.0),
                             Symptoms(listOf(FollowUp("頭痛",
                                                      ConditionLevel.A_LITTLE_BAD,
