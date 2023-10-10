@@ -11,12 +11,12 @@ import java.time.*
  */
 class TakingRecord private constructor(val id: TakingRecordId,
                                        val recorder: AccountId,
-                                       medicineId: MedicineId,
+                                       takenMedicine: MedicineId,
                                        dose: Dose,
                                        symptoms: Symptoms,
                                        note: Note,
                                        val takenAt: LocalDateTime) {
-    var medicineId: MedicineId = medicineId
+    var takenMedicine: MedicineId = takenMedicine
         private set
     var dose: Dose = dose
         private set
@@ -28,33 +28,33 @@ class TakingRecord private constructor(val id: TakingRecordId,
     companion object {
         fun create(takingRecordId: TakingRecordId,
                    recorder: AccountId,
-                   medicine: Medicine,
+                   takenMedicine: Medicine,
                    dose: Dose,
                    symptoms: Symptoms,
                    note: Note,
                    takenAt: LocalDateTime): TakingRecord {
-            if (medicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録を追加することはできません。")
+            if (takenMedicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録を追加することはできません。")
 
-            return TakingRecord(takingRecordId, recorder, medicine.id, dose, symptoms, note, takenAt)
+            return TakingRecord(takingRecordId, recorder, takenMedicine.id, dose, symptoms, note, takenAt)
         }
 
         fun reconstruct(takingRecordId: TakingRecordId,
                         recorder: AccountId,
-                        medicineId: MedicineId,
+                        takenMedicine: MedicineId,
                         dose: Dose,
                         symptoms: Symptoms,
                         note: Note,
                         takenAt: LocalDateTime): TakingRecord {
-            return TakingRecord(takingRecordId, recorder, medicineId, dose, symptoms, note, takenAt)
+            return TakingRecord(takingRecordId, recorder, takenMedicine, dose, symptoms, note, takenAt)
         }
     }
 
     fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
 
-    fun modify(medicine: Medicine, dose: Dose, symptoms: Symptoms, note: Note) {
-        if (medicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
+    fun modify(takenMedicine: Medicine, dose: Dose, symptoms: Symptoms, note: Note) {
+        if (takenMedicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
 
-        this.medicineId = medicine.id
+        this.takenMedicine = takenMedicine.id
         this.dose = dose
         this.symptoms = symptoms
         this.note = note

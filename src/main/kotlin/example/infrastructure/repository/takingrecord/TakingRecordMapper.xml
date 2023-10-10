@@ -12,13 +12,13 @@
             taking_record_id = #{takingRecordId};
     </select>
 
-    <select id="countByMedicineId" resultType="_long">
+    <select id="countByTakenMedicine" resultType="_long">
         SELECT
             COUNT(*)
         FROM
             taking_records
         WHERE
-            medicine_id = #{medicineId};
+            taken_medicine = #{takenMedicine};
     </select>
 
     <select id="findAllByMedicineId" resultMap="TakingRecordResultEntityResultMap">
@@ -28,7 +28,7 @@
             taking_records
             LEFT OUTER JOIN symptoms USING(taking_record_id)
         WHERE
-            medicine_id = #{medicineId}
+            taken_medicine = #{takenMedicine}
         ORDER BY
             taken_at DESC
         LIMIT
@@ -41,19 +41,19 @@
         INSERT INTO taking_records(
             taking_record_id,
             recorder,
-            medicine_id,
+            taken_medicine,
             quantity,
             note,
             taken_at
         )VALUES(
             #{takingRecordId},
             #{recorder},
-            #{medicineId},
+            #{takenMedicine},
             #{quantity},
             #{note},
             #{takenAt}
         )ON DUPLICATE KEY UPDATE
-            medicine_id = #{medicineId},
+            taken_medicine = #{takenMedicine},
             quantity = #{quantity},
             note = #{note};
     </insert>
@@ -89,7 +89,7 @@
     <sql id="AllColumns">
         taking_records.taking_record_id AS taking_record_id,
         taking_records.recorder AS recorder,
-        taking_records.medicine_id AS medicine_id,
+        taking_records.taken_medicine AS taken_medicine,
         taking_records.quantity AS quantity,
         taking_records.note AS note,
         taking_records.taken_at AS taken_at,
@@ -103,7 +103,7 @@
         <constructor>
             <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
             <arg column="recorder" javaType="AccountId" resultMap="AccountIdResultMap"/>
-            <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
+            <arg column="taken_medicine" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="taken_at" javaType="java.time.LocalDateTime"/>
@@ -124,7 +124,7 @@
     </resultMap>
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
-            <idArg column="medicine_id" javaType="String"/>
+            <idArg column="taken_medicine" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="DoseResultMap" type="Dose">

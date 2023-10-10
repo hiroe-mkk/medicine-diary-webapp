@@ -9,13 +9,13 @@ import java.time.*
 interface TakingRecordMapper {
     fun findOneByTakingRecordId(takingRecordId: String): TakingRecordResultEntity?
 
-    fun countByMedicineId(medicineId: String): Long
+    fun countByTakenMedicine(takenMedicine: String): Long
 
-    fun findAllByMedicineId(medicineId: String, pageSize: Int, offset: Long): List<TakingRecordResultEntity>
+    fun findAllByMedicineId(takenMedicine: String, pageSize: Int, offset: Long): List<TakingRecordResultEntity>
 
     fun upsertOneTakingRecord(takingRecordId: String,
                               recorder: String,
-                              medicineId: String,
+                              takenMedicine: String,
                               quantity: Double,
                               note: String,
                               takenAt: LocalDateTime)

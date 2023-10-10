@@ -15,7 +15,7 @@ class TestTakingRecordInserter(private val takingRecordRepository: TakingRecordR
      * テスト用の服用記録を生成して、リポジトリに保存する
      */
     fun insert(accountId: AccountId,
-               medicineId: MedicineId,
+               takenMedicine: MedicineId,
                takingRecordId: TakingRecordId = TakingRecordId("testTakingRecordId${num++}"),
                dose: Dose = Dose(1.0),
                symptoms: Symptoms = Symptoms(listOf(FollowUp("頭痛",
@@ -25,7 +25,7 @@ class TestTakingRecordInserter(private val takingRecordRepository: TakingRecordR
                takenAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): TakingRecord {
         val takingRecord = TakingRecord.reconstruct(takingRecordId,
                                                     accountId,
-                                                    medicineId,
+                                                    takenMedicine,
                                                     dose,
                                                     symptoms,
                                                     note,

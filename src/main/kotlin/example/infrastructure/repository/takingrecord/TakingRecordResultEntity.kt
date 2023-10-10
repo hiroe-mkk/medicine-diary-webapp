@@ -9,7 +9,7 @@ import java.time.*
 
 class TakingRecordResultEntity(val takingRecordId: TakingRecordId,
                                val recorder: AccountId,
-                               val medicineId: MedicineId,
+                               val takenMedicine: MedicineId,
                                val dose: Dose,
                                val note: Note,
                                val takenAt: LocalDateTime) {
@@ -19,7 +19,7 @@ class TakingRecordResultEntity(val takingRecordId: TakingRecordId,
     fun toTakingRecord(): TakingRecord {
         return TakingRecord.reconstruct(takingRecordId,
                                         recorder,
-                                        medicineId,
+                                        takenMedicine,
                                         dose,
                                         Symptoms(OrderedEntitiesConverter.restore(symptoms)),
                                         note,

@@ -17,9 +17,9 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
         return takingRecordMapper.findOneByTakingRecordId(takingRecordId.value)?.toTakingRecord()
     }
 
-    override fun findByMedicineId(medicineId: MedicineId, pageable: Pageable): Page<TakingRecord> {
-        val total = takingRecordMapper.countByMedicineId(medicineId.value)
-        val content = takingRecordMapper.findAllByMedicineId(medicineId.value,
+    override fun findByTakenMedicine(takenMedicine: MedicineId, pageable: Pageable): Page<TakingRecord> {
+        val total = takingRecordMapper.countByTakenMedicine(takenMedicine.value)
+        val content = takingRecordMapper.findAllByMedicineId(takenMedicine.value,
                                                              pageable.pageSize,
                                                              pageable.offset).map { it.toTakingRecord() }
         return PageImpl(content, pageable, total)
@@ -28,7 +28,7 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
     override fun save(takingRecord: TakingRecord) {
         takingRecordMapper.upsertOneTakingRecord(takingRecord.id.value,
                                                  takingRecord.recorder.value,
-                                                 takingRecord.medicineId.value,
+                                                 takingRecord.takenMedicine.value,
                                                  takingRecord.dose.quantity,
                                                  takingRecord.note.value,
                                                  takingRecord.takenAt)

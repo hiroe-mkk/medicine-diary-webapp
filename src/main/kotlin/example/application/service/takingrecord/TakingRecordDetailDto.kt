@@ -10,7 +10,7 @@ import java.time.*
 
 data class TakingRecordDetailDto(val id: TakingRecordId,
                                  val recorder: Recorder,
-                                 val medicine: TakenMedicine,
+                                 val takenMedicine: TakenMedicine,
                                  val dose: Dose,
                                  val symptoms: Symptoms,
                                  val note: Note,

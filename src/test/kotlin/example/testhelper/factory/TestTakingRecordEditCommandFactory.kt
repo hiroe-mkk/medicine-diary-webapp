@@ -5,23 +5,23 @@ import example.application.service.takingrecord.TakingRecordEditCommand.*
 import example.domain.model.takingrecord.*
 
 object TestTakingRecordEditCommandFactory {
-    fun createCompletedAdditionCommand(medicineId: String = "testMedicineId",
+    fun createCompletedAdditionCommand(takenMedicine: String = "testMedicineId",
                                        quantity: Double? = 1.0,
                                        symptoms: List<FollowUpInputField> =
                                                listOf(FollowUpInputField("頭痛",
                                                                          ConditionLevel.A_LITTLE_BAD,
                                                                          null)),
                                        note: String = ""): TakingRecordEditCommand {
-        return TakingRecordEditCommand(medicineId, quantity, symptoms, note)
+        return TakingRecordEditCommand(takenMedicine, quantity, symptoms, note)
     }
 
-    fun createCompletedModificationCommand(medicineId: String = "testMedicineId",
+    fun createCompletedModificationCommand(takenMedicine: String = "testMedicineId",
                                            quantity: Double? = 2.0,
                                            symptoms: List<FollowUpInputField> =
                                                    listOf(FollowUpInputField("頭痛",
                                                                              ConditionLevel.A_LITTLE_BAD,
                                                                              ConditionLevel.GOOD)),
                                            note: String = "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"): TakingRecordEditCommand {
-        return TakingRecordEditCommand(medicineId, quantity, symptoms, note)
+        return TakingRecordEditCommand(takenMedicine, quantity, symptoms, note)
     }
 }

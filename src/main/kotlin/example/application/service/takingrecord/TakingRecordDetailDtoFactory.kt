@@ -14,14 +14,14 @@ class TakingRecordDetailDtoFactory(private val profileRepository: ProfileReposit
     fun create(takingRecord: TakingRecord): TakingRecordDetailDto {
         val profile = profileRepository.findByAccountId(takingRecord.recorder)
                       ?: throw ProfileNotFoundException(takingRecord.recorder)
-        val medicine = medicineRepository.findById(takingRecord.medicineId)
-                       ?: throw MedicineNotFoundException(takingRecord.medicineId)
+        val medicine = medicineRepository.findById(takingRecord.takenMedicine)
+                       ?: throw MedicineNotFoundException(takingRecord.takenMedicine)
 
         return TakingRecordDetailDto(takingRecord.id,
                                      Recorder(takingRecord.recorder,
                                               profile.username,
                                               profile.profileImageURL),
-                                     TakenMedicine(takingRecord.medicineId,
+                                     TakenMedicine(takingRecord.takenMedicine,
                                                    medicine.name),
                                      takingRecord.dose,
                                      takingRecord.symptoms,

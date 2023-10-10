@@ -10,7 +10,7 @@ import jakarta.validation.constraints.*
  * 服用記録の追加と修正に利用される Command クラス
  */
 data class TakingRecordEditCommand(@field:NotEmpty(message = "※必ず入力してください。")
-                                   val medicineId: String,
+                                   val takenMedicine: String,
                                    @field:NotNull(message = "※必ず入力してください。")
                                    @field:Digits(integer = 5, fraction = 3,
                                                  message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
@@ -20,7 +20,7 @@ data class TakingRecordEditCommand(@field:NotEmpty(message = "※必ず入力し
                                    val symptoms: List<@Valid FollowUpInputField> = emptyList(),
                                    @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
                                    val note: String) {
-    val validatedMedicineId: MedicineId = MedicineId(medicineId)
+    val validatedTakenMedicine: MedicineId = MedicineId(takenMedicine)
     val validatedDose: Dose = Dose(quantity ?: 0.0)
     val validSymptoms: Symptoms = Symptoms(symptoms.map { it.toFollowUp() })
     val validatedNote: Note = Note(note.trim())

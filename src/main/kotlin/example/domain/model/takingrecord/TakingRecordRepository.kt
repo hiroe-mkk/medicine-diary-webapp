@@ -8,7 +8,7 @@ interface TakingRecordRepository {
 
     fun findById(takingRecordId: TakingRecordId): TakingRecord?
 
-    fun findByMedicineId(medicineId: MedicineId, pageable: Pageable): Page<TakingRecord>
+    fun findByTakenMedicine(takenMedicine: MedicineId, pageable: Pageable): Page<TakingRecord>
 
     fun save(takingRecord: TakingRecord)
 

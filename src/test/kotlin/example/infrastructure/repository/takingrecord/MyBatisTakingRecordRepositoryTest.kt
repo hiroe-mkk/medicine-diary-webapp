@@ -59,8 +59,8 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
         val takingRecord5 = testTakingRecordInserter.insert(accountId, medicineId, takenAt = localDateTime.plusDays(4))
 
         //when:
-        val actualPage1 = takingRecordRepository.findByMedicineId(medicineId, PageRequest.of(0, 3))
-        val actualPage2 = takingRecordRepository.findByMedicineId(medicineId, PageRequest.of(1, 3))
+        val actualPage1 = takingRecordRepository.findByTakenMedicine(medicineId, PageRequest.of(0, 3))
+        val actualPage2 = takingRecordRepository.findByTakenMedicine(medicineId, PageRequest.of(1, 3))
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(2)

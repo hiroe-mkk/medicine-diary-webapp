@@ -27,7 +27,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 服用記録を追加する
      */
     fun addTakingRecord(command: TakingRecordEditCommand, userSession: UserSession): TakingRecordId {
-        val medicine = findMedicineOrElseThrowException(command.validatedMedicineId)
+        val medicine = findMedicineOrElseThrowException(command.validatedTakenMedicine)
         val takingRecord = TakingRecord.create(takingRecordRepository.createTakingRecordId(),
                                                userSession.accountId,
                                                medicine,
@@ -45,7 +45,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
     fun modifyTakingRecord(takingRecordId: TakingRecordId,
                            command: TakingRecordEditCommand,
                            userSession: UserSession) {
-        val medicine = findMedicineOrElseThrowException(command.validatedMedicineId)
+        val medicine = findMedicineOrElseThrowException(command.validatedTakenMedicine)
         val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
         takingRecord.modify(medicine,
                             command.validatedDose,
