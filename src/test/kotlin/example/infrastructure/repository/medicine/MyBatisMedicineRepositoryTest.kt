@@ -29,7 +29,7 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
                                 accountId,
                                 "ロキソニンS",
                                 DosageAndAdministration(Dose(1.0), "錠", 3, emptyList()),
-                                Effects(listOf("頭痛", "解熱", "肩こり")),
+                                Effects(listOf("頭痛", "解熱")),
                                 Note("服用間隔は4時間以上開けること。"),
                                 null,
                                 LocalDateTime.of(2020, 1, 1, 0, 0))
@@ -62,13 +62,13 @@ internal class MyBatisMedicineRepositoryTest(@Autowired private val medicineRepo
     fun canUpdateMedicine() {
         //given:
         val medicine = testMedicineInserter.insert(accountId)
-        medicine.changeBasicInfo("${medicine.name}[CHANGED]",
-                                 DosageAndAdministration(Dose(1.0),
+        medicine.changeBasicInfo("ロキソニンSプレミアム",
+                                 DosageAndAdministration(Dose(2.0),
                                                          "錠",
-                                                         medicine.dosageAndAdministration.timesPerDay + 1,
-                                                         emptyList()),
-                                 Effects(medicine.effects.values.plus("[CHANGED]")),
-                                 Note("${medicine.precautions}[CHANGED]"))
+                                                         2,
+                                                         listOf(Timing.AS_NEEDED)),
+                                 Effects(listOf("頭痛", "解熱", "肩こり")),
+                                 Note("服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。"))
 
         //when:
         medicineRepository.save(medicine)

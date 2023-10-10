@@ -20,8 +20,8 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                dosageAndAdministration: DosageAndAdministration = DosageAndAdministration(Dose(1.0),
                                                                                           "錠",
                                                                                           3,
-                                                                                          listOf(Timing.AS_NEEDED)),
-               effects: Effects = Effects(listOf("頭痛", "解熱", "肩こり")),
+                                                                                          emptyList()),
+               effects: Effects = Effects(listOf("頭痛", "解熱")),
                precautions: Note = Note("服用間隔は4時間以上開けること。"),
                medicineImageURL: MedicineImageURL? = null,
                registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {

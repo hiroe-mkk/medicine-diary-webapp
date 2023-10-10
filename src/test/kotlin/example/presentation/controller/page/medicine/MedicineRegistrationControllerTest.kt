@@ -51,8 +51,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
         private val takingUnit = "錠"
         private val quantity = 1.0
         private val timesPerDay = 3
-        private val timingOptions = arrayOf(Timing.AS_NEEDED)
-        private val effects = arrayOf("頭痛", "解熱", "肩こり")
+        private val effects = arrayOf("頭痛", "解熱")
         private val precautions = "服用間隔は4時間以上開けること。"
 
         @Test
@@ -66,10 +65,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
-                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
-                                              .param("effects", effects[2])
                                               .param("precautions", precautions))
 
             //then:
@@ -91,10 +88,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
-                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
-                                              .param("effects", effects[2])
                                               .param("precautions", precautions))
 
             //then:
@@ -112,10 +107,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
-                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
-                                              .param("effects", effects[2])
                                               .param("precautions", precautions))
 
             actions.andExpect(status().isFound)

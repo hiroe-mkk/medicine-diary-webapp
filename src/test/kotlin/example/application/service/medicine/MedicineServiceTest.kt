@@ -12,6 +12,7 @@ import io.mockk.*
 import io.mockk.impl.annotations.*
 import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
+import org.checkerframework.checker.units.qual.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
@@ -131,7 +132,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬を登録する")
         fun registerMedicine() {
             //given:
-            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand()
+            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedRegistrationCommand()
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
             every { localDateTimeProvider.now() } returns localDateTime
 
@@ -159,7 +160,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun updateMedicineBasicInfo() {
             //given:
             val medicine = testMedicineInserter.insert(userSession.accountId)
-            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand(medicine)
+            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedUpdateCommand()
 
             //when:
             medicineService.updateMedicineBasicInfo(medicine.id, command, userSession)
@@ -182,7 +183,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineNotFound_updatingMedicineBasicInfoFails() {
             //given:
             val badMedicineId = MedicineId("nonexistentId")
-            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand()
+            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedRegistrationCommand()
 
             //when:
             val target: () -> Unit = { medicineService.updateMedicineBasicInfo(badMedicineId, command, userSession) }
@@ -198,7 +199,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
-            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand(medicine)
+            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedUpdateCommand()
 
             //when:
             val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }

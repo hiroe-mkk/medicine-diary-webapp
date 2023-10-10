@@ -73,12 +73,13 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
 
     @Nested
     inner class UpdateMedicineBasicInfoTest {
-        private val name = "ロキソニンS"
+        private val name = "ロキソニンSプレミアム"
         private val takingUnit = "錠"
-        private val quantity = 1.0
-        private val timesPerDay = 2
-        private val effects = arrayOf("頭痛", "解熱", "肩こり", "歯痛")
-        private val precautions = "再度症状があらわれた場合には3回目を服用できます。"
+        private val quantity = 2.0
+        private val timesPerDay = 3
+        private val timingOptions = listOf(Timing.AS_NEEDED)
+        private val effects = arrayOf("頭痛", "解熱", "肩こり")
+        private val precautions = "服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。"
 
         @Test
         @WithMockAuthenticatedAccount
@@ -95,10 +96,10 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
+                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
                                               .param("effects", effects[2])
-                                              .param("effects", effects[3])
                                               .param("precautions", precautions))
 
             //then:
@@ -122,10 +123,10 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
+                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
                                               .param("effects", effects[2])
-                                              .param("effects", effects[3])
                                               .param("precautions", precautions))
 
             //then:
@@ -147,10 +148,10 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
+                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
                                               .param("effects", effects[2])
-                                              .param("effects", effects[3])
                                               .param("precautions", precautions))
 
             //then:
@@ -171,10 +172,10 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
+                                              .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
                                               .param("effects", effects[2])
-                                              .param("effects", effects[3])
                                               .param("precautions", precautions))
 
             actions.andExpect(status().isFound)
