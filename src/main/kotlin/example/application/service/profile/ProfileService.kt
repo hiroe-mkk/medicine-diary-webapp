@@ -23,7 +23,7 @@ class ProfileService(private val profileRepository: ProfileRepository,
     /**
      * ユーザー名を変更する
      */
-    fun changeUsername(command: UsernameChangeCommand, userSession: UserSession) {
+    fun changeUsername(command: UsernameEditCommand, userSession: UserSession) {
         val profile = findProfileOrElseThrowException(userSession)
         profile.changeUsername(command.validatedUsername)
         profileRepository.save(profile)
@@ -32,7 +32,7 @@ class ProfileService(private val profileRepository: ProfileRepository,
     /**
      * プロフィール画像を変更する
      */
-    fun changeProfileImage(command: ImageChangeCommand,
+    fun changeProfileImage(command: ImageUploadCommand,
                            userSession: UserSession): ProfileImageURL {
         val profile = findProfileOrElseThrowException(userSession)
 

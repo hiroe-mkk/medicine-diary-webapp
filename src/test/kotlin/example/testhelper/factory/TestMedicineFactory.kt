@@ -1,6 +1,7 @@
 package example.testhelper.factory
 
 import example.application.service.medicine.*
+import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
@@ -37,29 +38,30 @@ object TestMedicineFactory {
                         registeredAt)
     }
 
-    fun createMedicineBasicInfoInputCommand(name: String = defaultName,
-                                            quantity: Double = defaultQuantity,
-                                            takingUnit: String = defaultTakingUnit,
-                                            timesPerDay: Int = defaultTimesPerDay,
-                                            timingOptions: List<Timing> = defaultTimingOptions,
-                                            effects: List<String> = defaultEffects,
-                                            precautions: String = defaultPrecautions): MedicineBasicInfoInputCommand {
-        return MedicineBasicInfoInputCommand(name,
-                                             quantity,
-                                             takingUnit,
-                                             timesPerDay,
-                                             timingOptions,
-                                             effects.map(MedicineBasicInfoInputCommand::Effect),
-                                             precautions)
+    fun createMedicineBasicInfoEditCommand(name: String = defaultName,
+                                           quantity: Double = defaultQuantity,
+                                           takingUnit: String = defaultTakingUnit,
+                                           timesPerDay: Int = defaultTimesPerDay,
+                                           timingOptions: List<Timing> = defaultTimingOptions,
+                                           effects: List<EffectInputField> = defaultEffects.map(
+                                                   MedicineBasicInfoEditCommand::EffectInputField),
+                                           precautions: String = defaultPrecautions): MedicineBasicInfoEditCommand {
+        return MedicineBasicInfoEditCommand(name,
+                                            quantity,
+                                            takingUnit,
+                                            timesPerDay,
+                                            timingOptions,
+                                            effects,
+                                            precautions)
     }
 
-    fun createMedicineBasicInfoInputCommand(medicine: Medicine): MedicineBasicInfoInputCommand {
-        return MedicineBasicInfoInputCommand("${medicine.name}[CHANGED]",
-                                             medicine.dosageAndAdministration.dose.quantity + 1,
-                                             "${medicine.dosageAndAdministration.takingUnit}[CHANGED]",
-                                             medicine.dosageAndAdministration.timesPerDay + 1,
-                                             emptyList(),
-                                             emptyList(),
-                                             "${medicine.precautions}[CHANGED]")
+    fun createMedicineBasicInfoEditCommand(medicine: Medicine): MedicineBasicInfoEditCommand {
+        return MedicineBasicInfoEditCommand("${medicine.name}[CHANGED]",
+                                            medicine.dosageAndAdministration.dose.quantity + 1,
+                                            "${medicine.dosageAndAdministration.takingUnit}[CHANGED]",
+                                            medicine.dosageAndAdministration.timesPerDay + 1,
+                                            emptyList(),
+                                            emptyList(),
+                                            "${medicine.precautions}[CHANGED]")
     }
 }

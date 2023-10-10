@@ -131,7 +131,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬を登録する")
         fun registerMedicine() {
             //given:
-            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand()
+            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand()
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
             every { localDateTimeProvider.now() } returns localDateTime
 
@@ -159,7 +159,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun updateMedicineBasicInfo() {
             //given:
             val medicine = testMedicineInserter.insert(userSession.accountId)
-            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand(medicine)
+            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand(medicine)
 
             //when:
             medicineService.updateMedicineBasicInfo(medicine.id, command, userSession)
@@ -182,7 +182,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineNotFound_updatingMedicineBasicInfoFails() {
             //given:
             val badMedicineId = MedicineId("nonexistentId")
-            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand()
+            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand()
 
             //when:
             val target: () -> Unit = { medicineService.updateMedicineBasicInfo(badMedicineId, command, userSession) }
@@ -198,7 +198,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
-            val command = TestMedicineFactory.createMedicineBasicInfoInputCommand(medicine)
+            val command = TestMedicineFactory.createMedicineBasicInfoEditCommand(medicine)
 
             //when:
             val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }
@@ -212,7 +212,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     @Nested
     inner class ChangeMedicineImageTest {
         private lateinit var medicine: Medicine
-        private val imageChangeCommand = TestImageFactory.createImageChangeCommand()
+        private val command = TestImageFactory.createImageUploadCommand()
 
         @BeforeEach
         internal fun setUp() {
@@ -227,7 +227,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineImageIsNull_changingMedicineImageSucceeds() {
             //when:
             val newMedicineImageURL = medicineService.changeMedicineImage(medicine.id,
-                                                                          imageChangeCommand,
+                                                                          command,
                                                                           userSession)
 
             //then:
@@ -247,7 +247,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
             //when:
             val newMedicineImageURL = medicineService.changeMedicineImage(medicine.id,
-                                                                          imageChangeCommand,
+                                                                          command,
                                                                           userSession)
 
             //then:
@@ -266,7 +266,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //when:
             val target: () -> Unit = {
                 medicineService.changeMedicineImage(badMedicineId,
-                                                    imageChangeCommand,
+                                                    command,
                                                     userSession)
             }
 
@@ -285,7 +285,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //when:
             val target: () -> Unit = {
                 medicineService.changeMedicineImage(medicine.id,
-                                                    imageChangeCommand,
+                                                    command,
                                                     userSession)
             }
 

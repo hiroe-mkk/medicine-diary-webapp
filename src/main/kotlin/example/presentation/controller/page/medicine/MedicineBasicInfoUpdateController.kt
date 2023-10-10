@@ -33,8 +33,8 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     @GetMapping
     fun displayMedicineBasicInfoUpdatePage(@PathVariable medicineId: MedicineId,
                                            model: Model): String {
-        val command = medicineService.getInitializedMedicineBasicInfoInputCommand(medicineId,
-                                                                                  userSessionProvider.getUserSession())
+        val command = medicineService.getInitializedMedicineBasicInfoEditCommand(medicineId,
+                                                                                 userSessionProvider.getUserSession())
         model.addAttribute("form", command)
         return "medicine/basicInfoForm"
     }
@@ -44,13 +44,13 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
      */
     @PostMapping
     fun updateMedicineBasicInfo(@PathVariable medicineId: MedicineId,
-                                @ModelAttribute("form") @Validated medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
+                                @ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                                 bindingResult: BindingResult,
                                 redirectAttributes: RedirectAttributes): String {
         if (bindingResult.hasErrors()) return "medicine/basicInfoForm"
 
         medicineService.updateMedicineBasicInfo(medicineId,
-                                                medicineBasicInfoInputCommand,
+                                                medicineBasicInfoEditCommand,
                                                 userSessionProvider.getUserSession())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬基本情報の更新が完了しました。"))

@@ -34,7 +34,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     /**
      * 薬を登録する
      */
-    fun registerMedicine(command: MedicineBasicInfoInputCommand, userSession: UserSession): MedicineId {
+    fun registerMedicine(command: MedicineBasicInfoEditCommand, userSession: UserSession): MedicineId {
         val medicine = Medicine.create(medicineRepository.createMedicineId(),
                                        userSession.accountId,
                                        command.validatedName,
@@ -47,19 +47,19 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 初期化された MedicineBasicInfoInputCommand インスタンスを取得する
+     * 初期化された MedicineBasicInfoEditCommand インスタンスを取得する
      */
-    fun getInitializedMedicineBasicInfoInputCommand(medicineId: MedicineId,
-                                                    userSession: UserSession): MedicineBasicInfoInputCommand {
+    fun getInitializedMedicineBasicInfoEditCommand(medicineId: MedicineId,
+                                                   userSession: UserSession): MedicineBasicInfoEditCommand {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
-        return MedicineBasicInfoInputCommand.initialize(medicine)
+        return MedicineBasicInfoEditCommand.initialize(medicine)
     }
 
     /**
      * 薬基本情報を更新する
      */
     fun updateMedicineBasicInfo(medicineId: MedicineId,
-                                command: MedicineBasicInfoInputCommand,
+                                command: MedicineBasicInfoEditCommand,
                                 userSession: UserSession) {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
         medicine.changeBasicInfo(command.validatedName,
@@ -73,7 +73,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬画像を変更する
      */
     fun changeMedicineImage(medicineId: MedicineId,
-                            command: ImageChangeCommand,
+                            command: ImageUploadCommand,
                             userSession: UserSession): MedicineImageURL {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
 

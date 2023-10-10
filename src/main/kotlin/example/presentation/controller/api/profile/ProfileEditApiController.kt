@@ -19,8 +19,8 @@ class ProfileEditApiController(private val profileService: ProfileService,
      */
     @PostMapping("/username/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun changeUsername(@Validated usernameChangeCommand: UsernameChangeCommand) {
-        profileService.changeUsername(usernameChangeCommand,
+    fun changeUsername(@Validated usernameEditCommand: UsernameEditCommand) {
+        profileService.changeUsername(usernameEditCommand,
                                       userSessionProvider.getUserSession())
     }
 
@@ -29,8 +29,8 @@ class ProfileEditApiController(private val profileService: ProfileService,
      */
     @PostMapping("/profileimage/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun changeProfileImage(@Validated imageChangeCommand: ImageChangeCommand) {
-        profileService.changeProfileImage(imageChangeCommand,
+    fun changeProfileImage(@Validated imageUploadCommand: ImageUploadCommand) {
+        profileService.changeProfileImage(imageUploadCommand,
                                           userSessionProvider.getUserSession())
     }
 }

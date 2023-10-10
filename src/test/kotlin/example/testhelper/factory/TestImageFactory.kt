@@ -10,9 +10,9 @@ object TestImageFactory {
     private val defaultType: MediaType = MediaType.IMAGE_JPEG
     private val defaultSize: Int = 1024
 
-    fun createImageChangeCommand(type: MediaType = defaultType,
-                                 size: Int = defaultSize): ImageChangeCommand {
-        return ImageChangeCommand(createMultipartFile(type, size))
+    fun createImageUploadCommand(type: MediaType = defaultType,
+                                 size: Int = defaultSize): ImageUploadCommand {
+        return ImageUploadCommand(createMultipartFile(type, size))
     }
 
     fun createMultipartFile(type: MediaType = defaultType,

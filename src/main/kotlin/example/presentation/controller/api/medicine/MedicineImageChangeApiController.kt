@@ -19,9 +19,9 @@ class MedicineImageChangeApiController(private val medicineService: MedicineServ
     @PostMapping("/medicineimage/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeMedicineImage(@PathVariable medicineId: MedicineId,
-                            @Validated imageChangeCommand: ImageChangeCommand) {
+                            @Validated imageUploadCommand: ImageUploadCommand) {
         medicineService.changeMedicineImage(medicineId,
-                                            imageChangeCommand,
+                                            imageUploadCommand,
                                             userSessionProvider.getUserSession())
     }
 }

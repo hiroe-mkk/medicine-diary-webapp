@@ -29,7 +29,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
      */
     @GetMapping
     fun displayMedicineRegistrationPage(model: Model): String {
-        model.addAttribute("form", MedicineBasicInfoInputCommand.initialize())
+        model.addAttribute("form", MedicineBasicInfoEditCommand.initialize())
         return "medicine/basicInfoForm"
     }
 
@@ -37,12 +37,12 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
      * 薬を登録する
      */
     @PostMapping
-    fun registerMedicine(@ModelAttribute("form") @Validated medicineBasicInfoInputCommand: MedicineBasicInfoInputCommand,
+    fun registerMedicine(@ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                          bindingResult: BindingResult,
                          redirectAttributes: RedirectAttributes): String {
         if (bindingResult.hasErrors()) return "medicine/basicInfoForm"
 
-        medicineService.registerMedicine(medicineBasicInfoInputCommand,
+        medicineService.registerMedicine(medicineBasicInfoEditCommand,
                                          userSessionProvider.getUserSession())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の登録が完了しました。"))

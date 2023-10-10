@@ -72,13 +72,13 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
 
     @Nested
     inner class ChangeUsernameTest {
-        private val usernameChangeCommand = UsernameChangeCommand("newTestUsername")
+        private val command = UsernameEditCommand("newTestUsername")
 
         @Test
         @DisplayName("ユーザー名を変更する")
         fun changeUsername() {
             //when:
-            profileService.changeUsername(usernameChangeCommand, userSession)
+            profileService.changeUsername(command, userSession)
 
             //then: 変更されたプロフィールが保存されている
             val actual = profileRepository.findByAccountId(userSession.accountId)
@@ -93,7 +93,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             accountService.deleteAccount(userSession)
 
             //when:
-            val target: () -> Unit = { profileService.changeUsername(usernameChangeCommand, userSession) }
+            val target: () -> Unit = { profileService.changeUsername(command, userSession) }
 
             //then:
             val profileNotFoundException = assertThrows<ProfileNotFoundException>(target)
@@ -103,7 +103,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
 
     @Nested
     inner class ChangeProfileImageTest {
-        private val imageChangeCommand = TestImageFactory.createImageChangeCommand()
+        private val command = TestImageFactory.createImageUploadCommand()
 
         @BeforeEach
         internal fun setUp() {
@@ -116,7 +116,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
         fun profileImageIsNull_changingProfileImageSucceeds() {
             //when:
-            val newProfileImageURL = profileService.changeProfileImage(imageChangeCommand, userSession)
+            val newProfileImageURL = profileService.changeProfileImage(command, userSession)
 
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
@@ -134,7 +134,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             profileRepository.save(profile)
 
             //when:
-            val newProfileImageURL = profileService.changeProfileImage(imageChangeCommand, userSession)
+            val newProfileImageURL = profileService.changeProfileImage(command, userSession)
 
             //then:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
