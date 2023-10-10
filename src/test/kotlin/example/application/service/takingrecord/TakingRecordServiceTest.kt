@@ -115,7 +115,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         @DisplayName("服用記録を追加する")
         fun addTakingRecord() {
             //given:
-            val command = TestTakingRecordFactory.createTakingRecordEditCommand(medicineId = medicine.id.value)
+            val command = TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = medicine.id.value)
 
             //when:
             val newTakingRecordId = takingRecordService.addTakingRecord(command, userSession)
@@ -137,7 +137,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         fun medicineNotFound_addingTakingRecordFails() {
             //given:
             val badMedicineId = MedicineId("NonexistentId")
-            val command = TestTakingRecordFactory.createTakingRecordEditCommand(medicineId = badMedicineId.value)
+            val command = TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = badMedicineId.value)
 
             //when:
             val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }
@@ -153,7 +153,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
-            val command = TestTakingRecordFactory.createTakingRecordEditCommand(medicineId = medicine.id.value)
+            val command = TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(medicineId = medicine.id.value)
 
             //when:
             val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }

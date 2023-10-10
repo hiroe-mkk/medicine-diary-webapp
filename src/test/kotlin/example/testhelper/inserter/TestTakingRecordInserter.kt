@@ -20,8 +20,8 @@ class TestTakingRecordInserter(private val takingRecordRepository: TakingRecordR
                dose: Dose = Dose(1.0),
                symptoms: Symptoms = Symptoms(listOf(FollowUp("頭痛",
                                                              ConditionLevel.A_LITTLE_BAD,
-                                                             ConditionLevel.GOOD))),
-               note: Note = Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"),
+                                                             null))),
+               note: Note = Note(""),
                takenAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): TakingRecord {
         val takingRecord = TakingRecord.reconstruct(takingRecordId,
                                                     accountId,
