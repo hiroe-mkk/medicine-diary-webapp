@@ -1,14 +1,19 @@
 package example.application.service.takingrecord
 
+import example.application.service.medicine.*
 import example.application.shared.usersession.*
+import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
+import example.domain.shared.type.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
 @Service
 @Transactional
-class TakingRecordService(private val takenRecordRepository: TakingRecordRepository,
-                          private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory) {
+class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
+                          private val medicineRepository: MedicineRepository,
+                          private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory,
+                          private val localDateTimeProvider: LocalDateTimeProvider) {
     /**
      * 服用記録を取得する
      */
@@ -18,6 +23,23 @@ class TakingRecordService(private val takenRecordRepository: TakingRecordReposit
         return takingRecordDetailDtoFactory.create(takingRecord)
     }
 
+    /**
+     * 服用記録を追加する
+     */
+    fun addTakingRecord(command: TakingRecordEditCommand, userSession: UserSession): TakingRecordId {
+        val medicine = medicineRepository.findById(command.validatedMedicineId)
+                       ?: throw MedicineNotFoundException(command.validatedMedicineId)
+        val takingRecord = TakingRecord.create(takingRecordRepository.createTakingRecordId(),
+                                               userSession.accountId,
+                                               medicine,
+                                               command.validatedDose,
+                                               command.validSymptoms,
+                                               command.validatedNote,
+                                               localDateTimeProvider.now())
+        takingRecordRepository.save(takingRecord)
+        return takingRecord.id
+    }
+
     private fun findTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,
                                                      userSession: UserSession): TakingRecord {
         return findTakingRecordBy(takingRecordId, userSession) ?: throw TakingRecordNotFoundException(takingRecordId)
@@ -25,7 +47,7 @@ class TakingRecordService(private val takenRecordRepository: TakingRecordReposit
 
     private fun findTakingRecordBy(takingRecordId: TakingRecordId,
                                    userSession: UserSession): TakingRecord? {
-        val takingRecord = takenRecordRepository.findById(takingRecordId) ?: return null
+        val takingRecord = takingRecordRepository.findById(takingRecordId) ?: return null
         return if (takingRecord.isRecordedBy(userSession.accountId)) takingRecord else null
     }
 }

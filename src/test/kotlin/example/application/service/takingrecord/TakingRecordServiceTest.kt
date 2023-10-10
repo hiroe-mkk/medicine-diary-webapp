@@ -6,12 +6,18 @@ import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
+import example.domain.shared.exception.*
+import example.domain.shared.type.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import io.mockk.*
+import io.mockk.impl.annotations.*
+import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
+import java.time.*
 
 @MyBatisRepositoryTest
 internal class TakingRecordServiceTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
@@ -20,10 +26,14 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                        @Autowired private val testAccountInserter: TestAccountInserter,
                                        @Autowired private val testMedicineInserter: TestMedicineInserter,
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
+    @MockK
+    private lateinit var localDateTimeProvider: LocalDateTimeProvider
+
     private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory =
             TakingRecordDetailDtoFactory(profileRepository, medicineRepository)
-    private val takingRecordService: TakingRecordService =
-            TakingRecordService(takingRecordRepository, takingRecordDetailDtoFactory)
+
+    @InjectMockKs
+    private lateinit var takingRecordService: TakingRecordService
 
     private lateinit var userSession: UserSession
     private lateinit var usersProfile: Profile
@@ -89,6 +99,67 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             //then:
             val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
             assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(takingRecord.id)
+        }
+    }
+
+    @Nested
+    inner class AddTakingRecordTest {
+        private val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
+
+        @BeforeEach
+        internal fun setUp() {
+            every { localDateTimeProvider.now() } returns localDateTime
+        }
+
+        @Test
+        @DisplayName("服用記録を追加する")
+        fun addTakingRecord() {
+            //given:
+            val command = TestTakingRecordFactory.createTakingRecordEditCommand(medicineId = medicine.id.value)
+
+            //when:
+            val newTakingRecordId = takingRecordService.addTakingRecord(command, userSession)
+
+            //then:
+            val foundTakingRecord = takingRecordRepository.findById(newTakingRecordId)
+            val expected = TakingRecord(newTakingRecordId,
+                                        userSession.accountId,
+                                        medicine.id,
+                                        command.validatedDose,
+                                        command.validSymptoms,
+                                        command.validatedNote,
+                                        localDateTime)
+            assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
+        }
+
+        @Test
+        @DisplayName("薬が見つからなかった場合、服用記録の追加に失敗する")
+        fun medicineNotFound_addingTakingRecordFails() {
+            //given:
+            val badMedicineId = MedicineId("NonexistentId")
+            val command = TestTakingRecordFactory.createTakingRecordEditCommand(medicineId = badMedicineId.value)
+
+            //when:
+            val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+        }
+
+        @Test
+        @DisplayName("薬の所有者が服用記録の記録者と異なる場合、服用記録の追加に失敗する")
+        fun ownerIsDifferentFromRecorder_addingTakingRecordFails() {
+            //given:
+            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
+            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val command = TestTakingRecordFactory.createTakingRecordEditCommand(medicineId = medicine.id.value)
+
+            //when:
+            val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }
+
+            //then:
+            assertThrows<OperationNotPermittedException>(target)
         }
     }
 }

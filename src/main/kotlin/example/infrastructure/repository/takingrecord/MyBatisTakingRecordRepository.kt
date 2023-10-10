@@ -5,9 +5,14 @@ import example.domain.model.takingrecord.*
 import example.infrastructure.repository.shared.*
 import org.springframework.data.domain.*
 import org.springframework.stereotype.*
+import java.util.*
 
 @Component
 class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecordMapper) : TakingRecordRepository {
+    override fun createTakingRecordId(): TakingRecordId {
+        return TakingRecordId(UUID.randomUUID().toString())
+    }
+
     override fun findById(takingRecordId: TakingRecordId): TakingRecord? {
         return takingRecordMapper.findOneByTakingRecordId(takingRecordId.value)?.toTakingRecord()
     }
