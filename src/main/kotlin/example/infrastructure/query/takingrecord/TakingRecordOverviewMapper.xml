@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.query.takingrecord.TakingRecordOverviewMapper">
+    <select id="countByMedicineIdAndAccountId" resultType="_long">
+        SELECT
+            COUNT(*)
+        FROM
+            taking_records
+            LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
+            LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
+        WHERE
+            taken_medicine = #{medicineId} AND recorder = #{accountId};
+    </select>
+
+    <select id="findAllByMedicineIdAndAccountId" resultMap="TakingRecordOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            taking_records
+            LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
+            LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
+        WHERE
+            taken_medicine = #{medicineId} AND recorder = #{accountId}
+        ORDER BY
+            taken_at DESC
+        LIMIT
+            #{pageSize}
+        OFFSET
+            #{offset};
+    </select>
+
+    <sql id="AllColumns">
+        taking_records.taking_record_id AS taking_record_id,
+        taking_records.before_taking AS before_taking,
+        taking_records.after_taking AS after_taking,
+        taking_records.taken_at AS taken_at,
+        medicines.medicine_id AS medicine_id,
+        medicines.name AS name,
+        profiles.account_id,
+        profiles.username,
+        profiles.profile_image_url_endpoint,
+        profiles.profile_image_url_path
+    </sql>
+
+    <resultMap id="TakingRecordOverviewResultMap" type="example.application.query.takingrecord.TakingRecordOverview">
+        <constructor>
+            <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
+            <arg column="before_taking" javaType="ConditionLevel"/>
+            <arg column="after_taking" javaType="ConditionLevel"/>
+            <arg column="taken_at" javaType="java.time.LocalDateTime"/>
+            <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
+            <arg column="name" javaType="String"/>
+            <arg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
+            <arg column="{profile_image_url_endpoint, profile_image_url_path}" javaType="ProfileImageURL" resultMap="ProfileImageURLResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="TakingRecordIdResultMap" type="TakingRecordId">
+        <constructor>
+            <idArg column="taking_record_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineIdResultMap" type="MedicineId">
+        <constructor>
+            <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="AccountIdResultMap" type="AccountId">
+        <constructor>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="UsernameResultMap" type="Username">
+        <constructor>
+            <idArg column="username" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="ProfileImageURLResultMap" type="ProfileImageURL">
+        <constructor>
+            <idArg column="profile_image_url_endpoint" javaType="String"/>
+            <idArg column="profile_image_url_path" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>

@@ -1,9 +1,11 @@
 package example.testhelper.springframework.autoconfigure
 
+import example.application.query.takingrecord.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
+import example.infrastructure.query.takingrecord.*
 import example.infrastructure.repository.account.*
 import example.infrastructure.repository.medicine.*
 import example.infrastructure.repository.profile.*
@@ -24,7 +26,8 @@ annotation class MyBatisRepositoryTest {
     class Configuration(private val accountMapper: AccountMapper,
                         private val profileMapper: ProfileMapper,
                         private val medicineMapper: MedicineMapper,
-                        private val takingRecordMapper: TakingRecordMapper) {
+                        private val takingRecordMapper: TakingRecordMapper,
+                        private val takingRecordOverviewMapper: TakingRecordOverviewMapper) {
         @Bean
         fun accountRepository(): AccountRepository = MyBatisAccountRepository(accountMapper)
 
@@ -36,5 +39,10 @@ annotation class MyBatisRepositoryTest {
 
         @Bean
         fun takingRecordRepository(): TakingRecordRepository = MyBatisTakingRecordRepository(takingRecordMapper)
+
+        @Bean
+        fun takingRecordOverviewQueryService(): TakingRecordOverviewQueryService {
+            return MyBatisTakingRecordOverviewQueryService(takingRecordOverviewMapper)
+        }
     }
 }
