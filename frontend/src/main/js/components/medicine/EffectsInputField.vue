@@ -53,8 +53,8 @@
             @click="isEditModalActive = false"
           ></button>
         </div>
-        <div class="is-size-5 has-text-link-dark has-text-centered">効能</div>
-        <div class="field mb-3">
+        <div class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered">効能</div>
+        <div class="field m-3">
           <div class="control">
             <input
               class="input is-info"

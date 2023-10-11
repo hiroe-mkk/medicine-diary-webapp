@@ -52,7 +52,7 @@
             @click="isUsernameChangeModalActive = false"
           ></button>
         </div>
-        <div class="is-size-5 has-text-link-dark has-text-centered">
+        <div class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered">
           ユーザー名を変更する
         </div>
         <form

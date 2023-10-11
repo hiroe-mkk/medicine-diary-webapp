@@ -19,7 +19,7 @@
             @click="isImageChangeModalActive = false"
           ></button>
         </div>
-        <div class="is-size-5 has-text-link-dark has-text-centered">
+        <div class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered">
           {{ `${props.imageName}を変更する` }}
         </div>
         <div class="content m-3 has-text-centered">
