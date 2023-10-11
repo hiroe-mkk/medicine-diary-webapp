@@ -11,30 +11,6 @@
             taking_record_id = #{takingRecordId};
     </select>
 
-    <select id="countByTakenMedicine" resultType="_long">
-        SELECT
-            COUNT(*)
-        FROM
-            taking_records
-        WHERE
-            taken_medicine = #{takenMedicine};
-    </select>
-
-    <select id="findAllByMedicineId" resultMap="TakingRecordResultMap">
-        SELECT
-            <include refid="AllColumns"/>
-        FROM
-            taking_records
-        WHERE
-            taken_medicine = #{takenMedicine}
-        ORDER BY
-            taken_at DESC
-        LIMIT
-            #{pageSize}
-        OFFSET
-            #{offset};
-    </select>
-
     <insert id="upsertTakingRecord">
         INSERT INTO taking_records(
             taking_record_id,

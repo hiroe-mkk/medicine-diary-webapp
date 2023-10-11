@@ -1,8 +1,6 @@
 package example.infrastructure.repository.takingrecord
 
-import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
-import org.springframework.data.domain.*
 import org.springframework.stereotype.*
 import java.util.*
 
@@ -14,14 +12,6 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
 
     override fun findById(takingRecordId: TakingRecordId): TakingRecord? {
         return takingRecordMapper.findOneByTakingRecordId(takingRecordId.value)
-    }
-
-    override fun findByTakenMedicine(takenMedicine: MedicineId, pageable: Pageable): Page<TakingRecord> {
-        val total = takingRecordMapper.countByTakenMedicine(takenMedicine.value)
-        val content = takingRecordMapper.findAllByMedicineId(takenMedicine.value,
-                                                             pageable.pageSize,
-                                                             pageable.offset)
-        return PageImpl(content, pageable, total)
     }
 
     override fun save(takingRecord: TakingRecord) {
