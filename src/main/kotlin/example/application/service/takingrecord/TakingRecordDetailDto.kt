@@ -12,7 +12,7 @@ data class TakingRecordDetailDto(val id: TakingRecordId,
                                  val recorder: Recorder,
                                  val takenMedicine: TakenMedicine,
                                  val dose: Dose,
-                                 val symptoms: Symptoms,
+                                 val followUp: FollowUp,
                                  val note: Note,
                                  val takenAt: LocalDateTime) {
     data class Recorder(val accountId: AccountId,

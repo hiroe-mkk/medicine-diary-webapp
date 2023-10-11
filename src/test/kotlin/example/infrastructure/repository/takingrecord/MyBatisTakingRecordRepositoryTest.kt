@@ -34,9 +34,9 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
                                                     accountId,
                                                     medicineId,
                                                     Dose(1.0),
-                                                    Symptoms(listOf(FollowUp("頭痛",
-                                                                             ConditionLevel.A_LITTLE_BAD,
-                                                                             null))),
+                                                    FollowUp("頭痛",
+                                                             ConditionLevel.A_LITTLE_BAD,
+                                                             null),
                                                     Note(""),
                                                     LocalDateTime.of(2020, 1, 1, 7, 0))
 
@@ -78,9 +78,9 @@ internal class MyBatisTakingRecordRepositoryTest(@Autowired private val takingRe
         val takingRecord = testTakingRecordInserter.insert(accountId, medicineId)
         takingRecord.modify(testMedicineInserter.insert(accountId),
                             Dose(2.0),
-                            Symptoms(listOf(FollowUp("頭痛",
-                                                     ConditionLevel.A_LITTLE_BAD,
-                                                     ConditionLevel.GOOD))),
+                            FollowUp("頭痛",
+                                     ConditionLevel.A_LITTLE_BAD,
+                                     ConditionLevel.GOOD),
                             Note("それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"),
                             LocalDateTime.of(2020, 1, 1, 10, 0))
 

@@ -30,7 +30,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
                                                userSession.accountId,
                                                medicine,
                                                command.validatedDose,
-                                               command.validSymptoms,
+                                               command.validFollowUp,
                                                command.validatedNote,
                                                command.validatedTakenAt)
         takingRecordRepository.save(takingRecord)
@@ -47,7 +47,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
         val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
         takingRecord.modify(medicine,
                             command.validatedDose,
-                            command.validSymptoms,
+                            command.validFollowUp,
                             command.validatedNote,
                             command.validatedTakenAt)
         takingRecordRepository.save(takingRecord)

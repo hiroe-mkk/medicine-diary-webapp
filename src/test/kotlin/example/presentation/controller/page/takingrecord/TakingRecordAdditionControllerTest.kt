@@ -58,8 +58,8 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
     @Nested
     inner class AddTakingRecordTest {
         private val quantity: Double? = 1.0
-        private val symptoms: List<FollowUpInputField> =
-                listOf(FollowUpInputField("頭痛", ConditionLevel.A_LITTLE_BAD, null))
+        private val symptom: String = "頭痛"
+        private val beforeTaking: ConditionLevel = ConditionLevel.A_LITTLE_BAD
         private val note: String = ""
         private val takenAt: String = "2000-01-01T07:00"
 
@@ -76,8 +76,8 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
                                               .with(csrf())
                                               .param("takenMedicine", medicine.id.value)
                                               .param("quantity", quantity.toString())
-                                              .param("symptoms.get(0).symptom", symptoms[0].symptom)
-                                              .param("symptoms.get(0).beforeTaking", symptoms[0].beforeTaking?.name)
+                                              .param("symptom", symptom)
+                                              .param("beforeTaking", beforeTaking?.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -98,8 +98,8 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
                                               .with(csrf())
                                               .param("takenMedicine", invalidMedicineId)
                                               .param("quantity", quantity.toString())
-                                              .param("symptoms.get(0).symptom", symptoms[0].symptom)
-                                              .param("symptoms.get(0).beforeTaking", symptoms[0].beforeTaking?.name)
+                                              .param("symptom", symptom)
+                                              .param("beforeTaking", beforeTaking?.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -119,8 +119,8 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
                                               .with(csrf())
                                               .param("takenMedicine", medicineId)
                                               .param("quantity", quantity.toString())
-                                              .param("symptoms.get(0).symptom", symptoms[0].symptom)
-                                              .param("symptoms.get(0).beforeTaking", symptoms[0].beforeTaking?.name)
+                                              .param("symptom", symptom)
+                                              .param("beforeTaking", beforeTaking?.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 

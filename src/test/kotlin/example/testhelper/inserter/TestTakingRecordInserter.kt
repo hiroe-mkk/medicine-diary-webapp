@@ -18,16 +18,14 @@ class TestTakingRecordInserter(private val takingRecordRepository: TakingRecordR
                takenMedicine: MedicineId,
                takingRecordId: TakingRecordId = TakingRecordId("testTakingRecordId${num++}"),
                dose: Dose = Dose(1.0),
-               symptoms: Symptoms = Symptoms(listOf(FollowUp("頭痛",
-                                                             ConditionLevel.A_LITTLE_BAD,
-                                                             null))),
+               followUp: FollowUp = FollowUp("頭痛", ConditionLevel.A_LITTLE_BAD, null),
                note: Note = Note(""),
                takenAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): TakingRecord {
         val takingRecord = TakingRecord.reconstruct(takingRecordId,
                                                     accountId,
                                                     takenMedicine,
                                                     dose,
-                                                    symptoms,
+                                                    followUp,
                                                     note,
                                                     takenAt)
         takingRecordRepository.save(takingRecord)

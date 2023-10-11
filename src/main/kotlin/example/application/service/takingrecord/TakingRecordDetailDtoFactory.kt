@@ -24,7 +24,7 @@ class TakingRecordDetailDtoFactory(private val profileRepository: ProfileReposit
                                      TakenMedicine(takingRecord.takenMedicine,
                                                    medicine.name),
                                      takingRecord.dose,
-                                     takingRecord.symptoms,
+                                     takingRecord.followUp,
                                      takingRecord.note,
                                      takingRecord.takenAt)
     }

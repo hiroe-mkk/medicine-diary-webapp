@@ -63,7 +63,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                                  TakenMedicine(medicine.id,
                                                                medicine.name),
                                                  takingRecord.dose,
-                                                 takingRecord.symptoms,
+                                                 takingRecord.followUp,
                                                  takingRecord.note,
                                                  takingRecord.takenAt)
             assertThat(actual).isEqualTo(expected)
@@ -113,13 +113,14 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
             //then:
             val foundTakingRecord = takingRecordRepository.findById(newTakingRecordId)
-            val expected = TakingRecord.reconstruct(newTakingRecordId,
-                                                    userSession.accountId,
-                                                    medicine.id,
-                                                    command.validatedDose,
-                                                    command.validSymptoms,
-                                                    command.validatedNote,
-                                                    command.validatedTakenAt)
+            val expected = TakingRecord.reconstruct(
+                    newTakingRecordId,
+                    userSession.accountId,
+                    medicine.id,
+                    command.validatedDose,
+                    command.validFollowUp,
+                    command.validatedNote,
+                    command.validatedTakenAt)
             assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 
@@ -176,13 +177,14 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
             //then:
             val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
-            val expected = TakingRecord.reconstruct(takingRecord.id,
-                                                    userSession.accountId,
-                                                    command.validatedTakenMedicine,
-                                                    command.validatedDose,
-                                                    command.validSymptoms,
-                                                    command.validatedNote,
-                                                    command.validatedTakenAt)
+            val expected = TakingRecord.reconstruct(
+                    takingRecord.id,
+                    userSession.accountId,
+                    command.validatedTakenMedicine,
+                    command.validatedDose,
+                    command.validFollowUp,
+                    command.validatedNote,
+                    command.validatedTakenAt)
             assertThat(foundTakingRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 

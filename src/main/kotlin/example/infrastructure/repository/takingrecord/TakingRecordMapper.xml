@@ -2,12 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.repository.takingrecord.TakingRecordMapper">
-    <select id="findOneByTakingRecordId" resultMap="TakingRecordResultEntityResultMap">
+    <select id="findOneByTakingRecordId" resultMap="TakingRecordResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
             taking_records
-            LEFT OUTER JOIN symptoms USING(taking_record_id)
         WHERE
             taking_record_id = #{takingRecordId};
     </select>
@@ -21,12 +20,11 @@
             taken_medicine = #{takenMedicine};
     </select>
 
-    <select id="findAllByMedicineId" resultMap="TakingRecordResultEntityResultMap">
+    <select id="findAllByMedicineId" resultMap="TakingRecordResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
             taking_records
-            LEFT OUTER JOIN symptoms USING(taking_record_id)
         WHERE
             taken_medicine = #{takenMedicine}
         ORDER BY
@@ -37,12 +35,15 @@
             #{offset};
     </select>
 
-    <insert id="upsertOneTakingRecord">
+    <insert id="upsertTakingRecord">
         INSERT INTO taking_records(
             taking_record_id,
             recorder,
             taken_medicine,
             quantity,
+            symptom,
+            before_taking,
+            after_taking,
             note,
             taken_at
         )VALUES(
@@ -50,68 +51,48 @@
             #{recorder},
             #{takenMedicine},
             #{quantity},
+            #{symptom},
+            #{beforeTaking},
+            #{afterTaking, jdbcType=VARCHAR},
             #{note},
             #{takenAt}
         )ON DUPLICATE KEY UPDATE
             taken_medicine = #{takenMedicine},
             quantity = #{quantity},
+            symptom = #{symptom},
+            before_taking = #{beforeTaking},
+            after_taking = #{afterTaking, jdbcType=VARCHAR},
             note = #{note},
             taken_at = #{takenAt};
     </insert>
 
-    <insert id="insertAllSymptoms">
-        INSERT INTO symptoms(
-            taking_record_id,
-            ordering,
-            symptom,
-            before_taking,
-            after_taking
-        )VALUES
-            <foreach collection="symptoms" item="item" separator=",">
-                (#{takingRecordId},
-                 #{item.ordering},
-                 #{item.value.symptom},
-                 #{item.value.beforeTaking},
-                 #{item.value.afterTaking, jdbcType=VARCHAR})
-            </foreach>
-        ;
-    </insert>
-
-    <delete id="deleteOneTakingRecord">
+    <delete id="deleteTakingRecord">
         DELETE FROM taking_records
         WHERE taking_record_id = #{takingRecordId};
     </delete>
 
-    <delete id="deleteAllSymptoms">
-        DELETE FROM symptoms
-        WHERE taking_record_id = #{takingRecordId};
-    </delete>
-
     <sql id="AllColumns">
-        taking_records.taking_record_id AS taking_record_id,
-        taking_records.recorder AS recorder,
-        taking_records.taken_medicine AS taken_medicine,
-        taking_records.quantity AS quantity,
-        taking_records.note AS note,
-        taking_records.taken_at AS taken_at,
-        symptoms.ordering AS ordering,
-        symptoms.symptom AS symptom,
-        symptoms.before_taking AS before_taking,
-        symptoms.after_taking AS after_taking
+        taking_record_id AS taking_record_id,
+        recorder AS recorder,
+        taken_medicine AS taken_medicine,
+        quantity AS quantity,
+        symptom AS symptom,
+        before_taking AS before_taking,
+        after_taking AS after_taking,
+        note AS note,
+        taken_at AS taken_at
     </sql>
 
-    <resultMap id="TakingRecordResultEntityResultMap" type="example.infrastructure.repository.takingrecord.TakingRecordResultEntity">
+    <resultMap id="TakingRecordResultMap" type="TakingRecord">
         <constructor>
             <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
             <arg column="recorder" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="taken_medicine" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
+            <arg column="{symptom, before_taking, after_taking}" javaType="FollowUp" resultMap="FollowUpResultMap"/>
             <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="taken_at" javaType="java.time.LocalDateTime"/>
         </constructor>
-        <id column="taking_record_id"/>
-        <association column="{ordering, symptom, before_taking, after_taking}" property="symptoms"
-                     javaType="example.infrastructure.repository.shared.OrderedEntity" resultMap="SymptomsOrderedEntityResultMap"/>
     </resultMap>
     <resultMap id="TakingRecordIdResultMap" type="TakingRecordId">
         <constructor>
@@ -133,22 +114,16 @@
             <idArg column="quantity" javaType="_double"/>
         </constructor>
     </resultMap>
-    <resultMap id="NoteResultMap" type="Note">
-        <constructor>
-            <idArg column="note" javaType="String"/>
-        </constructor>
-    </resultMap>
-    <resultMap id="SymptomsOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">
-        <constructor>
-            <idArg column="ordering" javaType="_int"/>
-            <arg column="{symptom, before_taking, after_taking}" resultMap="FollowUpResultMap"/>
-        </constructor>
-    </resultMap>
     <resultMap id="FollowUpResultMap" type="FollowUp">
         <constructor>
             <arg column="symptom" javaType="String"/>
             <arg column="before_taking" javaType="ConditionLevel"/>
             <arg column="after_taking" javaType="ConditionLevel"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="NoteResultMap" type="Note">
+        <constructor>
+            <idArg column="note" javaType="String"/>
         </constructor>
     </resultMap>
 </mapper>
