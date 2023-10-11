@@ -19,5 +19,7 @@ abstract class URL(val endpoint: String,
         return result
     }
 
+    fun toURL(): String? = endpoint + path
+
     override fun toString(): String = endpoint + path
 }
