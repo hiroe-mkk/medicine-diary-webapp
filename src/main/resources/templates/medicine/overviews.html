@@ -65,20 +65,28 @@
         </div>
       </div>
 
-      <div class="bottom-right-button">
-        <a
-          class="button is-rounded has-background-info-dark"
-          th:href="@{/medicines/register}"
-        >
-          <p
-            class="icon is-medium fas fa-lg has-text-white is-flex is-align-items-center"
-          >
-            <i class="fa-solid fa-plus"></i>
-          </p>
-        </a>
-        <p class="is-size-7 has-text-weight-bold is-small has-text-info-dark">
-          お薬登録
-        </p>
+      <div class="bottom-fullwidth">
+        <div class="tabs is-fullwidth has-background-info-light pb-0">
+          <ul>
+            <li>
+              <a
+                class="is-small is-link is-outlined is-rounded py-5"
+                th:href="@{/medicines/register}"
+              >
+                <p class="button is-link is-outlined">
+                  <span
+                    class="icon fas fa-2x is-flex is-align-items-center mr-0"
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </span>
+                  <span class="is-size-6 has-text-weight-bold">
+                    お薬を登録する
+                  </span>
+                </p>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
