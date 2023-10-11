@@ -3,6 +3,7 @@ package example.presentation.controller.page.takingrecord
 import example.application.service.medicine.*
 import example.application.service.takingrecord.*
 import example.domain.model.medicine.*
+import example.domain.model.takingrecord.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
@@ -18,10 +19,13 @@ class TakingRecordAdditionController(private val medicineService: MedicineServic
                                      private val takingRecordService: TakingRecordService,
                                      private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("medicines")
-    fun medicines(): Map<MedicineId, String> {
+    fun medicines(): Map<String, String> {
         val medicines = medicineService.findAllMedicineOverviews(userSessionProvider.getUserSession())
-        return medicines.associate { Pair(it.medicineId, it.name) }
+        return medicines.associate { Pair(it.medicineId.value, it.name) }
     }
+
+    @ModelAttribute("conditionLevels")
+    fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.values()
 
     @ModelAttribute("title")
     fun title(): String = "服用記録追加"
