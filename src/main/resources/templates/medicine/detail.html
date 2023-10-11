@@ -31,7 +31,14 @@
               <changeable-image
                 ref="changeableImage"
                 th:attr="image=*{medicineImageURL}, csrf=${_csrf.token}, execute-path='/api/medicines/__*{medicineId}__/medicineimage/change'"
-                image-name="薬画像"
+                image-name="お薬画像"
+              ></changeable-image>
+            </div>
+            <div th:if="*{medicineImageURL==null}">
+              <changeable-image
+                ref="changeableImage"
+                th:attr="csrf=${_csrf.token}, execute-path='/api/medicines/__*{medicineId}__/medicineimage/change'"
+                image-name="お薬画像"
               ></changeable-image>
             </div>
             <div
