@@ -47,7 +47,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 初期化された MedicineBasicInfoEditCommand インスタンスを取得する
+     * 初期化された更新用の薬基本情報編集コマンドを取得する
      */
     fun getInitializedMedicineBasicInfoEditCommand(medicineId: MedicineId,
                                                    userSession: UserSession): MedicineBasicInfoEditCommand {
