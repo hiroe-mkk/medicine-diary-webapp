@@ -43,4 +43,22 @@ class TakingRecordModificationController(private val medicineService: MedicineSe
         model.addAttribute("form", command)
         return "takingrecord/form"
     }
+
+    /**
+     * 服用記録を修正する
+     */
+    @PostMapping
+    fun modifyTakingRecord(@PathVariable takingRecordId: TakingRecordId,
+                           @ModelAttribute("form") @Validated takingRecordEditCommand: TakingRecordEditCommand,
+                           bindingResult: BindingResult,
+                           redirectAttributes: RedirectAttributes): String {
+        if (bindingResult.hasErrors()) return "takingrecord/form"
+
+        takingRecordService.modifyTakingRecord(takingRecordId,
+                                               takingRecordEditCommand,
+                                               userSessionProvider.getUserSession())
+        redirectAttributes.addFlashAttribute("resultMessage",
+                                             ResultMessage.info("服用記録の修正が完了しました。"))
+        return "redirect:/mypage" // TODO: 服用記録追加画面を表示していた画面に遷移するように変更する
+    }
 }
