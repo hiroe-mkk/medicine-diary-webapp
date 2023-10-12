@@ -1,8 +1,8 @@
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 
-// バックエンドから服用記録概要一覧を取得する DAO
-export class TakingRecordOverviewDAO {
-  static load(page, sizePerPage, filter) {
+// バックエンドから服用記録を取得する DAO
+export class TakingRecordDAO {
+  static findTakingRecordOverviews(page, sizePerPage, filter) {
     return HttpRequestClient.submitGetRequest(
       '/api/takingrecords?' +
         this._createParams(page, sizePerPage, filter).toString()

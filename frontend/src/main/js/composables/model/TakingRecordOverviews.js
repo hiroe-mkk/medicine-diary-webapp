@@ -1,4 +1,4 @@
-import { TakingRecordOverviewDAO } from '@main/js/composables/TakingRecordOverviewDAO.js';
+import { TakingRecordDAO } from '@main/js/composables/TakingRecordDAO.js';
 
 export class TakingRecordOverviews {
   constructor(filter) {
@@ -22,7 +22,7 @@ export class TakingRecordOverviews {
   }
 
   async load() {
-    const result = await TakingRecordOverviewDAO.load(
+    const result = await TakingRecordDAO.findTakingRecordOverviews(
       this._page,
       this._sizePerPage,
       this._filter

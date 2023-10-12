@@ -1,12 +1,12 @@
 import { TakingRecordOverviews } from '@main/js/composables/model/TakingRecordOverviews.js';
-import { TakingRecordOverviewDAO } from '@main/js/composables/TakingRecordOverviewDAO.js';
-jest.mock('@main/js/composables/TakingRecordOverviewDAO.js');
+import { TakingRecordDAO } from '@main/js/composables/TakingRecordDAO.js';
+jest.mock('@main/js/composables/TakingRecordDAO.js');
 
 describe('loadTakingRecordOverviews', () => {
   test('load', async () => {
     //given:
     const values = createTestTakingRecordOverviews(3);
-    TakingRecordOverviewDAO.load.mockReturnValue({
+    TakingRecordDAO.findTakingRecordOverviews.mockReturnValue({
       number: 0,
       totalPages: 1,
       takingRecordOverviews: values,

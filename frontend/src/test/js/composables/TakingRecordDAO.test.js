@@ -1,6 +1,6 @@
-import { TakingRecordOverviewDAO } from '@main/js/composables/TakingRecordOverviewDAO.js';
+import { TakingRecordDAO } from '@main/js/composables/TakingRecordDAO.js';
 
-describe('TakingRecordOverviewDAOTest', () => {
+describe('TakingRecordDAOTest', () => {
   test('createParams', async () => {
     //given:
     const page = 0;
@@ -8,7 +8,7 @@ describe('TakingRecordOverviewDAOTest', () => {
     const filter = { medicineid: 'medicineId' };
 
     //when:
-    const actual = TakingRecordOverviewDAO._createParams(page, size, filter);
+    const actual = TakingRecordDAO._createParams(page, size, filter);
 
     //then:
     expect(actual.get('page')).toEqual(page.toString());
