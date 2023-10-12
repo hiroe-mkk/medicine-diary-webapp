@@ -44,7 +44,7 @@
       @click="isUsernameChangeModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification p-3 is-white">
+      <div class="notification py-3 px-5 is-white">
         <div class="has-text-right">
           <button
             class="delete"

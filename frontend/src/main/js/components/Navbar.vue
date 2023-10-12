@@ -1,7 +1,7 @@
 <template>
   <nav id="navbar" class="navbar is-fixed-top has-background-info-dark">
     <div class="navbar-brand is-flex is-justify-content-space-between">
-      <span
+      <p
         class="navbar-burger has-text-white"
         :class="{ 'is-active': isOpened }"
         @click="isOpened = !isOpened"
@@ -9,7 +9,7 @@
         <span></span>
         <span></span>
         <span></span>
-      </span>
+      </p>
     </div>
 
     <div class="navbar-menu" :class="{ 'is-active': isOpened }">
@@ -17,7 +17,7 @@
         <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
           <a class="has-text-white is-hidden-touch" href="/mypage">
             <span
-              class="icon is-medium fas fa-2x is-flex is-align-items-center"
+              class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
               <i class="fa-solid fa-circle-user"></i>
             </span>
@@ -35,7 +35,7 @@
         <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
           <a class="has-text-white is-hidden-touch" href="/medicines">
             <span
-              class="icon is-medium fas fa-2x is-flex is-align-items-center"
+              class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
               <i class="fa-solid fa-capsules"></i>
             </span>
@@ -56,7 +56,7 @@
             @click="isSettingModalActive = true"
           >
             <span
-              class="icon is-medium fas fa-2x is-flex is-align-items-center"
+              class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
               <i class="fa-solid fa-gear"></i>
             </span>

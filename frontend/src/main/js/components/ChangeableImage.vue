@@ -11,7 +11,7 @@
       @click="isImageChangeModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification p-3 has-background-white-bis has-text-centered">
+      <div class="notification py-3 px-5 has-background-white-bis has-text-centered">
         <div class="has-text-right">
           <button
             class="delete"

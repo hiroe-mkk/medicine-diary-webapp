@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div
-      class="media px-2 is-clickable"
+      class="media mx-2 is-clickable"
       v-for="(
         takingRecordOverview, takingRecordId
       ) in takingRecordOverviews.values"
@@ -53,7 +53,7 @@
       @click="isTakingRecordDetailModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification p-3 is-link is-light">
+      <div class="notification py-3 px-5 is-link is-light">
         <div class="has-text-right">
           <button
             class="delete"
@@ -67,7 +67,7 @@
         >
           <div class="is-flex is-justify-content-space-between mb-2">
             <strong>服用したお薬</strong>
-            <p>
+            <span>
               <a
                 class="is-underlined has-text-info has-text-weight-semibold"
                 :href="`/medicines/${takingRecordDetail.value.takenMedicine.medicineId}`"
@@ -77,15 +77,15 @@
               <span class="ml-2">{{
                 takingRecordDetail.value.takenMedicine.dose
               }}</span>
-            </p>
+            </span>
           </div>
           <div class="is-flex is-justify-content-space-between mb-2">
             <strong>お薬を服用した時間</strong>
-            <p>{{ takingRecordDetail.value.takenAt }}</p>
+            <span>{{ takingRecordDetail.value.takenAt }}</span>
           </div>
           <div class="is-flex is-justify-content-space-between mb-2">
             <strong>症状</strong>
-            <p>
+            <span>
               <span>{{ takingRecordDetail.value.symptom }}</span>
               (
               <span>{{ takingRecordDetail.value.beforeTaking }}</span>
@@ -99,7 +99,7 @@
                 {{ takingRecordDetail.value.afterTaking }}
               </span>
               )
-            </p>
+            </span>
           </div>
           <div
             class="has-text-left mb-2"

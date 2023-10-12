@@ -11,9 +11,9 @@
   <body>
     <div layout:fragment="content" th:remove="tag">
       <div class="content has-text-centered">
-        <h1 class="is-size-4 icon-text has-text-grey-dark">
+        <h1 class="icon-text is-size-4 icon-text has-text-grey-dark">
           <span>お薬</span>
-          <span class="icon mx-2">
+          <span class="icon is-flex is-align-items-center mx-2">
             <i class="fa-solid fa-capsules"></i>
           </span>
         </h1>
@@ -21,7 +21,7 @@
 
       <div class="container is-max-desktop">
         <div
-          class="media px-6"
+          class="media mx-6"
           th:each="medicineOverview:${medicineOverviews}"
           th:object="${medicineOverview}"
         >
@@ -66,7 +66,7 @@
       </div>
 
       <div class="bottom-fullwidth">
-        <div class="tabs is-fullwidth has-background-info-light pb-0">
+        <div class="tabs is-fullwidth has-background-info-light mb-0">
           <ul>
             <li>
               <a

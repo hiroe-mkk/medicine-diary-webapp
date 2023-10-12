@@ -10,21 +10,21 @@
       <ul class="mt-0">
         <li v-for="(effect, index) in effects">
           <div class="is-flex is-justify-content-space-between mb-1">
-            <span>{{ effect }}</span>
-            <span>
+            <p>{{ effect }}</p>
+            <p>
               <span
-                class="icon is-small fas is-clickable m-1"
+                class="icon fas is-clickable m-1 is-small"
                 @click="editEffect(index)"
               >
                 <i class="fa-solid fa-pen-to-square"></i>
               </span>
               <span
-                class="icon is-small fas is-clickable m-1"
+                class="icon fas is-clickable m-1 is-small"
                 @click="deleteEffect(index)"
               >
                 <i class="fa-solid fa-circle-minus"></i>
               </span>
-            </span>
+            </p>
           </div>
           <input type="text" name="effects" :value="effect" hidden />
         </li>
@@ -45,7 +45,7 @@
   <div class="modal" :class="{ 'is-active': isEditModalActive }">
     <div class="modal-background" @click="isEditModalActive = false"></div>
     <div class="modal-content">
-      <div class="notification p-3 is-white">
+      <div class="notification py-3 px-5 is-white">
         <div class="has-text-right">
           <button
             class="delete"
