@@ -62,7 +62,7 @@
           ></button>
         </div>
         <div
-          class="content has-text-centered py-2 px-5"
+          class="content has-text-centered my-2 mx-5"
           v-if="takingRecordDetail.hasValue"
         >
           <div class="is-flex is-justify-content-space-between mb-2">
@@ -107,6 +107,32 @@
           >
             <strong>ノート</strong>
             <p class="m-2">{{ takingRecordDetail.value.note }}</p>
+          </div>
+        </div>
+        <div class="m-2">
+          <div class="field is-grouped is-grouped-centered">
+            <p class="control">
+              <a
+                class="button is-small is-link is-rounded is-outlined"
+                :href="`/takingrecords/${takingRecordDetail.value.takingRecordId}/modify`"
+              >
+                <span class="icon is-flex is-align-items-center mr-0">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </span>
+                <span class="is-size-7 has-text-weight-bold">修正する</span>
+              </a>
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                class="button is-small is-danger is-rounded is-outlined"
+              >
+                <span class="icon is-flex is-align-items-center mr-0">
+                  <i class="fa-solid fa-trash-can"></i>
+                </span>
+                <span class="is-size-7 has-text-weight-bold">削除する</span>
+              </button>
+            </p>
           </div>
         </div>
       </div>
