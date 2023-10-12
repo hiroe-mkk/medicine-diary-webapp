@@ -3,6 +3,11 @@ export class HttpRequestClient {
     const response = await fetch(url, { method: 'POST', body: from });
     return parseResponse(response);
   }
+
+  static async submitGetRequest(url) {
+    const response = await fetch(url, { method: 'GET' });
+    return parseResponse(response);
+  }
 }
 
 // HTTP リクエストに失敗したことを示すエラー

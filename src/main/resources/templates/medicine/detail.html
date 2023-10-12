@@ -21,7 +21,7 @@
         </h1>
       </div>
 
-      <div class="container is-max-desktop">
+      <div class="container is-max-widescreen">
         <div class="notification p-3 has-background-white-bis">
           <div class="columns p-3">
             <div
@@ -91,6 +91,18 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="container mt-5 is-max-desktop">
+        <div class="content m-2 has-text-centered">
+          <h2 class="is-size-5 icon-text has-text-grey-dark">
+            <span>服用記録</span>
+            <span class="icon mx-2">
+              <i class="fa-regular fa-clipboard"></i>
+            </span>
+          </h2>
+        </div>
+        <taking-records th:attr="medicine-id=*{medicineId}"></taking-records>
       </div>
 
       <div class="bottom-fullwidth">
