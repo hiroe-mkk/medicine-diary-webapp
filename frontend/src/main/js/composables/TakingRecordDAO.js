@@ -11,6 +11,14 @@ export class TakingRecordDAO {
     });
   }
 
+  static findTakingRecordDetail(takingRecordId) {
+    return HttpRequestClient.submitGetRequest(
+      `/api/takingrecords/${takingRecordId}`
+    ).catch((error) => {
+      throw new TakingRecordLoadingFailed();
+    });
+  }
+
   static _createParams(page, sizePerPage, filter) {
     const params = new URLSearchParams();
     params.set('page', page);
