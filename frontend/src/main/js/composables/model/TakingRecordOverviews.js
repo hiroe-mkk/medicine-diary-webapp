@@ -35,4 +35,8 @@ export class TakingRecordOverviews {
     this._page++;
     this._totalPages = result.totalPages;
   }
+
+  delete(takingRecordId) {
+    delete this._idToTakingRecordOverview[takingRecordId];
+  }
 }

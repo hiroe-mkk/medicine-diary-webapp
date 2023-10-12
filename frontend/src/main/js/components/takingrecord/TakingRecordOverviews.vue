@@ -126,6 +126,9 @@
               <button
                 type="button"
                 class="button is-small is-danger is-rounded is-outlined"
+                @click="
+                  deleteTakingRecord(takingRecordDetail.value.takingRecordId)
+                "
               >
                 <span class="icon is-flex is-align-items-center mr-0">
                   <i class="fa-solid fa-trash-can"></i>
@@ -146,10 +149,15 @@
 import { ref, reactive, onMounted } from 'vue';
 import { TakingRecordOverviews } from '@main/js/composables/model/TakingRecordOverviews.js';
 import { TakingRecordDetail } from '@main/js/composables/model/TakingRecordDetail.js';
+import {
+  HttpRequestClient,
+  HttpRequestFailedError,
+} from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   medicineId: String,
+  csrf: String,
 });
 
 const takingRecordOverviews = reactive(
@@ -182,5 +190,49 @@ function activateTakingRecordDetailModal(takingRecordId) {
     );
   });
   isTakingRecordDetailModalActive.value = true;
+}
+
+function deleteTakingRecord(takingRecordId) {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+
+  HttpRequestClient.submitPostRequest(
+    `/api/takingrecords/${takingRecordId}/delete`,
+    form
+  )
+    .then(() => {
+      takingRecordOverviews.delete(takingRecordId);
+      isTakingRecordDetailModalActive.value = false;
+      resultMessage.value.activate('INFO', `服用記録の削除が完了しました。`);
+    })
+    .catch((error) => {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          resultMessage.value.activate(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
+
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
 }
 </script>

@@ -102,7 +102,7 @@
             </span>
           </h2>
         </div>
-        <taking-records th:attr="medicine-id=*{medicineId}"></taking-records>
+        <taking-records th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"></taking-records>
       </div>
 
       <div class="bottom-fullwidth">
