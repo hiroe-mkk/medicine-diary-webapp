@@ -47,5 +47,15 @@ data class TakingRecordEditCommand(@field:NotEmpty(message = "※必ず選択し
                                            "",
                                            LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
         }
+
+        fun initialize(takingRecord: TakingRecord): TakingRecordEditCommand {
+            return TakingRecordEditCommand(takingRecord.takenMedicine.value,
+                                           takingRecord.dose.quantity,
+                                           takingRecord.followUp.symptom,
+                                           takingRecord.followUp.beforeTaking,
+                                           takingRecord.followUp.afterTaking,
+                                           takingRecord.note.value,
+                                           takingRecord.takenAt)
+        }
     }
 }

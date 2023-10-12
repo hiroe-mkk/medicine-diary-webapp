@@ -38,6 +38,15 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
     }
 
     /**
+     * 初期化された修正用の服用記録編集コマンドを取得する
+     */
+    fun getInitializedTakingRecordEditCommand(takingRecordId: TakingRecordId,
+                                              userSession: UserSession): TakingRecordEditCommand {
+        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
+        return TakingRecordEditCommand.initialize(takingRecord)
+    }
+
+    /**
      * 服用記録を修正する
      */
     fun modifyTakingRecord(takingRecordId: TakingRecordId,
