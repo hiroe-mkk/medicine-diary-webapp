@@ -16,16 +16,16 @@ class TakingRecordDetailDtoFactory(private val profileRepository: ProfileReposit
                       ?: throw ProfileNotFoundException(takingRecord.recorder)
         val medicine = medicineRepository.findById(takingRecord.takenMedicine)
                        ?: throw MedicineNotFoundException(takingRecord.takenMedicine)
-
         return TakingRecordDetailDto(takingRecord.id,
-                                     Recorder(takingRecord.recorder,
-                                              profile.username,
-                                              profile.profileImageURL),
                                      TakenMedicine(takingRecord.takenMedicine,
-                                                   medicine.name),
-                                     takingRecord.dose,
+                                                   medicine.name,
+                                                   takingRecord.dose,
+                                                   medicine.dosageAndAdministration.takingUnit),
                                      takingRecord.followUp,
                                      takingRecord.note,
-                                     takingRecord.takenAt)
+                                     takingRecord.takenAt,
+                                     Recorder(takingRecord.recorder,
+                                              profile.username,
+                                              profile.profileImageURL))
     }
 }

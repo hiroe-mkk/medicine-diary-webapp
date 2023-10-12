@@ -57,15 +57,16 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
             //then:
             val expected = TakingRecordDetailDto(takingRecord.id,
-                                                 Recorder(userSession.accountId,
-                                                          usersProfile.username,
-                                                          usersProfile.profileImageURL),
                                                  TakenMedicine(medicine.id,
-                                                               medicine.name),
-                                                 takingRecord.dose,
+                                                               medicine.name,
+                                                               takingRecord.dose,
+                                                               medicine.dosageAndAdministration.takingUnit),
                                                  takingRecord.followUp,
                                                  takingRecord.note,
-                                                 takingRecord.takenAt)
+                                                 takingRecord.takenAt,
+                                                 Recorder(userSession.accountId,
+                                                          usersProfile.username,
+                                                          usersProfile.profileImageURL))
             assertThat(actual).isEqualTo(expected)
         }
 
