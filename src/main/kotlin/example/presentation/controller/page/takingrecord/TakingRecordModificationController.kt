@@ -4,6 +4,8 @@ import example.application.service.medicine.*
 import example.application.service.takingrecord.*
 import example.domain.model.takingrecord.*
 import example.domain.shared.message.*
+import example.presentation.shared.*
+import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/takingrecords/{takingRecordId}/modify")
+@SessionAttributes(value = ["lastRequestedPagePath"])
 class TakingRecordModificationController(private val medicineService: MedicineService,
                                          private val takingRecordService: TakingRecordService,
                                          private val userSessionProvider: UserSessionProvider) {
@@ -51,14 +54,22 @@ class TakingRecordModificationController(private val medicineService: MedicineSe
     fun modifyTakingRecord(@PathVariable takingRecordId: TakingRecordId,
                            @ModelAttribute("form") @Validated takingRecordEditCommand: TakingRecordEditCommand,
                            bindingResult: BindingResult,
-                           redirectAttributes: RedirectAttributes): String {
+                           redirectAttributes: RedirectAttributes,
+                           lastRequestedPagePath: LastRequestedPagePath?): String {
         if (bindingResult.hasErrors()) return "takingrecord/form"
 
-        takingRecordService.modifyTakingRecord(takingRecordId,
-                                               takingRecordEditCommand,
-                                               userSessionProvider.getUserSession())
-        redirectAttributes.addFlashAttribute("resultMessage",
-                                             ResultMessage.info("服用記録の修正が完了しました。"))
-        return "redirect:/mypage" // TODO: 服用記録追加画面を表示していた画面に遷移するように変更する
+        try {
+            takingRecordService.modifyTakingRecord(takingRecordId,
+                                                   takingRecordEditCommand,
+                                                   userSessionProvider.getUserSession())
+            redirectAttributes.addFlashAttribute("resultMessage",
+                                                 ResultMessage.info("服用記録の修正が完了しました。"))
+        } catch (ex: MedicineNotFoundException) {
+            redirectAttributes.addFlashAttribute("resultMessage",
+                                                 ResultMessage.error("服用記録の修正に失敗しました。"))
+        }
+
+        val redirectPath = lastRequestedPagePath?.value ?: "/mypage"
+        return "redirect:${redirectPath}"
     }
 }

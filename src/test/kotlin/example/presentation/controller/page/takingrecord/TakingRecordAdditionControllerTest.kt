@@ -5,6 +5,7 @@ import example.application.service.takingrecord.TakingRecordEditCommand.*
 import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
 import example.presentation.controller.page.medicine.*
+import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -65,14 +66,15 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("服用記録の追加に成功した場合、薬概要一覧画面にリダイレクトする")
-        fun takingRecordAdditionSucceeds_redirectToMyPage() {
+        @DisplayName("服用記録の追加に成功した場合、最後にリクエストされた画面にリダイレクトする")
+        fun takingRecordAdditionSucceeds_redirectToLastRequestedPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
             val medicine = testMedicineInserter.insert(userSession.accountId)
 
             //when:
             val actions = mockMvc.perform(post(PATH)
+                                              .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine"))
                                               .with(csrf())
                                               .param("takenMedicine", medicine.id.value)
                                               .param("quantity", quantity.toString())
@@ -83,7 +85,7 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
 
             //then:
             actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/mypage"))
+                .andExpect(redirectedUrl("/medicine"))
         }
 
         @Test
@@ -106,6 +108,29 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
             //then:
             actions.andExpect(status().isOk)
                 .andExpect(view().name("takingrecord/form"))
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("薬が見つからなかった場合、最後にリクエストされた画面にリダイレクトする")
+        fun medicineNotFound_redirectToLastRequestedPage() {
+            //given:
+            val badMedicineId = "NonexistentId"
+
+            //when:
+            val actions = mockMvc.perform(post(PATH)
+                                              .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine"))
+                                              .with(csrf())
+                                              .param("takenMedicine", badMedicineId)
+                                              .param("quantity", quantity.toString())
+                                              .param("symptom", symptom)
+                                              .param("beforeTaking", beforeTaking?.name)
+                                              .param("note", note)
+                                              .param("takenAt", takenAt))
+
+            //then:
+            actions.andExpect(status().isFound)
+                .andExpect(redirectedUrl("/medicine"))
         }
 
         @Test
