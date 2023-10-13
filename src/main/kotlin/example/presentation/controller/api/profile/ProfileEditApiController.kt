@@ -3,6 +3,7 @@ package example.presentation.controller.api.profile
 import example.application.service.*
 import example.application.service.account.*
 import example.application.service.profile.*
+import example.application.service.profileimage.*
 import example.application.shared.command.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/api/profile")
 class ProfileEditApiController(private val profileService: ProfileService,
+                               private val profileImageService: ProfileImageService,
                                private val userSessionProvider: UserSessionProvider) {
     /**
      * ユーザー名を変更する
@@ -30,7 +32,7 @@ class ProfileEditApiController(private val profileService: ProfileService,
     @PostMapping("/profileimage/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeProfileImage(@Validated imageUploadCommand: ImageUploadCommand) {
-        profileService.changeProfileImage(imageUploadCommand,
-                                          userSessionProvider.getUserSession())
+        profileImageService.changeProfileImage(imageUploadCommand,
+                                               userSessionProvider.getUserSession())
     }
 }
