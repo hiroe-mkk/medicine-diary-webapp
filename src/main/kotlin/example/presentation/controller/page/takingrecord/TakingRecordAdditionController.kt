@@ -43,7 +43,17 @@ class TakingRecordAdditionController(private val medicineService: MedicineServic
      * 服用記録追加画面を表示する
      */
     @GetMapping
-    fun displayTakingRecordAdditionPage(model: Model): String {
+    fun displayTakingRecordAdditionPage(@ModelAttribute("medicines") medicines: Map<String, String>,
+                                        lastRequestedPagePath: LastRequestedPagePath?,
+                                        redirectAttributes: RedirectAttributes,
+                                        model: Model): String {
+        if (medicines.isEmpty()) {
+            redirectAttributes.addFlashAttribute("resultMessage",
+                                                 ResultMessage.error("服用記録追加リクエストに失敗しました。",
+                                                                     "お薬が1件も登録されていない場合、服用記録を追加することはできません。"))
+            return "redirect:${redirectPath(lastRequestedPagePath)}"
+        }
+
         model.addAttribute("form", TakingRecordEditCommand.initialize())
         return "takingrecord/form"
     }
@@ -68,7 +78,10 @@ class TakingRecordAdditionController(private val medicineService: MedicineServic
                                                  ResultMessage.error("服用記録の追加に失敗しました。"))
         }
 
-        val redirectPath = lastRequestedPagePath?.value ?: "/mypage"
-        return "redirect:${redirectPath}"
+        return "redirect:${redirectPath(lastRequestedPagePath)}"
+    }
+
+    private fun redirectPath(lastRequestedPagePath: LastRequestedPagePath?): String {
+        return lastRequestedPagePath?.value ?: "/mypage"
     }
 }

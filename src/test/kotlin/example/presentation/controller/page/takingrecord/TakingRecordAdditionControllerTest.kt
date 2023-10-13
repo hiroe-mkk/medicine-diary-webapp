@@ -36,12 +36,29 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
         @WithMockAuthenticatedAccount
         @DisplayName("服用記録追加画面を表示する")
         fun displayTakingRecordAdditionPage() {
+            //given:
+            val userSession = userSessionProvider.getUserSession()
+            testMedicineInserter.insert(userSession.accountId)
+
             //when:
             val actions = mockMvc.perform(get(PATH))
 
             //then:
             actions.andExpect(status().isOk)
                 .andExpect(view().name("takingrecord/form"))
+        }
+
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("薬が未登録の場合、最後にリクエストされた画面にリダイレクトする")
+        fun medicineIsNotRegistered_redirectToLastRequestedPage() {
+            //when:
+            val actions = mockMvc.perform(get(PATH)
+                                              .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine")))
+
+            //then:
+            actions.andExpect(status().isFound)
+                .andExpect(redirectedUrl("/medicine"))
         }
 
         @Test
