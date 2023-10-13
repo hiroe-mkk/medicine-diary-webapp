@@ -12,27 +12,16 @@ import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/api/profile")
-class ProfileEditApiController(private val profileService: ProfileService,
-                               private val profileImageService: ProfileImageService,
-                               private val userSessionProvider: UserSessionProvider) {
+@RequestMapping("/api/profile/username/change")
+class UsernameChangeApiController(private val profileService: ProfileService,
+                                  private val userSessionProvider: UserSessionProvider) {
     /**
      * ユーザー名を変更する
      */
-    @PostMapping("/username/change")
+    @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeUsername(@Validated usernameEditCommand: UsernameEditCommand) {
         profileService.changeUsername(usernameEditCommand,
                                       userSessionProvider.getUserSession())
-    }
-
-    /**
-     * プロフィール画像を変更する
-     */
-    @PostMapping("/profileimage/change")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun changeProfileImage(@Validated imageUploadCommand: ImageUploadCommand) {
-        profileImageService.changeProfileImage(imageUploadCommand,
-                                               userSessionProvider.getUserSession())
     }
 }
