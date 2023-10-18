@@ -64,3 +64,24 @@ CREATE TABLE IF NOT EXISTS taking_records (
   FOREIGN KEY(recorder) REFERENCES accounts(account_id),
   FOREIGN KEY(taken_medicine) REFERENCES medicines(medicine_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+
+CREATE TABLE IF NOT EXISTS shared_groups (
+  shared_group_id VARCHAR(36) PRIMARY KEY
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS members (
+  shared_group_id VARCHAR(36),
+  member VARCHAR(36),
+  PRIMARY KEY(shared_group_id, member),
+  FOREIGN KEY(shared_group_id) REFERENCES shared_groups(shared_group_id),
+  FOREIGN KEY(member) REFERENCES accounts(account_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS pending_users (
+  shared_group_id VARCHAR(36),
+  pending_user VARCHAR(36),
+  PRIMARY KEY(shared_group_id, pending_user),
+  FOREIGN KEY(shared_group_id) REFERENCES shared_groups(shared_group_id),
+  FOREIGN KEY(pending_user) REFERENCES accounts(account_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

@@ -4,11 +4,13 @@ import example.application.query.takingrecord.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
+import example.domain.model.sharedgroup.*
 import example.domain.model.takingrecord.*
 import example.infrastructure.query.takingrecord.*
 import example.infrastructure.repository.account.*
 import example.infrastructure.repository.medicine.*
 import example.infrastructure.repository.profile.*
+import example.infrastructure.repository.sharedgroup.*
 import example.infrastructure.repository.takingrecord.*
 import org.mybatis.spring.boot.test.autoconfigure.*
 import org.springframework.beans.factory.annotation.*
@@ -27,7 +29,8 @@ annotation class MyBatisRepositoryTest {
                         private val profileMapper: ProfileMapper,
                         private val medicineMapper: MedicineMapper,
                         private val takingRecordMapper: TakingRecordMapper,
-                        private val takingRecordOverviewMapper: TakingRecordOverviewMapper) {
+                        private val takingRecordOverviewMapper: TakingRecordOverviewMapper,
+                        private val sharedGroupMapper: SharedGroupMapper) {
         @Bean
         fun accountRepository(): AccountRepository = MyBatisAccountRepository(accountMapper)
 
@@ -39,6 +42,9 @@ annotation class MyBatisRepositoryTest {
 
         @Bean
         fun takingRecordRepository(): TakingRecordRepository = MyBatisTakingRecordRepository(takingRecordMapper)
+
+        @Bean
+        fun sharedGroupRepository(): SharedGroupRepository = MyBatisSharedGroupRepository(sharedGroupMapper)
 
         @Bean
         fun takingRecordOverviewQueryService(): TakingRecordOverviewQueryService {

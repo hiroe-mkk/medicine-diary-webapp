@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.repository.sharedgroup.SharedGroupMapper">
+    <select id="findOneBySharedGroupId" resultMap="SharedGroupResultEntityResultMap">
+        SELECT
+            shared_groups.shared_group_id AS shared_group_id,
+            members.member AS member,
+            pending_users.pending_user AS pending_user
+        FROM
+            shared_groups
+            LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
+            LEFT OUTER JOIN pending_users ON pending_users.shared_group_id = shared_groups.shared_group_id
+        WHERE
+            shared_groups.shared_group_id = #{sharedGroupId};
+    </select>
+
+    <insert id="insertOneSharedGroup">
+        INSERT INTO shared_groups(
+            shared_group_id
+        )VALUES(
+            #{sharedGroupId}
+        );
+    </insert>
+
+    <insert id="insertAllMembers">
+        INSERT INTO members(
+            shared_group_id,
+            member
+        )VALUES
+            <foreach collection="members" item="item" separator=",">
+                (#{sharedGroupId}, #{item})
+            </foreach>
+        ;
+    </insert>
+
+    <insert id="insertAllPendingUsers">
+        INSERT INTO pending_users(
+            shared_group_id,
+            pending_user
+        )VALUES
+            <foreach collection="pendingUsers" item="item" separator=",">
+                (#{sharedGroupId}, #{item})
+            </foreach>
+        ;
+    </insert>
+
+    <resultMap id="SharedGroupResultEntityResultMap" type="example.infrastructure.repository.sharedgroup.SharedGroupResultEntity">
+        <constructor>
+            <idArg column="shared_group_id" javaType="SharedGroupId" resultMap="SharedGroupIdResultMap"/>
+        </constructor>
+        <id column="shared_group_id"/>
+        <collection column="member" property="members" ofType="AccountId" resultMap="MemberResultMap"/>
+        <collection column="pending_user" property="pendingUsers" ofType="AccountId" resultMap="PendingUsersResultMap"/>
+    </resultMap>
+    <resultMap id="SharedGroupIdResultMap" type="SharedGroupId">
+        <constructor>
+            <idArg column="shared_group_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MemberResultMap" type="AccountId">
+        <constructor>
+            <idArg column="member" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="PendingUsersResultMap" type="AccountId">
+        <constructor>
+            <idArg column="pending_user" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>
