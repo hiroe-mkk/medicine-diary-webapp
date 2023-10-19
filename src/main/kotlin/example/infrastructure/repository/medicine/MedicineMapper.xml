@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.repository.medicine.MedicineMapper">
-    <select id="findOneByMedicineId" resultMap="MedicineEntityResultMap">
+    <select id="findOneByMedicineId" resultMap="MedicineResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
@@ -13,7 +13,7 @@
             medicine_id = #{medicineId};
     </select>
 
-    <select id="findAllByAccountId" resultMap="MedicineEntityResultMap">
+    <select id="findAllByAccountId" resultMap="MedicineResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
@@ -113,7 +113,7 @@
         timing_options.timing_option AS timing_option
     </sql>
 
-    <resultMap id="MedicineEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
+    <resultMap id="MedicineResultEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="owner" javaType="AccountId" resultMap="AccountIdResultMap"/>
