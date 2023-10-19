@@ -28,4 +28,10 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         sharedGroupMapper.insertAllPendingUsers(sharedGroup.id.value,
                                                 sharedGroup.pendingUsers.map { it.value })
     }
+
+    override fun delete(sharedGroupId: SharedGroupId) {
+        sharedGroupMapper.deleteAllMembers(sharedGroupId.value)
+        sharedGroupMapper.deleteAllPendingUsers(sharedGroupId.value)
+        sharedGroupMapper.deleteOneSharedGroup(sharedGroupId.value)
+    }
 }

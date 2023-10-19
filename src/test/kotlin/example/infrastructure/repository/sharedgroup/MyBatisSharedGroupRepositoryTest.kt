@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.*
 
 @MyBatisRepositoryTest
 internal class MyBatisSharedGroupRepositoryTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
-                                                @Autowired private val testAccountInserter: TestAccountInserter) {
+                                                @Autowired private val testAccountInserter: TestAccountInserter,
+                                                @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var accountId: AccountId
 
     @BeforeEach
@@ -35,5 +36,18 @@ internal class MyBatisSharedGroupRepositoryTest(@Autowired private val sharedGro
         assertThat(foundSharedGroup?.id).isEqualTo(sharedGroup.id)
         assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*(sharedGroup.members.toTypedArray()))
         assertThat(foundSharedGroup?.pendingUsers).containsExactlyInAnyOrder(*(sharedGroup.pendingUsers.toTypedArray()))
+    }
+
+    @Test
+    fun canDeleteSharedGroup() {
+        //given:
+        val sharedGroup = testSharedGroupInserter.insert()
+
+        //when:
+        sharedGroupRepository.delete(sharedGroup.id)
+
+        //then:
+        val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+        assertThat(foundSharedGroup).isNull()
     }
 }

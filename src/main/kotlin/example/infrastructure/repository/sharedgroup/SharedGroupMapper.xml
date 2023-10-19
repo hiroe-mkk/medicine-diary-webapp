@@ -45,6 +45,22 @@
         ;
     </insert>
 
+    <delete id="deleteOneSharedGroup">
+        DELETE FROM shared_groups
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
+
+    <delete id="deleteAllMembers">
+        DELETE FROM members
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
+
+    <delete id="deleteAllPendingUsers">
+        DELETE FROM pending_users
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
+
+
     <resultMap id="SharedGroupResultEntityResultMap" type="example.infrastructure.repository.sharedgroup.SharedGroupResultEntity">
         <constructor>
             <idArg column="shared_group_id" javaType="SharedGroupId" resultMap="SharedGroupIdResultMap"/>
