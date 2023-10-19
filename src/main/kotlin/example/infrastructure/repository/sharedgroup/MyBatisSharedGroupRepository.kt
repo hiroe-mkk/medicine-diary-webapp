@@ -10,19 +10,27 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
     }
 
     override fun save(sharedGroup: SharedGroup) {
-        sharedGroupMapper.insertOneSharedGroup(sharedGroup.id.value)
-        insertAllMembers(sharedGroup)
-        insertAllPendingUsers(sharedGroup)
+        upsertOneSharedGroup(sharedGroup)
+        upsertAllMembers(sharedGroup)
+        upsertAllPendingUsers(sharedGroup)
     }
 
-    private fun insertAllMembers(sharedGroup: SharedGroup) {
+    private fun upsertOneSharedGroup(sharedGroup: SharedGroup) {
+        if (findById(sharedGroup.id) == null) {
+            sharedGroupMapper.insertOneSharedGroup(sharedGroup.id.value)
+        }
+    }
+
+    private fun upsertAllMembers(sharedGroup: SharedGroup) {
+        sharedGroupMapper.deleteAllMembers(sharedGroup.id.value)
         if (sharedGroup.members.isEmpty()) return
 
         sharedGroupMapper.insertAllMembers(sharedGroup.id.value,
                                            sharedGroup.members.map { it.value })
     }
 
-    private fun insertAllPendingUsers(sharedGroup: SharedGroup) {
+    private fun upsertAllPendingUsers(sharedGroup: SharedGroup) {
+        sharedGroupMapper.deleteAllPendingUsers(sharedGroup.id.value)
         if (sharedGroup.pendingUsers.isEmpty()) return
 
         sharedGroupMapper.insertAllPendingUsers(sharedGroup.id.value,

@@ -39,6 +39,24 @@ internal class MyBatisSharedGroupRepositoryTest(@Autowired private val sharedGro
     }
 
     @Test
+    fun canUpdateSharedGroup() {
+        //given:
+        val accounts = List(2) { testAccountInserter.insertAccountAndProfile().first }
+        val sharedGroup = testSharedGroupInserter.insert()
+        sharedGroup.join(accounts[0].id)
+        sharedGroup.invite(accounts[1].id)
+
+        //when:
+        sharedGroupRepository.save(sharedGroup)
+
+        //then:
+        val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+        assertThat(foundSharedGroup?.id).isEqualTo(sharedGroup.id)
+        assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*(sharedGroup.members.toTypedArray()))
+        assertThat(foundSharedGroup?.pendingUsers).containsExactlyInAnyOrder(*(sharedGroup.pendingUsers.toTypedArray()))
+    }
+
+    @Test
     fun canDeleteSharedGroup() {
         //given:
         val sharedGroup = testSharedGroupInserter.insert()
