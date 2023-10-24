@@ -123,7 +123,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<SharedGroupNotFoundException>(target)
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
         }
 
         @Test
@@ -216,7 +217,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.declineInvitation(sharedGroup.id, userSession) }
 
             //then:
-            assertThrows<SharedGroupNotFoundException>(target)
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
         }
     }
 
@@ -282,7 +284,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<SharedGroupNotFoundException>(target)
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
         }
     }
 

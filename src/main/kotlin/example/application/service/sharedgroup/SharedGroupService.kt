@@ -36,8 +36,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに招待する
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
-        val sharedGroup = findParticipatingSharedGroup(sharedGroupId, userSession)
-                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+        val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.invite(target, userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
@@ -47,8 +46,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 招待を拒否する
      */
     fun declineInvitation(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findInvitedSharedGroup(sharedGroupId, userSession)
-                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+        val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.declineInvitation(userSession.accountId)
         if (sharedGroup.shouldDelete()) {
@@ -62,8 +60,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 招待をキャンセルする
      */
     fun cancelInvitation(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
-        val sharedGroup = findParticipatingSharedGroup(sharedGroupId, userSession)
-                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+        val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.cancelInvitation(target)
         if (sharedGroup.shouldDelete()) {
@@ -77,8 +74,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに参加する
      */
     fun participateInSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findInvitedSharedGroup(sharedGroupId, userSession)
-                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+        val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
         sharedGroupDomainService.requireParticipationPossibleState(userSession.accountId)
 
         sharedGroup.participateIn(userSession.accountId)
@@ -89,8 +85,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループから抜ける
      */
     fun leaveSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findParticipatingSharedGroup(sharedGroupId, userSession)
-                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+        val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.leave(userSession.accountId)
         if (sharedGroup.shouldDelete()) {
@@ -100,13 +95,17 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         }
     }
 
-    private fun findParticipatingSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession): SharedGroup? {
-        val sharedGroup = sharedGroupRepository.findById(sharedGroupId) ?: return null
-        return if (sharedGroup.isParticipatingIn(userSession.accountId)) sharedGroup else null
+    private fun findParticipatingSharedGroupOrElseThrowException(sharedGroupId: SharedGroupId,
+                                                                 userSession: UserSession): SharedGroup {
+        return sharedGroupRepository.findById(sharedGroupId)
+                   ?.let { if (it.isParticipatingIn(userSession.accountId)) it else null }
+               ?: throw SharedGroupNotFoundException(sharedGroupId)
     }
 
-    private fun findInvitedSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession): SharedGroup? {
-        val sharedGroup = sharedGroupRepository.findById(sharedGroupId) ?: return null
-        return if (sharedGroup.isInvited(userSession.accountId)) sharedGroup else null
+    private fun findInvitedSharedGroupOrElseThrowException(sharedGroupId: SharedGroupId,
+                                                           userSession: UserSession): SharedGroup {
+        return sharedGroupRepository.findById(sharedGroupId)
+                   ?.let { if (it.isInvited(userSession.accountId)) it else null }
+               ?: throw SharedGroupNotFoundException(sharedGroupId)
     }
 }
