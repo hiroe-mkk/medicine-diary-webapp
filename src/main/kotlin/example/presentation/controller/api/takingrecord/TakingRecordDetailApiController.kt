@@ -17,9 +17,9 @@ class TakingRecordDetailApiController(private val takingRecordService: TakingRec
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getTakingRecordDetail(@PathVariable takingRecordId: TakingRecordId): TakingRecordDetailResponse {
+    fun getTakingRecordDetail(@PathVariable takingRecordId: TakingRecordId): JSONTakingRecordDetailResponse {
         val takingRecordDetail = takingRecordService.findTakingRecordDetail(takingRecordId,
                                                                             userSessionProvider.getUserSession())
-        return TakingRecordDetailResponse.from(takingRecordDetail)
+        return JSONTakingRecordDetailResponse.from(takingRecordDetail)
     }
 }

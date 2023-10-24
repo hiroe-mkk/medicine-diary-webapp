@@ -7,10 +7,10 @@ import org.springframework.validation.*
 
 @Component
 class BindErrorResultResourceFactory(private val messageSource: MessageSource) {
-    fun create(bindingResult: BindingResult): BindErrorResponse {
+    fun create(bindingResult: BindingResult): JSONBindErrorResponse {
         val fieldErrors = bindingResult.fieldErrors.groupBy({ extractName(it) },
                                                             { extractMessage(it) })
-        return BindErrorResponse(fieldErrors)
+        return JSONBindErrorResponse(fieldErrors)
     }
 
     private fun extractName(fieldError: FieldError): String {

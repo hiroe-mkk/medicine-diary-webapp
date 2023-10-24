@@ -13,14 +13,14 @@ class ApiControllerExceptionHandler(private val bindErrorResponseFactory: BindEr
     @ExceptionHandler(BindException::class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    fun handleBindException(ex: BindException): BindErrorResponse {
+    fun handleBindException(ex: BindException): JSONBindErrorResponse {
         return bindErrorResponseFactory.create(ex.bindingResult)
     }
 
     @ExceptionHandler(ResourceNotFoundException::class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
-    fun handleResourceNotFoundException(ex: ResourceNotFoundException): ErrorResponse {
-        return ErrorResponse.create(ex)
+    fun handleResourceNotFoundException(ex: ResourceNotFoundException): JSONErrorResponse {
+        return JSONErrorResponse.create(ex)
     }
 }
