@@ -19,6 +19,10 @@ class SharedGroup(val id: SharedGroupId,
         }
     }
 
+    fun isParticipatingIn(accountId: AccountId): Boolean {
+        return members.contains(accountId)
+    }
+
     fun invite(accountId: AccountId) {
         pendingUsers += accountId
     }

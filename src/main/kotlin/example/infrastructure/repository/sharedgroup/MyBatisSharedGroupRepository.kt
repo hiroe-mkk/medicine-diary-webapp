@@ -3,9 +3,14 @@ package example.infrastructure.repository.sharedgroup
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
+import java.util.*
 
 @Repository
 class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMapper) : SharedGroupRepository {
+    override fun createSharedGroupId(): SharedGroupId {
+        return SharedGroupId(UUID.randomUUID().toString())
+    }
+
     override fun findById(sharedGroupId: SharedGroupId): SharedGroup? {
         return sharedGroupMapper.findOneBySharedGroupId(sharedGroupId.value)?.toSharedGroup()
     }

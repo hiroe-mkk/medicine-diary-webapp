@@ -32,4 +32,8 @@ class Profile private constructor(val accountId: AccountId, // TODO: ProfileId ã
     fun changeProfileImage(newProfileURL: ProfileImageURL) {
         this.profileImageURL = newProfileURL
     }
+
+    fun isUsernameEmpty(): Boolean {
+        return username.isEmpty()
+    }
 }
