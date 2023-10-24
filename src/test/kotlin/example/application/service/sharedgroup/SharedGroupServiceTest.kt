@@ -170,7 +170,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                                              invitees = setOf(userSession.accountId))
 
             //when:
-            sharedGroupService.declineInvitation(sharedGroup.id, userSession)
+            sharedGroupService.declineInvitationToSharedGroup(sharedGroup.id, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -186,7 +186,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                                              invitees = setOf(userSession.accountId))
 
             //when:
-            sharedGroupService.declineInvitation(sharedGroup.id, userSession)
+            sharedGroupService.declineInvitationToSharedGroup(sharedGroup.id, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -200,7 +200,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
             //when:
-            val target: () -> Unit = { sharedGroupService.declineInvitation(badSharedGroupId, userSession) }
+            val target: () -> Unit = { sharedGroupService.declineInvitationToSharedGroup(badSharedGroupId, userSession) }
 
             //then:
             val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
@@ -214,7 +214,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val sharedGroup = testSharedGroupInserter.insert()
 
             //when:
-            val target: () -> Unit = { sharedGroupService.declineInvitation(sharedGroup.id, userSession) }
+            val target: () -> Unit = { sharedGroupService.declineInvitationToSharedGroup(sharedGroup.id, userSession) }
 
             //then:
             val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
@@ -233,7 +233,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                                              invitees = setOf(anotherAccountId))
 
             //when:
-            sharedGroupService.cancelInvitation(sharedGroup.id, anotherAccountId, userSession)
+            sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, anotherAccountId, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -249,7 +249,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                                              invitees = setOf(anotherAccountId))
 
             //when:
-            sharedGroupService.cancelInvitation(sharedGroup.id, anotherAccountId, userSession)
+            sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, anotherAccountId, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -264,7 +264,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.cancelInvitation(badSharedGroupId, anotherAccountId, userSession)
+                sharedGroupService.cancelInvitationToSharedGroup(badSharedGroupId, anotherAccountId, userSession)
             }
 
             //then:
@@ -280,7 +280,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.cancelInvitation(sharedGroup.id, anotherAccountId, userSession)
+                sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, anotherAccountId, userSession)
             }
 
             //then:

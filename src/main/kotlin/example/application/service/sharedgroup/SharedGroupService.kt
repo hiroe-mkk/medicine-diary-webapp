@@ -43,9 +43,9 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 招待を拒否する
+     * 共有グループへの招待を拒否する
      */
-    fun declineInvitation(sharedGroupId: SharedGroupId, userSession: UserSession) {
+    fun declineInvitationToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.declineInvitation(userSession.accountId)
@@ -57,9 +57,9 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 招待をキャンセルする
+     * 共有グループへの招待をキャンセルする
      */
-    fun cancelInvitation(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
+    fun cancelInvitationToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
         val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.cancelInvitation(target)
