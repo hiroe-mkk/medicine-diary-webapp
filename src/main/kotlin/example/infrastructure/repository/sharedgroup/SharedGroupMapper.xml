@@ -4,15 +4,24 @@
 <mapper namespace="example.infrastructure.repository.sharedgroup.SharedGroupMapper">
     <select id="findOneBySharedGroupId" resultMap="SharedGroupResultEntityResultMap">
         SELECT
-            shared_groups.shared_group_id AS shared_group_id,
-            members.member AS member,
-            pending_users.pending_user AS pending_user
+            <include refid="AllColumns"/>
         FROM
             shared_groups
             LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
             LEFT OUTER JOIN pending_users ON pending_users.shared_group_id = shared_groups.shared_group_id
         WHERE
             shared_groups.shared_group_id = #{sharedGroupId};
+    </select>
+
+    <select id="findAllByAccountId" resultMap="SharedGroupResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            shared_groups
+            LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
+            LEFT OUTER JOIN pending_users ON pending_users.shared_group_id = shared_groups.shared_group_id
+        WHERE
+            members.member = #{accountId} OR pending_users.pending_user = #{accountId};
     </select>
 
     <insert id="insertOneSharedGroup">
@@ -60,6 +69,12 @@
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
+
+    <sql id="AllColumns">
+        shared_groups.shared_group_id AS shared_group_id,
+        members.member AS member,
+        pending_users.pending_user AS pending_user
+    </sql>
 
     <resultMap id="SharedGroupResultEntityResultMap" type="example.infrastructure.repository.sharedgroup.SharedGroupResultEntity">
         <constructor>

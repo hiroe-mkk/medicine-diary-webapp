@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.*
 interface SharedGroupMapper {
     fun findOneBySharedGroupId(sharedGroupId: String): SharedGroupResultEntity?
 
+    fun findAllByAccountId(accountId: String): Collection<SharedGroupResultEntity>
+
     fun insertOneSharedGroup(sharedGroupId: String)
 
     fun insertAllMembers(sharedGroupId: String, members: Collection<String>)

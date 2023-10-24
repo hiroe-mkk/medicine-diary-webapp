@@ -1,5 +1,6 @@
 package example.infrastructure.repository.sharedgroup
 
+import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 
@@ -7,6 +8,12 @@ import org.springframework.stereotype.*
 class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMapper) : SharedGroupRepository {
     override fun findById(sharedGroupId: SharedGroupId): SharedGroup? {
         return sharedGroupMapper.findOneBySharedGroupId(sharedGroupId.value)?.toSharedGroup()
+    }
+
+    override fun findByAccountId(accountId: AccountId): Set<SharedGroup> {
+        return sharedGroupMapper.findAllByAccountId(accountId.value)
+            .map { it.toSharedGroup() }
+            .toSet()
     }
 
     override fun save(sharedGroup: SharedGroup) {
