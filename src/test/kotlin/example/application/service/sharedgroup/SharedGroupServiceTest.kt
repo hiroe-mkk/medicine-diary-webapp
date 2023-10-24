@@ -220,5 +220,71 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
     }
 
+    @Nested
+    inner class CancelInvitation {
+        @Test
+        @DisplayName("招待をキャンセルする")
+        fun cancelInvitation() {
+            //given:
+            val members = setOf(userSession.accountId, createAnotherAccount().id)
+            val sharedGroup = testSharedGroupInserter.insert(members = members,
+                                                             pendingUsers = setOf(anotherAccountId))
+
+            //when:
+            sharedGroupService.cancelInvitation(sharedGroup.id, anotherAccountId, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
+            assertThat(foundSharedGroup?.pendingUsers).isEmpty()
+        }
+
+        @Test
+        @DisplayName("メンバーと参加待ちユーザーの合計が1人以下の場合、共有グループは削除される")
+        fun whenMembersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
+            //given:
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
+                                                             pendingUsers = setOf(anotherAccountId))
+
+            //when:
+            sharedGroupService.cancelInvitation(sharedGroup.id, anotherAccountId, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup).isNull()
+        }
+
+        @Test
+        @DisplayName("共有グループが見つからなかった場合、共有グループへの招待のキャンセルに失敗する")
+        fun whenSharedGroupNotFound_cancelingInvitationToSharedGroupFails() {
+            //given:
+            val badSharedGroupId = SharedGroupId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = {
+                sharedGroupService.cancelInvitation(badSharedGroupId, anotherAccountId, userSession)
+            }
+
+            //then:
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
+        }
+
+        @Test
+        @DisplayName("ユーザーが共有グループに参加していない場合、共有グループへの招待のキャンセルに失敗する")
+        fun whenNotParticipatingInSharedGroup_cancelingInvitationToSharedGroupFails() {
+            //given:
+            val sharedGroup = testSharedGroupInserter.insert()
+
+            //when:
+            val target: () -> Unit = {
+                sharedGroupService.cancelInvitation(sharedGroup.id, anotherAccountId, userSession)
+            }
+
+            //then:
+            assertThrows<SharedGroupNotFoundException>(target)
+        }
+    }
+
     private fun createAnotherAccount() = testAccountInserter.insertAccountAndProfile().first
 }

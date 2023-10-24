@@ -40,6 +40,10 @@ class SharedGroup(val id: SharedGroupId,
         pendingUsers -= accountId
     }
 
+    fun cancelInvitation(accountId: AccountId) {
+        pendingUsers -= accountId
+    }
+
     fun participateIn(accountId: AccountId) {
         members += accountId
     }
