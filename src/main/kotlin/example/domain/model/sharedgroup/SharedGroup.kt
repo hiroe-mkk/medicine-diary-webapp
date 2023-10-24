@@ -7,10 +7,10 @@ import example.domain.model.account.*
  */
 class SharedGroup(val id: SharedGroupId,
                   members: Set<AccountId>,
-                  pendingUsers: Set<AccountId>) {
+                  invitees: Set<AccountId>) {
     var members: Set<AccountId> = members
         private set
-    var pendingUsers: Set<AccountId> = pendingUsers
+    var invitees: Set<AccountId> = invitees
         private set
 
     companion object {
@@ -21,13 +21,13 @@ class SharedGroup(val id: SharedGroupId,
 
     fun isParticipatingIn(accountId: AccountId): Boolean = members.contains(accountId)
 
-    fun isInvited(accountId: AccountId): Boolean = pendingUsers.contains(accountId)
+    fun isInvited(accountId: AccountId): Boolean = invitees.contains(accountId)
 
-    fun shouldDelete(): Boolean = members.size + pendingUsers.size <= 1
+    fun shouldDelete(): Boolean = members.size + invitees.size <= 1
 
     fun invite(invitee: AccountId, inviter: AccountId) {
         requireInvitableState(invitee, inviter)
-        pendingUsers += invitee
+        invitees += invitee
     }
 
     private fun requireInvitableState(invitee: AccountId, inviter: AccountId) {
@@ -36,22 +36,22 @@ class SharedGroup(val id: SharedGroupId,
         if (isInvited(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに招待されているユーザーです。")
     }
 
-    fun declineInvitation(accountId: AccountId) {
-        pendingUsers -= accountId
+    fun declineInvitation(invitee: AccountId) {
+        invitees -= invitee
     }
 
-    fun cancelInvitation(accountId: AccountId) {
-        pendingUsers -= accountId
+    fun cancelInvitation(invitee: AccountId) {
+        invitees -= invitee
     }
 
-    fun participateIn(accountId: AccountId) {
-        if (!isInvited(accountId)) throw ParticipationInSharedGroupFailedException("招待されていない共有グループへの参加はできません。")
+    fun participateIn(invitee: AccountId) {
+        if (!isInvited(invitee)) throw ParticipationInSharedGroupFailedException("招待されていない共有グループへの参加はできません。")
 
-        pendingUsers -= accountId
-        members += accountId
+        invitees -= invitee
+        members += invitee
     }
 
-    fun leave(accountId: AccountId) {
-        members -= accountId
+    fun leave(member: AccountId) {
+        members -= member
     }
 }

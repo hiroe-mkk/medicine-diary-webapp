@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS members (
   FOREIGN KEY(member) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-CREATE TABLE IF NOT EXISTS pending_users (
+CREATE TABLE IF NOT EXISTS invitees (
   shared_group_id VARCHAR(36),
-  pending_user VARCHAR(36),
-  PRIMARY KEY(shared_group_id, pending_user),
+  invitee VARCHAR(36),
+  PRIMARY KEY(shared_group_id, invitee),
   FOREIGN KEY(shared_group_id) REFERENCES shared_groups(shared_group_id),
-  FOREIGN KEY(pending_user) REFERENCES accounts(account_id)
+  FOREIGN KEY(invitee) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

@@ -13,10 +13,8 @@ class TestSharedGroupInserter(private val sharedGroupRepository: SharedGroupRepo
      */
     fun insert(sharedGroupId: SharedGroupId = SharedGroupId("testSharedGroupId${num++}"),
                members: Set<AccountId> = emptySet(),
-               pendingUsers: Set<AccountId> = emptySet()): SharedGroup {
-        val sharedGroup = SharedGroup(sharedGroupId,
-                                      members,
-                                      pendingUsers)
+               invitees: Set<AccountId> = emptySet()): SharedGroup {
+        val sharedGroup = SharedGroup(sharedGroupId, members, invitees)
         sharedGroupRepository.save(sharedGroup)
         return sharedGroup
     }

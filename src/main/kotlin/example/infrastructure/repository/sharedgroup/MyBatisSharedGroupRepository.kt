@@ -24,7 +24,7 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
     override fun save(sharedGroup: SharedGroup) {
         upsertOneSharedGroup(sharedGroup)
         upsertAllMembers(sharedGroup)
-        upsertAllPendingUsers(sharedGroup)
+        upsertAllInvitees(sharedGroup)
     }
 
     private fun upsertOneSharedGroup(sharedGroup: SharedGroup) {
@@ -41,17 +41,17 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
                                            sharedGroup.members.map { it.value })
     }
 
-    private fun upsertAllPendingUsers(sharedGroup: SharedGroup) {
-        sharedGroupMapper.deleteAllPendingUsers(sharedGroup.id.value)
-        if (sharedGroup.pendingUsers.isEmpty()) return
+    private fun upsertAllInvitees(sharedGroup: SharedGroup) {
+        sharedGroupMapper.deleteAllInvitees(sharedGroup.id.value)
+        if (sharedGroup.invitees.isEmpty()) return
 
-        sharedGroupMapper.insertAllPendingUsers(sharedGroup.id.value,
-                                                sharedGroup.pendingUsers.map { it.value })
+        sharedGroupMapper.insertAllInvitees(sharedGroup.id.value,
+                                            sharedGroup.invitees.map { it.value })
     }
 
     override fun delete(sharedGroupId: SharedGroupId) {
         sharedGroupMapper.deleteAllMembers(sharedGroupId.value)
-        sharedGroupMapper.deleteAllPendingUsers(sharedGroupId.value)
+        sharedGroupMapper.deleteAllInvitees(sharedGroupId.value)
         sharedGroupMapper.deleteOneSharedGroup(sharedGroupId.value)
     }
 }

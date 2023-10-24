@@ -8,7 +8,7 @@
         FROM
             shared_groups
             LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
-            LEFT OUTER JOIN pending_users ON pending_users.shared_group_id = shared_groups.shared_group_id
+            LEFT OUTER JOIN invitees ON invitees.shared_group_id = shared_groups.shared_group_id
         WHERE
             shared_groups.shared_group_id = #{sharedGroupId};
     </select>
@@ -19,9 +19,9 @@
         FROM
             shared_groups
             LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
-            LEFT OUTER JOIN pending_users ON pending_users.shared_group_id = shared_groups.shared_group_id
+            LEFT OUTER JOIN invitees ON invitees.shared_group_id = shared_groups.shared_group_id
         WHERE
-            members.member = #{accountId} OR pending_users.pending_user = #{accountId};
+            members.member = #{accountId} OR invitees.invitee = #{accountId};
     </select>
 
     <insert id="insertOneSharedGroup">
@@ -43,12 +43,12 @@
         ;
     </insert>
 
-    <insert id="insertAllPendingUsers">
-        INSERT INTO pending_users(
+    <insert id="insertAllInvitees">
+        INSERT INTO invitees(
             shared_group_id,
-            pending_user
+            invitee
         )VALUES
-            <foreach collection="pendingUsers" item="item" separator=",">
+            <foreach collection="invitees" item="item" separator=",">
                 (#{sharedGroupId}, #{item})
             </foreach>
         ;
@@ -64,8 +64,8 @@
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
-    <delete id="deleteAllPendingUsers">
-        DELETE FROM pending_users
+    <delete id="deleteAllInvitees">
+        DELETE FROM invitees
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
@@ -73,7 +73,7 @@
     <sql id="AllColumns">
         shared_groups.shared_group_id AS shared_group_id,
         members.member AS member,
-        pending_users.pending_user AS pending_user
+        invitees.invitee AS invitee
     </sql>
 
     <resultMap id="SharedGroupResultEntityResultMap" type="example.infrastructure.repository.sharedgroup.SharedGroupResultEntity">
@@ -82,7 +82,7 @@
         </constructor>
         <id column="shared_group_id"/>
         <collection column="member" property="members" ofType="AccountId" resultMap="MemberResultMap"/>
-        <collection column="pending_user" property="pendingUsers" ofType="AccountId" resultMap="PendingUsersResultMap"/>
+        <collection column="invitee" property="invitees" ofType="AccountId" resultMap="InviteesResultMap"/>
     </resultMap>
     <resultMap id="SharedGroupIdResultMap" type="SharedGroupId">
         <constructor>
@@ -94,9 +94,9 @@
             <idArg column="member" javaType="String"/>
         </constructor>
     </resultMap>
-    <resultMap id="PendingUsersResultMap" type="AccountId">
+    <resultMap id="InviteesResultMap" type="AccountId">
         <constructor>
-            <idArg column="pending_user" javaType="String"/>
+            <idArg column="invitee" javaType="String"/>
         </constructor>
     </resultMap>
 </mapper>
