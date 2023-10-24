@@ -13,11 +13,17 @@ class SharedGroup(val id: SharedGroupId,
     var pendingUsers: Set<AccountId> = pendingUsers
         private set
 
-    fun join(accountId: AccountId) {
-        members += accountId
+    companion object {
+        fun create(id: SharedGroupId, requester: AccountId, target: AccountId): SharedGroup {
+            return SharedGroup(id, setOf(requester), setOf(target))
+        }
     }
 
     fun invite(accountId: AccountId) {
         pendingUsers += accountId
+    }
+
+    fun participateIn(accountId: AccountId) {
+        members += accountId
     }
 }

@@ -56,7 +56,7 @@ internal class MyBatisSharedGroupRepositoryTest(@Autowired private val sharedGro
         //given:
         val accounts = List(2) { testAccountInserter.insertAccountAndProfile().first }
         val sharedGroup = testSharedGroupInserter.insert()
-        sharedGroup.join(accounts[0].id)
+        sharedGroup.participateIn(accounts[0].id)
         sharedGroup.invite(accounts[1].id)
 
         //when:
