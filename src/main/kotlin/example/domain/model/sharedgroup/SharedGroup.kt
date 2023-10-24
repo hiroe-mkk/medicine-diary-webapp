@@ -45,6 +45,9 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun participateIn(accountId: AccountId) {
+        if (!isInvited(accountId)) throw ParticipationInSharedGroupFailedException("招待されていない共有グループへの参加はできません。")
+
+        pendingUsers -= accountId
         members += accountId
     }
 }
