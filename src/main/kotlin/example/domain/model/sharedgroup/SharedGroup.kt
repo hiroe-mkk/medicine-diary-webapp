@@ -19,12 +19,19 @@ class SharedGroup(val id: SharedGroupId,
         }
     }
 
-    fun isParticipatingIn(accountId: AccountId): Boolean {
-        return members.contains(accountId)
+    fun isParticipatingIn(accountId: AccountId): Boolean = members.contains(accountId)
+
+    fun isInvited(accountId: AccountId): Boolean = pendingUsers.contains(accountId)
+
+    fun invite(invitee: AccountId, inviter: AccountId) {
+        requireInvitableState(invitee, inviter)
+        pendingUsers += invitee
     }
 
-    fun invite(accountId: AccountId) {
-        pendingUsers += accountId
+    private fun requireInvitableState(invitee: AccountId, inviter: AccountId) {
+        if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupFailedException("参加していない共有グループへの招待はできません。")
+        if (isParticipatingIn(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに参加しているユーザーです。")
+        if (isInvited(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに招待されているユーザーです。")
     }
 
     fun participateIn(accountId: AccountId) {
