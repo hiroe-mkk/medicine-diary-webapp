@@ -43,18 +43,18 @@ class JSONTakingRecordOverviewsResponse(val number: Int,
                                                     .format(takingRecordOverview.takenAt),
                                                 JSONTakenMedicine(takingRecordOverview.medicineId.value,
                                                                   takingRecordOverview.medicineName),
-                                                JSONRecorder(takingRecordOverview.accountId.value,
-                                                             takingRecordOverview.username.value,
-                                                             takingRecordOverview.profileImageURL?.toURL()))
+                                                JSONRecorder(takingRecordOverview.recorder.accountId.value,
+                                                             takingRecordOverview.recorder.username.value,
+                                                             takingRecordOverview.recorder.profileImageURL?.toURL()))
             }
         }
+
+        class JSONTakenMedicine(val medicineId: String,
+                                val name: String)
 
         class JSONRecorder(val accountId: String,
                            val username: String,
                            @JsonInclude(JsonInclude.Include.NON_NULL)
                            val profileImageURL: String?)
-
-        class JSONTakenMedicine(val medicineId: String,
-                                val name: String)
     }
 }

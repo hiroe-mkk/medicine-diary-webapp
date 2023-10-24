@@ -1,5 +1,6 @@
 package example.infrastructure.query.takingrecord
 
+import example.application.query.shared.type.*
 import example.application.query.takingrecord.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
@@ -66,8 +67,8 @@ internal class MyBatisTakingRecordOverviewQueryServiceTest(@Autowired private va
                                     takingRecord.takenAt,
                                     medicine.id,
                                     medicine.name,
-                                    profile.accountId,
-                                    profile.username,
-                                    profile.profileImageURL)
+                                    User(profile.accountId,
+                                         profile.username,
+                                         profile.profileImageURL))
     }
 }

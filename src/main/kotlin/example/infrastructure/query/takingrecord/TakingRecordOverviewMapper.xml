@@ -51,9 +51,8 @@
             <arg column="taken_at" javaType="java.time.LocalDateTime"/>
             <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="name" javaType="String"/>
-            <arg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
-            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
-            <arg column="{profile_image_url_endpoint, profile_image_url_path}" javaType="ProfileImageURL" resultMap="ProfileImageURLResultMap"/>
+            <arg column="{account_id, username, profile_image_url_endpoint, profile_image_url_path}"
+                 javaType="example.application.query.shared.type.User" resultMap="UserResultMap"/>
         </constructor>
     </resultMap>
     <resultMap id="TakingRecordIdResultMap" type="TakingRecordId">
@@ -64,6 +63,13 @@
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
             <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="UserResultMap" type="example.application.query.shared.type.User">
+        <constructor>
+            <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
+            <arg column="{profile_image_url_endpoint, profile_image_url_path}" javaType="ProfileImageURL" resultMap="ProfileImageURLResultMap"/>
         </constructor>
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
