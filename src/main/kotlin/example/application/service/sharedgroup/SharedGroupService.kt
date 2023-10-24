@@ -43,8 +43,28 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         sharedGroupRepository.save(sharedGroup)
     }
 
+    /**
+     * 招待を拒否する
+     */
+    fun declineInvitation(sharedGroupId: SharedGroupId, userSession: UserSession) {
+        val sharedGroup = findInvitedSharedGroup(sharedGroupId, userSession)
+                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+
+        sharedGroup.declineInvitation(userSession.accountId)
+        if (sharedGroup.shouldDelete()) {
+            sharedGroupRepository.delete(sharedGroupId)
+        } else {
+            sharedGroupRepository.save(sharedGroup)
+        }
+    }
+
     private fun findParticipatingSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession): SharedGroup? {
         val sharedGroup = sharedGroupRepository.findById(sharedGroupId) ?: return null
         return if (sharedGroup.isParticipatingIn(userSession.accountId)) sharedGroup else null
+    }
+
+    private fun findInvitedSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession): SharedGroup? {
+        val sharedGroup = sharedGroupRepository.findById(sharedGroupId) ?: return null
+        return if (sharedGroup.isInvited(userSession.accountId)) sharedGroup else null
     }
 }

@@ -23,6 +23,8 @@ class SharedGroup(val id: SharedGroupId,
 
     fun isInvited(accountId: AccountId): Boolean = pendingUsers.contains(accountId)
 
+    fun shouldDelete(): Boolean = members.size + pendingUsers.size <= 1
+
     fun invite(invitee: AccountId, inviter: AccountId) {
         requireInvitableState(invitee, inviter)
         pendingUsers += invitee
@@ -32,6 +34,10 @@ class SharedGroup(val id: SharedGroupId,
         if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupFailedException("参加していない共有グループへの招待はできません。")
         if (isParticipatingIn(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに参加しているユーザーです。")
         if (isInvited(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに招待されているユーザーです。")
+    }
+
+    fun declineInvitation(accountId: AccountId) {
+        pendingUsers -= accountId
     }
 
     fun participateIn(accountId: AccountId) {

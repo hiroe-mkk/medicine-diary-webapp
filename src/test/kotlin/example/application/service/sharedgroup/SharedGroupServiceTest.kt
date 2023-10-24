@@ -32,7 +32,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     internal fun setUp() {
         val (account, _) = testAccountInserter.insertAccountAndProfile()
         userSession = UserSessionFactory.create(account.id)
-        anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        anotherAccountId = createAnotherAccount().id
     }
 
     @Nested
@@ -157,4 +157,68 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             assertThrows<InvitationToSharedGroupFailedException>(target)
         }
     }
+
+    @Nested
+    inner class DeclineInvitation {
+        @Test
+        @DisplayName("招待を拒否する")
+        fun declineInvitation() {
+            //given:
+            val members = setOf(anotherAccountId, createAnotherAccount().id)
+            val sharedGroup = testSharedGroupInserter.insert(members = members,
+                                                             pendingUsers = setOf(userSession.accountId))
+
+            //when:
+            sharedGroupService.declineInvitation(sharedGroup.id, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
+            assertThat(foundSharedGroup?.pendingUsers).isEmpty()
+        }
+
+        @Test
+        @DisplayName("メンバーと参加待ちユーザーの合計が1人以下の場合、共有グループは削除される")
+        fun whenMembersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
+            //given:
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId),
+                                                             pendingUsers = setOf(userSession.accountId))
+
+            //when:
+            sharedGroupService.declineInvitation(sharedGroup.id, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup).isNull()
+        }
+
+        @Test
+        @DisplayName("共有グループが見つからなかった場合、共有グループへの招待の拒否に失敗する")
+        fun whenSharedGroupNotFound_decliningInvitationToSharedGroupFails() {
+            //given:
+            val badSharedGroupId = SharedGroupId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = { sharedGroupService.declineInvitation(badSharedGroupId, userSession) }
+
+            //then:
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
+        }
+
+        @Test
+        @DisplayName("ユーザーが共有グループに招待されていない場合、招待の拒否に失敗する")
+        fun whenNotInvitedToSharedGroup_decliningInvitationToSharedGroupFails() {
+            //given:
+            val sharedGroup = testSharedGroupInserter.insert()
+
+            //when:
+            val target: () -> Unit = { sharedGroupService.declineInvitation(sharedGroup.id, userSession) }
+
+            //then:
+            assertThrows<SharedGroupNotFoundException>(target)
+        }
+    }
+
+    private fun createAnotherAccount() = testAccountInserter.insertAccountAndProfile().first
 }
