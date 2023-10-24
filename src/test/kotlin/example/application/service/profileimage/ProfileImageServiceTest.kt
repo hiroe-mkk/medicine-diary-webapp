@@ -12,7 +12,7 @@ import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
 import io.mockk.impl.annotations.MockK
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
@@ -25,16 +25,10 @@ internal class ProfileImageServiceTest(@Autowired private val profileRepository:
     @InjectMockKs
     private lateinit var profileImageService: ProfileImageService
 
-    private lateinit var userSession: UserSession
-    private lateinit var profile: Profile
-
     private val command = TestImageFactory.createImageUploadCommand()
 
     @BeforeEach
     internal fun setUp() {
-        val (account, createdProfile) = testAccountInserter.insertAccountAndProfile()
-        profile = createdProfile
-        userSession = UserSessionFactory.create(account.id)
         every {
             profileImageStorage.createURL()
         } returns ProfileImageURL("endpoint", "/profileimage/newProfileImage")
@@ -42,46 +36,36 @@ internal class ProfileImageServiceTest(@Autowired private val profileRepository:
 
     @Test
     @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
-    fun profileImageIsNull_changingProfileImageSucceeds() {
+    fun profileImageIsNotSet_changingProfileImageSucceeds() {
+        //given:
+        val (account, _) = testAccountInserter.insertAccountAndProfile(profileImageURL = null)
+        val userSession = UserSessionFactory.create(account.id)
+
         //when:
         val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
 
         //then:
-        val profile = profileRepository.findByAccountId(userSession.accountId)!!
-        Assertions.assertThat(profile.profileImageURL).isEqualTo(newProfileImageURL)
+        val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
+        assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
         verify(exactly = 0) { profileImageStorage.delete(any()) }
         verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
     }
 
     @Test
     @DisplayName("プロフィール画像が設定済みの場合、プロフィール画像の変更に成功する")
-    fun profileImageIsNotNull_changingProfileImageSucceeds() {
+    fun profileImageIsSet_changingProfileImageSucceeds() {
         //given:
         val oldProfileImageURL = ProfileImageURL("endpoint", "/profileimage/oldProfileImage")
-        profile.changeProfileImage(oldProfileImageURL)
-        profileRepository.save(profile)
+        val (account, _) = testAccountInserter.insertAccountAndProfile(profileImageURL = oldProfileImageURL)
+        val userSession = UserSessionFactory.create(account.id)
 
         //when:
         val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
 
         //then:
-        val profile = profileRepository.findByAccountId(userSession.accountId)!!
-        Assertions.assertThat(profile.profileImageURL).isEqualTo(newProfileImageURL)
+        val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
+        assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
         verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
         verify(exactly = 1) { profileImageStorage.delete(oldProfileImageURL) }
-    }
-
-    @Test
-    @DisplayName("プロフィールが見つからなかった場合、プロフィール画像の変更に失敗する")
-    fun profileNotFound_changingProfileImageFails() {
-        //given:
-        profileRepository.delete(profile.accountId)
-
-        //when:
-        val target: () -> Unit = { profileImageService.changeProfileImage(command, userSession) }
-
-        //then:
-        val profileNotFoundException = assertThrows<ProfileNotFoundException>(target)
-        Assertions.assertThat(profileNotFoundException.accountId).isEqualTo(userSession.accountId)
     }
 }

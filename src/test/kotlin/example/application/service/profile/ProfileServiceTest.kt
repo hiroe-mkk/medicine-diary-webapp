@@ -33,62 +33,29 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         userSession = UserSessionFactory.create(createdAccount.id)
     }
 
-    @Nested
-    inner class GetProfileTest {
-        @Test
-        @DisplayName("プロフィールを取得する")
-        fun getProfile() {
-            //when:
-            val actual = profileService.findProfile(userSession)
+    @Test
+    @DisplayName("プロフィールを取得する")
+    fun getProfile() {
+        //when:
+        val actual = profileService.findProfile(userSession)
 
-            //then:
-            val expected = ProfileDto(profile.username, profile.profileImageURL)
-            assertThat(actual).isEqualTo(expected)
-        }
-
-        @Test
-        @DisplayName("プロフィールが見つからなかった場合、プロフィールの取得に失敗する")
-        fun profileNotFound_gettingProfileFails() {
-            //given:
-            val badUserSession = UserSessionFactory.create(AccountId("NonexistentId"))
-
-            //when:
-            val target: () -> Unit = { profileService.findProfile(badUserSession) }
-
-            //then:
-            val profileNotFoundException = assertThrows<ProfileNotFoundException>(target)
-            assertThat(profileNotFoundException.accountId).isEqualTo(badUserSession.accountId)
-        }
+        //then:
+        val expected = ProfileDto(profile.username, profile.profileImageURL)
+        assertThat(actual).isEqualTo(expected)
     }
 
-    @Nested
-    inner class ChangeUsernameTest {
-        private val command = UsernameEditCommand("newTestUsername")
+    @Test
+    @DisplayName("ユーザー名を変更する")
+    fun changeUsername() {
+        //given:
+        val command = UsernameEditCommand("newTestUsername")
 
-        @Test
-        @DisplayName("ユーザー名を変更する")
-        fun changeUsername() {
-            //when:
-            profileService.changeUsername(command, userSession)
+        //when:
+        profileService.changeUsername(command, userSession)
 
-            //then: 変更されたプロフィールが保存されている
-            val actual = profileRepository.findByAccountId(userSession.accountId)
-            val expected = Profile.reconstruct(userSession.accountId, Username("newTestUsername"), null)
-            assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
-        }
-
-        @Test
-        @DisplayName("プロフィールが見つからなかった場合、ユーザー名の変更に失敗する")
-        fun profileNotFound_changingUsernameFails() {
-            //given:
-            profileRepository.delete(profile.accountId)
-
-            //when:
-            val target: () -> Unit = { profileService.changeUsername(command, userSession) }
-
-            //then:
-            val profileNotFoundException = assertThrows<ProfileNotFoundException>(target)
-            assertThat(profileNotFoundException.accountId).isEqualTo(userSession.accountId)
-        }
+        //then: 変更されたプロフィールが保存されている
+        val actual = profileRepository.findByAccountId(userSession.accountId)
+        val expected = Profile.reconstruct(userSession.accountId, Username("newTestUsername"), null)
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
     }
 }

@@ -19,7 +19,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                       @Autowired private val profileRepository: ProfileRepository,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val shareRequestService: example.domain.model.sharedgroup.SharedGroupDomainService =
+    private val shareRequestService: SharedGroupDomainService =
             SharedGroupDomainService(sharedGroupRepository, profileRepository)
     private val sharedGroupService: SharedGroupService =
             SharedGroupService(sharedGroupRepository, shareRequestService)
@@ -50,8 +50,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("ユーザーが共有グループに参加している場合、共有のリクエストに失敗する")
-        fun whenParticipatingInShredGroup_requestingToShareFails() {
+        @DisplayName("ユーザーが既に共有グループに参加している場合、共有のリクエストに失敗する")
+        fun participatingInShredGroup_requestingToShareFails() {
             //given:
             testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
@@ -64,7 +64,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("ユーザーのユーザー名が設定されていない場合、共有のリクエストに失敗する")
-        fun whenUsernameIsNotSet_requestingToShareFails() {
+        fun usernameIsNotSet_requestingToShareFails() {
             //given:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
             profile.changeUsername(Username(""))
@@ -97,7 +97,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("共有グループが見つからなかった場合、共有グループへの招待に失敗する")
-        fun whenSharedGroupNotFound_invitingToSharedGroupFails() {
+        fun sharedGroupNotFound_invitingToSharedGroupFails() {
             //given:
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -113,7 +113,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("ユーザーが共有グループに参加していない場合、共有グループへの招待に失敗する")
-        fun whenNotParticipatingInSharedGroup_invitingToSharedGroupFails() {
+        fun notParticipatingInSharedGroup_invitingToSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert()
 
@@ -128,8 +128,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("対象ユーザーが指定された共有グループに参加している場合、共有グループへの招待に失敗する")
-        fun whenTargetIsParticipatingInShredGroup_invitingToSharedGroupFails() {
+        @DisplayName("対象ユーザーが既に指定された共有グループに参加している場合、共有グループへの招待に失敗する")
+        fun targetIsParticipatingInShredGroup_invitingToSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId, anotherAccountId))
 
@@ -143,8 +143,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("対象ユーザーが指定された共有グループに招待されている場合、共有グループへの招待に失敗する")
-        fun whenTargetIsInvitedToShredGroup_invitingToSharedGroupFails() {
+        @DisplayName("対象ユーザーが既に指定された共有グループに招待されている場合、共有グループへの招待に失敗する")
+        fun targetIsInvitedToShredGroup_invitingToSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
                                                              pendingUsers = setOf(anotherAccountId))
@@ -160,7 +160,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     }
 
     @Nested
-    inner class DeclineInvitation {
+    inner class DeclineInvitationTest {
         @Test
         @DisplayName("招待を拒否する")
         fun declineInvitation() {
@@ -180,7 +180,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("メンバーと参加待ちユーザーの合計が1人以下の場合、共有グループは削除される")
-        fun whenMembersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
+        fun membersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId),
                                                              pendingUsers = setOf(userSession.accountId))
@@ -195,7 +195,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("共有グループが見つからなかった場合、共有グループへの招待の拒否に失敗する")
-        fun whenSharedGroupNotFound_decliningInvitationToSharedGroupFails() {
+        fun sharedGroupNotFound_decliningInvitationToSharedGroupFails() {
             //given:
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -209,7 +209,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("ユーザーが共有グループに招待されていない場合、招待の拒否に失敗する")
-        fun whenNotInvitedToSharedGroup_decliningInvitationToSharedGroupFails() {
+        fun notInvitedToSharedGroup_decliningInvitationToSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert()
 
@@ -223,7 +223,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     }
 
     @Nested
-    inner class CancelInvitation {
+    inner class CancelInvitationTest {
         @Test
         @DisplayName("招待をキャンセルする")
         fun cancelInvitation() {
@@ -243,7 +243,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("メンバーと参加待ちユーザーの合計が1人以下の場合、共有グループは削除される")
-        fun whenMembersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
+        fun membersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
                                                              pendingUsers = setOf(anotherAccountId))
@@ -258,7 +258,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("共有グループが見つからなかった場合、共有グループへの招待のキャンセルに失敗する")
-        fun whenSharedGroupNotFound_cancelingInvitationToSharedGroupFails() {
+        fun sharedGroupNotFound_cancelingInvitationToSharedGroupFails() {
             //given:
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -274,7 +274,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("ユーザーが共有グループに参加していない場合、共有グループへの招待のキャンセルに失敗する")
-        fun whenNotParticipatingInSharedGroup_cancelingInvitationToSharedGroupFails() {
+        fun notParticipatingInSharedGroup_cancelingInvitationToSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert()
 
@@ -290,7 +290,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     }
 
     @Nested
-    inner class ParticipateInSharedGroup {
+    inner class ParticipateInSharedGroupTest {
         @Test
         @DisplayName("共有グループに参加する")
         fun participateInSharedGroup() {
@@ -309,7 +309,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("共有グループが見つからなかった場合、共有グループへの参加に失敗する")
-        fun whenSharedGroupNotFound_participatingInSharedGroupFails() {
+        fun sharedGroupNotFound_participatingInSharedGroupFails() {
             //given:
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -322,8 +322,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("ユーザーが共有グループに招待されていない場合、共有グループへの参加に失敗する")
-        fun whenNotInvitedToSharedGroup_participatingInSharedGroupFails() {
+        @DisplayName("共有グループに招待されていない場合、共有グループへの参加に失敗する")
+        fun notInvitedToSharedGroup_participatingInSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert()
 
@@ -336,8 +336,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("ユーザーが共有グループに参加している場合、共有のリクエストに失敗する")
-        fun whenParticipatingInShredGroup_participatingInSharedGroupFails() {
+        @DisplayName("既に共有グループに参加している場合、共有のリクエストに失敗する")
+        fun participatingInShredGroup_participatingInSharedGroupFails() {
             //given:
             testSharedGroupInserter.insert(members = setOf(userSession.accountId))
             val sharedGroup = testSharedGroupInserter.insert(pendingUsers = setOf(userSession.accountId))
@@ -350,8 +350,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("ユーザーのユーザー名が設定されていない場合、共有のリクエストに失敗する")
-        fun whenUsernameIsNotSet_participatingInSharedGroupFails() {
+        @DisplayName("ユーザー名が設定されていない場合、共有のリクエストに失敗する")
+        fun usernameIsNotSet_participatingInSharedGroupFails() {
             //given:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
             profile.changeUsername(Username(""))
@@ -367,7 +367,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     }
 
     @Nested
-    inner class LeaveSharedGroup {
+    inner class LeaveSharedGroupTest {
         @Test
         @DisplayName("共有グループから抜ける")
         fun leaveSharedGroup() {
@@ -387,7 +387,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("メンバーと参加待ちユーザーの合計が1人以下の場合、共有グループは削除される")
-        fun whenMembersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
+        fun membersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
             //given:
             val members = setOf(userSession.accountId, anotherAccountId)
             val sharedGroup = testSharedGroupInserter.insert(members = members)
@@ -402,7 +402,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("共有グループが見つからなかった場合、共有グループを抜けるのに失敗する")
-        fun whenSharedGroupNotFound_leavingSharedGroupFails() {
+        fun sharedGroupNotFound_leavingSharedGroupFails() {
             //given:
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -419,7 +419,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
         @Test
         @DisplayName("ユーザーが共有グループに参加していない場合、共有グループを抜けるのに失敗する")
-        fun whenNotParticipatingInSharedGroup_leavingSharedGroupFails() {
+        fun notParticipatingInSharedGroup_leavingSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert()
 

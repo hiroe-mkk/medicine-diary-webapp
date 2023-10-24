@@ -11,7 +11,7 @@ import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
 import io.mockk.impl.annotations.MockK
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
@@ -27,14 +27,12 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
     private lateinit var userSession: UserSession
 
-    private lateinit var medicine: Medicine
     private val command = TestImageFactory.createImageUploadCommand()
 
     @BeforeEach
     internal fun setUp() {
         val (account, _) = testAccountInserter.insertAccountAndProfile()
         userSession = UserSessionFactory.create(account.id)
-        medicine = testMedicineInserter.insert(userSession.accountId)
         every {
             medicineImageStorage.createURL()
         } returns MedicineImageURL("endpoint", "/medicineimage/newMedicineImage")
@@ -42,7 +40,10 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
     @Test
     @DisplayName("薬画像が未設定の場合、薬画像の変更に成功する")
-    fun medicineImageIsNull_changingMedicineImageSucceeds() {
+    fun medicineImageIsNotSet_changingMedicineImageSucceeds() {
+        //given:
+        val medicine = testMedicineInserter.insert(userSession.accountId)
+
         //when:
         val newMedicineImageURL = medicineImageService.changeMedicineImage(medicine.id,
                                                                            command,
@@ -50,18 +51,18 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)!!
-        Assertions.assertThat(foundMedicine.medicineImageURL).isEqualTo(newMedicineImageURL)
+        assertThat(foundMedicine.medicineImageURL).isEqualTo(newMedicineImageURL)
         verify(exactly = 0) { medicineImageStorage.delete(any()) }
         verify(exactly = 1) { medicineImageStorage.upload(newMedicineImageURL, any()) }
     }
 
     @Test
     @DisplayName("薬画像が設定済みの場合、薬画像の変更に成功する")
-    fun medicineImageIsNotNull_changingMedicineImageSucceeds() {
+    fun medicineImageIsSet_changingMedicineImageSucceeds() {
         //given:
         val oldMedicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage")
-        medicine.changeMedicineImage(oldMedicineImageURL)
-        medicineRepository.save(medicine)
+        val medicine = testMedicineInserter.insert(userSession.accountId,
+                                                   medicineImageURL = oldMedicineImageURL)
 
         //when:
         val newMedicineImageURL = medicineImageService.changeMedicineImage(medicine.id,
@@ -70,7 +71,7 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)!!
-        Assertions.assertThat(foundMedicine.medicineImageURL).isEqualTo(newMedicineImageURL)
+        assertThat(foundMedicine.medicineImageURL).isEqualTo(newMedicineImageURL)
         verify(exactly = 1) { medicineImageStorage.upload(newMedicineImageURL, any()) }
         verify(exactly = 1) { medicineImageStorage.delete(oldMedicineImageURL) }
     }
@@ -83,14 +84,12 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
         //when:
         val target: () -> Unit = {
-            medicineImageService.changeMedicineImage(badMedicineId,
-                                                     command,
-                                                     userSession)
+            medicineImageService.changeMedicineImage(badMedicineId, command, userSession)
         }
 
         //then:
         val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-        Assertions.assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+        assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
     }
 
     @Test
@@ -102,13 +101,11 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
         //when:
         val target: () -> Unit = {
-            medicineImageService.changeMedicineImage(medicine.id,
-                                                     command,
-                                                     userSession)
+            medicineImageService.changeMedicineImage(medicine.id, command, userSession)
         }
 
         //then:
         val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-        Assertions.assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
+        assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
     }
 }

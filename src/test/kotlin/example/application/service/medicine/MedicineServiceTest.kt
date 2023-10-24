@@ -179,7 +179,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬が見つからなかった場合、薬基本情報の更新に失敗する")
         fun medicineNotFound_updatingMedicineBasicInfoFails() {
             //given:
-            val badMedicineId = MedicineId("nonexistentId")
+            val badMedicineId = MedicineId("NonexistentId")
             val command = TestMedicineBasicInfoEditCommandFactory.createCompletedRegistrationCommand()
 
             //when:

@@ -142,8 +142,8 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         }
 
         @Test
-        @DisplayName("薬の所有者が服用記録の記録者と異なる場合、服用記録の追加に失敗する")
-        fun ownerIsDifferentFromRecorder_addingTakingRecordFails() {
+        @DisplayName("ユーザーが所有していない薬の場合、服用記録の追加に失敗する")
+        fun medicineIsNotOwnedByUser_addingTakingRecordFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
@@ -235,8 +235,8 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         }
 
         @Test
-        @DisplayName("薬の所有者が服用記録の記録者と異なる場合、服用記録の修正に失敗する")
-        fun ownerIsDifferentFromRecorder_modifyingTakingRecordFails() {
+        @DisplayName("ユーザーが所有していない薬の場合、服用記録の修正に失敗する")
+        fun medicineIsNotOwnedByUser_modifyingTakingRecordFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
