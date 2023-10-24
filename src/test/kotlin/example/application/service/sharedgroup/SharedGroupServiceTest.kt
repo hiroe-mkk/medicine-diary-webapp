@@ -363,5 +363,73 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
     }
 
+    @Nested
+    inner class LeaveSharedGroup {
+        @Test
+        @DisplayName("共有グループから抜ける")
+        fun leaveSharedGroup() {
+            //given:
+            val members = setOf(userSession.accountId, anotherAccountId, createAnotherAccount().id)
+            val sharedGroup = testSharedGroupInserter.insert(members = members)
+
+            //when:
+            sharedGroupService.leaveSharedGroup(sharedGroup.id, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            val expected = members - userSession.accountId
+            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*expected.toTypedArray())
+            assertThat(foundSharedGroup?.pendingUsers).isEmpty()
+        }
+
+        @Test
+        @DisplayName("メンバーと参加待ちユーザーの合計が1人以下の場合、共有グループは削除される")
+        fun whenMembersSizePlusPendingUsersSizeIsLessThanOrEqualTo1_SharedGroupIsDeleted() {
+            //given:
+            val members = setOf(userSession.accountId, anotherAccountId)
+            val sharedGroup = testSharedGroupInserter.insert(members = members)
+
+            //when:
+            sharedGroupService.leaveSharedGroup(sharedGroup.id, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup).isNull()
+        }
+
+        @Test
+        @DisplayName("共有グループが見つからなかった場合、共有グループを抜けるのに失敗する")
+        fun whenSharedGroupNotFound_leavingSharedGroupFails() {
+            //given:
+            val badSharedGroupId = SharedGroupId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = {
+                sharedGroupService.leaveSharedGroup(badSharedGroupId, userSession)
+            }
+
+            //then:
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
+        }
+
+
+        @Test
+        @DisplayName("ユーザーが共有グループに参加していない場合、共有グループを抜けるのに失敗する")
+        fun whenNotParticipatingInSharedGroup_leavingSharedGroupFails() {
+            //given:
+            val sharedGroup = testSharedGroupInserter.insert()
+
+            //when:
+            val target: () -> Unit = {
+                sharedGroupService.leaveSharedGroup(sharedGroup.id, userSession)
+            }
+
+            //then:
+            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
+        }
+    }
+
     private fun createAnotherAccount() = testAccountInserter.insertAccountAndProfile().first
 }

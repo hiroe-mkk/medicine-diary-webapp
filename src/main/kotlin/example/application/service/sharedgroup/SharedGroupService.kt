@@ -85,6 +85,21 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         sharedGroupRepository.save(sharedGroup)
     }
 
+    /**
+     * 共有グループから抜ける
+     */
+    fun leaveSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+        val sharedGroup = findParticipatingSharedGroup(sharedGroupId, userSession)
+                          ?: throw SharedGroupNotFoundException(sharedGroupId)
+
+        sharedGroup.leave(userSession.accountId)
+        if (sharedGroup.shouldDelete()) {
+            sharedGroupRepository.delete(sharedGroupId)
+        } else {
+            sharedGroupRepository.save(sharedGroup)
+        }
+    }
+
     private fun findParticipatingSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession): SharedGroup? {
         val sharedGroup = sharedGroupRepository.findById(sharedGroupId) ?: return null
         return if (sharedGroup.isParticipatingIn(userSession.accountId)) sharedGroup else null

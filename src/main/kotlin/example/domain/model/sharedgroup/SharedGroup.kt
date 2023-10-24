@@ -50,4 +50,8 @@ class SharedGroup(val id: SharedGroupId,
         pendingUsers -= accountId
         members += accountId
     }
+
+    fun leave(accountId: AccountId) {
+        members -= accountId
+    }
 }
