@@ -66,15 +66,10 @@ CREATE TABLE IF NOT EXISTS taking_records (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 
-CREATE TABLE IF NOT EXISTS shared_groups (
-  shared_group_id VARCHAR(36) PRIMARY KEY
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
 CREATE TABLE IF NOT EXISTS members (
   shared_group_id VARCHAR(36),
   member VARCHAR(36),
   PRIMARY KEY(shared_group_id, member),
-  FOREIGN KEY(shared_group_id) REFERENCES shared_groups(shared_group_id),
   FOREIGN KEY(member) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -82,6 +77,5 @@ CREATE TABLE IF NOT EXISTS invitees (
   shared_group_id VARCHAR(36),
   invitee VARCHAR(36),
   PRIMARY KEY(shared_group_id, invitee),
-  FOREIGN KEY(shared_group_id) REFERENCES shared_groups(shared_group_id),
   FOREIGN KEY(invitee) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

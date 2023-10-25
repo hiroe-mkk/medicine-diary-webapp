@@ -23,7 +23,7 @@ class SharedGroup(val id: SharedGroupId,
 
     fun isInvited(accountId: AccountId): Boolean = invitees.contains(accountId)
 
-    fun shouldDelete(): Boolean = members.size + invitees.size <= 1
+    fun shouldDelete(): Boolean = members.isEmpty() || members.size + invitees.size <= 1
 
     fun invite(invitee: AccountId, inviter: AccountId) {
         requireInvitableState(invitee, inviter)

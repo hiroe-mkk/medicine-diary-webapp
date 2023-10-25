@@ -6,31 +6,21 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            shared_groups
-            LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
-            LEFT OUTER JOIN invitees ON invitees.shared_group_id = shared_groups.shared_group_id
+            members
+            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
         WHERE
-            shared_groups.shared_group_id = #{sharedGroupId};
+            members.shared_group_id = #{sharedGroupId};
     </select>
 
     <select id="findAllByAccountId" resultMap="SharedGroupResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
-            shared_groups
-            LEFT OUTER JOIN members ON members.shared_group_id = shared_groups.shared_group_id
-            LEFT OUTER JOIN invitees ON invitees.shared_group_id = shared_groups.shared_group_id
+            members
+            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
         WHERE
             members.member = #{accountId} OR invitees.invitee = #{accountId};
     </select>
-
-    <insert id="insertOneSharedGroup">
-        INSERT INTO shared_groups(
-            shared_group_id
-        )VALUES(
-            #{sharedGroupId}
-        );
-    </insert>
 
     <insert id="insertAllMembers">
         INSERT INTO members(
@@ -54,11 +44,6 @@
         ;
     </insert>
 
-    <delete id="deleteOneSharedGroup">
-        DELETE FROM shared_groups
-        WHERE shared_group_id = #{sharedGroupId};
-    </delete>
-
     <delete id="deleteAllMembers">
         DELETE FROM members
         WHERE shared_group_id = #{sharedGroupId};
@@ -71,7 +56,7 @@
 
 
     <sql id="AllColumns">
-        shared_groups.shared_group_id AS shared_group_id,
+        members.shared_group_id AS shared_group_id,
         members.member AS member,
         invitees.invitee AS invitee
     </sql>
