@@ -10,28 +10,23 @@ import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
 @Component
-@Transactional
+@Transactional(readOnly = true)
 class MyBatisTakingRecordQueryService(private val takingRecordOverviewMapper: TakingRecordOverviewMapper,
                                       private val takingRecordDetailMapper: TakingRecordDetailMapper)
     : TakingRecordQueryService {
 
-    @Transactional(readOnly = true)
-    override fun findTakingRecordDetailsByMedicineId(medicineId: MedicineId,
-                                                     userSession: UserSession,
-                                                     pageable: Pageable): Page<TakingRecordOverview> {
-        val total = takingRecordOverviewMapper.countByMedicineIdAndAccountId(medicineId.value,
-                                                                             userSession.accountId.value)
-        val content = takingRecordOverviewMapper.findAllByMedicineIdAndAccountId(medicineId.value,
-                                                                                 userSession.accountId.value,
-                                                                                 pageable.pageSize,
-                                                                                 pageable.offset)
+    override fun findTakingRecordDetailsByTakenMedicine(medicineId: MedicineId,
+                                                        userSession: UserSession,
+                                                        pageable: Pageable): Page<TakingRecordOverview> {
+        val total = takingRecordOverviewMapper.countByTakenMedicineAndRecorder(medicineId.value,
+                                                                               userSession.accountId.value)
+        val content = takingRecordOverviewMapper.findAllByTakenMedicineAndRecorder(medicineId.value,
+                                                                                   userSession.accountId.value,
+                                                                                   pageable.pageSize,
+                                                                                   pageable.offset)
         return PageImpl(content, pageable, total)
     }
 
-    /**
-     * 服用記録を取得する
-     */
-    @Transactional(readOnly = true)
     override fun findTakingRecordDetail(takingRecordId: TakingRecordId, userSession: UserSession): TakingRecordDetail {
         return takingRecordDetailMapper.findOneByTakingRecordIdAndRecorder(takingRecordId.value,
                                                                            userSession.accountId.value)

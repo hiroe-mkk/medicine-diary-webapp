@@ -7,11 +7,11 @@ import org.springframework.data.domain.*
 
 interface TakingRecordQueryService {
     /**
-     * 薬IDをもとに服用記録概要一覧を取得する
+     * 服用した薬をもとに服用記録概要一覧を取得する
      */
-    fun findTakingRecordDetailsByMedicineId(medicineId: MedicineId,
-                                            userSession: UserSession,
-                                            pageable: Pageable): Page<TakingRecordOverview>
+    fun findTakingRecordDetailsByTakenMedicine(medicineId: MedicineId,
+                                               userSession: UserSession,
+                                               pageable: Pageable): Page<TakingRecordOverview>
 
     /**
      * 服用記録を取得する

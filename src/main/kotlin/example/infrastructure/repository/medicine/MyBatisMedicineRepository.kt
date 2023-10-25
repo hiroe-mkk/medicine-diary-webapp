@@ -16,8 +16,8 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         return medicineMapper.findOneByMedicineId(medicineId.value)?.toMedicine()
     }
 
-    override fun findByAccountId(accountId: AccountId): List<Medicine> {
-        return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }
+    override fun findByOwner(accountId: AccountId): List<Medicine> {
+        return medicineMapper.findAllByOwner(accountId.value).map { it.toMedicine() }
     }
 
     override fun save(medicine: Medicine) {

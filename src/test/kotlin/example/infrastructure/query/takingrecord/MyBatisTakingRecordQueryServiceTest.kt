@@ -24,8 +24,8 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
                                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                    @Autowired private val testAccountInserter: TestAccountInserter) {
     @Test
-    @DisplayName("薬IDをもとに服用記録概要一覧を取得する")
-    fun getTakingRecordDetailsByMedicineId() {
+    @DisplayName("服用した薬をもとに服用記録概要一覧を取得する")
+    fun getTakingRecordDetailsByTakenMedicine() {
         //given:
         val (account, profile) = testAccountInserter.insertAccountAndProfile(
                 profileImageURL = ProfileImageURL("endpoint", "/path"))
@@ -40,12 +40,12 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
         }
 
         //when:
-        val actualPage1 = takingRecordQueryService.findTakingRecordDetailsByMedicineId(medicine.id,
-                                                                                       userSession,
-                                                                                       PageRequest.of(0, 3))
-        val actualPage2 = takingRecordQueryService.findTakingRecordDetailsByMedicineId(medicine.id,
-                                                                                       userSession,
-                                                                                       PageRequest.of(1, 3))
+        val actualPage1 = takingRecordQueryService.findTakingRecordDetailsByTakenMedicine(medicine.id,
+                                                                                          userSession,
+                                                                                          PageRequest.of(0, 3))
+        val actualPage2 = takingRecordQueryService.findTakingRecordDetailsByTakenMedicine(medicine.id,
+                                                                                          userSession,
+                                                                                          PageRequest.of(1, 3))
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(2)

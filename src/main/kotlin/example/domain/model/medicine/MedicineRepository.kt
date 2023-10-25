@@ -7,7 +7,7 @@ interface MedicineRepository {
 
     fun findById(medicineId: MedicineId): Medicine?
 
-    fun findByAccountId(accountId: AccountId): List<Medicine>
+    fun findByOwner(accountId: AccountId): List<Medicine>
 
     fun save(medicine: Medicine)
 

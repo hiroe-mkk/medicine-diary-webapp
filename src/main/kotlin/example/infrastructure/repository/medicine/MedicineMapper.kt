@@ -9,7 +9,7 @@ import java.time.*
 interface MedicineMapper {
     fun findOneByMedicineId(medicineId: String): MedicineResultEntity?
 
-    fun findAllByAccountId(accountId: String): List<MedicineResultEntity>
+    fun findAllByOwner(accountId: String): List<MedicineResultEntity>
 
     fun upsertOneMedicine(medicineId: String,
                           owner: String,
@@ -31,5 +31,6 @@ interface MedicineMapper {
     fun deleteOneMedicine(medicineId: String)
 
     fun deleteAllTimingOptions(medicineId: String)
+
     fun deleteAllEffects(medicineId: String)
 }

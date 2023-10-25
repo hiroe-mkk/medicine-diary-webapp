@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.query.takingrecord.TakingRecordOverviewMapper">
-    <select id="countByMedicineIdAndAccountId" resultType="_long">
+    <select id="countByTakenMedicineAndRecorder" resultType="_long">
         SELECT
             COUNT(*)
         FROM
@@ -13,7 +13,7 @@
             taken_medicine = #{medicineId} AND recorder = #{accountId};
     </select>
 
-    <select id="findAllByMedicineIdAndAccountId" resultMap="TakingRecordOverviewResultMap">
+    <select id="findAllByTakenMedicineAndRecorder" resultMap="TakingRecordOverviewResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM

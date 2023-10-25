@@ -13,7 +13,7 @@
             medicine_id = #{medicineId};
     </select>
 
-    <select id="findAllByAccountId" resultMap="MedicineResultEntityResultMap">
+    <select id="findAllByOwner" resultMap="MedicineResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
