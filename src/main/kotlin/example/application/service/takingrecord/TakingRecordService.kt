@@ -10,17 +10,7 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
-                          private val medicineRepository: MedicineRepository,
-                          private val takingRecordDetailDtoFactory: TakingRecordDetailDtoFactory) {
-    /**
-     * 服用記録を取得する
-     */
-    @Transactional(readOnly = true)
-    fun findTakingRecordDetail(takingRecordId: TakingRecordId, userSession: UserSession): TakingRecordDetailDto {
-        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
-        return takingRecordDetailDtoFactory.create(takingRecord)
-    }
-
+                          private val medicineRepository: MedicineRepository) {
     /**
      * 服用記録を追加する
      */

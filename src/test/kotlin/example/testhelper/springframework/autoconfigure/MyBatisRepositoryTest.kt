@@ -30,6 +30,7 @@ annotation class MyBatisRepositoryTest {
                         private val medicineMapper: MedicineMapper,
                         private val takingRecordMapper: TakingRecordMapper,
                         private val takingRecordOverviewMapper: TakingRecordOverviewMapper,
+                        private val takingRecordDetailMapper: TakingRecordDetailMapper,
                         private val sharedGroupMapper: SharedGroupMapper) {
         @Bean
         fun accountRepository(): AccountRepository = MyBatisAccountRepository(accountMapper)
@@ -47,8 +48,8 @@ annotation class MyBatisRepositoryTest {
         fun sharedGroupRepository(): SharedGroupRepository = MyBatisSharedGroupRepository(sharedGroupMapper)
 
         @Bean
-        fun takingRecordOverviewQueryService(): TakingRecordOverviewQueryService {
-            return MyBatisTakingRecordOverviewQueryService(takingRecordOverviewMapper)
+        fun takingRecordOverviewQueryService(): TakingRecordQueryService {
+            return MyBatisTakingRecordQueryService(takingRecordOverviewMapper, takingRecordDetailMapper)
         }
     }
 }

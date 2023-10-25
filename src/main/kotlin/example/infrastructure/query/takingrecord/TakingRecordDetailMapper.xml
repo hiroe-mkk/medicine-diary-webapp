@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.query.takingrecord.TakingRecordDetailMapper">
+    <select id="findOneByTakingRecordIdAndRecorder" resultMap="TakingRecordDetailResultMap">
+        SELECT
+            taking_records.taking_record_id AS taking_record_id,
+            medicines.medicine_id AS medicine_id,
+            medicines.name AS name,
+            medicines.quantity AS quantity,
+            medicines.taking_unit AS taking_unit,
+            taking_records.symptom AS symptom,
+            taking_records.before_taking AS before_taking,
+            taking_records.after_taking AS after_taking,
+            taking_records.note AS note,
+            taking_records.taken_at AS taken_at,
+            profiles.account_id,
+            profiles.username,
+            profiles.profile_image_url_endpoint,
+            profiles.profile_image_url_path
+        FROM
+            taking_records
+            LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
+            LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
+        WHERE
+            taking_record_id = #{takingRecordId} AND recorder = #{accountId};
+    </select>
+
+    <resultMap id="TakingRecordDetailResultMap" type="example.application.query.takingrecord.TakingRecordDetail">
+        <constructor>
+            <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
+            <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
+            <arg column="name" javaType="String"/>
+            <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
+            <arg column="taking_unit" javaType="String"/>
+            <arg column="{symptom, before_taking, after_taking}" javaType="FollowUp" resultMap="FollowUpResultMap"/>
+            <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
+            <arg column="taken_at" javaType="java.time.LocalDateTime"/>
+            <arg column="{account_id, username, profile_image_url_endpoint, profile_image_url_path}"
+                 javaType="example.application.query.shared.type.User" resultMap="UserResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="TakingRecordIdResultMap" type="TakingRecordId">
+        <constructor>
+            <idArg column="taking_record_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineIdResultMap" type="MedicineId">
+        <constructor>
+            <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="DoseResultMap" type="Dose">
+        <constructor>
+            <idArg column="quantity" javaType="_double"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="FollowUpResultMap" type="FollowUp">
+        <constructor>
+            <arg column="symptom" javaType="String"/>
+            <arg column="before_taking" javaType="ConditionLevel"/>
+            <arg column="after_taking" javaType="ConditionLevel"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="NoteResultMap" type="Note">
+        <constructor>
+            <idArg column="note" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="UserResultMap" type="example.application.query.shared.type.User">
+        <constructor>
+            <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
+            <arg column="{profile_image_url_endpoint, profile_image_url_path}" javaType="ProfileImageURL" resultMap="ProfileImageURLResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="AccountIdResultMap" type="AccountId">
+        <constructor>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="UsernameResultMap" type="Username">
+        <constructor>
+            <idArg column="username" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="ProfileImageURLResultMap" type="ProfileImageURL">
+        <constructor>
+            <idArg column="profile_image_url_endpoint" javaType="String"/>
+            <idArg column="profile_image_url_path" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/takingrecords")
-class TakingRecordOverviewsApiController(private val takingRecordOverviewQueryService: TakingRecordOverviewQueryService,
+class TakingRecordOverviewsApiController(private val takingRecordQueryService: TakingRecordQueryService,
                                          private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用記録概要一覧を取得する
@@ -22,9 +22,9 @@ class TakingRecordOverviewsApiController(private val takingRecordOverviewQuerySe
     fun getTakingRecordOverviews(@RequestParam(name = "medicineid", required = true) medicineId: MedicineId,
                                  @PageableDefault(page = 0,
                                                   size = 10) pageable: Pageable): JSONTakingRecordOverviewsResponse {
-        val takingRecordOverviews = takingRecordOverviewQueryService.findTakingRecordDetailsByMedicineId(medicineId,
-                                                                                                         userSessionProvider.getUserSession(),
-                                                                                                         pageable)
+        val takingRecordOverviews = takingRecordQueryService.findTakingRecordDetailsByMedicineId(medicineId,
+                                                                                                 userSessionProvider.getUserSession(),
+                                                                                                 pageable)
         return JSONTakingRecordOverviewsResponse.from(takingRecordOverviews)
     }
 }
