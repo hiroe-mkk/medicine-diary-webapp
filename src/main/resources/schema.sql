@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS profiles (
 CREATE TABLE IF NOT EXISTS medicines (
   medicine_id VARCHAR(36) PRIMARY KEY,
   owner VARCHAR(36) NOT NULL,
-  name VARCHAR(30) NOT NULL,
+  medicine_name VARCHAR(30) NOT NULL,
   quantity DOUBLE NOT NULL,
   taking_unit VARCHAR(10) NOT NULL,
   times_per_day INT NOT NULL,

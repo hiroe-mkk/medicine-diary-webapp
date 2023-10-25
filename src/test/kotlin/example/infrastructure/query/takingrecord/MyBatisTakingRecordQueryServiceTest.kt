@@ -68,7 +68,7 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
                                     takingRecord.followUp.afterTaking,
                                     takingRecord.takenAt,
                                     medicine.id,
-                                    medicine.name,
+                                    medicine.medicineName,
                                     User(profile.accountId,
                                          profile.username,
                                          profile.profileImageURL))
@@ -101,7 +101,7 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
             //then:
             val expected = TakingRecordDetail(takingRecord.id,
                                               medicine.id,
-                                              medicine.name,
+                                              medicine.medicineName,
                                               takingRecord.dose,
                                               medicine.dosageAndAdministration.takingUnit,
                                               takingRecord.followUp,

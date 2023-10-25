@@ -36,7 +36,7 @@
         taking_records.after_taking AS after_taking,
         taking_records.taken_at AS taken_at,
         medicines.medicine_id AS medicine_id,
-        medicines.name AS name,
+        medicines.medicine_name AS medicine_name,
         profiles.account_id,
         profiles.username,
         profiles.profile_image_url_endpoint,
@@ -50,7 +50,7 @@
             <arg column="after_taking" javaType="ConditionLevel"/>
             <arg column="taken_at" javaType="java.time.LocalDateTime"/>
             <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
-            <arg column="name" javaType="String"/>
+            <arg column="medicine_name" javaType="MedicineName" resultMap="MedicineNameResultMap"/>
             <arg column="{account_id, username, profile_image_url_endpoint, profile_image_url_path}"
                  javaType="example.application.query.shared.type.User" resultMap="UserResultMap"/>
         </constructor>
@@ -63,6 +63,11 @@
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
             <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineNameResultMap" type="MedicineName">
+        <constructor>
+            <idArg column="medicine_name" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="UserResultMap" type="example.application.query.shared.type.User">

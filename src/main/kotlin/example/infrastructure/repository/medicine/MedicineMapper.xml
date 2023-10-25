@@ -30,7 +30,7 @@
         INSERT INTO medicines(
             medicine_id,
             owner,
-            name,
+            medicine_name,
             quantity,
             taking_unit,
             times_per_day,
@@ -41,7 +41,7 @@
         )VALUES(
             #{medicineId},
             #{owner},
-            #{name},
+            #{medicineName},
             #{quantity},
             #{takingUnit},
             #{timesPerDay},
@@ -50,7 +50,7 @@
             #{medicineImageURLPath, jdbcType=VARCHAR},
             #{registeredAt}
         )ON DUPLICATE KEY UPDATE
-            name = #{name},
+            medicine_name = #{medicineName},
             quantity = #{quantity},
             taking_unit = #{takingUnit},
             times_per_day = #{timesPerDay},
@@ -99,7 +99,7 @@
     <sql id="AllColumns">
         medicines.medicine_id AS medicine_id,
         medicines.owner AS owner,
-        medicines.name AS name,
+        medicines.medicine_name AS medicine_name,
         medicines.quantity AS quantity,
         medicines.taking_unit AS taking_unit,
         medicines.times_per_day AS times_per_day,
@@ -117,7 +117,7 @@
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="owner" javaType="AccountId" resultMap="AccountIdResultMap"/>
-            <arg column="name" javaType="String"/>
+            <arg column="medicine_name" javaType="MedicineName" resultMap="MedicineNameResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="taking_unit" javaType="String"/>
             <arg column="times_per_day" javaType="_int"/>
@@ -134,6 +134,11 @@
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
             <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineNameResultMap" type="MedicineName">
+        <constructor>
+            <idArg column="medicine_name" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">

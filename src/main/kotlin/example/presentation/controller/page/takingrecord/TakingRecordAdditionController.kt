@@ -27,7 +27,7 @@ class TakingRecordAdditionController(private val medicineService: MedicineServic
     @ModelAttribute("medicines")
     fun medicines(): Map<String, String> {
         val medicines = medicineService.findAllMedicineOverviews(userSessionProvider.getUserSession())
-        return medicines.associate { Pair(it.medicineId.value, it.name) }
+        return medicines.associate { Pair(it.medicineId.value, it.medicineName.value) }
     }
 
     @ModelAttribute("conditionLevels")

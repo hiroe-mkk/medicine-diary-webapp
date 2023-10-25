@@ -39,14 +39,14 @@
                   <input
                     class="input is-info is-rounded"
                     type="text"
-                    name="name"
-                    th:value="*{name}"
+                    name="medicineName"
+                    th:value="*{medicineName}"
                     th:errorclass="is-danger"
                   />
                   <span
                     class="help is-danger"
-                    th:if="${#fields.hasErrors('name')}"
-                    th:errors="*{name}"
+                    th:if="${#fields.hasErrors('medicineName')}"
+                    th:errors="*{medicineName}"
                   ></span>
                 </div>
               </div>

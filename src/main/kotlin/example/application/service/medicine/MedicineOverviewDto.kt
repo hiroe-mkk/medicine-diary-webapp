@@ -4,14 +4,14 @@ import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 
 data class MedicineOverviewDto(val medicineId: MedicineId,
-                               val name: String,
+                               val medicineName: MedicineName,
                                val dosageAndAdministration: DosageAndAdministration,
                                val medicineImageURL: MedicineImageURL?,
                                val effects: Effects) {
     companion object {
         fun from(medicine: Medicine): MedicineOverviewDto {
             return MedicineOverviewDto(medicine.id,
-                                       medicine.name,
+                                       medicine.medicineName,
                                        medicine.dosageAndAdministration,
                                        medicine.medicineImageURL,
                                        medicine.effects)

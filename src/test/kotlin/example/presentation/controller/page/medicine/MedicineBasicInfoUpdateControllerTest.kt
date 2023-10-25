@@ -73,7 +73,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
 
     @Nested
     inner class UpdateMedicineBasicInfoTest {
-        private val name = "ロキソニンSプレミアム"
+        private val medicineName = "ロキソニンSプレミアム"
         private val takingUnit = "錠"
         private val quantity = 2.0
         private val timesPerDay = 3
@@ -92,7 +92,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
             //when:
             val actions = mockMvc.perform(post(PATH, medicine.id)
                                               .with(csrf())
-                                              .param("name", name)
+                                              .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
@@ -114,12 +114,12 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
             //given:
             val userSession = userSessionProvider.getUserSession()
             val medicine = testMedicineInserter.insert(userSession.accountId)
-            val invalidName = ""
+            val invalidMedicineName = ""
 
             //when:
             val actions = mockMvc.perform(post(PATH, medicine.id)
                                               .with(csrf())
-                                              .param("name", invalidName)
+                                              .param("medicineName", invalidMedicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
@@ -144,7 +144,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
             //when:
             val actions = mockMvc.perform(post(PATH, badMedicineId)
                                               .with(csrf())
-                                              .param("name", name)
+                                              .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
@@ -168,7 +168,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
             //when:
             val actions = mockMvc.perform(post(PATH, medicineId)
                                               .with(csrf())
-                                              .param("name", name)
+                                              .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())

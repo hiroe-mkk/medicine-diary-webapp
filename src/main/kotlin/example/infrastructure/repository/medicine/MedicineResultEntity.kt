@@ -9,7 +9,7 @@ import java.time.*
 
 class MedicineResultEntity(val medicineId: MedicineId,
                            val owner: AccountId,
-                           val name: String,
+                           val medicineName: MedicineName,
                            val dose: Dose,
                            val takingUnit: String,
                            val timesPerDay: Int,
@@ -23,7 +23,7 @@ class MedicineResultEntity(val medicineId: MedicineId,
     fun toMedicine(): Medicine {
         return Medicine(medicineId,
                         owner,
-                        name,
+                        medicineName,
                         DosageAndAdministration(dose,
                                                 takingUnit,
                                                 timesPerDay,

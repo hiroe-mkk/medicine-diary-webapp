@@ -24,7 +24,7 @@ class JSONTakingRecordDetailResponse(val takingRecordId: String,
             return JSONTakingRecordDetailResponse(
                     takingRecordDetail.takingRecordId.value,
                     JSONTakenMedicine.from(takingRecordDetail.medicineId,
-                                           takingRecordDetail.name,
+                                           takingRecordDetail.medicineName,
                                            takingRecordDetail.dose,
                                            takingRecordDetail.takingUnit),
                     takingRecordDetail.followUp.symptom,
@@ -52,15 +52,15 @@ class JSONTakingRecordDetailResponse(val takingRecordId: String,
     }
 
     class JSONTakenMedicine(val medicineId: String,
-                            val name: String,
+                            val medicineName: String,
                             val dose: String) {
         companion object {
             fun from(medicineId: MedicineId,
-                     name: String,
+                     medicineName: MedicineName,
                      dose: Dose,
                      takingUnit: String): JSONTakenMedicine {
                 return JSONTakenMedicine(medicineId.value,
-                                         name,
+                                         medicineName.value,
                                          "${dose}${takingUnit}")
             }
         }

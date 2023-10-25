@@ -16,7 +16,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
      */
     fun insert(owner: AccountId,
                medicineId: MedicineId = MedicineId("testMedicineId${num++}"),
-               name: String = "ロキソニンS",
+               medicineName: MedicineName = MedicineName("ロキソニンS"),
                dosageAndAdministration: DosageAndAdministration = DosageAndAdministration(Dose(1.0),
                                                                                           "錠",
                                                                                           3,
@@ -27,7 +27,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {
         val medicine = Medicine(medicineId,
                                 owner,
-                                name,
+                                medicineName,
                                 dosageAndAdministration,
                                 effects,
                                 precautions,

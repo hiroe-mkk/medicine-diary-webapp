@@ -8,7 +8,7 @@ import java.time.*
 
 data class TakingRecordDetail(val takingRecordId: TakingRecordId,
                               val medicineId: MedicineId,
-                              val name: String,
+                              val medicineName: MedicineName,
                               val dose: Dose,
                               val takingUnit: String,
                               val followUp: FollowUp,

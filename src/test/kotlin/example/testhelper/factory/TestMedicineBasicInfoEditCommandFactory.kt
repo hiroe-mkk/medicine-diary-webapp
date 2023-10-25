@@ -5,7 +5,7 @@ import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.medicine.*
 
 object TestMedicineBasicInfoEditCommandFactory {
-    fun createCompletedRegistrationCommand(name: String = "ロキソニンS",
+    fun createCompletedRegistrationCommand(medicineName: String = "ロキソニンS",
                                            quantity: Double = 1.0,
                                            takingUnit: String = "錠",
                                            timesPerDay: Int = 3,
@@ -14,7 +14,7 @@ object TestMedicineBasicInfoEditCommandFactory {
                                                    EffectInputField("頭痛"),
                                                    EffectInputField("解熱")),
                                            precautions: String = "服用間隔は4時間以上開けること。"): MedicineBasicInfoEditCommand {
-        return MedicineBasicInfoEditCommand(name,
+        return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
                                             takingUnit,
                                             timesPerDay,
@@ -23,7 +23,7 @@ object TestMedicineBasicInfoEditCommandFactory {
                                             precautions)
     }
 
-    fun createCompletedUpdateCommand(name: String = "ロキソニンSプレミアム",
+    fun createCompletedUpdateCommand(medicineName: String = "ロキソニンSプレミアム",
                                      quantity: Double = 2.0,
                                      takingUnit: String = "錠",
                                      timesPerDay: Int = 2,
@@ -32,7 +32,7 @@ object TestMedicineBasicInfoEditCommandFactory {
                                                                               EffectInputField("解熱"),
                                                                               EffectInputField("肩こり")),
                                      precautions: String = "服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。"): MedicineBasicInfoEditCommand {
-        return MedicineBasicInfoEditCommand(name,
+        return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
                                             takingUnit,
                                             timesPerDay,

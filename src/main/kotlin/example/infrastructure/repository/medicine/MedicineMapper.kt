@@ -13,7 +13,7 @@ interface MedicineMapper {
 
     fun upsertOneMedicine(medicineId: String,
                           owner: String,
-                          name: String,
+                          medicineName: String,
                           quantity: Double,
                           takingUnit: String,
                           timesPerDay: Int,

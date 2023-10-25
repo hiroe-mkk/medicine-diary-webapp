@@ -10,5 +10,5 @@ data class TakingRecordOverview(val takingRecordId: TakingRecordId,
                                 val afterTaking: ConditionLevel?,
                                 val takenAt: LocalDateTime,
                                 val medicineId: MedicineId,
-                                val medicineName: String,
+                                val medicineName: MedicineName,
                                 val recorder: User)

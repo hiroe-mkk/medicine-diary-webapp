@@ -10,13 +10,13 @@ import java.time.*
  */
 class Medicine(val id: MedicineId,
                val owner: AccountId,
-               name: String,
+               medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
                precautions: Note,
                medicineImageURL: MedicineImageURL?,
                val registeredAt: LocalDateTime) {
-    var name: String = name
+    var medicineName: MedicineName = medicineName
         private set
     var dosageAndAdministration: DosageAndAdministration = dosageAndAdministration
         private set
@@ -30,14 +30,14 @@ class Medicine(val id: MedicineId,
     companion object {
         fun create(id: MedicineId,
                    owner: AccountId,
-                   name: String,
+                   medicineName: MedicineName,
                    dosageAndAdministration: DosageAndAdministration,
                    effects: Effects,
                    precautions: Note,
                    registeredAt: LocalDateTime): Medicine {
             return Medicine(id,
                             owner,
-                            name,
+                            medicineName,
                             dosageAndAdministration,
                             effects,
                             precautions,
@@ -48,11 +48,11 @@ class Medicine(val id: MedicineId,
 
     fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
 
-    fun changeBasicInfo(name: String,
+    fun changeBasicInfo(medicineName: MedicineName,
                         dosageAndAdministration: DosageAndAdministration,
                         effects: Effects,
                         precautions: Note) {
-        this.name = name
+        this.medicineName = medicineName
         this.dosageAndAdministration = dosageAndAdministration
         this.effects = effects
         this.precautions = precautions

@@ -42,7 +42,7 @@ class JSONTakingRecordOverviewsResponse(val number: Int,
                                                     .ofPattern("yyyy/M/d HH:mm")
                                                     .format(takingRecordOverview.takenAt),
                                                 JSONTakenMedicine(takingRecordOverview.medicineId.value,
-                                                                  takingRecordOverview.medicineName),
+                                                                  takingRecordOverview.medicineName.value),
                                                 JSONRecorder(takingRecordOverview.recorder.accountId.value,
                                                              takingRecordOverview.recorder.username.value,
                                                              takingRecordOverview.recorder.profileImageURL?.toURL()))
@@ -50,7 +50,7 @@ class JSONTakingRecordOverviewsResponse(val number: Int,
         }
 
         class JSONTakenMedicine(val medicineId: String,
-                                val name: String)
+                                val medicineName: String)
 
         class JSONRecorder(val accountId: String,
                            val username: String,

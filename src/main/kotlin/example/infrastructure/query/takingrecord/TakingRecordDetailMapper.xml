@@ -6,7 +6,7 @@
         SELECT
             taking_records.taking_record_id AS taking_record_id,
             medicines.medicine_id AS medicine_id,
-            medicines.name AS name,
+            medicines.medicine_name AS medicine_name,
             medicines.quantity AS quantity,
             medicines.taking_unit AS taking_unit,
             taking_records.symptom AS symptom,
@@ -30,7 +30,7 @@
         <constructor>
             <idArg column="taking_record_id" javaType="TakingRecordId" resultMap="TakingRecordIdResultMap"/>
             <arg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
-            <arg column="name" javaType="String"/>
+            <arg column="medicine_name" javaType="MedicineName" resultMap="MedicineNameResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="taking_unit" javaType="String"/>
             <arg column="{symptom, before_taking, after_taking}" javaType="FollowUp" resultMap="FollowUpResultMap"/>
@@ -48,6 +48,11 @@
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
             <idArg column="medicine_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MedicineNameResultMap" type="MedicineName">
+        <constructor>
+            <idArg column="medicine_name" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="DoseResultMap" type="Dose">

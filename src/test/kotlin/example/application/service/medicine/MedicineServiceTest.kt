@@ -48,7 +48,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
             //then:
             val expected = MedicineDetailDto(medicine.id,
-                                             medicine.name,
+                                             medicine.medicineName,
                                              medicine.dosageAndAdministration,
                                              medicine.effects,
                                              medicine.precautions,
@@ -105,17 +105,17 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
             //then:
             val expected = arrayOf(MedicineOverviewDto(medicine3.id,
-                                                       medicine3.name,
+                                                       medicine3.medicineName,
                                                        medicine3.dosageAndAdministration,
                                                        medicine3.medicineImageURL,
                                                        medicine3.effects),
                                    MedicineOverviewDto(medicine2.id,
-                                                       medicine2.name,
+                                                       medicine2.medicineName,
                                                        medicine2.dosageAndAdministration,
                                                        medicine2.medicineImageURL,
                                                        medicine2.effects),
                                    MedicineOverviewDto(medicine1.id,
-                                                       medicine1.name,
+                                                       medicine1.medicineName,
                                                        medicine1.dosageAndAdministration,
                                                        medicine1.medicineImageURL,
                                                        medicine1.effects))
@@ -140,7 +140,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val foundMedicine = medicineRepository.findById(medicineId)
             val expected = Medicine(medicineId,
                                     userSession.accountId,
-                                    command.validatedName,
+                                    command.validatedMedicineName,
                                     command.validatedDosageAndAdministration,
                                     command.validatedEffects,
                                     command.validatedPrecautions,
@@ -166,7 +166,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val foundMedicine = medicineRepository.findById(medicine.id)
             val expected = Medicine(medicine.id,
                                     medicine.owner,
-                                    command.validatedName,
+                                    command.validatedMedicineName,
                                     command.validatedDosageAndAdministration,
                                     command.validatedEffects,
                                     command.validatedPrecautions,

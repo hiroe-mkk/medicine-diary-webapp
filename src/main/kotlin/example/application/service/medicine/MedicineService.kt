@@ -34,7 +34,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     fun registerMedicine(command: MedicineBasicInfoEditCommand, userSession: UserSession): MedicineId {
         val medicine = Medicine.create(medicineRepository.createMedicineId(),
                                        userSession.accountId,
-                                       command.validatedName,
+                                       command.validatedMedicineName,
                                        command.validatedDosageAndAdministration,
                                        command.validatedEffects,
                                        command.validatedPrecautions,
@@ -59,7 +59,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                                 command: MedicineBasicInfoEditCommand,
                                 userSession: UserSession) {
         val medicine = findMedicineOrElseThrowException(medicineId, userSession)
-        medicine.changeBasicInfo(command.validatedName,
+        medicine.changeBasicInfo(command.validatedMedicineName,
                                  command.validatedDosageAndAdministration,
                                  command.validatedEffects,
                                  command.validatedPrecautions)

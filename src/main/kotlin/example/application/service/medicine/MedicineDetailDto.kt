@@ -6,7 +6,7 @@ import example.domain.shared.type.*
 import java.time.*
 
 data class MedicineDetailDto(val medicineId: MedicineId,
-                             val name: String,
+                             val medicineName: MedicineName,
                              val dosageAndAdministration: DosageAndAdministration,
                              val effects: Effects,
                              val precautions: Note,
@@ -15,7 +15,7 @@ data class MedicineDetailDto(val medicineId: MedicineId,
     companion object {
         fun from(medicine: Medicine): MedicineDetailDto {
             return MedicineDetailDto(medicine.id,
-                                     medicine.name,
+                                     medicine.medicineName,
                                      medicine.dosageAndAdministration,
                                      medicine.effects,
                                      medicine.precautions,

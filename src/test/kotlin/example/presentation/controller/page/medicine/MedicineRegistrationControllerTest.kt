@@ -47,7 +47,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
 
     @Nested
     inner class RegisterMedicineTest {
-        private val name = "ロキソニンS"
+        private val medicineName = "ロキソニンS"
         private val takingUnit = "錠"
         private val quantity = 1.0
         private val timesPerDay = 3
@@ -61,7 +61,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("name", name)
+                                              .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
@@ -79,12 +79,12 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
         @DisplayName("バリデーションエラーが発生した場合、薬登録画面を再表示する")
         fun validationErrorOccurs_redisplayMedicineRegistrationPage() {
             //given:
-            val invalidName = ""
+            val invalidMedicineName = ""
 
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("name", invalidName)
+                                              .param("medicineName", invalidMedicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())
@@ -103,7 +103,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("name", name)
+                                              .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
                                               .param("takingUnit", takingUnit)
                                               .param("timesPerDay", timesPerDay.toString())

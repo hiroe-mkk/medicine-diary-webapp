@@ -10,7 +10,7 @@ import jakarta.validation.constraints.*
  */
 data class MedicineBasicInfoEditCommand(@field:NotEmpty(message = "※必ず入力してください。")
                                         @field:Size(max = 30, message = "※{max}文字以内で入力してください。")
-                                        val name: String,
+                                        val medicineName: String,
                                         @field:NotNull(message = "※必ず入力してください。")
                                         @field:Digits(integer = 5, fraction = 3,
                                                       message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
@@ -28,7 +28,7 @@ data class MedicineBasicInfoEditCommand(@field:NotEmpty(message = "※必ず入�
                                         val effects: List<@Valid EffectInputField> = emptyList(),
                                         @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
                                         val precautions: String) {
-    val validatedName: String = name.trim()
+    val validatedMedicineName: MedicineName = MedicineName(medicineName.trim())
     val validatedDosageAndAdministration: DosageAndAdministration =
             DosageAndAdministration(Dose(quantity ?: 0.0),
                                     "錠",
@@ -49,7 +49,7 @@ data class MedicineBasicInfoEditCommand(@field:NotEmpty(message = "※必ず入�
         }
 
         fun initialize(medicine: Medicine): MedicineBasicInfoEditCommand {
-            return MedicineBasicInfoEditCommand(medicine.name,
+            return MedicineBasicInfoEditCommand(medicine.medicineName.value,
                                                 medicine.dosageAndAdministration.dose.quantity,
                                                 medicine.dosageAndAdministration.takingUnit,
                                                 medicine.dosageAndAdministration.timesPerDay,
