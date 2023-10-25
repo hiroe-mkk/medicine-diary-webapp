@@ -15,10 +15,8 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         return sharedGroupMapper.findOneBySharedGroupId(sharedGroupId.value)?.toSharedGroup()
     }
 
-    override fun findByAccountId(accountId: AccountId): Set<SharedGroup> {
-        return sharedGroupMapper.findAllByAccountId(accountId.value)
-            .map { it.toSharedGroup() }
-            .toSet()
+    override fun findByMember(accountId: AccountId): SharedGroup? {
+        return sharedGroupMapper.findOneByMember(accountId.value)?.toSharedGroup()
     }
 
     override fun save(sharedGroup: SharedGroup) {

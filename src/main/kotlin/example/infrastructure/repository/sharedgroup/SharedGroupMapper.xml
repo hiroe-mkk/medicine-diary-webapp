@@ -12,14 +12,18 @@
             members.shared_group_id = #{sharedGroupId};
     </select>
 
-    <select id="findAllByAccountId" resultMap="SharedGroupResultEntityResultMap">
+    <select id="findOneByMember" resultMap="SharedGroupResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
             members
             LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
         WHERE
-            members.member = #{accountId} OR invitees.invitee = #{accountId};
+            members.shared_group_id IN(
+             SELECT shared_group_id
+             FROM members
+             WHERE members.member = #{accountId}
+            );
     </select>
 
     <insert id="insertAllMembers">

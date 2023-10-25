@@ -7,7 +7,7 @@ interface SharedGroupRepository {
 
     fun findById(sharedGroupId: SharedGroupId): SharedGroup?
 
-    fun findByAccountId(accountId: AccountId): Set<SharedGroup>
+    fun findByMember(accountId: AccountId): SharedGroup?
 
     fun save(sharedGroup: SharedGroup)
 

@@ -23,9 +23,7 @@ class SharedGroupDomainService(private val sharedGroupRepository: SharedGroupRep
     }
 
     private fun isParticipatingInSharedGroup(accountId: AccountId): Boolean {
-        val result = sharedGroupRepository.findByAccountId(accountId)
-            .filter { it.isParticipatingIn(accountId) }
-        return result.isNotEmpty()
+        return sharedGroupRepository.findByMember(accountId) != null
     }
 
     private fun isUsernameEmpty(accountId: AccountId): Boolean {
