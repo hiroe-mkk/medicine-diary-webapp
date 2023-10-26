@@ -1,10 +1,11 @@
 package example.domain.model.account.profile
 
 import example.domain.model.account.*
-import example.domain.model.account.profile.*
 
 interface ProfileRepository {
     fun findByAccountId(accountId: AccountId): Profile?
+
+    fun findByUsername(username: Username): Profile?
 
     fun save(profile: Profile)
 

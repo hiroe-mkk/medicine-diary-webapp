@@ -21,7 +21,8 @@ import java.util.*
 @MyBatisRepositoryTest
 internal class ProfileServiceTest(@Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val profileService: ProfileService = ProfileService(profileRepository)
+    private val profileDomainService: ProfileDomainService = ProfileDomainService(profileRepository)
+    private val profileService: ProfileService = ProfileService(profileRepository, profileDomainService)
 
     private lateinit var userSession: UserSession
     private lateinit var profile: Profile
@@ -44,18 +45,37 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         assertThat(actual).isEqualTo(expected)
     }
 
-    @Test
-    @DisplayName("ユーザー名を変更する")
-    fun changeUsername() {
-        //given:
-        val command = UsernameEditCommand("newTestUsername")
+    @Nested
+    inner class ChangeUsernameTest {
+        @Test
+        @DisplayName("ユーザー名を変更する")
+        fun changeUsername() {
+            //given:
+            val command = UsernameEditCommand("newTestUsername")
 
-        //when:
-        profileService.changeUsername(command, userSession)
+            //when:
+            profileService.changeUsername(command, userSession)
 
-        //then: 変更されたプロフィールが保存されている
-        val actual = profileRepository.findByAccountId(userSession.accountId)
-        val expected = Profile.reconstruct(userSession.accountId, Username("newTestUsername"), null)
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
+            //then:
+            val actual = profileRepository.findByAccountId(userSession.accountId)
+            val expected = Profile.reconstruct(userSession.accountId, Username("newTestUsername"), null)
+            assertThat(actual).usingRecursiveComparison().isEqualTo(expected)
+        }
+
+        @Test
+        @DisplayName("既に同じユーザー名が登録されていた場合、ユーザー名の変更に失敗する")
+        fun sameUsernameExists_changingUsernameFails() {
+            //given:
+            val duplicateUsername = Username("newTestUsername")
+            testAccountInserter.insertAccountAndProfile(username = duplicateUsername)
+            val command = UsernameEditCommand(duplicateUsername.value)
+
+            //when;
+            val target: () -> Unit = { profileService.changeUsername(command, userSession) }
+
+            //then:
+            val duplicateUsernameException = assertThrows<DuplicateUsernameException>(target)
+            assertThat(duplicateUsernameException.username).isEqualTo(duplicateUsername)
+        }
     }
 }
