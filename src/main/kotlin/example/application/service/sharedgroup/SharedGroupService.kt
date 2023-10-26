@@ -12,18 +12,18 @@ import org.springframework.transaction.annotation.*
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val sharedGroupDomainService: SharedGroupDomainService) {
     /**
-     * 共有リクエストできるか
+     * 共有可能な状態か
      */
     @Transactional(readOnly = true)
-    fun canShareRequest(userSession: UserSession): Boolean {
-        return sharedGroupDomainService.canShareRequest(userSession.accountId)
+    fun isShareableState(userSession: UserSession): Boolean {
+        return sharedGroupDomainService.isShareableState(userSession.accountId)
     }
 
     /**
-     * 共有をリクエストする
+     * 共有する
      */
-    fun requestToShare(target: AccountId, userSession: UserSession): SharedGroupId {
-        sharedGroupDomainService.requireShareRequestPossibleState(userSession.accountId)
+    fun share(target: AccountId, userSession: UserSession): SharedGroupId {
+        sharedGroupDomainService.requireShareableState(userSession.accountId)
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(),
                                              userSession.accountId,

@@ -8,13 +8,13 @@ import org.springframework.stereotype.*
 @Component
 class SharedGroupDomainService(private val sharedGroupRepository: SharedGroupRepository,
                                private val profileRepository: ProfileRepository) {
-    fun canShareRequest(requester: AccountId): Boolean {
-        return isParticipatingInSharedGroup(requester) || isUsernameEmpty(requester)
+    fun isShareableState(accountId: AccountId): Boolean {
+        return isParticipatingInSharedGroup(accountId) || isUsernameEmpty(accountId)
     }
 
-    fun requireShareRequestPossibleState(requester: AccountId) {
-        if (isParticipatingInSharedGroup(requester)) throw ShareRequestFailedException("参加できる共有グループは1つまでです。")
-        if (isUsernameEmpty(requester)) throw ShareRequestFailedException("ユーザー名が設定されていません。")
+    fun requireShareableState(accountId: AccountId) {
+        if (isParticipatingInSharedGroup(accountId)) throw ShareFailedException("参加できる共有グループは1つまでです。")
+        if (isUsernameEmpty(accountId)) throw ShareFailedException("ユーザー名が設定されていません。")
     }
 
     fun requireParticipationPossibleState(invitee: AccountId) {

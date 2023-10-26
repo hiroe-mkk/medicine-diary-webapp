@@ -38,10 +38,10 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     @Nested
     inner class RequestToShareTest {
         @Test
-        @DisplayName("共有をリクエストする")
-        fun requestToShare() {
+        @DisplayName("共有する")
+        fun share() {
             //when:
-            val sharedGroupId = sharedGroupService.requestToShare(anotherAccountId, userSession)
+            val sharedGroupId = sharedGroupService.share(anotherAccountId, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroupId)
@@ -50,31 +50,31 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("ユーザーが既に共有グループに参加している場合、共有のリクエストに失敗する")
-        fun participatingInShredGroup_requestingToShareFails() {
+        @DisplayName("ユーザーが既に共有グループに参加している場合、共有に失敗する")
+        fun participatingInShredGroup_sharingFails() {
             //given:
             testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
             //when:
-            val target: () -> Unit = { sharedGroupService.requestToShare(anotherAccountId, userSession) }
+            val target: () -> Unit = { sharedGroupService.share(anotherAccountId, userSession) }
 
             //then:
-            assertThrows<ShareRequestFailedException>(target)
+            assertThrows<ShareFailedException>(target)
         }
 
         @Test
-        @DisplayName("ユーザーのユーザー名が設定されていない場合、共有のリクエストに失敗する")
-        fun usernameIsNotSet_requestingToShareFails() {
+        @DisplayName("ユーザーのユーザー名が設定されていない場合、共有に失敗する")
+        fun usernameIsNotSet_sharingFails() {
             //given:
             val profile = profileRepository.findByAccountId(userSession.accountId)!!
             profile.changeUsername(Username(""))
             profileRepository.save(profile)
 
             //when:
-            val target: () -> Unit = { sharedGroupService.requestToShare(anotherAccountId, userSession) }
+            val target: () -> Unit = { sharedGroupService.share(anotherAccountId, userSession) }
 
             //then:
-            assertThrows<ShareRequestFailedException>(target)
+            assertThrows<ShareFailedException>(target)
         }
     }
 
