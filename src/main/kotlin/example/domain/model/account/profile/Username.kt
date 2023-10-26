@@ -8,7 +8,7 @@ data class Username(val value: String) {
         fun creteDefaultUsername(): Username = Username("")
     }
 
-    fun isEmpty(): Boolean = value.isBlank()
+    fun isDefaultValue(): Boolean = value.isBlank()
 
     override fun toString(): String = value
 }
