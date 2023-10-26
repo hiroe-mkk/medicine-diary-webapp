@@ -11,23 +11,23 @@ import java.time.temporal.*
 /**
  * 服用記録の追加と修正に利用される Command クラス
  */
-data class TakingRecordEditCommand(@field:NotEmpty(message = "※必ず選択してください。")
+data class TakingRecordEditCommand(@field:NotEmpty(message = "※お薬を選択してください。")
                                    val takenMedicine: String,
-                                   @field:NotNull(message = "※必ず入力してください。")
+                                   @field:NotNull(message = "※服用した量を入力してください。")
                                    @field:Digits(integer = 5, fraction = 3,
                                                  message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
                                    @field:DecimalMin(value = "0.001", message = "※{value}以上の数値を入力してください。")
                                    val quantity: Double?,
-                                   @field:NotEmpty(message = "※必ず入力してください。")
+                                   @field:NotEmpty(message = "※症状を入力してください。")
                                    @field:Size(max = 30,
                                                message = "※{max}文字以内で入力してください。")
                                    val symptom: String,
-                                   @field:NotNull(message = "※必ず入力してください。")
+                                   @field:NotNull(message = "※服用前の症状の度合いを入力してください。")
                                    val beforeTaking: ConditionLevel?,
                                    val afterTaking: ConditionLevel?,
                                    @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
                                    val note: String,
-                                   @field:NotNull(message = "※必ず入力してください。")
+                                   @field:NotNull(message = "※服用した時間を入力してください。")
                                    @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                    val takenAt: LocalDateTime?) {
     val validatedTakenMedicine: MedicineId = MedicineId(takenMedicine)
