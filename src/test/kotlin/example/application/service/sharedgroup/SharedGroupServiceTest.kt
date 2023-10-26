@@ -59,7 +59,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.share(anotherAccountId, userSession) }
 
             //then:
-            assertThrows<ShareFailedException>(target)
+            assertThrows<ShareException>(target)
         }
 
         @Test
@@ -74,7 +74,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.share(anotherAccountId, userSession) }
 
             //then:
-            assertThrows<ShareFailedException>(target)
+            assertThrows<ShareException>(target)
         }
     }
 
@@ -142,7 +142,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<InvitationToSharedGroupFailedException>(target)
+            assertThrows<InvitationToSharedGroupException>(target)
         }
 
         @Test
@@ -158,7 +158,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<InvitationToSharedGroupFailedException>(target)
+            assertThrows<InvitationToSharedGroupException>(target)
         }
     }
 
@@ -353,7 +353,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.participateInSharedGroup(sharedGroup.id, userSession) }
 
             //then:
-            assertThrows<ParticipationInSharedGroupFailedException>(target)
+            assertThrows<ParticipationInSharedGroupException>(target)
         }
 
         @Test
@@ -371,7 +371,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.participateInSharedGroup(sharedGroup.id, userSession) }
 
             //then:
-            assertThrows<ParticipationInSharedGroupFailedException>(target)
+            assertThrows<ParticipationInSharedGroupException>(target)
         }
     }
 

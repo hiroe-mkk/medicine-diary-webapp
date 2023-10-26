@@ -31,9 +31,9 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     private fun requireInvitableState(invitee: AccountId, inviter: AccountId) {
-        if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupFailedException("参加していない共有グループへの招待はできません。")
-        if (isParticipatingIn(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに参加しているユーザーです。")
-        if (isInvited(invitee)) throw InvitationToSharedGroupFailedException("既に共有グループに招待されているユーザーです。")
+        if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
+        if (isParticipatingIn(invitee)) throw InvitationToSharedGroupException("既に共有グループに参加しているユーザーです。")
+        if (isInvited(invitee)) throw InvitationToSharedGroupException("既に共有グループに招待されているユーザーです。")
     }
 
     fun declineInvitation(invitee: AccountId) {
@@ -45,7 +45,7 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun participateIn(invitee: AccountId) {
-        if (!isInvited(invitee)) throw ParticipationInSharedGroupFailedException("招待されていない共有グループへの参加はできません。")
+        if (!isInvited(invitee)) throw ParticipationInSharedGroupException("招待されていない共有グループへの参加はできません。")
 
         invitees -= invitee
         members += invitee

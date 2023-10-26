@@ -13,13 +13,13 @@ class SharedGroupDomainService(private val sharedGroupRepository: SharedGroupRep
     }
 
     fun requireShareableState(accountId: AccountId) {
-        if (isParticipatingInSharedGroup(accountId)) throw ShareFailedException("参加できる共有グループは1つまでです。")
-        if (isUsernameEmpty(accountId)) throw ShareFailedException("ユーザー名が設定されていません。")
+        if (isParticipatingInSharedGroup(accountId)) throw ShareException("参加できる共有グループは1つまでです。")
+        if (isUsernameEmpty(accountId)) throw ShareException("ユーザー名が設定されていません。")
     }
 
     fun requireParticipationPossibleState(invitee: AccountId) {
-        if (isParticipatingInSharedGroup(invitee)) throw ParticipationInSharedGroupFailedException("参加できる共有グループは1つまでです。")
-        if (isUsernameEmpty(invitee)) throw ParticipationInSharedGroupFailedException("ユーザー名が設定されていません。")
+        if (isParticipatingInSharedGroup(invitee)) throw ParticipationInSharedGroupException("参加できる共有グループは1つまでです。")
+        if (isUsernameEmpty(invitee)) throw ParticipationInSharedGroupException("ユーザー名が設定されていません。")
     }
 
     private fun isParticipatingInSharedGroup(accountId: AccountId): Boolean {
