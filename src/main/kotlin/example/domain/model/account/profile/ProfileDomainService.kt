@@ -7,4 +7,8 @@ class ProfileDomainService(private val profileRepository: ProfileRepository) {
     fun requireUsernameChangeableState(username: Username) {
         if (profileRepository.findByUsername(username) != null) throw DuplicateUsernameException(username)
     }
+
+    fun isUsernameChangeableState(username: Username): Boolean {
+        return profileRepository.findByUsername(username) == null
+    }
 }

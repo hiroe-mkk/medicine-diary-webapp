@@ -134,15 +134,19 @@ function activateUsernameChangeModal() {
 }
 
 function submitUsernameChangeForm() {
+  if (username.value == editingUsername.value) {
+    changeUsernameCompleted();
+    return;
+  }
+
   const form = new URLSearchParams();
   form.set('username', editingUsername.value);
   form.set('_csrf', props.csrf);
 
   HttpRequestClient.submitPostRequest('/api/profile/username/change', form)
     .then(() => {
-      username.value = editingUsername.value;
-      isUsernameChangeModalActive.value = false;
-      resultMessage.value.activate('INFO', 'ユーザー名の変更が完了しました。');
+      changeUsernameCompleted();
+      return;
     })
     .catch((error) => {
       if (error instanceof HttpRequestFailedError) {
@@ -186,6 +190,12 @@ function submitUsernameChangeForm() {
         '通信状態をご確認のうえ、再度お試しください。'
       );
     });
+}
+
+function changeUsernameCompleted() {
+  username.value = editingUsername.value;
+  isUsernameChangeModalActive.value = false;
+  resultMessage.value.activate('INFO', 'ユーザー名の変更が完了しました。');
 }
 
 function activateProfileImageChangeModal() {
