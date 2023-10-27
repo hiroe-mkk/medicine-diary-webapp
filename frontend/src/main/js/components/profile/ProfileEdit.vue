@@ -52,7 +52,9 @@
             @click="isUsernameChangeModalActive = false"
           ></button>
         </div>
-        <div class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered">
+        <div
+          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+        >
           ユーザー名を変更する
         </div>
         <form
@@ -150,6 +152,13 @@ function submitUsernameChangeForm() {
             fieldErrors.set(error.body.fieldErrors);
             return;
           }
+        } else if (error.status == 409) {
+          resultMessage.value.activate(
+            'ERROR',
+            'ユーザー名の変更に失敗しました。',
+            error.getMessage()
+          );
+          return;
         } else if (error.status == 401) {
           // 認証エラーが発生した場合
           location.reload();

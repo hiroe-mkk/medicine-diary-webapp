@@ -6,6 +6,7 @@ import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.context.request.*
 
 @Component
 @ControllerAdvice("example.presentation.controller.api")
@@ -21,6 +22,13 @@ class ApiControllerExceptionHandler(private val bindErrorResponseFactory: BindEr
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
     fun handleResourceNotFoundException(ex: ResourceNotFoundException): JSONErrorResponse {
+        return JSONErrorResponse.create(ex)
+    }
+
+    @ExceptionHandler(DomainException::class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ResponseBody
+    fun handleBusinessException(ex: DomainException): JSONErrorResponse {
         return JSONErrorResponse.create(ex)
     }
 }
