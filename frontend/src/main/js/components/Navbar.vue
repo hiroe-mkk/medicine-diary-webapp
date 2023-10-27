@@ -50,27 +50,6 @@
             <strong>お薬</strong>
           </a>
         </div>
-        <div class="navbar-item pb-0 mr-3" v-if="props.isAuthenticated">
-          <a
-            class="has-text-white is-hidden-touch"
-            @click="isSettingModalActive = true"
-          >
-            <span
-              class="icon fas fa-2x is-flex is-align-items-center is-medium"
-            >
-              <i class="fa-solid fa-gear"></i>
-            </span>
-          </a>
-          <a
-            class="icon-text has-text-link-dark is-hidden-desktop"
-            @click="isSettingModalActive = true"
-          >
-            <span class="icon fas fa-lg is-flex is-align-items-center">
-              <i class="fa-solid fa-gear"></i>
-            </span>
-            <strong>設定</strong>
-          </a>
-        </div>
         <div class="navbar-item pb-0" v-if="!props.isAuthenticated">
           <!-- TODO: Google でログイン ボタンに変更する -->
           <a
@@ -89,39 +68,6 @@
       </div>
     </div>
   </nav>
-
-  <div
-    class="modal"
-    :class="{ 'is-active': isSettingModalActive }"
-    v-if="props.isAuthenticated"
-  >
-    <div class="modal-background" @click="isSettingModalActive = false"></div>
-    <div class="modal-content is-flex is-justify-content-center">
-      <div class="content">
-        <a
-          class="button is-dark is-fullwidth is-small mb-1"
-          href="/profile/edit"
-        >
-          <strong class="mx-6">プロフィール編集</strong>
-        </a>
-
-        <form method="post" action="/logout">
-          <input name="_csrf" :value="props.csrf" hidden />
-          <button class="button is-dark is-fullwidth is-small mb-1">
-            <strong class="mx-6">ログアウト</strong>
-          </button>
-        </form>
-
-        <button
-          type="button"
-          class="button is-dark is-fullwidth is-small has-text-danger mb-1"
-          @click="isSettingModalActive = false"
-        >
-          <strong class="mx-6">キャンセル</strong>
-        </button>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
@@ -130,5 +76,4 @@ import { ref } from 'vue';
 const props = defineProps({ isAuthenticated: Boolean, csrf: String });
 
 const isOpened = ref(false);
-const isSettingModalActive = ref(false);
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="is-flex is-justify-content-center" v-if="image !== undefined">
-    <figure class="image" :class="{ 'is-128x128': isFixedSize }">
+    <figure class="image m-2" :class="{ 'is-128x128': isFixedSize }">
       <img :src="image" :class="{ 'is-rounded': isRounded }" />
     </figure>
   </div>
@@ -11,7 +11,9 @@
       @click="isImageChangeModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification py-3 px-5 has-background-white-bis has-text-centered">
+      <div
+        class="notification py-3 px-5 has-background-white-bis has-text-centered"
+      >
         <div class="has-text-right">
           <button
             class="delete"
@@ -19,7 +21,9 @@
             @click="isImageChangeModalActive = false"
           ></button>
         </div>
-        <div class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered">
+        <div
+          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+        >
           {{ `${props.imageName}を変更する` }}
         </div>
         <div class="content m-3 has-text-centered">

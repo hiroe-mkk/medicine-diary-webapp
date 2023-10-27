@@ -10,7 +10,7 @@ module.exports = {
     vendor: ['vue'],
     style: './src/main/css/style.css',
     siteHeader: './src/main/js/siteHeader.js',
-    profileEdit: './src/main/js/profileEdit.js',
+    mypage: './src/main/js/mypage.js',
     medicineForm: './src/main/js/medicineForm.js',
     medicineDetail: './src/main/js/medicineDetail.js',
   },

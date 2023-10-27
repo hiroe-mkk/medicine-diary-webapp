@@ -6,10 +6,15 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/mypage.bundle.js}" defer></script>
   </head>
 
   <body>
-    <div layout:fragment="content">
+    <div id="mypage" layout:fragment="content">
+      <editable-profile
+        th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
+      ></editable-profile>
+
       <div class="bottom-right-button">
         <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">
           <p
