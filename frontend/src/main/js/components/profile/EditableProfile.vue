@@ -1,72 +1,37 @@
 <template>
   <div class="content has-text-centered">
-    <div class="tile is-ancestor">
-      <div class="tile is-parent is-3 p-0">
-        <div class="tile is-child">
-          <ChangeableImage
-            ref="changeableImage"
-            :image="props.profileImage"
-            :csrf="props.csrf"
-            executePath="/api/profile/profileimage/change"
-            imageName="プロフィール画像"
-            :noImage="noProfileImage"
-            :isRounded="true"
-            :isFixedSize="true"
-          ></ChangeableImage>
+    <div class="columns is-vcentered p-3">
+      <div class="column p-3 is-one-quarter">
+        <ChangeableImage
+          ref="changeableImage"
+          :image="props.profileImage"
+          :csrf="props.csrf"
+          executePath="/api/profile/profileimage/change"
+          imageName="プロフィール画像"
+          :noImage="noProfileImage"
+          :isRounded="true"
+          :isFixedSize="true"
+        ></ChangeableImage>
+        <div class="icon-text mx-3 is-flex is-justify-content-center">
+          <strong
+            class="is-size-4 has-text-grey-dark"
+            v-if="username !== undefined"
+          >
+            {{ username }}
+          </strong>
+          <strong class="is-size-5 has-text-grey" v-if="username === undefined">
+            ( unknown )
+          </strong>
+          <span
+            class="icon fas fa-lg has-text-link-dark is-clickable"
+            @click="isMenuModalActive = true"
+          >
+            <i class="fa-solid fa-gear"></i>
+          </span>
         </div>
       </div>
-      <div class="tile">
-        <div class="tile is-parent is-vertical">
-          <div class="tile is-child is-hidden-mobile">
-            <div class="icon-text has-text-link-dark">
-              <strong
-                class="is-size-4 has-text-grey-dark"
-                v-if="username !== undefined"
-              >
-                {{ username }}
-              </strong>
-              <strong
-                class="is-size-5 has-text-grey"
-                v-if="username === undefined"
-              >
-                ( unknown )
-              </strong>
-              <span
-                class="icon fas fa-lg is-flex is-clickable"
-                @click="isMenuModalActive = true"
-              >
-                <i class="fa-solid fa-gear"></i>
-              </span>
-            </div>
-          </div>
-          <div
-            class="tile is-child is-hidden-tablet is-flex is-justify-content-center"
-          >
-            <div class="icon-text has-text-link-dark">
-              <strong
-                class="is-size-4 has-text-grey-dark"
-                v-if="username !== undefined"
-              >
-                {{ username }}
-              </strong>
-              <strong
-                class="is-size-5 has-text-grey"
-                v-if="username === undefined"
-              >
-                ( unknown )
-              </strong>
-              <span
-                class="icon fas fa-lg is-flex is-clickable"
-                @click="isMenuModalActive = true"
-              >
-                <i class="fa-solid fa-gear"></i>
-              </span>
-            </div>
-          </div>
-          <div class="tile is-child">
-            <slot ></slot>
-          </div>
-        </div>
+      <div class="column p-3">
+        <slot></slot>
       </div>
     </div>
   </div>

@@ -11,15 +11,74 @@
 
   <body>
     <div id="mypage" layout:fragment="content">
-      <editable-profile
-        th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
-      >
-        <div class="content has-text-left" th:if="${sharedGroup == null}">
-          <a class="button is-rounded is-small is-info" href="/sharedgroup">
-            共有する
-          </a>
-        </div>
-      </editable-profile>
+      <div class="container is-max-desktop">
+        <editable-profile
+          th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
+        >
+          <div
+            class="notification has-background-white-bis has-text-left py-3 px-5"
+          >
+            <strong>共有グループ</strong>
+            <div
+              class="is-flex is-align-items-end"
+              th:if="${participatingSharedGroup != null}"
+            >
+              <div
+                class="has-text-centered mx-2"
+                th:each="member:${participatingSharedGroup.members}"
+              >
+                <div class="is-flex is-justify-content-center">
+                  <figure class="image is-48x48 m-1">
+                    <img
+                      class="is-rounded"
+                      th:src="${member.profileImageURL}"
+                      th:if="*{member.profileImageURL != null}"
+                    />
+                    <img
+                      class="is-rounded"
+                      :src="noProfileImage"
+                      th:if="*{member.profileImageURL == null}"
+                    />
+                  </figure>
+                </div>
+                <strong
+                  class="is-size-6 has-text-grey-dark"
+                  th:text="${member.username}"
+                ></strong>
+              </div>
+              <div
+                class="has-text-centered mx-2"
+                th:each="invitee:${participatingSharedGroup.invitees}"
+              >
+                <p class="is-size-7 has-text-grey m-0">招待中</p>
+                <div class="is-flex is-justify-content-center">
+                  <figure class="image is-48x48 m-1">
+                    <img
+                      class="is-rounded"
+                      th:src="${invitee.profileImageURL}"
+                      th:if="*{invitee.profileImageURL != null}"
+                    />
+                    <img
+                      class="is-rounded"
+                      :src="noProfileImage"
+                      th:if="*{invitee.profileImageURL == null}"
+                    />
+                  </figure>
+                </div>
+                <strong
+                  class="is-size-6 has-text-grey-dark"
+                  th:text="${invitee.username}"
+                ></strong>
+              </div>
+            </div>
+            <div class="my-3 mx-2" th:if="${participatingSharedGroup == null}">
+              <a class="button is-rounded is-small is-info" href="/sharedgroup">
+                共有する
+              </a>
+            </div>
+          </div>
+        </editable-profile>
+      </div>
 
       <div class="bottom-right-button">
         <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">
