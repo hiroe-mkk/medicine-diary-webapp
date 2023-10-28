@@ -12,14 +12,6 @@ import org.springframework.transaction.annotation.*
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val sharedGroupDomainService: SharedGroupDomainService) {
     /**
-     * 共有可能な状態か
-     */
-    @Transactional(readOnly = true)
-    fun isShareableState(userSession: UserSession): Boolean {
-        return sharedGroupDomainService.isShareableState(userSession.accountId)
-    }
-
-    /**
      * 共有する
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
