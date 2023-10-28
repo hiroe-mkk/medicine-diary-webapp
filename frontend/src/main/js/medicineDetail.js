@@ -12,7 +12,7 @@ createApp({
   methods: {
     activateMedicineImageChangeModal() {
       this.isEditModalActive = false;
-      this.$refs.changeableImage.activate();
+      this.$refs.changeableImage.activateChangeModal();
     },
   },
   components: {

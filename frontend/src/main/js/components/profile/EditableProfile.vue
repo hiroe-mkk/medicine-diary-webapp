@@ -250,7 +250,7 @@ function changeUsernameCompleted() {
 }
 
 function activateProfileImageChangeModal() {
-  changeableImage.value.activate();
+  changeableImage.value.activateChangeModal();
   isMenuModalActive.value = false;
 }
 </script>

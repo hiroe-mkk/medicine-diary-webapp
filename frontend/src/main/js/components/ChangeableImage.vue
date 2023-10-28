@@ -112,7 +112,7 @@ const props = defineProps({
   isFixedSize: { type: Boolean, default: false },
 });
 
-defineExpose({ activate });
+defineExpose({ activateChangeModal });
 
 const image = ref(props.image);
 const isImageChangeModalActive = ref(false);
@@ -122,7 +122,7 @@ const imageTrimmingManager = reactive(new ImageTrimmingManager());
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
 
-function activate() {
+function activateChangeModal() {
   fieldErrors.clear();
   imageTrimmingManager.destroy();
   isImageChangeModalActive.value = true;
