@@ -6,10 +6,11 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/medicineOverviews.bundle.js}" defer></script>
   </head>
 
   <body>
-    <div layout:fragment="content" th:remove="tag">
+    <div id="medicineOverviews" layout:fragment="content">
       <div class="content has-text-centered">
         <h1 class="icon-text is-size-4 icon-text has-text-grey-dark">
           <span>お薬</span>
@@ -25,12 +26,16 @@
           th:each="medicineOverview:${medicineOverviews}"
           th:object="${medicineOverview}"
         >
-          <div class="media-left" th:if="*{medicineImageURL != null}">
+          <div class="media-left">
             <a
-              class="image is-96x96"
+              class="image is-96x96 is-clicable"
               th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
+              th:if="*{medicineImageURL != null}"
             >
               <img th:src="*{medicineImageURL}" />
+            </a>
+            <a class="image is-96x96" th:if="*{medicineImageURL == null}">
+              <img :src="noMedicineImage" />
             </a>
           </div>
           <div class="media-content">
@@ -47,10 +52,12 @@
                 <p class="mb-2" th:text="'1回 ' + *{dose} + *{takingUnit}"></p>
                 <p class="mb-2">
                   <span th:text="'1日 ' + *{timesPerDay} + '回'"></span>
-                  ( <span
+                  (
+                  <span
                     th:each="timing:*{timingOptions}"
                     th:text=" ${timing.str}"
-                  ></span> )
+                  ></span>
+                  )
                 </p>
               </div>
               <div class="tags mt-2 mb-0">

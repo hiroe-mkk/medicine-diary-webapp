@@ -24,21 +24,20 @@
       <div class="container is-max-widescreen">
         <div class="notification py-3 px-5 has-background-white-bis">
           <div class="columns p-3">
-            <div
-              class="column p-3 is-one-third"
-              th:if="*{medicineImageURL!=null}"
-            >
+            <div class="column p-3 is-one-third">
               <changeable-image
                 ref="changeableImage"
                 th:attr="image=*{medicineImageURL}, csrf=${_csrf.token}, execute-path='/api/medicines/__*{medicineId}__/medicineimage/change'"
                 image-name="お薬画像"
+                :no-image="noMedicineImage"
+                th:if="*{medicineImageURL!=null}"
               ></changeable-image>
-            </div>
-            <div th:if="*{medicineImageURL==null}">
               <changeable-image
                 ref="changeableImage"
                 th:attr="csrf=${_csrf.token}, execute-path='/api/medicines/__*{medicineId}__/medicineimage/change'"
                 image-name="お薬画像"
+                :no-image="noMedicineImage"
+                th:if="*{medicineImageURL==null}"
               ></changeable-image>
             </div>
             <div
@@ -102,7 +101,9 @@
             </span>
           </h2>
         </div>
-        <taking-records th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"></taking-records>
+        <taking-records
+          th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
+        ></taking-records>
       </div>
 
       <div class="bottom-fullwidth">

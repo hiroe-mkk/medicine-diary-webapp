@@ -13,6 +13,7 @@ module.exports = {
     mypage: './src/main/js/mypage.js',
     medicineForm: './src/main/js/medicineForm.js',
     medicineDetail: './src/main/js/medicineDetail.js',
+    medicineOverviews: './src/main/js/medicineOverviews.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する
@@ -56,6 +57,11 @@ module.exports = {
         // .css ファイルを .js ファイルとバンドルせずに、ファイルとして出力する
         test: /(?<!\.vue)\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        // .png ファイルと .jpg ファイルを DataUrl 化する
+        test: /\.(png|jpg)$/,
+        type: 'asset/inline',
       },
     ],
   },

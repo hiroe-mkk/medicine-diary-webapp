@@ -1,7 +1,16 @@
 <template>
-  <div class="is-flex is-justify-content-center" v-if="image !== undefined">
+  <div class="is-flex is-justify-content-center">
     <figure class="image m-2" :class="{ 'is-128x128': isFixedSize }">
-      <img :src="image" :class="{ 'is-rounded': isRounded }" />
+      <img
+        :src="image"
+        :class="{ 'is-rounded': isRounded }"
+        v-if="image != undefined"
+      />
+      <img
+        :src="noImage"
+        :class="{ 'is-rounded': isRounded }"
+        v-if="image == undefined"
+      />
     </figure>
   </div>
 
@@ -108,6 +117,7 @@ const props = defineProps({
   csrf: String,
   executePath: String,
   imageName: String,
+  noImage: String,
   isRounded: { type: Boolean, default: false },
   isFixedSize: { type: Boolean, default: false },
 });

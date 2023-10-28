@@ -9,6 +9,7 @@
             :csrf="props.csrf"
             executePath="/api/profile/profileimage/change"
             imageName="プロフィール画像"
+            :noImage="noProfileImage"
             :isRounded="true"
             :isFixedSize="true"
           ></ChangeableImage>
@@ -159,6 +160,7 @@ import {
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
+import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
   username: String,
