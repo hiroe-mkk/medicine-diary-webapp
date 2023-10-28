@@ -15,7 +15,7 @@
           ></ChangeableImage>
         </div>
       </div>
-      <div class="tile my-1">
+      <div class="tile">
         <div class="tile is-parent is-vertical">
           <div class="tile is-child is-hidden-mobile">
             <div class="icon-text has-text-link-dark">
@@ -64,7 +64,7 @@
             </div>
           </div>
           <div class="tile is-child">
-            <div class="notification has-background-white-bis"></div>
+            <slot ></slot>
           </div>
         </div>
       </div>

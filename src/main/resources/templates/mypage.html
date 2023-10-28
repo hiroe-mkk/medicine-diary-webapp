@@ -13,7 +13,13 @@
     <div id="mypage" layout:fragment="content">
       <editable-profile
         th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
-      ></editable-profile>
+      >
+        <div class="content has-text-left" th:if="${sharedGroup == null}">
+          <a class="button is-rounded is-small is-info" href="/sharedgroup">
+            共有する
+          </a>
+        </div>
+      </editable-profile>
 
       <div class="bottom-right-button">
         <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">
