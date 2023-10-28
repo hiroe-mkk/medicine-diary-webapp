@@ -61,7 +61,7 @@
                     <span>1日あたりの服用回数</span>
                     <span th:text="*{timesPerDay} + '回'"></span>
                   </p>
-                  <span class="mb-2">服用するタイミング</span>
+                  <span class="mb-2" th:if="*{!timingOptions.isEmpty()}">服用するタイミング</span>
                   <p class="mb-2 is-flex is-justify-content-flex-end">
                     <span
                       th:each="timing:*{timingOptions}"

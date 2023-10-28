@@ -50,7 +50,7 @@
                 th:object="${medicineOverview.dosageAndAdministration}"
               >
                 <p class="mb-2" th:text="'1回 ' + *{dose} + *{takingUnit}"></p>
-                <p class="mb-2">
+                <p class="mb-2" th:if="*{!timingOptions.isEmpty()}">
                   <span th:text="'1日 ' + *{timesPerDay} + '回'"></span>
                   (
                   <span
