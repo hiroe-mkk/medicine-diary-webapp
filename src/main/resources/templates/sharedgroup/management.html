@@ -6,7 +6,39 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/sharedGroupManagement.bundle.js}" defer></script>
   </head>
 
-  <body></body>
+  <body>
+    <div id="sharedGroupManagement" layout:fragment="content">
+      <div class="content has-text-centered">
+        <h1 class="icon-text is-size-4 has-text-grey-dark">
+          <span>共有グループ</span>
+          <span class="icon is-flex is-align-items-center mx-2">
+            <i class="fa-solid fa-user-group"></i>
+          </span>
+        </h1>
+      </div>
+      <div
+        class="container is-max-desktop has-text-centered"
+        th:if="${participatingSharedGroup == null}"
+      >
+        <!-- TODO: 共有グループに関する説明を追加 -->
+        <button
+          type="button"
+          class="button is-info is-rounded"
+          @click="activateUserSearchModal()"
+        >
+          <span class="is-size-6 has-text-weight-bold"> 共有する </span>
+        </button>
+        <user-search
+          ref="userSearch"
+          confirmation-message="このユーザーと共有しますか？"
+          path="/sharedgroup/share"
+          th:attr="csrf=${_csrf.token}"
+        >
+        </user-search>
+      </div>
+    </div>
+  </body>
 </html>

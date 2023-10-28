@@ -14,6 +14,7 @@ module.exports = {
     medicineForm: './src/main/js/medicineForm.js',
     medicineDetail: './src/main/js/medicineDetail.js',
     medicineOverviews: './src/main/js/medicineOverviews.js',
+    sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する
