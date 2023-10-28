@@ -19,8 +19,17 @@
         <div class="tile is-parent is-vertical">
           <div class="tile is-child is-hidden-mobile">
             <div class="icon-text has-text-link-dark">
-              <strong class="is-size-4 has-text-grey-dark">
+              <strong
+                class="is-size-4 has-text-grey-dark"
+                v-if="username !== undefined"
+              >
                 {{ username }}
+              </strong>
+              <strong
+                class="is-size-5 has-text-grey"
+                v-if="username === undefined"
+              >
+                ( unknown )
               </strong>
               <span
                 class="icon fas fa-lg is-flex is-clickable"
@@ -34,8 +43,17 @@
             class="tile is-child is-hidden-tablet is-flex is-justify-content-center"
           >
             <div class="icon-text has-text-link-dark">
-              <strong class="is-size-4 has-text-grey-dark">
+              <strong
+                class="is-size-4 has-text-grey-dark"
+                v-if="username !== undefined"
+              >
                 {{ username }}
+              </strong>
+              <strong
+                class="is-size-5 has-text-grey"
+                v-if="username === undefined"
+              >
+                ( unknown )
               </strong>
               <span
                 class="icon fas fa-lg is-flex is-clickable"
