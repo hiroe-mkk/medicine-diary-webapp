@@ -24,52 +24,8 @@
               th:if="${participatingSharedGroup != null}"
             >
               <div
-                class="has-text-centered mx-2"
-                th:each="member:${participatingSharedGroup.members}"
-              >
-                <div class="is-flex is-justify-content-center">
-                  <figure class="image is-48x48 m-1">
-                    <img
-                      class="is-rounded"
-                      th:src="${member.profileImageURL}"
-                      th:if="*{member.profileImageURL != null}"
-                    />
-                    <img
-                      class="is-rounded"
-                      :src="noProfileImage"
-                      th:if="*{member.profileImageURL == null}"
-                    />
-                  </figure>
-                </div>
-                <strong
-                  class="is-size-6 has-text-grey-dark"
-                  th:text="${member.username}"
-                ></strong>
-              </div>
-              <div
-                class="has-text-centered mx-2"
-                th:each="invitee:${participatingSharedGroup.invitees}"
-              >
-                <p class="is-size-7 has-text-grey m-0">招待中</p>
-                <div class="is-flex is-justify-content-center">
-                  <figure class="image is-48x48 m-1">
-                    <img
-                      class="is-rounded"
-                      th:src="${invitee.profileImageURL}"
-                      th:if="*{invitee.profileImageURL != null}"
-                    />
-                    <img
-                      class="is-rounded"
-                      :src="noProfileImage"
-                      th:if="*{invitee.profileImageURL == null}"
-                    />
-                  </figure>
-                </div>
-                <strong
-                  class="is-size-6 has-text-grey-dark"
-                  th:text="${invitee.username}"
-                ></strong>
-              </div>
+                th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup})}"
+              ></div>
             </div>
             <div class="my-3 mx-2" th:if="${participatingSharedGroup == null}">
               <a class="button is-rounded is-small is-info" href="/sharedgroup">
