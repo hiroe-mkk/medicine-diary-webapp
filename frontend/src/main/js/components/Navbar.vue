@@ -59,7 +59,7 @@
             <strong>ログイン</strong>
           </a>
           <a
-            class="button is-small is-rounded has-text-white has-background-info-dark is-hidden-desktop"
+            class="button is-small is-rounded has-text-white has-background-link-dark is-hidden-desktop"
             href="/oauth2/authorization/google"
           >
             <strong>ログイン</strong>

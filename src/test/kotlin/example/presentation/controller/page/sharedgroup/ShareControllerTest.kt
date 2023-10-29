@@ -43,13 +43,13 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
 
         //then:
         actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/sharedgroup"))
+            .andExpect(redirectedUrl("/sharedgroup/management"))
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有に失敗した場合、マイページ画面にリダイレクトする")
-    fun shareFails_displayNotFoundErrorPage() {
+    @DisplayName("共有に失敗した場合、共有グループ管理画面にリダイレクトする")
+    fun shareFails_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
         testSharedGroupInserter.insert(members = setOf(userSession.accountId))
@@ -61,7 +61,7 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
 
         //then:
         actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/mypage"))
+            .andExpect(redirectedUrl("/sharedgroup/management"))
     }
 
     @Test
