@@ -11,10 +11,11 @@ module.exports = {
     style: './src/main/css/style.css',
     siteHeader: './src/main/js/siteHeader.js',
     mypage: './src/main/js/mypage.js',
+    profileEdit: './src/main/js/profileEdit.js',
+    sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
     medicineForm: './src/main/js/medicineForm.js',
     medicineDetail: './src/main/js/medicineDetail.js',
     medicineOverviews: './src/main/js/medicineOverviews.js',
-    sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する

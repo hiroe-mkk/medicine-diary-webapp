@@ -1,77 +1,43 @@
 <template>
   <div class="content has-text-centered">
-    <div class="columns is-vcentered p-3">
-      <div class="column p-3 is-one-quarter">
-        <ChangeableImage
-          ref="changeableImage"
-          :image="props.profileImage"
-          :csrf="props.csrf"
-          executePath="/api/profile/profileimage/change"
-          imageName="プロフィール画像"
-          :noImage="noProfileImage"
-          :isRounded="true"
-          :isFixedSize="true"
-        ></ChangeableImage>
-        <div class="icon-text mx-3 is-flex is-justify-content-center">
-          <strong
-            class="is-size-4 has-text-grey-dark"
-            v-if="username !== undefined"
-          >
-            {{ username }}
-          </strong>
-          <strong class="is-size-5 has-text-grey" v-if="username === undefined">
-            ( unknown )
-          </strong>
-          <span
-            class="icon fas fa-lg has-text-link-dark is-clickable"
-            @click="isMenuModalActive = true"
-          >
-            <i class="fa-solid fa-gear"></i>
-          </span>
-        </div>
-      </div>
-      <div class="column p-3">
-        <slot></slot>
-      </div>
-    </div>
+    <ChangeableImage
+      ref="changeableImage"
+      :image="props.profileImage"
+      :csrf="props.csrf"
+      executePath="/api/profile/profileimage/change"
+      imageName="プロフィール画像"
+      :noImage="noProfileImage"
+      :isRounded="true"
+      :isFixedSize="true"
+    ></ChangeableImage>
+    <strong class="is-size-4 has-text-grey-dark" v-if="username !== undefined">
+      {{ username }}
+    </strong>
+    <strong class="is-size-5 has-text-grey" v-if="username === undefined">
+      ( unknown )
+    </strong>
   </div>
 
-  <div class="modal" :class="{ 'is-active': isMenuModalActive }">
-    <div class="modal-background" @click="isMenuModalActive = false"></div>
-    <div class="modal-content is-flex is-justify-content-center">
-      <div class="content">
-        <button
-          type="button"
-          class="button is-dark is-fullwidth is-small mb-1"
-          @click="activateUsernameChangeModal()"
-        >
-          <strong class="mx-6">ユーザー名を変更する</strong>
-        </button>
-        <div
-          class="button is-dark is-fullwidth is-small mb-1"
-          @click="activateProfileImageChangeModal()"
-        >
-          <strong class="mx-6">プロフィール画像を変更する</strong>
-        </div>
-        <a
-          class="button is-dark is-fullwidth is-small mb-1"
-          href="/sharedgroup"
-        >
-          <strong class="mx-6">共有グループ管理</strong>
-        </a>
-        <form method="post" action="/logout">
-          <input name="_csrf" :value="props.csrf" hidden />
-          <button class="button is-dark is-fullwidth is-small mb-1">
-            <strong class="mx-6">ログアウト</strong>
-          </button>
-        </form>
-        <button
-          type="button"
-          class="button is-dark is-fullwidth is-small has-text-danger mb-1"
-          @click="isMenuModalActive = false"
-        >
-          <strong class="mx-6">キャンセル</strong>
-        </button>
+  <div class="container is-max-desktop">
+    <div class="panel is-white">
+      <div class="panel-heading py-1 my-0"></div>
+      <div
+        class="panel-block has-text-grey has-background-white is-flex is-justify-content-space-between is-clickable"
+        @click="activateUsernameChangeModal()"
+      >
+        <strong class="has-text-grey">ユーザー名</strong>
+        <span class="icon is-small">
+          <i class="fa-solid fa-greater-than"></i>
+        </span>
+      </div>
+      <div
+        class="panel-block has-text-grey has-background-white is-flex is-justify-content-space-between is-clickable"
+        @click="activateProfileImageChangeModal()"
+      >
+        <strong class="has-text-grey">プロフィール画像</strong>
+        <span class="icon is-small">
+          <i class="fa-solid fa-greater-than"></i>
+        </span>
       </div>
     </div>
   </div>
@@ -157,8 +123,6 @@ const props = defineProps({
   csrf: String,
 });
 
-const isMenuModalActive = ref(false);
-
 const username = ref(props.username);
 const isUsernameChangeModalActive = ref(false);
 const editingUsername = ref('');
@@ -172,7 +136,6 @@ function activateUsernameChangeModal() {
   fieldErrors.clear();
   editingUsername.value = username.value;
   isUsernameChangeModalActive.value = true;
-  isMenuModalActive.value = false;
 }
 
 function submitUsernameChangeForm() {
@@ -242,6 +205,5 @@ function changeUsernameCompleted() {
 
 function activateProfileImageChangeModal() {
   changeableImage.value.activateChangeModal();
-  isMenuModalActive.value = false;
 }
 </script>
