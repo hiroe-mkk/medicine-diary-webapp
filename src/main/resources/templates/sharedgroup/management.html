@@ -21,6 +21,52 @@
       </div>
 
       <div class="container is-max-desktop has-text-centered">
+        <div class="content" th:if="${!invitedSharedGroups.isEmpty()}">
+          <div
+            class="message is-link is-inline-block"
+            th:each="invitedSharedGroup:${invitedSharedGroups}"
+          >
+            <div class="message-header">
+              <p>
+                以下の共有グループに招待されています。<br />参加しますか？<br />
+              </p>
+            </div>
+            <div class="message-body has-background-white-bis">
+              <div class="is-flex is-align-items-end">
+                <div
+                  th:replace="~{fragments/sharedGroup::macro(${invitedSharedGroup})}"
+                ></div>
+              </div>
+              <form class="form mt-2" method="post" action="?">
+                <input
+                  name="sharedGroupId"
+                  th:value="${invitedSharedGroup.sharedGroupId}"
+                  hidden
+                />
+                <input name="_csrf" th:value="${_csrf.token}" hidden />
+                <div class="field is-grouped is-grouped-centered">
+                  <p class="control">
+                    <button
+                      class="button is-small is-rounded is-link"
+                      formaction="/sharedgroup/participate"
+                    >
+                      参加する
+                    </button>
+                  </p>
+                  <p class="control">
+                    <button
+                      class="button is-small is-rounded is-danger"
+                      formaction="/sharedgroup/decline"
+                    >
+                      拒否する
+                    </button>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <div class="content is-inline-block has-background-info-light p-0">
           <div
             class="is-flex is-align-items-end"
