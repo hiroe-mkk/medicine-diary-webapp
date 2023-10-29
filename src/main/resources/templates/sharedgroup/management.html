@@ -19,25 +19,78 @@
           </span>
         </h1>
       </div>
-      <div
-        class="container is-max-desktop has-text-centered"
-        th:if="${participatingSharedGroup == null}"
-      >
-        <!-- TODO: 共有グループに関する説明を追加 -->
-        <button
-          type="button"
-          class="button is-info is-rounded"
-          @click="activateUserSearchModal()"
+      <div class="container is-max-desktop has-text-centered">
+        <div
+          class="content is-inline-block has-background-info-light p-0"
+          th:if="${participatingSharedGroup != null}"
         >
-          <span class="is-size-6 has-text-weight-bold"> 共有する </span>
-        </button>
-        <user-search
-          ref="userSearch"
-          confirmation-message="このユーザーと共有しますか？"
-          path="/sharedgroup/share"
-          th:attr="csrf=${_csrf.token}"
-        >
-        </user-search>
+          <div class="is-flex is-align-items-end">
+            <div
+              class="has-text-centered mx-2"
+              th:each="member:${participatingSharedGroup.members}"
+            >
+              <div class="is-flex is-justify-content-center">
+                <figure class="image is-48x48 m-1">
+                  <img
+                    class="is-rounded"
+                    th:src="${member.profileImageURL}"
+                    th:if="*{member.profileImageURL != null}"
+                  />
+                  <img
+                    class="is-rounded"
+                    :src="noProfileImage"
+                    th:if="*{member.profileImageURL == null}"
+                  />
+                </figure>
+              </div>
+              <strong
+                class="is-size-6 has-text-grey-dark"
+                th:text="${member.username}"
+              ></strong>
+            </div>
+            <div
+              class="has-text-centered mx-2"
+              th:each="invitee:${participatingSharedGroup.invitees}"
+            >
+              <p class="is-size-7 has-text-grey m-0">招待中</p>
+              <div class="is-flex is-justify-content-center">
+                <figure class="image is-48x48 m-1">
+                  <img
+                    class="is-rounded"
+                    th:src="${invitee.profileImageURL}"
+                    th:if="*{invitee.profileImageURL != null}"
+                  />
+                  <img
+                    class="is-rounded"
+                    :src="noProfileImage"
+                    th:if="*{invitee.profileImageURL == null}"
+                  />
+                </figure>
+              </div>
+              <strong
+                class="is-size-6 has-text-grey-dark"
+                th:text="${invitee.username}"
+              ></strong>
+            </div>
+          </div>
+        </div>
+        <div class="content" th:if="${participatingSharedGroup == null}">
+          <!-- TODO: 共有グループに関する説明を追加 -->
+          <button
+            type="button"
+            class="button is-info is-rounded"
+            @click="activateUserSearchModal()"
+          >
+            <span class="is-size-6 has-text-weight-bold"> 共有する </span>
+          </button>
+          <user-search
+            ref="userSearch"
+            confirmation-message="このユーザーと共有しますか？"
+            path="/sharedgroup/share"
+            th:attr="csrf=${_csrf.token}"
+          >
+          </user-search>
+        </div>
       </div>
     </div>
   </body>
