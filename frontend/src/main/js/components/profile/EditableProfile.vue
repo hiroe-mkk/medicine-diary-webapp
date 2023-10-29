@@ -87,7 +87,12 @@
           </div>
           <div class="field is-grouped is-grouped-centered">
             <p class="control">
-              <button class="button is-small is-rounded is-link">完了</button>
+              <button
+                class="button is-small is-rounded is-link"
+                :disabled="username === editingUsername"
+              >
+                完了
+              </button>
             </p>
             <p class="control">
               <button
@@ -139,11 +144,6 @@ function activateUsernameChangeModal() {
 }
 
 function submitUsernameChangeForm() {
-  if (username.value == editingUsername.value) {
-    changeUsernameCompleted();
-    return;
-  }
-
   const form = new URLSearchParams();
   form.set('username', editingUsername.value);
   form.set('_csrf', props.csrf);
