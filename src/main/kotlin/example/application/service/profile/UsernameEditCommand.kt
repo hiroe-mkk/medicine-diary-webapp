@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*
 /**
  * ユーザー名の変更に利用される Command クラス
  */
-data class UsernameEditCommand(@field:NotEmpty(message = "※ユーザー名を入力してください。")
+data class UsernameEditCommand(@field:NotWhitespaceOnly(message = "※ユーザー名を入力してください。")
                                @field:Size(max = 30,
                                            message = "※{max}文字以内で入力してください。")
                                @field:UnregisteredUsername

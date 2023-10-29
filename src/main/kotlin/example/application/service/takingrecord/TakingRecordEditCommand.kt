@@ -3,6 +3,7 @@ package example.application.service.takingrecord
 import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
 import example.domain.shared.type.*
+import example.domain.shared.validation.*
 import jakarta.validation.constraints.*
 import org.springframework.format.annotation.*
 import java.time.*
@@ -11,14 +12,14 @@ import java.time.temporal.*
 /**
  * 服用記録の追加と修正に利用される Command クラス
  */
-data class TakingRecordEditCommand(@field:NotEmpty(message = "※お薬を選択してください。")
+data class TakingRecordEditCommand(@field:NotWhitespaceOnly(message = "※お薬を選択してください。")
                                    val takenMedicine: String,
                                    @field:NotNull(message = "※服用した量を入力してください。")
                                    @field:Digits(integer = 5, fraction = 3,
                                                  message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
                                    @field:DecimalMin(value = "0.001", message = "※{value}以上の数値を入力してください。")
                                    val quantity: Double?,
-                                   @field:NotEmpty(message = "※症状を入力してください。")
+                                   @field:NotWhitespaceOnly(message = "※症状を入力してください。")
                                    @field:Size(max = 30,
                                                message = "※{max}文字以内で入力してください。")
                                    val symptom: String,

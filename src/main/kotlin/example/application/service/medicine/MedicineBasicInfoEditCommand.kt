@@ -2,13 +2,14 @@ package example.application.service.medicine
 
 import example.domain.model.medicine.*
 import example.domain.shared.type.*
+import example.domain.shared.validation.*
 import jakarta.validation.*
 import jakarta.validation.constraints.*
 
 /**
  * 薬基本情報の登録と更新に利用される Command クラス
  */
-data class MedicineBasicInfoEditCommand(@field:NotEmpty(message = "※お薬名を入力してください。")
+data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※お薬名を入力してください。")
                                         @field:Size(max = 30, message = "※{max}文字以内で入力してください。")
                                         val medicineName: String,
                                         @field:NotNull(message = "※1回あたりの服用量を入力してください。")
@@ -16,7 +17,7 @@ data class MedicineBasicInfoEditCommand(@field:NotEmpty(message = "※お薬名�
                                                       message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
                                         @field:DecimalMin(value = "0.001", message = "※{value}以上の数値を入力してください。")
                                         val quantity: Double?,
-                                        @field:NotEmpty(message = "※お薬の単位を入力してください。")
+                                        @field:NotWhitespaceOnly(message = "※お薬の単位を入力してください。")
                                         @field:Size(max = 10, message = "※{max}文字以内で入力してください。")
                                         val takingUnit: String,
                                         @field:NotNull(message = "※1日当たりの服用回数を入力してください。")
