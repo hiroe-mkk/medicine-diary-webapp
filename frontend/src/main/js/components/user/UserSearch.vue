@@ -53,7 +53,7 @@
                 </figure>
               </div>
               <div class="media-content">
-                <div class="content px-3">
+                <div class="content px-3 has-text-left">
                   <strong>
                     {{ user.username }}
                   </strong>
@@ -77,13 +77,6 @@
     ></div>
     <div class="modal-content is-flex is-justify-content-center">
       <div class="notification py-3 px-5 is-white">
-        <div class="has-text-right">
-          <button
-            class="delete"
-            type="button"
-            @click="isConfirmationModalActive = false"
-          ></button>
-        </div>
         <div
           class="is-size-6 has-text-weight-bold has-text-link-dark has-text-centered"
         >
