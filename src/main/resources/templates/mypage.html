@@ -13,7 +13,7 @@
     <div id="mypage" layout:fragment="content">
       <div class="container is-max-desktop">
         <div class="columns is-vcentered p-3">
-          <div class="column p-3 is-one-quarter">
+          <div class="column p-3">
             <div class="is-flex is-justify-content-center">
               <figure class="image is-128x128 m-2">
                 <img
@@ -49,29 +49,18 @@
               </span>
             </div>
           </div>
-          <div class="column p-3">
+          <div
+            class="column p-3 is-three-quarters"
+            th:if="${participatingSharedGroup != null}"
+          >
             <div
               class="notification has-background-white-bis has-text-left py-3 px-5"
             >
               <strong>共有グループ</strong>
-              <div
-                class="is-flex is-align-items-end"
-                th:if="${participatingSharedGroup != null}"
-              >
+              <div class="is-flex is-align-items-end">
                 <div
                   th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup})}"
                 ></div>
-              </div>
-              <div
-                class="my-3 mx-2"
-                th:if="${participatingSharedGroup == null}"
-              >
-                <a
-                  class="button is-rounded is-small is-info"
-                  href="/sharedgroup/management"
-                >
-                  共有する
-                </a>
               </div>
             </div>
           </div>
