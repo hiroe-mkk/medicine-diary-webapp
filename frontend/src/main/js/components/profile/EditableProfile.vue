@@ -53,6 +53,12 @@
         >
           <strong class="mx-6">プロフィール画像を変更する</strong>
         </div>
+        <a
+          class="button is-dark is-fullwidth is-small mb-1"
+          href="/sharedgroup"
+        >
+          <strong class="mx-6">共有グループ管理</strong>
+        </a>
         <form method="post" action="/logout">
           <input name="_csrf" :value="props.csrf" hidden />
           <button class="button is-dark is-fullwidth is-small mb-1">
