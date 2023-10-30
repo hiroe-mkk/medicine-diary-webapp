@@ -376,16 +376,16 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     }
 
     @Nested
-    inner class LeaveSharedGroupTest {
+    inner class UnshareTest {
         @Test
-        @DisplayName("共有グループから抜ける")
-        fun leaveSharedGroup() {
+        @DisplayName("共有を解除する")
+        fun unshareSharedGroup() {
             //given:
             val members = setOf(userSession.accountId, anotherAccountId, createAnotherAccount().id)
             val sharedGroup = testSharedGroupInserter.insert(members = members)
 
             //when:
-            sharedGroupService.leaveSharedGroup(sharedGroup.id, userSession)
+            sharedGroupService.unshare(sharedGroup.id, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -402,7 +402,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val sharedGroup = testSharedGroupInserter.insert(members = members)
 
             //when:
-            sharedGroupService.leaveSharedGroup(sharedGroup.id, userSession)
+            sharedGroupService.unshare(sharedGroup.id, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -410,14 +410,14 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("共有グループが見つからなかった場合、共有グループを抜けるのに失敗する")
-        fun sharedGroupNotFound_leavingSharedGroupFails() {
+        @DisplayName("共有グループが見つからなかった場合、共有解除に失敗する")
+        fun sharedGroupNotFound_unsharingFails() {
             //given:
             val badSharedGroupId = SharedGroupId("NonexistentId")
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.leaveSharedGroup(badSharedGroupId, userSession)
+                sharedGroupService.unshare(badSharedGroupId, userSession)
             }
 
             //then:
@@ -427,14 +427,14 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
 
         @Test
-        @DisplayName("ユーザーが共有グループに参加していない場合、共有グループを抜けるのに失敗する")
-        fun notParticipatingInSharedGroup_leavingSharedGroupFails() {
+        @DisplayName("ユーザーが共有グループに参加していない場合、共有解除に失敗する")
+        fun notParticipatingInSharedGroup_unsharingFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert()
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.leaveSharedGroup(sharedGroup.id, userSession)
+                sharedGroupService.unshare(sharedGroup.id, userSession)
             }
 
             //then:

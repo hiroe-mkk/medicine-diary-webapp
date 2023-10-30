@@ -51,7 +51,7 @@ class SharedGroup(val id: SharedGroupId,
         members += invitee
     }
 
-    fun leave(member: AccountId) {
+    fun unshare(member: AccountId) {
         members -= member
     }
 }

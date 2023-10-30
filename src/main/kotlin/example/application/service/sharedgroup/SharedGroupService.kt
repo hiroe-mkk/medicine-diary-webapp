@@ -74,12 +74,12 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 共有グループから抜ける
+     * 共有を解除する
      */
-    fun leaveSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+    fun unshare(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
-        sharedGroup.leave(userSession.accountId)
+        sharedGroup.unshare(userSession.accountId)
         if (sharedGroup.shouldDelete()) {
             sharedGroupRepository.delete(sharedGroupId)
         } else {
