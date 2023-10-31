@@ -65,6 +65,23 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
     }
 
     @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("アカウントが見つからなかった場合、NotFoundエラー画面を表示する")
+    fun accountNotFound_displayNotFoundErrorPage() {
+        //given:
+        val badAccountId = AccountId("NonexistentId")
+
+        //when:
+        val actions = mockMvc.perform(post(PATH)
+                                          .with(csrf())
+                                          .param("accountId", badAccountId.value))
+
+        //then:
+        actions.andExpect(status().isNotFound)
+            .andExpect(view().name("error/notFoundError"))
+    }
+
+    @Test
     @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
     fun requestedByUnauthenticatedUser_redirectToToppagePage() {
         //when:

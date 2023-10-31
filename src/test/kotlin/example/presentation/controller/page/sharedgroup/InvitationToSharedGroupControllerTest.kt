@@ -89,6 +89,26 @@ internal class InvitationToSharedGroupControllerTest(@Autowired private val mock
     }
 
     @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("アカウントが見つからなかった場合、NotFoundエラー画面を表示する")
+    fun accountNotFound_displayNotFoundErrorPage() {
+        //given:
+        val userSession = userSessionProvider.getUserSession()
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId, anotherAccountId))
+        val badAccountId = AccountId("NonexistentId")
+
+        //when:
+        val actions = mockMvc.perform(post(PATH)
+                                          .with(csrf())
+                                          .param("sharedGroupId", sharedGroup.id.value)
+                                          .param("accountId", badAccountId.value))
+
+        //then:
+        actions.andExpect(status().isNotFound)
+            .andExpect(view().name("error/notFoundError"))
+    }
+
+    @Test
     @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
     fun requestedByUnauthenticatedUser_redirectToToppagePage() {
         //given:

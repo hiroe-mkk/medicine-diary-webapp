@@ -1,6 +1,7 @@
 package example.application.service.sharedgroup
 
 import SharedGroupNotFoundException
+import example.application.service.account.*
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
@@ -17,12 +18,13 @@ import org.springframework.context.annotation.*
 @MyBatisRepositoryTest
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                       @Autowired private val profileRepository: ProfileRepository,
+                                      @Autowired private val accountRepository: AccountRepository,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
     private val shareRequestService: SharedGroupDomainService =
             SharedGroupDomainService(sharedGroupRepository, profileRepository)
     private val sharedGroupService: SharedGroupService =
-            SharedGroupService(sharedGroupRepository, shareRequestService)
+            SharedGroupService(sharedGroupRepository, accountRepository, shareRequestService)
 
     private lateinit var userSession: UserSession
     private lateinit var anotherAccountId: AccountId
@@ -76,6 +78,22 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             //then:
             assertThrows<ShareException>(target)
         }
+
+        @Test
+        @DisplayName("アカウントが見つからなかった場合、共有グループへの招待に失敗する")
+        fun accountNotFound_sharingFails() {
+            //given:
+            val badAccountId = AccountId("NonexistentId")
+
+            //when:
+            val target: () -> Unit = {
+                sharedGroupService.share(badAccountId, userSession)
+            }
+
+            //then:
+            val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
+            assertThat(accountNotFoundException.accountId).isEqualTo(badAccountId)
+        }
     }
 
     @Nested
@@ -110,6 +128,24 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             //then:
             val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
             assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
+        }
+
+        @Test
+        @DisplayName("アカウントが見つからなかった場合、共有グループへの招待に失敗する")
+        fun accountNotFound_invitingToSharedGroupFails() {
+            //given:
+            val badAccountId = AccountId("NonexistentId")
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId,
+                                                                             createAnotherAccount().id))
+
+            //when:
+            val target: () -> Unit = {
+                sharedGroupService.inviteToSharedGroup(sharedGroup.id, badAccountId, userSession)
+            }
+
+            //then:
+            val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
+            assertThat(accountNotFoundException.accountId).isEqualTo(badAccountId)
         }
 
         @Test

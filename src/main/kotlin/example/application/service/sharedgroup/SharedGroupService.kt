@@ -1,6 +1,7 @@
 package example.application.service.sharedgroup
 
 import SharedGroupNotFoundException
+import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
@@ -10,11 +11,13 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
+                         private val accountRepository: AccountRepository,
                          private val sharedGroupDomainService: SharedGroupDomainService) {
     /**
      * 共有する
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
+        requireAccountExists(target)
         sharedGroupDomainService.requireShareableState(userSession.accountId)
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(),
@@ -28,6 +31,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに招待する
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
+        requireAccountExists(target)
         val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.invite(target, userSession.accountId)
@@ -99,5 +103,9 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         return sharedGroupRepository.findById(sharedGroupId)
                    ?.let { if (it.isInvited(userSession.accountId)) it else null }
                ?: throw SharedGroupNotFoundException(sharedGroupId)
+    }
+
+    private fun requireAccountExists(target: AccountId) {
+        accountRepository.findById(target) ?: throw AccountNotFoundException(target)
     }
 }
