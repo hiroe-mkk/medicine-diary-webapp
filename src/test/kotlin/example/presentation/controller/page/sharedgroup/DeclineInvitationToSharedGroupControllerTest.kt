@@ -52,25 +52,6 @@ internal class DeclineInvitationToSharedGroupControllerTest(@Autowired private v
     }
 
     @Test
-    @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの招待の拒否に失敗した場合、共有グループ管理画面にリダイレクトする")
-    fun declineInvitationToSharedGroupFails_redirectToShredGroupManagementPage() {
-        //given:
-        val userSession = userSessionProvider.getUserSession()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId, userSession.accountId),
-                                                         invitees = setOf(userSession.accountId))
-
-        //when:
-        val actions = mockMvc.perform(post(PATH)
-                                          .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.value))
-
-        //then:
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/sharedgroup/management"))
-    }
-
-    @Test
     @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
     fun requestedByUnauthenticatedUser_redirectToToppagePage() {
         //given:
@@ -81,6 +62,7 @@ internal class DeclineInvitationToSharedGroupControllerTest(@Autowired private v
                                           .with(csrf())
                                           .param("sharedGroupId", sharedGroupId.value))
 
+        //then:
         actions.andExpect(status().isFound)
             .andExpect(redirectedUrl("/"))
     }

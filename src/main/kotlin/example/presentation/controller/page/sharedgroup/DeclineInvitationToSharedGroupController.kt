@@ -18,12 +18,8 @@ class DeclineInvitationToSharedGroupController(private val sharedGroupService: S
     @PostMapping
     fun declineInvitationToSharedGroup(@ModelAttribute sharedGroupId: SharedGroupId,
                                        redirectAttributes: RedirectAttributes): String {
-        val resultMessage = try {
-            sharedGroupService.declineInvitationToSharedGroup(sharedGroupId, userSessionProvider.getUserSession())
-            ResultMessage.info("共有グループへの招待を拒否しました。")
-        } catch (ex: ParticipationInSharedGroupException) {
-            ex.resultMessage
-        }
+        sharedGroupService.declineInvitationToSharedGroup(sharedGroupId, userSessionProvider.getUserSession())
+        val resultMessage = ResultMessage.info("共有グループへの招待を拒否しました。")
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
         return "redirect:/sharedgroup/management"
     }
