@@ -18,7 +18,7 @@ class MedicineOverviewsController(private val medicineService: MedicineService,
     fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/medicines")
 
     /**
-     * 薬一覧画面を表示する
+     * 薬概要一覧画面を表示する
      */
     @GetMapping
     fun displayMedicineOverviewsPage(model: Model): String {
