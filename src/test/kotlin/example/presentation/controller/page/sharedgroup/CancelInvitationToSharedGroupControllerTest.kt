@@ -1,7 +1,9 @@
 package example.presentation.controller.page.sharedgroup
 
 import example.domain.model.account.*
+import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
+import example.presentation.controller.page.medicine.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -50,6 +52,23 @@ internal class CancelInvitationToSharedGroupControllerTest(@Autowired private va
         //then:
         actions.andExpect(status().isFound)
             .andExpect(redirectedUrl("/sharedgroup/management"))
+    }
+
+    @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("共有グループが見つからなかった場合、NotFoundエラー画面を表示する")
+    fun sharedGroupNotFound_displayNotFoundErrorPage() {
+        //given:
+        val badSharedGroupId = SharedGroupId("NonexistentId")
+
+        //when:
+        val actions = mockMvc.perform(post(PATH)
+                                          .with(csrf())
+                                          .param("sharedGroupId", badSharedGroupId.value)
+                                          .param("accountId", anotherAccountId.value))
+        //then:
+        actions.andExpect(status().isNotFound)
+            .andExpect(view().name("error/notFoundError"))
     }
 
     @Test
