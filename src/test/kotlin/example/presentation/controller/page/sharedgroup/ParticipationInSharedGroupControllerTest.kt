@@ -17,10 +17,10 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class ParticipateInSharedGroupControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                      @Autowired private val testAccountInserter: TestAccountInserter,
-                                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                      @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class ParticipationInSharedGroupControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                        @Autowired private val testAccountInserter: TestAccountInserter,
+                                                        @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                        @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/sharedgroup/participate"
     }

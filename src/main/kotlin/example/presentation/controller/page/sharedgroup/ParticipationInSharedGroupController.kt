@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/sharedgroup/participate")
-class ParticipateInSharedGroupController(private val sharedGroupService: SharedGroupService,
-                                         private val userSessionProvider: UserSessionProvider) {
+class ParticipationInSharedGroupController(private val sharedGroupService: SharedGroupService,
+                                           private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループに参加する
      */
