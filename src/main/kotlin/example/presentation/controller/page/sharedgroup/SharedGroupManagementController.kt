@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class SharedGroupManagementController(private val sharedGroupQueryService: SharedGroupQueryService,
                                       private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/sharedgroup")
+    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/sharedgroup/management")
 
     /**
      * 共有グループ管理画面を表示する
