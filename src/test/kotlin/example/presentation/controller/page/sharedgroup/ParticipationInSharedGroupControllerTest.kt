@@ -54,7 +54,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
     @Test
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループへの参加に失敗した場合、共有グループ管理画面にリダイレクトする")
-    fun participateInSharedGroupFails_redirectToShredGroupManagementPage() {
+    fun participationInSharedGroupFails_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId, userSession.accountId),
