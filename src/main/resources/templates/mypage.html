@@ -56,7 +56,11 @@
             <div
               class="notification has-background-white-bis has-text-left py-3 px-5"
             >
-              <strong>共有グループ</strong>
+              <a
+                class="has-text-weight-bold has-text-link"
+                th:href="@{/sharedgroup/management}"
+                >共有グループ</a
+              >
               <div class="is-flex is-align-items-end">
                 <div
                   th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup})}"
@@ -73,13 +77,13 @@
           <div class="content">
             <a
               class="button is-dark is-fullwidth is-small mb-1"
-              href="/profile/edit"
+              th:href="@{/profile/edit}"
             >
               <strong class="mx-6">プロフィール編集</strong>
             </a>
             <a
               class="button is-dark is-fullwidth is-small mb-1"
-              href="/sharedgroup/management"
+              th:href="@{/sharedgroup/management}"
             >
               <strong class="mx-6">共有グループ管理</strong>
             </a>
