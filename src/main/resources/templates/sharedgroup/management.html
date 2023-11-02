@@ -77,15 +77,32 @@
             ></div>
           </div>
         </div>
+
         <div class="content" th:if="${participatingSharedGroup == null}">
           <!-- TODO: 共有グループに関する説明を追加 -->
-          <button
-            type="button"
-            class="button is-info is-rounded"
-            @click="activateUserSearchModal()"
-          >
-            <span class="is-size-6 has-text-weight-bold"> 共有する </span>
-          </button>
+          <div class="bottom-fullwidth">
+            <div class="tabs is-fullwidth has-background-info-light">
+              <ul class="m-0">
+                <li>
+                  <a class="px-0 py-5">
+                    <button
+                      class="button is-medium is-link is-rounded is-outlined"
+                      @click="activateUserSearchModal()"
+                    >
+                      <span class="is-size-6 has-text-weight-bold">
+                        共有する
+                      </span>
+                      <span
+                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                      >
+                        <i class="fa-solid fa-user-plus"></i>
+                      </span>
+                    </button>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
           <user-search
             ref="userSearch"
             confirmation-message="このユーザーと共有しますか？"
