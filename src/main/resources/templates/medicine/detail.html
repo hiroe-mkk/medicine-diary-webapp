@@ -61,7 +61,9 @@
                     <span>1日あたりの服用回数</span>
                     <span th:text="*{timesPerDay} + '回'"></span>
                   </p>
-                  <span class="mb-2" th:if="*{!timingOptions.isEmpty()}">服用するタイミング</span>
+                  <span class="mb-2" th:if="*{!timingOptions.isEmpty()}"
+                    >服用するタイミング</span
+                  >
                   <p class="mb-2 is-flex is-justify-content-flex-end">
                     <span
                       th:each="timing:*{timingOptions}"
@@ -107,24 +109,25 @@
       </div>
 
       <div class="bottom-fullwidth">
-        <div class="tabs is-fullwidth has-background-info-light mb-0">
-          <ul>
+        <div class="tabs is-fullwidth has-background-info-light">
+          <ul class="m-0">
             <li>
-              <a
-                class="is-small is-link py-5"
-                @click="isEditModalActive = true"
-              >
-                <span class="icon fas fa-2x is-flex is-align-items-center">
+              <a class="px-0 py-5" @click="isEditModalActive = true">
+                <span
+                  class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                >
                   <i class="fa-regular fa-pen-to-square"></i>
                 </span>
               </a>
             </li>
             <li>
               <a
-                class="is-small is-link py-5"
+                class="px-0 py-5"
                 @click="isDeletionConfirmationModalActive = true"
               >
-                <span class="icon fas fa-2x is-flex is-align-items-center">
+                <span
+                  class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                >
                   <i class="fa-solid fa-trash-can"></i>
                 </span>
               </a>
