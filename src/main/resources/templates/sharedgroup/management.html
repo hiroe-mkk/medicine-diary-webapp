@@ -67,14 +67,43 @@
           </div>
         </div>
 
-        <div class="content is-inline-block has-background-info-light p-0">
-          <div
-            class="is-flex is-align-items-end"
-            th:if="${participatingSharedGroup != null}"
-          >
+        <div
+          class="content is-inline-block has-background-info-light p-0"
+          th:if="${participatingSharedGroup != null}"
+        >
+          <div class="is-flex is-align-items-end">
             <div
               th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup})}"
             ></div>
+          </div>
+          <div class="bottom-fullwidth">
+            <div class="tabs is-fullwidth has-background-info-light">
+              <ul class="m-0">
+                <li>
+                  <a class="px-0 py-5">
+                    <form method="post" th:action="@{/sharedgroup/unshare}">
+                      <input
+                        name="sharedGroupId"
+                        th:value="${participatingSharedGroup.sharedGroupId}"
+                        hidden
+                      />
+                      <button
+                        class="button is-medium is-link is-rounded is-outlined"
+                      >
+                        <span class="is-size-6 has-text-weight-bold">
+                          共有を解除する
+                        </span>
+                        <span
+                          class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                        >
+                          <i class="fa-solid fa-users-slash"></i>
+                        </span>
+                      </button>
+                    </form>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
