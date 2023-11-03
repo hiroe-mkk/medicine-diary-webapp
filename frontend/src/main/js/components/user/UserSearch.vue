@@ -2,7 +2,7 @@
   <div class="modal" :class="{ 'is-active': isSearchModalActive }">
     <div class="modal-background" @click="isSearchModalActive = false"></div>
     <div class="modal-content">
-      <div class="notification has-background-white-bis">
+      <div class="notification has-background-white-bis py-3 px-5">
         <div class="has-text-right">
           <button
             class="delete"
@@ -10,29 +10,31 @@
             @click="isSearchModalActive = false"
           ></button>
         </div>
-        <div class="content has-text-centered">
-          <h1 class="title is-spaced is-4">ユーザー検索</h1>
-          <div class="field is-grouped">
-            <p class="control is-expanded">
-              <input
-                class="input is-rounded is-info"
-                type="text"
-                v-model="keyword"
-                placeholder="ユーザー名"
-              />
-            </p>
-            <p class="control">
-              <button
-                type="button"
-                class="button is-rounded is-info"
-                @click="search()"
-              >
-                検索
-              </button>
-            </p>
-          </div>
+        <p
+          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+        >
+          ユーザー検索
+        </p>
+        <div class="field pb-3 is-grouped">
+          <p class="control is-expanded">
+            <input
+              class="input is-rounded is-info"
+              type="text"
+              v-model="keyword"
+              placeholder="ユーザー名"
+            />
+          </p>
+          <p class="control">
+            <button
+              type="button"
+              class="button is-rounded is-info"
+              @click="search()"
+            >
+              検索
+            </button>
+          </p>
         </div>
-        <div class="content" v-if="searchResults.value !== undefined">
+        <div class="content m-3" v-if="searchResults.value !== undefined">
           <template v-for="user in searchResults.value.users">
             <div
               class="media px-3 is-flex is-align-items-center is-clickable"
@@ -52,12 +54,10 @@
                   />
                 </figure>
               </div>
-              <div class="media-content">
-                <div class="content px-3 has-text-left">
-                  <strong>
-                    {{ user.username }}
-                  </strong>
-                </div>
+              <div class="media-content px-3 has-text-left">
+                <p class="has-text-weight-bold has-text-grey-dark">
+                  {{ user.username }}
+                </p>
               </div>
             </div>
           </template>
@@ -76,13 +76,11 @@
       @click="isConfirmationModalActive = false"
     ></div>
     <div class="modal-content is-flex is-justify-content-center">
-      <div class="notification py-3 px-5 is-white">
-        <div
-          class="is-size-6 has-text-weight-bold has-text-link-dark has-text-centered"
-        >
+      <div class="notification has-background-white-bis py-3 px-5">
+        <p class="has-text-weight-bold has-text-link-dark has-text-centered">
           {{ confirmationMessage }}
-        </div>
-        <div class="content m-3 has-text-centered">
+        </p>
+        <div class="content has-text-centered m-3">
           <div class="is-flex is-justify-content-center">
             <figure class="image is-64x64 m-2">
               <img
@@ -97,9 +95,9 @@
               />
             </figure>
           </div>
-          <strong>
+          <p class="has-text-weight-bold has-text-grey-dark">
             {{ selectedUser.value.username }}
-          </strong>
+          </p>
         </div>
         <form class="form" method="post" :action="path">
           <input

@@ -11,7 +11,7 @@
 
   <body>
     <div id="mypage" layout:fragment="content">
-      <div class="container is-max-desktop">
+      <div class="container is-max-desktop p-3">
         <div class="columns is-vcentered p-3">
           <div class="column p-3">
             <div class="is-flex is-justify-content-center">
@@ -28,7 +28,7 @@
                 />
               </figure>
             </div>
-            <div class="icon-text mx-3 is-flex is-justify-content-center">
+            <p class="icon-text is-flex is-justify-content-center">
               <strong
                 class="is-size-4 has-text-grey-dark"
                 th:text="${profile.username}"
@@ -42,12 +42,12 @@
                 ( unknown )
               </strong>
               <span
-                class="icon fas fa-lg has-text-link-dark is-clickable"
+                class="icon fas fa-lg has-text-link-dark is-clickable mx-1"
                 @click="isMenuModalActive = true"
               >
                 <i class="fa-solid fa-gear"></i>
               </span>
-            </div>
+            </p>
           </div>
           <div
             class="column p-3 is-three-quarters"

@@ -15,14 +15,17 @@
       th:object="${medicineDetail}"
       layout:fragment="content"
     >
-      <div class="content m-2 has-text-centered">
-        <h1 class="is-size-4 has-text-grey-dark">
-          <span th:text="*{medicineName}"> </span>
-        </h1>
-      </div>
+      <div class="container is-max-widescreen p-3">
+        <div class="content has-text-centered">
+          <p class="is-size-4">
+            <strong
+              class="has-text-grey-dark"
+              th:text="*{medicineName}"
+            ></strong>
+          </p>
+        </div>
 
-      <div class="container is-max-widescreen">
-        <div class="notification py-3 px-5 has-background-white-bis">
+        <div class="notification has-background-white-bis py-3 px-5">
           <div class="columns p-3">
             <div class="column p-3 is-one-third">
               <changeable-image
@@ -94,14 +97,16 @@
         </div>
       </div>
 
-      <div class="container mt-5 is-max-desktop">
-        <div class="content m-2 has-text-centered">
-          <h2 class="icon-text is-size-5 icon-text has-text-grey-dark">
-            <span>服用記録</span>
-            <span class="icon is-flex is-align-items-center mx-2">
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered">
+          <p
+            class="icon-text is-size-4 is-flex is-justify-content-center"
+          >
+            <strong class="has-text-grey-dark">服用記録</strong>
+            <span class="icon has-text-grey-dark mx-2">
               <i class="fa-regular fa-clipboard"></i>
             </span>
-          </h2>
+          </p>
         </div>
         <taking-records
           th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
@@ -112,7 +117,7 @@
         <div class="tabs is-fullwidth has-background-info-light">
           <ul class="m-0">
             <li>
-              <a class="px-0 py-5" @click="isEditModalActive = true">
+              <a class="px-0 py-4" @click="isEditModalActive = true">
                 <span
                   class="icon fas fa-2x is-flex is-align-items-center has-text-link"
                 >
@@ -122,7 +127,7 @@
             </li>
             <li>
               <a
-                class="px-0 py-5"
+                class="px-0 py-4"
                 @click="isDeletionConfirmationModalActive = true"
               >
                 <span

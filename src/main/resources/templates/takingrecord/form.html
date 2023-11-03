@@ -10,16 +10,16 @@
 
   <body>
     <div layout:fragment="content">
-      <div class="content has-text-centered">
-        <h1 class="icon-text is-size-4 has-text-grey-dark">
-          <span th:text="${title}"></span>
-          <span class="icon is-flex is-align-items-center mx-2">
-            <i class="fa-solid fa-capsules"></i>
-          </span>
-        </h1>
-      </div>
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered">
+          <p class="icon-text is-size-4 is-flex is-justify-content-center">
+            <strong class="has-text-grey-dark" th:text="${title}"></strong>
+            <span class="icon has-text-grey-dark mx-2">
+              <i class="fa-regular fa-clipboard"></i>
+            </span>
+          </p>
+        </div>
 
-      <div class="container is-max-desktop">
         <form
           method="post"
           class="form"
@@ -119,7 +119,7 @@
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <div class="notification py-3 px-5 has-background-white-bis">
+                  <div class="notification has-background-white-bis py-3 px-5">
                     <div class="field my-3">
                       <label class="label has-text-grey">症状</label>
                       <div class="field-body">

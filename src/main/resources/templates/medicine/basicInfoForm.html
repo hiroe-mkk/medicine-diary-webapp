@@ -12,15 +12,15 @@
   <body>
     <div id="medicineForm" layout:fragment="content">
       <div class="content has-text-centered">
-        <h1 class="icon-text is-size-4 has-text-grey-dark">
-          <span th:text="${title}"></span>
-          <span class="icon is-flex is-align-items-center mx-2">
+        <p class="icon-text is-size-4 is-flex is-justify-content-center">
+          <strong class="has-text-grey-dark" th:text="${title}"></strong>
+          <span class="icon has-text-grey-dark mx-2">
             <i class="fa-solid fa-capsules"></i>
           </span>
-        </h1>
+        </p>
       </div>
 
-      <div class="container is-max-desktop">
+      <div class="container is-max-desktop p-3">
         <form
           method="post"
           class="form"
@@ -29,9 +29,7 @@
         >
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">
-                <span>お薬の名前</span>
-              </label>
+              <label class="label has-text-grey">お薬の名前</label>
             </div>
             <div class="field-body">
               <div class="field">
@@ -60,11 +58,11 @@
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <div class="notification py-3 px-5 has-background-white-bis">
+                  <div class="notification has-background-white-bis py-3 px-5">
                     <div class="field my-3">
-                      <label class="label has-text-grey"
-                        >1回当たりの服用量</label
-                      >
+                      <label class="label has-text-grey">
+                        1回当たりの服用量
+                      </label>
                       <div class="field-body">
                         <div class="field">
                           <div class="control mb-1">
@@ -110,9 +108,9 @@
                       </div>
                     </div>
                     <div class="field my-3">
-                      <label class="label has-text-grey"
-                        >1日当たりの服用回数</label
-                      >
+                      <label class="label has-text-grey">
+                        1日当たりの服用回数
+                      </label>
                       <div class="field-body">
                         <div class="field">
                           <div class="control has-icons-right">
@@ -136,9 +134,9 @@
                       </div>
                     </div>
                     <div class="field my-3">
-                      <label class="label has-text-grey"
-                        >服用するタイミング</label
-                      >
+                      <label class="label has-text-grey">
+                        服用するタイミング
+                      </label>
                       <div class="field-body">
                         <field class="field">
                           <div class="control">
@@ -191,9 +189,7 @@
 
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">
-                <span>注意事項</span>
-              </label>
+              <label class="label has-text-grey">注意事項</label>
             </div>
             <div class="field-body">
               <div class="field">

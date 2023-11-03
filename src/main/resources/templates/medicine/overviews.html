@@ -11,16 +11,16 @@
 
   <body>
     <div id="medicineOverviews" layout:fragment="content">
-      <div class="content has-text-centered">
-        <h1 class="icon-text is-size-4 icon-text has-text-grey-dark">
-          <span>お薬</span>
-          <span class="icon is-flex is-align-items-center mx-2">
-            <i class="fa-solid fa-capsules"></i>
-          </span>
-        </h1>
-      </div>
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered">
+          <p class="icon-text is-size-4 is-flex is-justify-content-center">
+            <strong class="has-text-grey-dark">お薬</strong>
+            <span class="icon has-text-grey-dark mx-2">
+              <i class="fa-solid fa-capsules"></i>
+            </span>
+          </p>
+        </div>
 
-      <div class="container is-max-desktop">
         <div
           class="media mx-6"
           th:each="medicineOverview:${medicineOverviews}"
@@ -39,7 +39,7 @@
             </a>
           </div>
           <div class="media-content">
-            <div class="content has-text-grey-dark">
+            <div class="block m-2 has-text-grey-dark">
               <a
                 class="is-info has-text-weight-bold is-underlined"
                 th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
@@ -60,7 +60,7 @@
                   )
                 </p>
               </div>
-              <div class="tags mt-2 mb-0">
+              <div class="tags m-1">
                 <span
                   class="tag is-warning is-rounded has-text-weight-bold"
                   th:each="effect:*{effects.values}"
@@ -76,16 +76,14 @@
         <div class="tabs is-fullwidth has-background-info-light">
           <ul class="m-0">
             <li>
-              <a class="px-0 py-5" th:href="@{/medicines/register}">
+              <a class="px-0 py-4" th:href="@{/medicines/register}">
                 <p class="button is-medium is-link is-rounded is-outlined">
                   <span
                     class="icon fas fa-lg is-flex is-align-items-center mr-0"
                   >
                     <i class="fa-solid fa-plus"></i>
                   </span>
-                  <span class="is-size-6 has-text-weight-bold">
-                    お薬を登録する
-                  </span>
+                  <strong> お薬を登録する </strong>
                 </p>
               </a>
             </li>

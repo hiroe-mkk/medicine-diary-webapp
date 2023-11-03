@@ -6,8 +6,8 @@
       'has-background-danger-light': hasErrors,
     }"
   >
-    <div class="content mb-3">
-      <ul class="mt-0">
+    <div class="content m-3">
+      <ul class="m-0">
         <li v-for="(effect, index) in effects">
           <div class="is-flex is-justify-content-space-between mb-1">
             <p>{{ effect }}</p>
@@ -45,7 +45,7 @@
   <div class="modal" :class="{ 'is-active': isEditModalActive }">
     <div class="modal-background" @click="isEditModalActive = false"></div>
     <div class="modal-content">
-      <div class="notification py-3 px-5 is-white">
+      <div class="notification has-background-white-bis py-3 px-5">
         <div class="has-text-right">
           <button
             class="delete"
@@ -53,8 +53,12 @@
             @click="isEditModalActive = false"
           ></button>
         </div>
-        <div class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered">効能</div>
-        <div class="field m-3">
+        <p
+          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+        >
+          効能
+        </p>
+        <div class="field pb-3">
           <div class="control">
             <input
               class="input is-info"

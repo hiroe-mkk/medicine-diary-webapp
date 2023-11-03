@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content m-2">
     <div
       class="media mx-2 is-clickable"
       v-for="(
@@ -7,29 +7,27 @@
       ) in takingRecordOverviews.values"
       @click="activateTakingRecordDetailModal(takingRecordId)"
     >
-      <div class="media-content">
-        <div
-          class="content has-text-grey-dark is-flex is-justify-content-space-between"
-        >
-          <p class="mb-0">
-            <span>{{ takingRecordOverview.beforeTaking }}</span>
-            <span
-              class="icon is-small mx-3"
-              v-if="takingRecordOverview.afterTaking !== undefined"
-            >
-              <i class="fa-solid fa-angles-right"></i>
-            </span>
-            <span v-if="takingRecordOverview.afterTaking !== undefined">
-              {{ takingRecordOverview.afterTaking }}
-            </span>
-          </p>
-          <p class="mb-0">
-            <span> {{ takingRecordOverview.takenAt }} </span>
-            <span class="icon is-small ml-2">
-              <i class="fa-solid fa-greater-than"></i>
-            </span>
-          </p>
-        </div>
+      <div
+        class="media-content has-text-grey-dark is-flex is-justify-content-space-between"
+      >
+        <p class="m-0">
+          <span>{{ takingRecordOverview.beforeTaking }}</span>
+          <span
+            class="icon is-small mx-3"
+            v-if="takingRecordOverview.afterTaking !== undefined"
+          >
+            <i class="fa-solid fa-angles-right"></i>
+          </span>
+          <span v-if="takingRecordOverview.afterTaking !== undefined">
+            {{ takingRecordOverview.afterTaking }}
+          </span>
+        </p>
+        <p class="m-0">
+          <span> {{ takingRecordOverview.takenAt }} </span>
+          <span class="icon is-small ml-2">
+            <i class="fa-solid fa-greater-than"></i>
+          </span>
+        </p>
       </div>
     </div>
     <!-- TODO: 自動的に読み込まれるように変更する -->
@@ -53,7 +51,7 @@
       @click="isTakingRecordDetailModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification py-3 px-5 is-link is-light">
+      <div class="notification has-background-link-light py-3 px-5">
         <div class="has-text-right">
           <button
             class="delete"
@@ -61,29 +59,32 @@
             @click="isTakingRecordDetailModalActive = false"
           ></button>
         </div>
-        <div
-          class="content has-text-centered my-2 mx-5"
-          v-if="takingRecordDetail.hasValue"
-        >
-          <div class="is-flex is-justify-content-space-between mb-2">
-            <strong>服用したお薬</strong>
+        <p class="icon-text is-size-5 is-flex is-justify-content-center">
+          <strong class="has-text-grey-dark">服用記録</strong>
+          <span class="icon has-text-grey-dark mx-2">
+            <i class="fa-regular fa-clipboard"></i>
+          </span>
+        </p>
+        <div class="block m-3" v-if="takingRecordDetail.hasValue">
+          <p class="is-flex is-justify-content-space-between mb-2">
+            <strong>お薬</strong>
             <span>
               <a
                 class="is-underlined has-text-info has-text-weight-semibold"
                 :href="`/medicines/${takingRecordDetail.value.takenMedicine.medicineId}`"
               >
-                {{ takingRecordDetail.value.takenMedicine.name }}
+                {{ takingRecordDetail.value.takenMedicine.medicineName }}
               </a>
               <span class="ml-2">{{
                 takingRecordDetail.value.takenMedicine.dose
               }}</span>
             </span>
-          </div>
-          <div class="is-flex is-justify-content-space-between mb-2">
+          </p>
+          <p class="is-flex is-justify-content-space-between mb-2">
             <strong>お薬を服用した時間</strong>
             <span>{{ takingRecordDetail.value.takenAt }}</span>
-          </div>
-          <div class="is-flex is-justify-content-space-between mb-2">
+          </p>
+          <p class="is-flex is-justify-content-space-between mb-2">
             <strong>症状</strong>
             <span>
               <span>{{ takingRecordDetail.value.symptom }}</span>
@@ -100,16 +101,16 @@
               </span>
               )
             </span>
-          </div>
-          <div
+          </p>
+          <p
             class="has-text-left mb-2"
             v-if="takingRecordDetail.value.note !== ''"
           >
             <strong>ノート</strong>
-            <p class="m-2">{{ takingRecordDetail.value.note }}</p>
-          </div>
+            <span class="m-2">{{ takingRecordDetail.value.note }}</span>
+          </p>
         </div>
-        <div class="m-2">
+        <div class="block">
           <div class="field is-grouped is-grouped-centered">
             <p class="control">
               <a

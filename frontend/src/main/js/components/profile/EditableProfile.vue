@@ -10,32 +10,38 @@
       :isRounded="true"
       :isFixedSize="true"
     ></ChangeableImage>
-    <strong class="is-size-4 has-text-grey-dark" v-if="username !== undefined">
+    <p
+      class="is-size-4 has-text-weight-bold has-text-grey-dark m-0"
+      v-if="username !== undefined"
+    >
       {{ username }}
-    </strong>
-    <strong class="is-size-5 has-text-grey" v-if="username === undefined">
+    </p>
+    <p
+      class="is-size-5 has-text-weight-bold has-text-grey-dark m-0"
+      v-if="username === undefined"
+    >
       ( unknown )
-    </strong>
+    </p>
   </div>
 
-  <div class="container is-max-desktop">
+  <div class="container is-max-desktop p-3">
     <div class="panel is-white">
       <div class="panel-heading py-1 my-0"></div>
       <div
-        class="panel-block has-text-grey has-background-white is-flex is-justify-content-space-between is-clickable"
+        class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateUsernameChangeModal()"
       >
-        <strong class="has-text-grey">ユーザー名</strong>
-        <span class="icon is-small">
+        <strong class="has-text-grey-dark">ユーザー名</strong>
+        <span class="icon is-small has-text-grey-dark">
           <i class="fa-solid fa-greater-than"></i>
         </span>
       </div>
       <div
-        class="panel-block has-text-grey has-background-white is-flex is-justify-content-space-between is-clickable"
+        class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateProfileImageChangeModal()"
       >
-        <strong class="has-text-grey">プロフィール画像</strong>
-        <span class="icon is-small">
+        <strong class="has-text-grey-dark">プロフィール画像</strong>
+        <span class="icon is-small has-text-grey-dark">
           <i class="fa-solid fa-greater-than"></i>
         </span>
       </div>
@@ -48,7 +54,7 @@
       @click="isUsernameChangeModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification py-3 px-5 is-white">
+      <div class="notification has-background-white-bis py-3 px-5">
         <div class="has-text-right">
           <button
             class="delete"
@@ -56,17 +62,17 @@
             @click="isUsernameChangeModalActive = false"
           ></button>
         </div>
-        <div
+        <p
           class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
         >
           ユーザー名を変更する
-        </div>
+        </p>
         <form
           class="form"
           method="post"
           @submit.prevent="submitUsernameChangeForm()"
         >
-          <div class="field m-3">
+          <div class="field pb-3">
             <div class="control">
               <input
                 class="input is-info"

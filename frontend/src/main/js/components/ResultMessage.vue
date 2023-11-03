@@ -18,7 +18,7 @@
     <div class="modal-content is-flex is-justify-content-center">
       <div class="message is-inline-block" :class="resultMessage.color">
         <div class="message-body">
-          <div class="content">
+          <div class="content m-3">
             <div class="has-text-centered m-2">
               <strong class="is-size-5 mb-1">
                 {{ resultMessage.message }}

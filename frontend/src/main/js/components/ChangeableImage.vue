@@ -21,7 +21,7 @@
     ></div>
     <div class="modal-content">
       <div
-        class="notification py-3 px-5 has-background-white-bis has-text-centered"
+        class="notification has-background-white-bis has-text-centered py-3 px-5"
       >
         <div class="has-text-right">
           <button
@@ -35,7 +35,7 @@
         >
           {{ `${props.imageName}を変更する` }}
         </div>
-        <div class="content m-3 has-text-centered">
+        <div class="content has-text-centered m-3">
           <div
             class="is-flex is-justify-content-center"
             v-if="!imageTrimmingManager.isTrimming && image !== undefined"
