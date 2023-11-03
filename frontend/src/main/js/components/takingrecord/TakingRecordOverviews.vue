@@ -183,14 +183,18 @@ function loadTakingRecordOverviews() {
 }
 
 function activateTakingRecordDetailModal(takingRecordId) {
-  takingRecordDetail.load(takingRecordId).catch(() => {
-    resultMessage.value.activate(
-      'ERROR',
-      'エラーが発生しました。',
-      '通信状態をご確認のうえ、再度お試しください。'
-    );
-  });
-  isTakingRecordDetailModalActive.value = true;
+  takingRecordDetail
+    .load(takingRecordId)
+    .then(() => {
+      isTakingRecordDetailModalActive.value = true;
+    })
+    .catch(() => {
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
 }
 
 function deleteTakingRecord(takingRecordId) {
