@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/sharedgroup/cancel")
-class CancelInvitationToSharedGroupController(private val sharedGroupService: SharedGroupService,
-                                              private val userSessionProvider: UserSessionProvider) {
+class InvitationToSharedGroupCancellationController(private val sharedGroupService: SharedGroupService,
+                                                    private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループへの招待をキャンセルする
      */
