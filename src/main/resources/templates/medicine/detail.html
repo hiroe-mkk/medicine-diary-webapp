@@ -116,10 +116,7 @@
               </a>
             </li>
             <li>
-              <a
-                class="px-0 py-4"
-                @click="isDeletionConfirmationModalActive = true"
-              >
+              <a class="px-0 py-4" @click="activateDeletionConfirmationModal()">
                 <span
                   class="icon fas fa-2x is-flex is-align-items-center has-text-link"
                 >
@@ -159,53 +156,13 @@
         </div>
       </div>
 
-      <div
-        class="modal"
-        :class="{ 'is-active': isDeletionConfirmationModalActive }"
-      >
-        <div
-          class="modal-background"
-          @click="isDeletionConfirmationModalActive = false"
-        ></div>
-        <div class="modal-content is-flex is-justify-content-center">
-          <div class="message is-inline-block is-danger">
-            <div class="message-body">
-              <div class="content">
-                <div class="has-text-centered mb-2">
-                  <strong class="is-size-5 mb-1">本当に削除しますか？</strong>
-                  <br />
-                  <small>
-                    お薬を削除すると、服用記録を含むお薬に関する全ての情報が削除されます。
-                    <br />本当に削除しますか？
-                  </small>
-                </div>
-                <form
-                  class="form"
-                  method="post"
-                  th:action="@{/medicines/{medicineId}/delete(medicineId=*{medicineId})}"
-                >
-                  <div class="field is-grouped is-grouped-centered">
-                    <p class="control">
-                      <button class="button is-small is-rounded is-danger">
-                        はい
-                      </button>
-                    </p>
-                    <p class="control">
-                      <button
-                        type="button"
-                        class="button is-small is-rounded is-link"
-                        @click="isDeletionConfirmationModalActive = false"
-                      >
-                        いいえ
-                      </button>
-                    </p>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <confirmation-message
+        ref="confirmationMessage"
+        message="このお薬を削除しますか？"
+        details="服用記録を含む、お薬に関する全ての情報が削除されます。"
+        button-label="削除"
+        th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
+      ></confirmation-message>
     </div>
   </body>
 </html>

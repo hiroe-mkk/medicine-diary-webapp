@@ -66,82 +66,22 @@
     </div>
   </div>
 
-  <div
-    class="modal"
-    :class="{ 'is-active': isConfirmationModalActive }"
-    v-if="selectedUser.value !== undefined"
+  <ConfirmationMessage
+    ref="confirmationMessage"
+    :message="
+      props.sharedGroupId === undefined
+        ? 'このユーザーと共有しますか？'
+        : 'このユーザーを招待しますか？'
+    "
+    :button-label="props.sharedGroupId === undefined ? '共有する' : '招待する'"
+    :path="
+      props.sharedGroupId === undefined
+        ? '/sharedgroup/share'
+        : '/sharedgroup/invite'
+    "
+    :csrf="props.csrf"
   >
-    <div
-      class="modal-background"
-      @click="isConfirmationModalActive = false"
-    ></div>
-    <div class="modal-content is-flex is-justify-content-center">
-      <div class="notification has-background-white-bis py-3 px-5">
-        <p class="has-text-weight-bold has-text-link-dark has-text-centered">
-          {{
-            props.sharedGroupId === undefined
-              ? 'このユーザーと共有しますか？'
-              : 'このユーザーを招待しますか？'
-          }}
-        </p>
-        <div class="content has-text-centered m-3">
-          <div class="is-flex is-justify-content-center">
-            <figure class="image is-64x64 m-2">
-              <img
-                :src="selectedUser.value.profileImageURL"
-                class="is-rounded"
-                v-if="selectedUser.value.profileImageURL !== undefined"
-              />
-              <img
-                :src="noProfileImage"
-                class="is-rounded"
-                v-if="selectedUser.value.profileImageURL === undefined"
-              />
-            </figure>
-          </div>
-          <p class="has-text-weight-bold has-text-grey-dark">
-            {{ selectedUser.value.username }}
-          </p>
-        </div>
-        <form
-          class="form"
-          method="post"
-          :action="
-            props.sharedGroupId === undefined
-              ? '/sharedgroup/share'
-              : '/sharedgroup/invite'
-          "
-        >
-          <input
-            name="accountId"
-            :value="selectedUser.value.accountId"
-            hidden
-          />
-          <input
-            name="sharedGroupId"
-            :value="props.sharedGroupId"
-            v-if="props.sharedGroupId !== undefined"
-            hidden
-          />
-          <input name="_csrf" :value="props.csrf" hidden />
-          <div class="field is-grouped is-grouped-centered">
-            <p class="control">
-              <button class="button is-small is-rounded is-link">はい</button>
-            </p>
-            <p class="control">
-              <button
-                type="button"
-                class="button is-small is-rounded is-danger"
-                @click="isConfirmationModalActive = false"
-              >
-                いいえ
-              </button>
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  </ConfirmationMessage>
 
   <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
@@ -151,6 +91,7 @@ import { ref, reactive, defineExpose } from 'vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
+import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 
 const props = defineProps({
   sharedGroupId: String,
@@ -163,10 +104,8 @@ const isSearchModalActive = ref(false);
 const keyword = ref('');
 const searchResults = reactive({ value: undefined });
 
-const selectedUser = reactive({ value: undefined });
-const isConfirmationModalActive = ref('');
-
 const resultMessage = ref(null);
+const confirmationMessage = ref(null);
 
 function activateSearchModal() {
   keyword.value = '';
@@ -192,7 +131,10 @@ function search() {
 }
 
 function selected(user) {
-  selectedUser.value = user;
-  isConfirmationModalActive.value = true;
+  const params = { accountId: user.accountId };
+  if (props.sharedGroupId !== undefined) {
+    params.sharedGroupId = props.sharedGroupId;
+  }
+  confirmationMessage.value.activate(params);
 }
 </script>

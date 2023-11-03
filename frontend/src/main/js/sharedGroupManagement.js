@@ -1,14 +1,12 @@
 import { createApp } from 'vue';
 import UserSearch from '@main/js/components/user/UserSearch.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
+import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 
 createApp({
   data() {
     return {
-      selectedUser: undefined,
       noProfileImage: noProfileImage,
-      isInvitationCancellationConfirmationModalActive: false,
-      selectedUser: undefined,
     };
   },
   methods: {
@@ -16,11 +14,11 @@ createApp({
       this.$refs.userSearch.activateSearchModal();
     },
     activateInvitationCancellationConfirmationModal(sharedGroupId, accountId) {
-      this.isInvitationCancellationConfirmationModalActive = true;
-      this.selectedUser = { accountId, sharedGroupId };
+      this.$refs.confirmationMessage.activate({ sharedGroupId, accountId });
     },
   },
   components: {
     'user-search': UserSearch,
+    'confirmation-message': ConfirmationMessage,
   },
 }).mount('#sharedGroupManagement');

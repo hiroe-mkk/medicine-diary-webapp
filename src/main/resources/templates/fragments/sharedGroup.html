@@ -86,60 +86,15 @@
         </user-search>
       </div>
 
-      <div
-        class="modal"
-        :class="{ 'is-active': isInvitationCancellationConfirmationModalActive }"
-        v-if="selectedUser !== undefined"
+      <confirmation-message
+        ref="confirmationMessage"
+        message="このユーザーの招待を取り消しますか？"
+        button-label="取り消す"
+        path="/sharedgroup/cancel"
+        th:attr="csrf=${_csrf.token}"
         th:if="${isEditable}"
       >
-        <div
-          class="modal-background"
-          @click="isInvitationCancellationConfirmationModalActive = false"
-        ></div>
-        <div class="modal-content is-flex is-justify-content-center">
-          <div class="message is-inline-block is-danger">
-            <div class="message-body">
-              <div class="content">
-                <p class="is-size-5 has-text-centered has-text-centered mb-2">
-                  このユーザーの招待をキャンセルしますか？
-                </p>
-                <form
-                  class="form"
-                  method="post"
-                  th:action="@{/sharedgroup/cancel}"
-                >
-                  <input
-                    name="accountId"
-                    :value="selectedUser.accountId"
-                    hidden
-                  />
-                  <input
-                    name="sharedGroupId"
-                    :value="selectedUser.sharedGroupId"
-                    hidden
-                  />
-                  <div class="field p-2 is-grouped is-grouped-centered">
-                    <p class="control">
-                      <button class="button is-small is-rounded is-danger">
-                        はい
-                      </button>
-                    </p>
-                    <p class="control">
-                      <button
-                        type="button"
-                        class="button is-small is-rounded is-link"
-                        @click="isInvitationCancellationConfirmationModalActive = false"
-                      >
-                        いいえ
-                      </button>
-                    </p>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </confirmation-message>
     </div>
   </body>
 </html>
