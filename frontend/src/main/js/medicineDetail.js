@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
-import TakingRecordOverviews from '@main/js/components/takingrecord/TakingRecordOverviews.vue';
+import TakingRecords from '@main/js/components/takingrecord/TakingRecords.vue';
 import noMedicineImage from '@main/images/no_medicine_image.png';
 
 createApp({
@@ -19,6 +19,6 @@ createApp({
   },
   components: {
     'changeable-image': ChangeableImage,
-    'taking-records': TakingRecordOverviews,
+    'taking-records': TakingRecords,
   },
 }).mount('#medicineDetail');

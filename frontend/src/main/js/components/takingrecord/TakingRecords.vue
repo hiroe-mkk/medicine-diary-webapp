@@ -1,4 +1,12 @@
 <template>
+  <div class="content has-text-centered">
+    <p class="icon-text is-size-4 is-flex is-justify-content-center">
+      <strong class="has-text-grey-dark">服用記録</strong>
+      <span class="icon has-text-grey-dark mx-2">
+        <i class="fa-regular fa-clipboard"></i>
+      </span>
+    </p>
+  </div>
   <div class="content m-2">
     <div
       class="media mx-2 is-clickable"
