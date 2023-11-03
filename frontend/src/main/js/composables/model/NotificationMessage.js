@@ -1,4 +1,4 @@
-export class ResultMessage {
+export class NotificationMessage {
   constructor() {
     this._type = undefined;
     this._message = undefined;
