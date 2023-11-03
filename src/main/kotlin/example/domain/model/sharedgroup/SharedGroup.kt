@@ -36,7 +36,7 @@ class SharedGroup(val id: SharedGroupId,
         if (isInvited(invitee)) throw InvitationToSharedGroupException("既に共有グループに招待されているユーザーです。")
     }
 
-    fun declineInvitation(invitee: AccountId) {
+    fun rejectInvitation(invitee: AccountId) {
         invitees -= invitee
     }
 

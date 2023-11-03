@@ -17,12 +17,12 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class DeclineInvitationToSharedGroupControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                            @Autowired private val testAccountInserter: TestAccountInserter,
-                                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                            @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                              @Autowired private val testAccountInserter: TestAccountInserter,
+                                                              @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                              @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/sharedgroup/decline"
+        private const val PATH = "/sharedgroup/reject"
     }
 
     private lateinit var anotherAccountId: AccountId
@@ -35,7 +35,7 @@ internal class DeclineInvitationToSharedGroupControllerTest(@Autowired private v
     @Test
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループへの招待の拒否に成功した場合、共有グループ管理画面にリダイレクトする")
-    fun declineInvitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
+    fun rejectInvitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId),

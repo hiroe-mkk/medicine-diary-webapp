@@ -41,10 +41,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループへの招待を拒否する
      */
-    fun declineInvitationToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+    fun rejectInvitationToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
-        sharedGroup.declineInvitation(userSession.accountId)
+        sharedGroup.rejectInvitation(userSession.accountId)
         if (sharedGroup.shouldDelete()) {
             sharedGroupRepository.delete(sharedGroupId)
         } else {
