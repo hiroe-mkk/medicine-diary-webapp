@@ -78,7 +78,11 @@
     <div class="modal-content is-flex is-justify-content-center">
       <div class="notification has-background-white-bis py-3 px-5">
         <p class="has-text-weight-bold has-text-link-dark has-text-centered">
-          {{ confirmationMessage }}
+          {{
+            props.sharedGroupId === undefined
+              ? 'このユーザーと共有しますか？'
+              : 'このユーザーを招待しますか？'
+          }}
         </p>
         <div class="content has-text-centered m-3">
           <div class="is-flex is-justify-content-center">
@@ -99,10 +103,24 @@
             {{ selectedUser.value.username }}
           </p>
         </div>
-        <form class="form" method="post" :action="path">
+        <form
+          class="form"
+          method="post"
+          :action="
+            props.sharedGroupId === undefined
+              ? '/sharedgroup/share'
+              : '/sharedgroup/invite'
+          "
+        >
           <input
             name="accountId"
             :value="selectedUser.value.accountId"
+            hidden
+          />
+          <input
+            name="sharedGroupId"
+            :value="props.sharedGroupId"
+            v-if="props.sharedGroupId !== undefined"
             hidden
           />
           <input name="_csrf" :value="props.csrf" hidden />
@@ -132,10 +150,10 @@
 import { ref, reactive, defineExpose } from 'vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
-  confirmationMessage: String,
-  path: String,
+  sharedGroupId: String,
   csrf: String,
 });
 

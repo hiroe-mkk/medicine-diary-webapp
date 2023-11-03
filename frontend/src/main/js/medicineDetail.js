@@ -21,4 +21,4 @@ createApp({
     'changeable-image': ChangeableImage,
     'taking-records': TakingRecords,
   },
-}).mount('#medicineDetail');
+}).mount('#medicineDetail');g

@@ -4,11 +4,15 @@
     <meta charset="UTF-8" />
   </head>
   <body>
-    <div th:fragment="macro(sharedGroup)" th:remove="tag">
+    <div
+      class="is-flex is-align-items-center"
+      th:fragment="macro(sharedGroup, isEditable)"
+    >
       <div
         class="has-text-centered mx-2"
         th:each="member:${sharedGroup.members}"
       >
+        <p></p>
         <div class="is-flex is-justify-content-center">
           <figure class="image is-48x48 m-1">
             <img
@@ -51,6 +55,19 @@
           class="has-text-weight-bold has-text-grey-dark m-0"
           th:text="${invitee.username}"
         ></p>
+      </div>
+      <div class="has-text-centered mx-2" th:if="${isEditable}">
+        <div
+          class="icon fas fa-2x is-flex is-align-items-center has-text-link is-clickable ml-3"
+          @click="activateUserSearchModal()"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </div>
+        <user-search
+          ref="userSearch"
+          th:attr="shared-group-id=${participatingSharedGroup.sharedGroupId}, csrf=${_csrf.token}"
+        >
+        </user-search>
       </div>
     </div>
   </body>

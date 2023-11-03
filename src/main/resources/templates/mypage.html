@@ -61,11 +61,9 @@
                 th:href="@{/sharedgroup/management}"
                 >共有グループ</a
               >
-              <div class="is-flex is-align-items-end">
-                <div
-                  th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup})}"
-                ></div>
-              </div>
+              <div
+                th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup}, 'false')}"
+              ></div>
             </div>
           </div>
         </div>

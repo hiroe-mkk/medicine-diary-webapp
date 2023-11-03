@@ -71,11 +71,10 @@
           class="content is-inline-block has-background-info-light p-0"
           th:if="${participatingSharedGroup != null}"
         >
-          <div class="is-flex is-align-items-end">
-            <div
-              th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup})}"
-            ></div>
-          </div>
+          <div
+            th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup}, 'true')}"
+          ></div>
+
           <div class="bottom-fullwidth">
             <div class="tabs is-fullwidth has-background-info-light">
               <ul class="m-0">
@@ -107,6 +106,8 @@
 
         <div class="content" th:if="${participatingSharedGroup == null}">
           <!-- TODO: 共有グループに関する説明を追加 -->
+          <user-search ref="userSearch" th:attr="csrf=${_csrf.token}">
+          </user-search>
           <div class="bottom-fullwidth">
             <div class="tabs is-fullwidth has-background-info-light">
               <ul class="m-0">
@@ -128,13 +129,6 @@
               </ul>
             </div>
           </div>
-          <user-search
-            ref="userSearch"
-            confirmation-message="このユーザーと共有しますか？"
-            path="/sharedgroup/share"
-            th:attr="csrf=${_csrf.token}"
-          >
-          </user-search>
         </div>
       </div>
     </div>
