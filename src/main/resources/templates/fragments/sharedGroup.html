@@ -38,7 +38,23 @@
       >
         <p class="is-size-7 has-text-grey m-0">招待中</p>
         <div class="is-flex is-justify-content-center">
-          <figure class="image is-48x48 m-1">
+          <figure
+            class="image is-48x48 is-clickable m-1"
+            th:if="${isEditable}"
+            th:attr="'@click'=|activateInvitationCancellationConfirmationModal('${sharedGroup.sharedGroupId}', '*{invitee.accountId}')|"
+          >
+            <img
+              class="is-rounded"
+              th:src="${invitee.profileImageURL}"
+              th:if="*{invitee.profileImageURL != null}"
+            />
+            <img
+              class="is-rounded"
+              :src="noProfileImage"
+              th:if="*{invitee.profileImageURL == null}"
+            />
+          </figure>
+          <figure class="image is-48x48 m-1" th:if="${!isEditable}">
             <img
               class="is-rounded"
               th:src="${invitee.profileImageURL}"
@@ -68,6 +84,61 @@
           th:attr="shared-group-id=${participatingSharedGroup.sharedGroupId}, csrf=${_csrf.token}"
         >
         </user-search>
+      </div>
+
+      <div
+        class="modal"
+        :class="{ 'is-active': isInvitationCancellationConfirmationModalActive }"
+        v-if="selectedUser !== undefined"
+        th:if="${isEditable}"
+      >
+        <div
+          class="modal-background"
+          @click="isInvitationCancellationConfirmationModalActive = false"
+        ></div>
+        <div class="modal-content is-flex is-justify-content-center">
+          <div class="message is-inline-block is-danger">
+            <div class="message-body">
+              <div class="content">
+                <p class="is-size-5 has-text-centered has-text-centered mb-2">
+                  このユーザーの招待をキャンセルしますか？
+                </p>
+                <form
+                  class="form"
+                  method="post"
+                  th:action="@{/sharedgroup/cancel}"
+                >
+                  <input
+                    name="accountId"
+                    :value="selectedUser.accountId"
+                    hidden
+                  />
+                  <input
+                    name="sharedGroupId"
+                    :value="selectedUser.sharedGroupId"
+                    hidden
+                  />
+                  <div class="field p-2 is-grouped is-grouped-centered">
+                    <p class="control">
+                      <button class="button is-small is-rounded is-danger">
+                        はい
+                      </button>
+                    </p>
+                    <p class="control">
+                      <button
+                        type="button"
+                        class="button is-small is-rounded is-link"
+                        @click="isInvitationCancellationConfirmationModalActive = false"
+                      >
+                        いいえ
+                      </button>
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

@@ -34,7 +34,7 @@
             <div class="message-body has-background-white-bis">
               <div class="is-flex is-align-items-end">
                 <div
-                  th:replace="~{fragments/sharedGroup::macro(${invitedSharedGroup})}"
+                  th:replace="~{fragments/sharedGroup::macro(${invitedSharedGroup}, 'false')}"
                 ></div>
               </div>
               <form class="form mt-2" method="post" action="?">
