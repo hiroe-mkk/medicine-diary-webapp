@@ -122,7 +122,7 @@
           <div class="field is-grouped is-grouped-centered">
             <p class="control">
               <a
-                class="button is-small is-link is-rounded is-outlined"
+                class="button is-small is-rounded is-outlined is-link"
                 :href="`/takingrecords/${takingRecordDetail.value.takingRecordId}/modify`"
               >
                 <span class="icon is-flex is-align-items-center mr-0">
@@ -134,7 +134,7 @@
             <p class="control">
               <button
                 type="button"
-                class="button is-small is-danger is-rounded is-outlined"
+                class="button is-small is-rounded is-outlined is-danger"
                 @click="
                   deleteTakingRecord(takingRecordDetail.value.takingRecordId)
                 "

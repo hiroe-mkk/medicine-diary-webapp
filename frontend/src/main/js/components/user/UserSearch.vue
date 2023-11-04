@@ -15,7 +15,7 @@
         >
           ユーザー検索
         </p>
-        <div class="field pb-3 is-grouped">
+        <div class="field my-3 is-grouped">
           <p class="control is-expanded">
             <input
               class="input is-rounded is-info"

@@ -55,16 +55,14 @@
             {{ error }}
           </p>
         </div>
+
         <form
           class="form"
           method="post"
           enctype="multipart/form-data"
           @submit.prevent="submitForm()"
         >
-          <div
-            class="file m-3 is-small is-info is-centered"
-            v-show="!imageTrimmingManager.isTrimming"
-          >
+          <div class="file is-small is-info is-centered p-2">
             <label class="file-label">
               <input
                 class="file-input"
@@ -73,12 +71,12 @@
                 @change="fileSelected($event)"
               />
               <span class="file-cta">
-                <span class="file-label is-rounded">ファイルを選択する </span>
+                <span class="file-label is-rounded">ファイルを選択する</span>
               </span>
             </label>
           </div>
           <div
-            class="field is-grouped is-grouped-centered"
+            class="field is-grouped is-grouped-centered pb-2"
             v-show="imageTrimmingManager.isTrimming"
           >
             <p class="control">
@@ -87,7 +85,7 @@
             <p class="control">
               <button
                 type="button"
-                class="button is-small is-rounded is-danger"
+                class="button is-small is-rounded is-outlined is-danger"
                 @click="isImageChangeModalActive = false"
               >
                 キャンセル

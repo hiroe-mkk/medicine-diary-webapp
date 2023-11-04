@@ -32,7 +32,7 @@
               </p>
             </div>
             <div class="message-body has-background-white-bis">
-              <div class="is-flex is-align-items-end">
+              <div class="is-flex is-align-items-end is-justify-content-center">
                 <div
                   th:replace="~{fragments/sharedGroup::macro(${invitedSharedGroup}, 'false')}"
                 ></div>
@@ -44,10 +44,10 @@
                   hidden
                 />
                 <input name="_csrf" th:value="${_csrf.token}" hidden />
-                <div class="field is-grouped is-grouped-centered">
+                <div class="field is-grouped is-grouped-centered p-2">
                   <p class="control">
                     <button
-                      class="button is-small is-rounded is-link"
+                      class="button is-small is-rounded is-outlined is-link"
                       formaction="/sharedgroup/participate"
                     >
                       参加する
@@ -55,7 +55,7 @@
                   </p>
                   <p class="control">
                     <button
-                      class="button is-small is-rounded is-danger"
+                      class="button is-small is-rounded is-outlined is-danger"
                       formaction="/sharedgroup/reject"
                     >
                       拒否する

@@ -72,7 +72,7 @@
           method="post"
           @submit.prevent="submitUsernameChangeForm()"
         >
-          <div class="field pb-3">
+          <div class="field my-3">
             <div class="control">
               <input
                 class="input is-info"
@@ -91,7 +91,7 @@
               {{ error }}
             </p>
           </div>
-          <div class="field is-grouped is-grouped-centered">
+          <div class="field is-grouped is-grouped-centered p-2">
             <p class="control">
               <button
                 class="button is-small is-rounded is-link"
@@ -103,7 +103,7 @@
             <p class="control">
               <button
                 type="button"
-                class="button is-small is-rounded is-danger"
+                class="button is-small is-rounded is-outlined is-danger"
                 @click="isUsernameChangeModalActive = false"
               >
                 キャンセル

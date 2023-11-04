@@ -58,23 +58,23 @@
         >
           効能
         </p>
-        <div class="field pb-3">
+        <div class="field my-3">
           <div class="control">
             <input
               class="input is-info"
               type="text"
               v-model="editingEffect.value"
               maxlength="30"
-              placeholder="例) 頭痛"
             />
           </div>
         </div>
-        <div class="field is-grouped is-grouped-centered">
+        <div class="field is-grouped is-grouped-centered p-2">
           <p class="control">
             <button
               type="button"
               class="button is-small is-rounded is-link"
               @click="editCompleted()"
+              :disabled="editingEffect.value === ''"
             >
               完了
             </button>
@@ -82,7 +82,7 @@
           <p class="control">
             <button
               type="button"
-              class="button is-small is-rounded is-danger"
+              class="button is-small is-rounded is-outlined is-danger"
               @click="isEditModalActive = false"
             >
               キャンセル
