@@ -14,7 +14,15 @@ createApp({
       this.$refs.userSearch.activateSearchModal();
     },
     activateInvitationCancellationConfirmationModal(sharedGroupId, accountId) {
-      this.$refs.confirmationMessage.activate({ sharedGroupId, accountId });
+      this.$refs.invitationCancellationConfirmationMessage.activate({
+        sharedGroupId,
+        accountId,
+      });
+    },
+    activateUnshareConfirmationModal(sharedGroupId) {
+      this.$refs.unshareConfirmationMessage.activate({
+        sharedGroupId,
+      });
     },
   },
   components: {

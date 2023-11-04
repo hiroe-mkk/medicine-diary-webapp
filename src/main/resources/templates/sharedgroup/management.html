@@ -80,28 +80,31 @@
               <ul class="m-0">
                 <li>
                   <a class="px-0 py-4">
-                    <form method="post" th:action="@{/sharedgroup/unshare}">
-                      <input
-                        name="sharedGroupId"
-                        th:value="${participatingSharedGroup.sharedGroupId}"
-                        hidden
-                      />
-                      <button
-                        class="button is-medium is-link is-rounded is-outlined"
+                    <button
+                      type="button"
+                      class="button is-medium is-link is-rounded is-outlined"
+                      th:attr="'@click'=|activateUnshareConfirmationModal('${participatingSharedGroup.sharedGroupId}')|"
+                    >
+                      <strong>共有を解除する</strong>
+                      <span
+                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
                       >
-                        <strong> 共有を解除する </strong>
-                        <span
-                          class="icon fas fa-lg is-flex is-align-items-center mr-0"
-                        >
-                          <i class="fa-solid fa-users-slash"></i>
-                        </span>
-                      </button>
-                    </form>
+                        <i class="fa-solid fa-users-slash"></i>
+                      </span>
+                    </button>
                   </a>
                 </li>
               </ul>
             </div>
           </div>
+          <confirmation-message
+            ref="unshareConfirmationMessage"
+            message="共有を解除しますか？"
+            button-label="解除する"
+            path="/sharedgroup/unshare"
+            th:attr="csrf=${_csrf.token}"
+          >
+          </confirmation-message>
         </div>
 
         <div class="content" th:if="${participatingSharedGroup == null}">
