@@ -35,7 +35,8 @@ class TakingRecord private constructor(val id: TakingRecordId,
                    followUp: FollowUp,
                    note: Note,
                    takenAt: LocalDateTime): TakingRecord {
-            if (takenMedicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録を追加することはできません。")
+            if (takenMedicine.owner.accountId != recorder) // TODO
+                throw OperationNotPermittedException("このお薬の服用記録を追加することはできません。")
 
             return TakingRecord(takingRecordId, recorder, takenMedicine.id, dose, followUp, note, takenAt)
         }
@@ -58,7 +59,8 @@ class TakingRecord private constructor(val id: TakingRecordId,
                followUp: FollowUp,
                note: Note,
                takenAt: LocalDateTime) {
-        if (takenMedicine.owner != recorder) throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
+        if (takenMedicine.owner.accountId != recorder) // TODO
+            throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
 
         this.takenMedicine = takenMedicine.id
         this.dose = dose

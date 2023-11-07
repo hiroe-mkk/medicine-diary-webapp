@@ -2,6 +2,7 @@ package example.infrastructure.repository.medicine
 
 import example.domain.model.account.*
 import example.domain.model.medicine.*
+import example.domain.model.sharedgroup.*
 import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
 import java.util.*
@@ -16,13 +17,18 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         return medicineMapper.findOneByMedicineId(medicineId.value)?.toMedicine()
     }
 
-    override fun findByOwner(accountId: AccountId): List<Medicine> {
-        return medicineMapper.findAllByOwner(accountId.value).map { it.toMedicine() }
+    override fun findByAccountId(accountId: AccountId): List<Medicine> {
+        return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }
+    }
+
+    override fun findBySharedGroupId(sharedGroupId: SharedGroupId): List<Medicine> {
+        return medicineMapper.findAllBySharedGroupId(sharedGroupId.value).map { it.toMedicine() }
     }
 
     override fun save(medicine: Medicine) {
         medicineMapper.upsertOneMedicine(medicine.id.value,
-                                         medicine.owner.value,
+                                         medicine.owner.accountId?.value,
+                                         medicine.owner.sharedGroupId?.value,
                                          medicine.medicineName.value,
                                          medicine.dosageAndAdministration.dose.quantity,
                                          medicine.dosageAndAdministration.takingUnit,

@@ -10,7 +10,6 @@ import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
-import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
 import org.checkerframework.checker.units.qual.*
 import org.junit.jupiter.api.*
@@ -21,11 +20,10 @@ import java.time.*
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter) {
-    @MockK
-    private lateinit var localDateTimeProvider: LocalDateTimeProvider
-
-    @InjectMockKs
-    private lateinit var medicineService: MedicineService
+    private val localDateTimeProvider: LocalDateTimeProvider = mockk()
+    private val medicineDomainService: MedicineDomainService = MedicineDomainService()
+    private val medicineService: MedicineService =
+            MedicineService(medicineRepository, localDateTimeProvider, medicineDomainService)
 
     private lateinit var userSession: UserSession
 
@@ -96,10 +94,11 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun findAllMedicineOverviews() {
             //given:
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-            val medicine1 = testMedicineInserter.insert(owner = userSession.accountId, registeredAt = localDateTime)
-            val medicine2 = testMedicineInserter.insert(owner = userSession.accountId,
+            val medicine1 = testMedicineInserter.insert(accountId = userSession.accountId,
+                                                        registeredAt = localDateTime)
+            val medicine2 = testMedicineInserter.insert(accountId = userSession.accountId,
                                                         registeredAt = localDateTime.plusDays(1))
-            val medicine3 = testMedicineInserter.insert(owner = userSession.accountId,
+            val medicine3 = testMedicineInserter.insert(accountId = userSession.accountId,
                                                         registeredAt = localDateTime.plusDays(2))
 
             //when:
@@ -141,7 +140,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val foundMedicine = medicineRepository.findById(medicineId)
             val expected = Medicine(medicineId,
-                                    userSession.accountId,
+                                    MedicineOwner(userSession.accountId),
                                     command.validatedMedicineName,
                                     command.validatedDosageAndAdministration,
                                     command.validatedEffects,

@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 CREATE TABLE IF NOT EXISTS medicines (
   medicine_id VARCHAR(36) PRIMARY KEY,
-  owner VARCHAR(36) NOT NULL,
+  account_id VARCHAR(36),
+  shared_group_id VARCHAR(36),
   medicine_name VARCHAR(30) NOT NULL,
   quantity DOUBLE NOT NULL,
   taking_unit VARCHAR(10) NOT NULL,
@@ -31,8 +32,7 @@ CREATE TABLE IF NOT EXISTS medicines (
   medicine_image_url_endpoint VARCHAR(50),
   medicine_image_url_path VARCHAR(100),
   is_public BOOLEAN NOT NULL,
-  registered_at TIMESTAMP NOT NULL,
-  FOREIGN KEY(owner) REFERENCES accounts(account_id)
+  registered_at TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE IF NOT EXISTS timing_options (

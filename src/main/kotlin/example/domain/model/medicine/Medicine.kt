@@ -9,7 +9,7 @@ import java.time.*
  * 薬
  */
 class Medicine(val id: MedicineId,
-               val owner: AccountId,
+               val owner: MedicineOwner,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
@@ -30,28 +30,7 @@ class Medicine(val id: MedicineId,
     var isPublic: Boolean = isPublic
         private set
 
-    companion object {
-        fun create(id: MedicineId,
-                   owner: AccountId,
-                   medicineName: MedicineName,
-                   dosageAndAdministration: DosageAndAdministration,
-                   effects: Effects,
-                   precautions: Note,
-                   isPublic: Boolean,
-                   registeredAt: LocalDateTime): Medicine {
-            return Medicine(id,
-                            owner,
-                            medicineName,
-                            dosageAndAdministration,
-                            effects,
-                            precautions,
-                            null,
-                            isPublic,
-                            registeredAt)
-        }
-    }
-
-    fun isOwnedBy(accountId: AccountId): Boolean = owner == accountId
+    fun isOwnedBy(accountId: AccountId): Boolean = owner.accountId == accountId // TODO
 
     fun changeBasicInfo(medicineName: MedicineName,
                         dosageAndAdministration: DosageAndAdministration,

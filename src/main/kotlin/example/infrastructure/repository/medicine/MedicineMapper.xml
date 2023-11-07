@@ -13,7 +13,7 @@
             medicine_id = #{medicineId};
     </select>
 
-    <select id="findAllByOwner" resultMap="MedicineResultEntityResultMap">
+    <select id="findAllByAccountId" resultMap="MedicineResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
@@ -21,7 +21,20 @@
             LEFT OUTER JOIN effects USING(medicine_id)
             LEFT OUTER JOIN timing_options USING(medicine_id)
         WHERE
-            owner = #{accountId}
+            account_id = #{accountId}
+        ORDER BY
+            registered_at DESC;
+    </select>
+
+    <select id="findAllBySharedGroupId" resultMap="MedicineResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medicines
+            LEFT OUTER JOIN effects USING(medicine_id)
+            LEFT OUTER JOIN timing_options USING(medicine_id)
+        WHERE
+            shared_group_id = #{sharedGroupId}
         ORDER BY
             registered_at DESC;
     </select>
@@ -29,7 +42,8 @@
     <insert id="upsertOneMedicine">
         INSERT INTO medicines(
             medicine_id,
-            owner,
+            account_id,
+            shared_group_id,
             medicine_name,
             quantity,
             taking_unit,
@@ -41,7 +55,8 @@
             registered_at
         )VALUES(
             #{medicineId},
-            #{owner},
+            #{accountId, jdbcType=VARCHAR},
+            #{sharedGroupId, jdbcType=VARCHAR},
             #{medicineName},
             #{quantity},
             #{takingUnit},
@@ -101,7 +116,8 @@
 
     <sql id="AllColumns">
         medicines.medicine_id AS medicine_id,
-        medicines.owner AS owner,
+        medicines.account_id AS account_id,
+        medicines.shared_group_id AS shared_group_id,
         medicines.medicine_name AS medicine_name,
         medicines.quantity AS quantity,
         medicines.taking_unit AS taking_unit,
@@ -120,7 +136,7 @@
     <resultMap id="MedicineResultEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
-            <arg column="owner" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="{account_id, shared_group_id}" javaType="MedicineOwner" resultMap="MedicineOwnerResultMap"/>
             <arg column="medicine_name" javaType="MedicineName" resultMap="MedicineNameResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="taking_unit" javaType="String"/>
@@ -146,9 +162,20 @@
             <idArg column="medicine_name" javaType="String"/>
         </constructor>
     </resultMap>
+    <resultMap id="MedicineOwnerResultMap" type="MedicineOwner">
+        <constructor>
+            <arg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="shared_group_id" javaType="SharedGroupId" resultMap="SharedGroupIdResultMap"/>
+        </constructor>
+    </resultMap>
     <resultMap id="AccountIdResultMap" type="AccountId">
         <constructor>
-            <idArg column="owner" javaType="String"/>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="SharedGroupIdResultMap" type="SharedGroupId">
+        <constructor>
+            <idArg column="shared_group_id" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="DoseResultMap" type="Dose">

@@ -9,10 +9,13 @@ import java.time.*
 interface MedicineMapper {
     fun findOneByMedicineId(medicineId: String): MedicineResultEntity?
 
-    fun findAllByOwner(accountId: String): List<MedicineResultEntity>
+    fun findAllByAccountId(accountId: String?): List<MedicineResultEntity>
+
+    fun findAllBySharedGroupId(sharedGroupId: String?): List<MedicineResultEntity>
 
     fun upsertOneMedicine(medicineId: String,
-                          owner: String,
+                          accountId: String?,
+                          sharedGroupId: String?,
                           medicineName: String,
                           quantity: Double,
                           takingUnit: String,

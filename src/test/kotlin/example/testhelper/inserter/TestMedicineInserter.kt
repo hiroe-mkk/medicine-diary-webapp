@@ -3,6 +3,7 @@ package example.testhelper.inserter
 import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
+import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import org.springframework.boot.test.context.*
 import java.time.*
@@ -14,7 +15,8 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
     /**
      * テスト用の薬を生成して、リポジトリに保存する
      */
-    fun insert(owner: AccountId,
+    fun insert(accountId: AccountId?,
+               sharedGroupId: SharedGroupId? = null,
                medicineId: MedicineId = MedicineId("testMedicineId${num++}"),
                medicineName: MedicineName = MedicineName("ロキソニンS"),
                dosageAndAdministration: DosageAndAdministration = DosageAndAdministration(Dose(1.0),
@@ -27,7 +29,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                isPublic: Boolean = false,
                registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {
         val medicine = Medicine(medicineId,
-                                owner,
+                                MedicineOwner(accountId, sharedGroupId),
                                 medicineName,
                                 dosageAndAdministration,
                                 effects,

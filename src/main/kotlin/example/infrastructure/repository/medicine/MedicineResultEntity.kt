@@ -1,6 +1,5 @@
 package example.infrastructure.repository.medicine
 
-import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.shared.type.*
@@ -8,7 +7,7 @@ import example.infrastructure.repository.shared.*
 import java.time.*
 
 class MedicineResultEntity(val medicineId: MedicineId,
-                           val owner: AccountId,
+                           val owner: MedicineOwner,
                            val medicineName: MedicineName,
                            val dose: Dose,
                            val takingUnit: String,

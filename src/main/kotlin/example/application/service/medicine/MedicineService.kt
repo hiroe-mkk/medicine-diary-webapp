@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class MedicineService(private val medicineRepository: MedicineRepository,
-                      private val localDateTimeProvider: LocalDateTimeProvider) {
+                      private val localDateTimeProvider: LocalDateTimeProvider,
+                      private val medicineDomainService: MedicineDomainService) {
     /**
      * 薬詳細を取得する
      */
@@ -24,7 +25,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findAllMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
-        val medicines = medicineRepository.findByOwner(userSession.accountId)
+        val medicines = medicineRepository.findByAccountId(userSession.accountId)
         return medicines.map { MedicineOverviewDto.from(it) }
     }
 
@@ -32,14 +33,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬を登録する
      */
     fun registerMedicine(command: MedicineBasicInfoEditCommand, userSession: UserSession): MedicineId {
-        val medicine = Medicine.create(medicineRepository.createMedicineId(),
-                                       userSession.accountId,
-                                       command.validatedMedicineName,
-                                       command.validatedDosageAndAdministration,
-                                       command.validatedEffects,
-                                       command.validatedPrecautions,
-                                       command.isPublic,
-                                       localDateTimeProvider.now())
+        val medicine = medicineDomainService.createMedicine(medicineRepository.createMedicineId(),
+                                                            command.validatedMedicineName,
+                                                            command.validatedDosageAndAdministration,
+                                                            command.validatedEffects,
+                                                            command.validatedPrecautions,
+                                                            command.isPublic,
+                                                            localDateTimeProvider.now(),
+                                                            userSession.accountId)
         medicineRepository.save(medicine)
         return medicine.id
     }
@@ -81,7 +82,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         return findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
     }
 
-    private fun findMedicineOwnedBy(medicineId: MedicineId, userSession: UserSession): Medicine? {
+    private fun findMedicineOwnedBy(medicineId: MedicineId, userSession: UserSession): Medicine? { // TODO
         val medicine = medicineRepository.findById(medicineId) ?: return null
         return if (medicine.isOwnedBy(userSession.accountId)) medicine else null
     }
