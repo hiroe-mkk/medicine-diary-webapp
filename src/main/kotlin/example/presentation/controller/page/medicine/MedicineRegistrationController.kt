@@ -1,6 +1,8 @@
 package example.presentation.controller.page.medicine
 
 import example.application.service.medicine.*
+import example.application.service.sharedgroup.*
+import example.application.shared.usersession.*
 import example.domain.model.medicine.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
@@ -14,15 +16,21 @@ import org.springframework.web.servlet.mvc.support.*
 @Controller
 @RequestMapping("/medicines/register")
 class MedicineRegistrationController(private val medicineService: MedicineService,
+                                     private val sharedGroupService: SharedGroupService,
                                      private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("timings")
-    fun timings(): Array<Timing> = Timing.values()
-
     @ModelAttribute("title")
     fun title(): String = "お薬登録"
 
     @ModelAttribute("executePath")
     fun executePath(): String = "/medicines/register"
+
+    @ModelAttribute("timings")
+    fun timings(): Array<Timing> = Timing.values()
+
+    @ModelAttribute("isParticipatingInSharedGroup")
+    fun isParticipatingInSharedGroup(): Boolean {
+        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSession())
+    }
 
     /**
      * 薬登録画面を表示する

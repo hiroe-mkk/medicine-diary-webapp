@@ -22,7 +22,7 @@ class SharedGroupDomainService(private val sharedGroupRepository: SharedGroupRep
         if (isUsernameDefaultValue(invitee)) throw ParticipationInSharedGroupException("ユーザー名が設定されていません。")
     }
 
-    private fun isParticipatingInSharedGroup(accountId: AccountId): Boolean {
+    fun isParticipatingInSharedGroup(accountId: AccountId): Boolean {
         return sharedGroupRepository.findByMember(accountId) != null
     }
 

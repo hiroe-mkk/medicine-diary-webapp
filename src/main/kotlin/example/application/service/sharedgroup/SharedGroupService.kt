@@ -91,6 +91,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         }
     }
 
+    fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
+        return sharedGroupDomainService.isParticipatingInSharedGroup(userSession.accountId)
+    }
+
     private fun findParticipatingSharedGroupOrElseThrowException(sharedGroupId: SharedGroupId,
                                                                  userSession: UserSession): SharedGroup {
         return sharedGroupRepository.findById(sharedGroupId)
