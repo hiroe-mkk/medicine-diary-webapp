@@ -53,7 +53,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 共有グループへの招待をキャンセルする
+     * 共有グループへの招待を取り消す
      */
     fun cancelInvitationToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
         val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
