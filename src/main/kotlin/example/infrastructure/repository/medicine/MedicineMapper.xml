@@ -37,6 +37,7 @@
             precautions,
             medicine_image_url_endpoint,
             medicine_image_url_path,
+            is_public,
             registered_at
         )VALUES(
             #{medicineId},
@@ -48,6 +49,7 @@
             #{precautions},
             #{medicineImageURLEndpoint, jdbcType=VARCHAR},
             #{medicineImageURLPath, jdbcType=VARCHAR},
+            #{isPublic},
             #{registeredAt}
         )ON DUPLICATE KEY UPDATE
             medicine_name = #{medicineName},
@@ -56,7 +58,8 @@
             times_per_day = #{timesPerDay},
             precautions = #{precautions},
             medicine_image_url_endpoint = #{medicineImageURLEndpoint, jdbcType=VARCHAR},
-            medicine_image_url_path = #{medicineImageURLPath, jdbcType=VARCHAR};
+            medicine_image_url_path = #{medicineImageURLPath, jdbcType=VARCHAR},
+            is_public = #{isPublic};
     </insert>
     <insert id="insertAllTimingOptions">
         INSERT INTO timing_options(
@@ -106,6 +109,7 @@
         medicines.precautions AS precautions,
         medicines.medicine_image_url_endpoint AS medicine_image_url_endpoint,
         medicines.medicine_image_url_path AS medicine_image_url_path,
+        medicines.is_public AS is_public,
         medicines.registered_at AS registered_at,
         effects.ordering AS effect_ordering,
         effects.effect AS effect,
@@ -123,6 +127,7 @@
             <arg column="times_per_day" javaType="_int"/>
             <arg column="precautions" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="{medicine_image_url_endpoint, medicine_image_url_path}" javaType="MedicineImageURL" resultMap="MedicineImageURLResultMap"/>
+            <arg column="is_public" javaType="_boolean"/>
             <arg column="registered_at" javaType="java.time.LocalDateTime"/>
         </constructor>
         <id column="medicine_id"/>

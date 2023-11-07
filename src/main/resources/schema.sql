@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS medicines (
   precautions VARCHAR(500) NOT NULL,
   medicine_image_url_endpoint VARCHAR(50),
   medicine_image_url_path VARCHAR(100),
+  is_public BOOLEAN NOT NULL,
   registered_at TIMESTAMP NOT NULL,
   FOREIGN KEY(owner) REFERENCES accounts(account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

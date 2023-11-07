@@ -28,7 +28,8 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
                                         @field:Valid
                                         val effects: List<@Valid EffectInputField> = emptyList(),
                                         @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
-                                        val precautions: String) {
+                                        val precautions: String,
+                                        val isPublic: Boolean = false) {
     val validatedMedicineName: MedicineName = MedicineName(medicineName.trim())
     val validatedDosageAndAdministration: DosageAndAdministration =
             DosageAndAdministration(Dose(quantity ?: 0.0),
@@ -46,7 +47,8 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
                                                 0,
                                                 emptyList(),
                                                 emptyList(),
-                                                "")
+                                                "",
+                                                false)
         }
 
         fun initialize(medicine: Medicine): MedicineBasicInfoEditCommand {
@@ -56,7 +58,8 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
                                                 medicine.dosageAndAdministration.timesPerDay,
                                                 medicine.dosageAndAdministration.timingOptions,
                                                 medicine.effects.values.map(::EffectInputField),
-                                                medicine.precautions.value)
+                                                medicine.precautions.value,
+                                                medicine.isPublic)
         }
     }
 

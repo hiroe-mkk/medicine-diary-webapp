@@ -15,6 +15,7 @@ class Medicine(val id: MedicineId,
                effects: Effects,
                precautions: Note,
                medicineImageURL: MedicineImageURL?,
+               isPublic: Boolean,
                val registeredAt: LocalDateTime) {
     var medicineName: MedicineName = medicineName
         private set
@@ -26,6 +27,8 @@ class Medicine(val id: MedicineId,
         private set
     var medicineImageURL: MedicineImageURL? = medicineImageURL
         private set
+    var isPublic: Boolean = isPublic
+        private set
 
     companion object {
         fun create(id: MedicineId,
@@ -34,6 +37,7 @@ class Medicine(val id: MedicineId,
                    dosageAndAdministration: DosageAndAdministration,
                    effects: Effects,
                    precautions: Note,
+                   isPublic: Boolean,
                    registeredAt: LocalDateTime): Medicine {
             return Medicine(id,
                             owner,
@@ -42,6 +46,7 @@ class Medicine(val id: MedicineId,
                             effects,
                             precautions,
                             null,
+                            isPublic,
                             registeredAt)
         }
     }
@@ -51,11 +56,13 @@ class Medicine(val id: MedicineId,
     fun changeBasicInfo(medicineName: MedicineName,
                         dosageAndAdministration: DosageAndAdministration,
                         effects: Effects,
-                        precautions: Note) {
+                        precautions: Note,
+                        isPublic: Boolean) {
         this.medicineName = medicineName
         this.dosageAndAdministration = dosageAndAdministration
         this.effects = effects
         this.precautions = precautions
+        this.isPublic = isPublic
     }
 
     fun changeMedicineImage(medicineImageURL: MedicineImageURL) {

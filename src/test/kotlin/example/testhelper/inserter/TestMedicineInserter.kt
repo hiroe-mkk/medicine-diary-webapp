@@ -24,6 +24,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                effects: Effects = Effects(listOf("頭痛", "解熱")),
                precautions: Note = Note("服用間隔は4時間以上開けること。"),
                medicineImageURL: MedicineImageURL? = null,
+               isPublic: Boolean = false,
                registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {
         val medicine = Medicine(medicineId,
                                 owner,
@@ -32,6 +33,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                                 effects,
                                 precautions,
                                 medicineImageURL,
+                                isPublic,
                                 registeredAt)
         medicineRepository.save(medicine)
         return medicine

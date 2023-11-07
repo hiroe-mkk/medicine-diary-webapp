@@ -20,6 +20,7 @@ interface MedicineMapper {
                           precautions: String,
                           medicineImageURLEndpoint: String?,
                           medicineImageURLPath: String?,
+                          isPublic: Boolean,
                           registeredAt: LocalDateTime)
 
     fun insertAllTimingOptions(medicineId: String,

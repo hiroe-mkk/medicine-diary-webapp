@@ -53,6 +53,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
         private val timesPerDay = 3
         private val effects = arrayOf("頭痛", "解熱")
         private val precautions = "服用間隔は4時間以上開けること。"
+        private val isPublic = "true"
 
         @Test
         @WithMockAuthenticatedAccount
@@ -67,7 +68,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
-                                              .param("precautions", precautions))
+                                              .param("precautions", precautions)
+                                              .param("isPublic", isPublic))
 
             //then:
             actions.andExpect(status().isFound)
@@ -90,7 +92,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
-                                              .param("precautions", precautions))
+                                              .param("precautions", precautions)
+                                              .param("isPublic", isPublic))
 
             //then:
             actions.andExpect(status().isOk)
@@ -109,7 +112,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
-                                              .param("precautions", precautions))
+                                              .param("precautions", precautions)
+                                              .param("isPublic", isPublic))
 
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/"))

@@ -38,6 +38,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                                        command.validatedDosageAndAdministration,
                                        command.validatedEffects,
                                        command.validatedPrecautions,
+                                       command.isPublic,
                                        localDateTimeProvider.now())
         medicineRepository.save(medicine)
         return medicine.id
@@ -62,7 +63,8 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         medicine.changeBasicInfo(command.validatedMedicineName,
                                  command.validatedDosageAndAdministration,
                                  command.validatedEffects,
-                                 command.validatedPrecautions)
+                                 command.validatedPrecautions,
+                                 command.isPublic)
         medicineRepository.save(medicine)
     }
 

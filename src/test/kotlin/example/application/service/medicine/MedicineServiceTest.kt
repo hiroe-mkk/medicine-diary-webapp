@@ -47,13 +47,15 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val actual = medicineService.findMedicineDetail(medicine.id, userSession)
 
             //then:
-            val expected = MedicineDetailDto(medicine.id,
-                                             medicine.medicineName,
-                                             medicine.dosageAndAdministration,
-                                             medicine.effects,
-                                             medicine.precautions,
-                                             medicine.medicineImageURL,
-                                             medicine.registeredAt)
+            val expected = MedicineDetailDto(
+                    medicine.id,
+                    medicine.medicineName,
+                    medicine.dosageAndAdministration,
+                    medicine.effects,
+                    medicine.precautions,
+                    medicine.medicineImageURL,
+                    medicine.isPublic,
+                    medicine.registeredAt)
             assertThat(actual).isEqualTo(expected)
         }
 
@@ -145,6 +147,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedEffects,
                                     command.validatedPrecautions,
                                     null,
+                                    command.isPublic,
                                     localDateTime)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }
@@ -171,6 +174,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedEffects,
                                     command.validatedPrecautions,
                                     medicine.medicineImageURL,
+                                    command.isPublic,
                                     medicine.registeredAt)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }

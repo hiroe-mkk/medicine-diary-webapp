@@ -30,6 +30,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
                                          medicine.precautions.value,
                                          medicine.medicineImageURL?.endpoint,
                                          medicine.medicineImageURL?.path,
+                                         medicine.isPublic,
                                          medicine.registeredAt)
         upsertAllTimingOptions(medicine)
         upsertAllEffects(medicine)
