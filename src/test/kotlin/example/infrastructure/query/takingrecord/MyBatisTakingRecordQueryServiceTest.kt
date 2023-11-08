@@ -30,7 +30,7 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
         val (account, profile) = testAccountInserter.insertAccountAndProfile(
                 profileImageURL = ProfileImageURL("endpoint", "/path"))
         val userSession = UserSessionFactory.create(account.id)
-        val medicine = testMedicineInserter.insert(account.id)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(account.id))
 
         val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
         val takingRecord = List(5) { index ->
@@ -86,7 +86,7 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
             val (account, profile) = testAccountInserter.insertAccountAndProfile()
             userSession = UserSessionFactory.create(account.id)
             usersProfile = profile
-            medicine = testMedicineInserter.insert(account.id)
+            medicine = testMedicineInserter.insert(MedicineOwner.create(account.id))
         }
 
         @Test

@@ -36,7 +36,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
     fun medicineImageChangeSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(multipart(PATH, medicine.id)

@@ -31,7 +31,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     fun medicineUpdateSucceeds_redirectToMedicineDetailPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(post(PATH, medicine.id)

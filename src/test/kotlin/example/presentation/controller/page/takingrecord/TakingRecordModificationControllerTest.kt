@@ -1,5 +1,6 @@
 package example.presentation.controller.page.takingrecord
 
+import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
 import example.presentation.controller.api.takingrecord.*
 import example.presentation.shared.session.*
@@ -34,7 +35,7 @@ internal class TakingRecordModificationControllerTest(@Autowired private val moc
         fun displayTakingRecordModificationPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
 
             //when:
@@ -89,7 +90,7 @@ internal class TakingRecordModificationControllerTest(@Autowired private val moc
         fun takingRecordModificationSucceeds_redirectToLastRequestedPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
 
             //when:
@@ -139,7 +140,7 @@ internal class TakingRecordModificationControllerTest(@Autowired private val moc
         fun takingRecordNotFound_displayNotFoundErrorPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val badTakingRecordId = TakingRecordId("NonexistentId")
 
             //when:

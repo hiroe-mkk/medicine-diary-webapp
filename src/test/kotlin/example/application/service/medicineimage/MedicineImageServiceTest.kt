@@ -42,7 +42,7 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     @DisplayName("薬画像が未設定の場合、薬画像の変更に成功する")
     fun medicineImageIsNotSet_changingMedicineImageSucceeds() {
         //given:
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:
         val newMedicineImageURL = medicineImageService.changeMedicineImage(medicine.id,
@@ -61,7 +61,7 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     fun medicineImageIsSet_changingMedicineImageSucceeds() {
         //given:
         val oldMedicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage")
-        val medicine = testMedicineInserter.insert(userSession.accountId,
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId),
                                                    medicineImageURL = oldMedicineImageURL)
 
         //when:
@@ -97,7 +97,7 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     fun medicineIsNotOwnedByUser_changingMedicineImageFails() {
         //given:
         val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-        val medicine = testMedicineInserter.insert(anotherAccount.id)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
 
         //when:
         val target: () -> Unit = {

@@ -32,7 +32,7 @@ internal class TakingRecordDetailApiControllerTest(@Autowired private val mockMv
     fun getTakingRecordDetail() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
         val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
 
         //when:

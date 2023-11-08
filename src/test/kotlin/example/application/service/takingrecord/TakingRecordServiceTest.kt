@@ -36,7 +36,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
     internal fun setUp() {
         val (account, _) = testAccountInserter.insertAccountAndProfile()
         userSession = UserSessionFactory.create(account.id)
-        medicine = testMedicineInserter.insert(account.id)
+        medicine = testMedicineInserter.insert(MedicineOwner.create(account.id))
     }
 
     @Nested
@@ -85,7 +85,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         fun medicineIsNotOwnedByUser_addingTakingRecordFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
             val command =
                     TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(takenMedicine = medicine.id.value)
 
@@ -105,7 +105,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         @BeforeEach
         internal fun setUp() {
             takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
-            val newTakenMedicine = testMedicineInserter.insert(userSession.accountId).id.value
+            val newTakenMedicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId)).id.value
             command = TestTakingRecordEditCommandFactory.createCompletedModificationCommand(newTakenMedicine)
         }
 
@@ -178,7 +178,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         fun medicineIsNotOwnedByUser_modifyingTakingRecordFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
             val command =
                     TestTakingRecordEditCommandFactory.createCompletedModificationCommand(takenMedicine = medicine.id.value)
 

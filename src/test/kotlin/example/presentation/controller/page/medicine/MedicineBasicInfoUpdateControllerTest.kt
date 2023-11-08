@@ -31,7 +31,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         fun displayMedicineBasicInfoUpdatePage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
             val actions = mockMvc.perform(get(PATH, medicine.id))
@@ -87,7 +87,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         fun medicineBasicInfoUpdateSucceeds_redirectToMedicineDetailPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
             val actions = mockMvc.perform(post(PATH, medicine.id)
@@ -113,7 +113,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         fun validationErrorOccurs_redisplayMedicineBasicInfoUpdatePage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val invalidMedicineName = ""
 
             //when:

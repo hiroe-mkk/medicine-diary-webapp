@@ -28,7 +28,7 @@ internal class MedicineDetailControllerTest(@Autowired private val mockMvc: Mock
     fun displayMedicineDetailPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(get(PATH, medicine.id))

@@ -38,7 +38,7 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
         fun displayTakingRecordAdditionPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            testMedicineInserter.insert(userSession.accountId)
+            testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
             val actions = mockMvc.perform(get(PATH))
@@ -87,7 +87,7 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
         fun takingRecordAdditionSucceeds_redirectToLastRequestedPage() {
             //given:
             val userSession = userSessionProvider.getUserSession()
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
             val actions = mockMvc.perform(post(PATH)

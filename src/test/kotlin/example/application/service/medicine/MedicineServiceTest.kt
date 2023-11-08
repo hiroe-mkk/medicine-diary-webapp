@@ -12,6 +12,7 @@ import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
 import org.assertj.core.api.Assertions.*
+import org.bouncycastle.asn1.x500.style.RFC4519Style.*
 import org.checkerframework.checker.units.qual.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -41,7 +42,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬詳細を取得する")
         fun getMedicineDetail() {
             //given:
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
             val actual = medicineService.findMedicineDetail(medicine.id, userSession)
@@ -78,7 +79,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineIsNotOwnedByUser_gettingMedicineDetailFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
 
             //when:
             val target: () -> Unit = { medicineService.findMedicineDetail(medicine.id, userSession) }
@@ -96,11 +97,11 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun findAllMedicineOverviews() {
             //given:
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-            val medicine1 = testMedicineInserter.insert(accountId = userSession.accountId,
+            val medicine1 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
                                                         registeredAt = localDateTime)
-            val medicine2 = testMedicineInserter.insert(accountId = userSession.accountId,
+            val medicine2 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
                                                         registeredAt = localDateTime.plusDays(1))
-            val medicine3 = testMedicineInserter.insert(accountId = userSession.accountId,
+            val medicine3 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
                                                         registeredAt = localDateTime.plusDays(2))
 
             //when:
@@ -160,7 +161,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬基本情報を更新する")
         fun updateMedicineBasicInfo() {
             //given:
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val command = TestMedicineFactory.createCompletedUpdateCommand()
 
             //when:
@@ -200,7 +201,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineIsNotOwnedByUser_updatingMedicineBasicInfoFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
             val command = TestMedicineFactory.createCompletedUpdateCommand()
 
             //when:
@@ -218,7 +219,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬を削除する")
         fun deleteMedicine() {
             //given:
-            val medicine = testMedicineInserter.insert(userSession.accountId)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
             medicineService.deleteMedicine(medicine.id, userSession)
@@ -247,7 +248,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineIsNotOwnedByUser_deletingMedicineFails() {
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(anotherAccount.id)
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
 
             //when:
             val target: () -> Unit = { medicineService.deleteMedicine(medicine.id, userSession) }

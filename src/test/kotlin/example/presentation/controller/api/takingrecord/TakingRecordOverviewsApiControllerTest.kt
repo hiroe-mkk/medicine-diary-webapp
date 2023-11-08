@@ -31,7 +31,7 @@ internal class TakingRecordOverviewsApiControllerTest(@Autowired private val moc
     fun getTakingRecordOverviews() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(get("${PATH}?medicineid=${medicine.id.value}"))

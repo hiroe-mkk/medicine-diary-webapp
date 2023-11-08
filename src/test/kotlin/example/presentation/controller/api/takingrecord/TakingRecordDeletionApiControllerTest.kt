@@ -1,5 +1,6 @@
 package example.presentation.controller.api.takingrecord
 
+import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
@@ -30,7 +31,7 @@ internal class TakingRecordDeletionApiControllerTest(@Autowired private val mock
     fun deleteTakingRecord() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val medicine = testMedicineInserter.insert(userSession.accountId)
+        val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
         val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
 
         //when:
