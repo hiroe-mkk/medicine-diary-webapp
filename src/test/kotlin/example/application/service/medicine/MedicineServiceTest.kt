@@ -45,18 +45,18 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
-            val actual = medicineService.findMedicineDetail(medicine.id, userSession)
+            val actual = medicineService.findMedicine(medicine.id, userSession)
 
             //then:
-            val expected = MedicineDetailDto(
-                    medicine.id,
-                    medicine.medicineName,
-                    medicine.dosageAndAdministration,
-                    medicine.effects,
-                    medicine.precautions,
-                    medicine.medicineImageURL,
-                    medicine.isPublic,
-                    medicine.registeredAt)
+            val expected = MedicineDto(medicine.id,
+                                       medicine.owner,
+                                       medicine.medicineName,
+                                       medicine.dosageAndAdministration,
+                                       medicine.effects,
+                                       medicine.precautions,
+                                       medicine.medicineImageURL,
+                                       medicine.isPublic,
+                                       medicine.registeredAt)
             assertThat(actual).isEqualTo(expected)
         }
 
@@ -67,7 +67,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val badMedicineId = MedicineId("NonexistentId")
 
             //when:
-            val target: () -> Unit = { medicineService.findMedicineDetail(badMedicineId, userSession) }
+            val target: () -> Unit = { medicineService.findMedicine(badMedicineId, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)

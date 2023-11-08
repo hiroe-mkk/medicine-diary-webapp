@@ -10,11 +10,7 @@
   </head>
 
   <body>
-    <div
-      id="medicineDetail"
-      th:object="${medicineDetail}"
-      layout:fragment="content"
-    >
+    <div id="medicineDetail" th:object="${medicine}" layout:fragment="content">
       <div class="container is-max-widescreen p-3">
         <div class="content has-text-centered">
           <p class="is-size-4">
@@ -53,7 +49,7 @@
                   用法・用量
                 </p>
                 <div
-                  th:object="${medicineDetail.dosageAndAdministration}"
+                  th:object="${medicine.dosageAndAdministration}"
                   th:remove="tag"
                 >
                   <p class="mb-2 is-flex is-justify-content-space-between">

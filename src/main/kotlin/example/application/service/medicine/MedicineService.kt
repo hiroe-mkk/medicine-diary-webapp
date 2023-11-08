@@ -12,12 +12,12 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
                       private val medicineDomainService: MedicineDomainService) {
     /**
-     * 薬詳細を取得する
+     * 薬を取得する
      */
     @Transactional(readOnly = true)
-    fun findMedicineDetail(medicineId: MedicineId, userSession: UserSession): MedicineDetailDto {
+    fun findMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
         val medicine = findUserMedicineOrElseThrowException(medicineId, userSession) // TODO: 閲覧可能な薬
-        return MedicineDetailDto.from(medicine)
+        return MedicineDto.from(medicine)
     }
 
     /**

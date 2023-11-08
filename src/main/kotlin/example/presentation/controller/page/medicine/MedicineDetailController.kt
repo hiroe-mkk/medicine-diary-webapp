@@ -24,9 +24,9 @@ class MedicineDetailController(private val medicineService: MedicineService,
      */
     @GetMapping
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId, model: Model): String {
-        val medicineDetail = medicineService.findMedicineDetail(medicineId,
-                                                                userSessionProvider.getUserSession())
-        model.addAttribute("medicineDetail", medicineDetail)
+        val medicineDetail = medicineService.findMedicine(medicineId,
+                                                          userSessionProvider.getUserSession())
+        model.addAttribute("medicine", medicineDetail)
         return "medicine/detail"
     }
 }
