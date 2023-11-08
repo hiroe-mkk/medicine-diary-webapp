@@ -4,7 +4,7 @@ import example.application.service.medicine.*
 import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.medicine.*
 
-object TestMedicineBasicInfoEditCommandFactory {
+object TestMedicineFactory {
     fun createCompletedRegistrationCommand(medicineName: String = "ロキソニンS",
                                            quantity: Double = 1.0,
                                            takingUnit: String = "錠",

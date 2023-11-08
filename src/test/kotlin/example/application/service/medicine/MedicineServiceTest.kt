@@ -132,7 +132,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬を登録する")
         fun registerMedicine() {
             //given:
-            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedRegistrationCommand()
+            val command = TestMedicineFactory.createCompletedRegistrationCommand()
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
             every { localDateTimeProvider.now() } returns localDateTime
 
@@ -161,7 +161,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun updateMedicineBasicInfo() {
             //given:
             val medicine = testMedicineInserter.insert(userSession.accountId)
-            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedUpdateCommand()
+            val command = TestMedicineFactory.createCompletedUpdateCommand()
 
             //when:
             medicineService.updateMedicineBasicInfo(medicine.id, command, userSession)
@@ -185,7 +185,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun medicineNotFound_updatingMedicineBasicInfoFails() {
             //given:
             val badMedicineId = MedicineId("NonexistentId")
-            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedRegistrationCommand()
+            val command = TestMedicineFactory.createCompletedRegistrationCommand()
 
             //when:
             val target: () -> Unit = { medicineService.updateMedicineBasicInfo(badMedicineId, command, userSession) }
@@ -201,7 +201,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //given:
             val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
             val medicine = testMedicineInserter.insert(anotherAccount.id)
-            val command = TestMedicineBasicInfoEditCommandFactory.createCompletedUpdateCommand()
+            val command = TestMedicineFactory.createCompletedUpdateCommand()
 
             //when:
             val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }
