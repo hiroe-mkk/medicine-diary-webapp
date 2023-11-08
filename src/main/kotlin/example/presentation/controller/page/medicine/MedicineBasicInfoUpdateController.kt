@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.*
 @Controller
 @RequestMapping("/medicines/{medicineId}/basicinfo/update")
 class MedicineBasicInfoUpdateController(private val medicineService: MedicineService,
-                                        private val sharedGroupService: SharedGroupService,
                                         private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("medicineId")
     fun medicineId(@PathVariable medicineId: MedicineId): MedicineId = medicineId
@@ -24,9 +23,9 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     @ModelAttribute("timings")
     fun timings(): Array<Timing> = Timing.values()
 
-    @ModelAttribute("isParticipatingInSharedGroup")
-    fun isParticipatingInSharedGroup(): Boolean {
-        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSession())
+    @ModelAttribute("isOwned")
+    fun isOwned(@PathVariable medicineId: MedicineId): Boolean {
+        return medicineService.isOwned(medicineId, userSessionProvider.getUserSession())
     }
 
     /**
@@ -49,7 +48,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
                                 @ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                                 bindingResult: BindingResult,
                                 redirectAttributes: RedirectAttributes): String {
-        if (bindingResult.hasErrors()) return "medicine/basicInfoForm"
+        if (bindingResult.hasErrors()) return "medicine/updateForm"
 
         medicineService.updateMedicineBasicInfo(medicineId,
                                                 medicineBasicInfoEditCommand,

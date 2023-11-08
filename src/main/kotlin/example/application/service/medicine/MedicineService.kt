@@ -77,6 +77,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         medicineRepository.delete(medicine.id)
     }
 
+    /**
+     * 所有している薬か
+     */
+    fun isOwned(medicineId: MedicineId, userSession: UserSession): Boolean {
+        val medicine = medicineRepository.findById(medicineId) ?: return false
+        return medicine.isOwnedBy(userSession.accountId)
+    }
+
     private fun findMedicineOrElseThrowException(medicineId: MedicineId,
                                                  userSession: UserSession): Medicine {
         return findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
