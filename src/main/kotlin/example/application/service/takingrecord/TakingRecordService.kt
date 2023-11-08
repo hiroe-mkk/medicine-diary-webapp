@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
+                          private val takingRecordDomainService: TakingRecordDomainService,
                           private val medicineDomainService: MedicineDomainService) {
     /**
      * 服用記録を追加する
@@ -32,7 +33,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      */
     fun getInitializedTakingRecordEditCommand(takingRecordId: TakingRecordId,
                                               userSession: UserSession): TakingRecordEditCommand {
-        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
+        val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
         return TakingRecordEditCommand.initialize(takingRecord)
     }
 
@@ -43,7 +44,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
                            command: TakingRecordEditCommand,
                            userSession: UserSession) {
         val medicine = findUserMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
-        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
+        val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
         takingRecord.modify(medicine,
                             command.validatedDose,
                             command.validFollowUp,
@@ -56,19 +57,14 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 服用記録を削除する
      */
     fun deleteTakingRecord(takingRecordId: TakingRecordId, userSession: UserSession) {
-        val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
+        val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
         takingRecordRepository.delete(takingRecord.id)
     }
 
-    private fun findTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,
-                                                     userSession: UserSession): TakingRecord {
-        return findTakingRecordBy(takingRecordId, userSession) ?: throw TakingRecordNotFoundException(takingRecordId)
-    }
-
-    private fun findTakingRecordBy(takingRecordId: TakingRecordId,
-                                   userSession: UserSession): TakingRecord? {
-        val takingRecord = takingRecordRepository.findById(takingRecordId) ?: return null
-        return if (takingRecord.isRecordedBy(userSession.accountId)) takingRecord else null
+    private fun findOwnedTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,
+                                                          userSession: UserSession): TakingRecord {
+        return takingRecordDomainService.findOwnedTakingRecord(takingRecordId, userSession.accountId)
+               ?: throw TakingRecordNotFoundException(takingRecordId)
     }
 
     private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,

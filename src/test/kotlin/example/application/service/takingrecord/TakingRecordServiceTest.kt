@@ -30,8 +30,10 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val medicineDomainService: MedicineDomainService =
             MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val takingRecordDomainService: TakingRecordDomainService =
+            TakingRecordDomainService(takingRecordRepository)
     private val takingRecordService: TakingRecordService =
-            TakingRecordService(takingRecordRepository, medicineDomainService)
+            TakingRecordService(takingRecordRepository, takingRecordDomainService, medicineDomainService)
 
     private lateinit var userSession: UserSession
     private lateinit var medicine: Medicine
@@ -131,21 +133,6 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         }
 
         @Test
-        @DisplayName("ユーザーが記録していない服用記録の場合、服用記録の修正に失敗する")
-        fun takingRecordIsNotRecordedByUser_modifyingTakingRecordFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val takingRecord = testTakingRecordInserter.insert(anotherAccount.id, medicine.id)
-
-            //when:
-            val target: () -> Unit = { takingRecordService.modifyTakingRecord(takingRecord.id, command, userSession) }
-
-            //then:
-            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
-            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(takingRecord.id)
-        }
-
-        @Test
         @DisplayName("薬が見つからなかった場合、服用記録の修正に失敗する")
         fun medicineNotFound_modifyingTakingRecordFails() {
             //given:
@@ -194,21 +181,6 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             //then:
             val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
             assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(badTakingRecordId)
-        }
-
-        @Test
-        @DisplayName("ユーザーが記録していない服用記録の場合、服用記録の修正に失敗する")
-        fun takingRecordIsNotRecordedByUser_deletingTakingRecordFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val takingRecord = testTakingRecordInserter.insert(anotherAccount.id, medicine.id)
-
-            //when:
-            val target: () -> Unit = { takingRecordService.deleteTakingRecord(takingRecord.id, userSession) }
-
-            //then:
-            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
-            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(takingRecord.id)
         }
     }
 }
