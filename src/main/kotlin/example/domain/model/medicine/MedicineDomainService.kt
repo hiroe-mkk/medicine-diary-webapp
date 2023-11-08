@@ -14,6 +14,15 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         return if (medicine.isOwnedBy(accountId)) medicine else null
     }
 
+    fun findAllOwnedMedicines(accountId: AccountId): Set<Medicine> {
+        return medicineRepository.findByAccountId(accountId)
+    }
+
+    fun findAllSharedGroupMedicines(accountId: AccountId): Set<Medicine> {
+        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
+        return medicineRepository.findBySharedGroupId(sharedGroup.id)
+    }
+
     fun findUserMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
         val medicine = medicineRepository.findById(medicineId) ?: return null
         if (medicine.isOwnedBy(accountId)) return medicine
@@ -23,11 +32,8 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
     }
 
     fun findAllUserMedicines(accountId: AccountId): Set<Medicine> {
-        val ownedMedicines = medicineRepository.findByAccountId(accountId)
-        val sharedGroupMedicines = findParticipatingSharedGroup(accountId)
-                                       ?.let {
-                                           medicineRepository.findBySharedGroupId(it.id)
-                                       } ?: emptyList()
+        val ownedMedicines = findAllOwnedMedicines(accountId)
+        val sharedGroupMedicines = findAllSharedGroupMedicines(accountId)
         return ownedMedicines + sharedGroupMedicines
     }
 
@@ -39,6 +45,15 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         if (medicine.isOwnedBy(sharedGroup.id)) return medicine
 
         return if (medicine.isPublic && sharedGroup.members.contains(medicine.owner.accountId)) medicine else null
+    }
+
+    fun findAllViewableMedicines(accountId: AccountId): Set<Medicine> {
+        val ownedMedicines = findAllOwnedMedicines(accountId)
+        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
+        val sharedGroupMedicines = medicineRepository.findBySharedGroupId(sharedGroup.id)
+        val members = sharedGroup.members - accountId
+        val membersMedicines = medicineRepository.findByAccountIds(members).filter { it.isPublic }
+        return ownedMedicines + sharedGroupMedicines + membersMedicines
     }
 
     fun createMedicine(id: MedicineId,

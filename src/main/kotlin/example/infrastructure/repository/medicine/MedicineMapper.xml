@@ -6,9 +6,7 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             medicine_id = #{medicineId};
     </select>
@@ -17,20 +15,27 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             account_id = #{accountId};
+    </select>
+
+    <select id="findAllByAccountIds" resultMap="MedicineResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            <include refid="AllTables"/>
+        WHERE
+            <foreach collection="accountIds" item="accountId" open="account_id IN (" separator="," close=")">
+                  #{accountId}
+            </foreach>
     </select>
 
     <select id="findAllBySharedGroupId" resultMap="MedicineResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             shared_group_id = #{sharedGroupId};
     </select>
@@ -127,6 +132,12 @@
         effects.effect AS effect,
         timing_options.ordering AS timing_option_ordering,
         timing_options.timing_option AS timing_option
+    </sql>
+
+    <sql id="AllTables">
+        medicines
+        LEFT OUTER JOIN effects USING(medicine_id)
+        LEFT OUTER JOIN timing_options USING(medicine_id)
     </sql>
 
     <resultMap id="MedicineResultEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">

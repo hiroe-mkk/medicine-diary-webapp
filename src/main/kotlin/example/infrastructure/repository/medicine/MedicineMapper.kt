@@ -1,5 +1,6 @@
 package example.infrastructure.repository.medicine
 
+import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.infrastructure.repository.shared.*
 import org.apache.ibatis.annotations.*
@@ -10,6 +11,8 @@ interface MedicineMapper {
     fun findOneByMedicineId(medicineId: String): MedicineResultEntity?
 
     fun findAllByAccountId(accountId: String?): Set<MedicineResultEntity>
+
+    fun findAllByAccountIds(accountIds: Collection<String>): Set<MedicineResultEntity>
 
     fun findAllBySharedGroupId(sharedGroupId: String?): Set<MedicineResultEntity>
 

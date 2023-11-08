@@ -21,6 +21,10 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }.toSet()
     }
 
+    override fun findByAccountIds(accountIds: Collection<AccountId>): Set<Medicine> {
+        return medicineMapper.findAllByAccountIds(accountIds.map { it.value }).map { it.toMedicine() }.toSet()
+    }
+
     override fun findBySharedGroupId(sharedGroupId: SharedGroupId): Set<Medicine> {
         return medicineMapper.findAllBySharedGroupId(sharedGroupId.value).map { it.toMedicine() }.toSet()
     }

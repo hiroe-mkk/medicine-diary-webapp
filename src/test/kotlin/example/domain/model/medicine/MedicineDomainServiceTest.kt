@@ -146,17 +146,34 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
     }
 
     @Nested
-    inner class GetAllUserMedicines {
+    inner class GetAllMedicines {
         @Test
         @DisplayName("ユーザーの薬一覧を取得する")
-        fun getUserMedicine() {
+        fun getUserMedicines() {
             //given:
-            val ownedMedicine = testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId))
-            val anotherUserMedicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId))
+            val memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
+            val participatingSharedGroupId = createSharedGroup(userAccountId, memberUserAccountId)
+            val nonParticipatingSharedGroupId = createSharedGroup(anotherUserAccountId)
+
+            val ownedMedicineWithPublic =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = true)
+            val ownedMedicineWithPrivate =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = false)
+
+            val anotherUserMedicineWithPublic =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = true)
+            val anotherUserMedicineWithPrivate =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = false)
+
+            val memberMedicineWithPublic =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = true)
+            val memberMedicineWithPrivate =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = false)
+
             val participatingSharedGroupMedicine =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(createSharedGroup(userAccountId)))
+                    testMedicineInserter.insert(owner = MedicineOwner.create(participatingSharedGroupId))
             val nonParticipatingSharedGroupMedicine =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(createSharedGroup(anotherUserAccountId)))
+                    testMedicineInserter.insert(owner = MedicineOwner.create(nonParticipatingSharedGroupId))
 
             //when:
             val actual = medicineDomainService.findAllUserMedicines(userAccountId)
@@ -164,11 +181,53 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             //then:
             assertThat(actual)
                 .extracting("id")
-                .containsExactlyInAnyOrder(ownedMedicine.id, participatingSharedGroupMedicine.id)
+                .containsExactlyInAnyOrder(ownedMedicineWithPublic.id,
+                                           ownedMedicineWithPrivate.id,
+                                           participatingSharedGroupMedicine.id)
         }
 
-        private fun createSharedGroup(accountId: AccountId) =
-                testSharedGroupInserter.insert(members = setOf(accountId)).id
+        @Test
+        @DisplayName("閲覧可能な薬一覧を取得する")
+        fun getViewableMedicines() {
+            //given:
+            val memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
+            val participatingSharedGroupId = createSharedGroup(userAccountId, memberUserAccountId)
+            val nonParticipatingSharedGroupId = createSharedGroup(anotherUserAccountId)
+
+            val ownedMedicineWithPublic =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = true)
+            val ownedMedicineWithPrivate =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = false)
+
+            val anotherUserMedicineWithPublic =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = true)
+            val anotherUserMedicineWithPrivate =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = false)
+
+            val memberMedicineWithPublic =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = true)
+            val memberMedicineWithPrivate =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = false)
+
+            val participatingSharedGroupMedicine =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(participatingSharedGroupId))
+            val nonParticipatingSharedGroupMedicine =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(nonParticipatingSharedGroupId))
+
+            //when:
+            val actual = medicineDomainService.findAllViewableMedicines(userAccountId)
+
+            //then:
+            assertThat(actual)
+                .extracting("id")
+                .containsExactlyInAnyOrder(ownedMedicineWithPublic.id,
+                                           ownedMedicineWithPrivate.id,
+                                           memberMedicineWithPublic.id,
+                                           participatingSharedGroupMedicine.id)
+        }
+
+        private fun createSharedGroup(vararg accountId: AccountId) =
+                testSharedGroupInserter.insert(members = setOf(*accountId)).id
     }
 
     @Nested
