@@ -38,7 +38,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
 
             //then:
             actions.andExpect(status().isOk)
-                .andExpect(view().name("medicine/basicInfoForm"))
+                .andExpect(view().name("medicine/updateForm"))
         }
 
         @Test
@@ -131,7 +131,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
 
             //then:
             actions.andExpect(status().isOk)
-                .andExpect(view().name("medicine/basicInfoForm"))
+                .andExpect(view().name("medicine/updateForm"))
         }
 
         @Test

@@ -30,7 +30,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
 
             //then:
             actions.andExpect(status().isOk)
-                .andExpect(view().name("medicine/basicInfoForm"))
+                .andExpect(view().name("medicine/registrationForm"))
         }
 
         @Test
@@ -97,7 +97,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
 
             //then:
             actions.andExpect(status().isOk)
-                .andExpect(view().name("medicine/basicInfoForm"))
+                .andExpect(view().name("medicine/registrationForm"))
         }
 
         @Test

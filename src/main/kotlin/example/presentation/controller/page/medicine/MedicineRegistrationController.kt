@@ -18,12 +18,6 @@ import org.springframework.web.servlet.mvc.support.*
 class MedicineRegistrationController(private val medicineService: MedicineService,
                                      private val sharedGroupService: SharedGroupService,
                                      private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("title")
-    fun title(): String = "お薬登録"
-
-    @ModelAttribute("executePath")
-    fun executePath(): String = "/medicines/register"
-
     @ModelAttribute("timings")
     fun timings(): Array<Timing> = Timing.values()
 
@@ -38,7 +32,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
     @GetMapping
     fun displayMedicineRegistrationPage(model: Model): String {
         model.addAttribute("form", MedicineBasicInfoEditCommand.initialize())
-        return "medicine/basicInfoForm"
+        return "medicine/registrationForm"
     }
 
     /**

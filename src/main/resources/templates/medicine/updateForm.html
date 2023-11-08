@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/medicineForm.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="medicineForm" layout:fragment="content">
+      <div class="content has-text-centered">
+        <p class="icon-text is-size-4 is-flex is-justify-content-center">
+          <strong class="has-text-grey-dark">お薬基本情報更新</strong>
+          <span class="icon has-text-grey-dark mx-2">
+            <i class="fa-solid fa-capsules"></i>
+          </span>
+        </p>
+      </div>
+      <div class="container is-max-desktop p-3">
+        <form
+          method="post"
+          class="form"
+          th:action="@{/medicines/{medicineId}/basicinfo/update(medicineId=${medicineId})}"
+          th:object="${form}"
+        >
+          <div
+            th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
+          ></div>
+
+          <div
+            class="field is-horizontal my-3"
+            th:if="${isParticipatingInSharedGroup}"
+          >
+            <div class="field-label">　</div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input
+                      type="checkbox"
+                      name="isPublic"
+                      th:checked="${form.isPublic}"
+                    />
+                    <strong class="has-text-grey">
+                      メンバーからの閲覧を許可する
+                    </strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-grouped is-grouped-centered my-3">
+            <p class="control">
+              <button class="button is-rounded is-link">完了</button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

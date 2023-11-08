@@ -18,12 +18,6 @@ import org.springframework.web.servlet.mvc.support.*
 class MedicineBasicInfoUpdateController(private val medicineService: MedicineService,
                                         private val sharedGroupService: SharedGroupService,
                                         private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("title")
-    fun title(): String = "お薬基本情報更新"
-
-    @ModelAttribute("executePath")
-    fun executePath(@PathVariable medicineId: MedicineId): String = "/medicines/${medicineId}/basicinfo/update"
-
     @ModelAttribute("medicineId")
     fun medicineId(@PathVariable medicineId: MedicineId): MedicineId = medicineId
 
@@ -44,7 +38,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
         val command = medicineService.getInitializedMedicineBasicInfoEditCommand(medicineId,
                                                                                  userSessionProvider.getUserSession())
         model.addAttribute("form", command)
-        return "medicine/basicInfoForm"
+        return "medicine/updateForm"
     }
 
     /**
