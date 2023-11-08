@@ -25,8 +25,8 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findAllMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
-        val medicines = medicineRepository.findByAccountId(userSession.accountId) // TODO
-        return medicines.map { MedicineOverviewDto.from(it) }
+        val medicines = medicineDomainService.findAllUserMedicines(userSession.accountId)
+        return medicines.sortedByDescending { it.registeredAt }.map { MedicineOverviewDto.from(it) }
     }
 
     /**
