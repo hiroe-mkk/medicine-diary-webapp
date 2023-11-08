@@ -30,6 +30,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * 所有している薬か
+     */
+    @Transactional(readOnly = true)
+    fun isOwnedMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
+        return medicineDomainService.findOwnedMedicine(medicineId, userSession.accountId) != null
+    }
+
+    /**
      * 薬を登録する
      */
     fun registerMedicine(command: MedicineBasicInfoEditCommand,
@@ -78,14 +86,6 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
         val medicine = findUserMedicineOrElseThrowException(medicineId, userSession)
         medicineRepository.delete(medicine.id)
-    }
-
-    /**
-     * 所有している薬か
-     */
-    fun isOwned(medicineId: MedicineId, userSession: UserSession): Boolean {
-        val medicine = medicineRepository.findById(medicineId) ?: return false
-        return medicine.isOwnedBy(userSession.accountId)
     }
 
     private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,

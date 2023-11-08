@@ -9,6 +9,11 @@ import java.time.*
 @Component
 class MedicineDomainService(private val medicineRepository: MedicineRepository,
                             private val sharedGroupRepository: SharedGroupRepository) {
+    fun findOwnedMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
+        val medicine = medicineRepository.findById(medicineId) ?: return null
+        return if (medicine.isOwnedBy(accountId)) medicine else null
+    }
+
     fun findUserMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
         val medicine = medicineRepository.findById(medicineId) ?: return null
         if (medicine.isOwnedBy(accountId)) return medicine

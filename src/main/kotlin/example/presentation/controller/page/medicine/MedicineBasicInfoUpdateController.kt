@@ -25,7 +25,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
 
     @ModelAttribute("isOwned")
     fun isOwned(@PathVariable medicineId: MedicineId): Boolean {
-        return medicineService.isOwned(medicineId, userSessionProvider.getUserSession())
+        return medicineService.isOwnedMedicine(medicineId, userSessionProvider.getUserSession())
     }
 
     /**

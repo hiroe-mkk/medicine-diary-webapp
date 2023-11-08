@@ -32,6 +32,49 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
     }
 
     @Nested
+    inner class GetOwnedMedicineTest {
+        @Test
+        @DisplayName("所有している薬を取得する")
+        fun getOwnedMedicine() {
+            //given:
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(accountId))
+
+            //when:
+            val actual = medicineDomainService.findOwnedMedicine(medicine.id, accountId)
+
+            //then:
+            assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
+        }
+
+        @Test
+        @DisplayName("自分以外のユーザーが所有する薬場合、薬の取得に失敗する")
+        fun medicineOwnedByAnotherUser_gettingMedicineFails() {
+            //given:
+            val anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherAccountId))
+
+            //when:
+            val actual = medicineDomainService.findOwnedMedicine(medicine.id, accountId)
+
+            //then:
+            assertThat(actual).isNull()
+        }
+
+        @Test
+        @DisplayName("薬が見つからなかった場合、薬の取得に失敗する")
+        fun medicineNotFound_gettingMedicineFails() {
+            //given:
+            val badMedicineId = MedicineId("NonexistentId")
+
+            //when:
+            val actual = medicineDomainService.findOwnedMedicine(badMedicineId, accountId)
+
+            //then:
+            assertThat(actual).isNull()
+        }
+    }
+
+    @Nested
     inner class GetUserMedicineTest {
         @Test
         @DisplayName("所有している薬を取得する")
