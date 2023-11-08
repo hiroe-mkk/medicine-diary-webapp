@@ -47,6 +47,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
         if (bindingResult.hasErrors()) return "medicine/registrationForm"
 
         medicineService.registerMedicine(medicineBasicInfoEditCommand,
+                                         isWantToOwn,
                                          userSessionProvider.getUserSession())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の登録が完了しました。"))

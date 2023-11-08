@@ -3,6 +3,7 @@ package example.application.service.medicine
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
+import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.medicineimage.*
 import example.testhelper.factory.*
@@ -18,10 +19,11 @@ import java.time.*
 
 @MyBatisRepositoryTest
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
+                                   @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
-    private val medicineDomainService: MedicineDomainService = MedicineDomainService()
+    private val medicineDomainService: MedicineDomainService = MedicineDomainService(sharedGroupRepository)
     private val medicineService: MedicineService =
             MedicineService(medicineRepository, localDateTimeProvider, medicineDomainService)
 
@@ -135,12 +137,12 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             every { localDateTimeProvider.now() } returns localDateTime
 
             //when:
-            val medicineId = medicineService.registerMedicine(command, userSession)
+            val medicineId = medicineService.registerMedicine(command, true, userSession)
 
             //then:
             val foundMedicine = medicineRepository.findById(medicineId)
             val expected = Medicine(medicineId,
-                                    MedicineOwner(userSession.accountId),
+                                    MedicineOwner.create(userSession.accountId),
                                     command.validatedMedicineName,
                                     command.validatedDosageAndAdministration,
                                     command.validatedEffects,

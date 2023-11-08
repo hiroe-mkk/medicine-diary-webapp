@@ -13,14 +13,16 @@ object TestMedicineBasicInfoEditCommandFactory {
                                            effects: List<EffectInputField> = listOf(
                                                    EffectInputField("頭痛"),
                                                    EffectInputField("解熱")),
-                                           precautions: String = "服用間隔は4時間以上開けること。"): MedicineBasicInfoEditCommand {
+                                           precautions: String = "服用間隔は4時間以上開けること。",
+                                           isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
                                             takingUnit,
                                             timesPerDay,
                                             timingOptions,
                                             effects,
-                                            precautions)
+                                            precautions,
+                                            isPublic)
     }
 
     fun createCompletedUpdateCommand(medicineName: String = "ロキソニンSプレミアム",
@@ -31,13 +33,15 @@ object TestMedicineBasicInfoEditCommandFactory {
                                      effects: List<EffectInputField> = listOf(EffectInputField("頭痛"),
                                                                               EffectInputField("解熱"),
                                                                               EffectInputField("肩こり")),
-                                     precautions: String = "服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。"): MedicineBasicInfoEditCommand {
+                                     precautions: String = "服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。",
+                                     isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
                                             takingUnit,
                                             timesPerDay,
                                             timingOptions,
                                             effects,
-                                            precautions)
+                                            precautions,
+                                            isPublic)
     }
 }

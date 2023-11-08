@@ -32,7 +32,9 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     /**
      * 薬を登録する
      */
-    fun registerMedicine(command: MedicineBasicInfoEditCommand, userSession: UserSession): MedicineId {
+    fun registerMedicine(command: MedicineBasicInfoEditCommand,
+                         isWantToOwn: Boolean,
+                         userSession: UserSession): MedicineId {
         val medicine = medicineDomainService.createMedicine(medicineRepository.createMedicineId(),
                                                             command.validatedMedicineName,
                                                             command.validatedDosageAndAdministration,
@@ -40,7 +42,8 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                                                             command.validatedPrecautions,
                                                             command.isPublic,
                                                             localDateTimeProvider.now(),
-                                                            userSession.accountId)
+                                                            userSession.accountId,
+                                                            isWantToOwn)
         medicineRepository.save(medicine)
         return medicine.id
     }

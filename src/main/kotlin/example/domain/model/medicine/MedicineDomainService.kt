@@ -1,12 +1,13 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
+import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-class MedicineDomainService() {
+class MedicineDomainService(private val sharedGroupRepository: SharedGroupRepository) {
     fun createMedicine(id: MedicineId,
                        medicineName: MedicineName,
                        dosageAndAdministration: DosageAndAdministration,
@@ -14,8 +15,15 @@ class MedicineDomainService() {
                        precautions: Note,
                        isPublic: Boolean,
                        registeredAt: LocalDateTime,
-                       registrant: AccountId): Medicine {
-        val owner = MedicineOwner(registrant, null) // TODO
+                       registrant: AccountId,
+                       isWantToOwn: Boolean): Medicine {
+        val owner = if (isWantToOwn) {
+            MedicineOwner.create(registrant)
+        } else {
+            sharedGroupRepository.findByMember(registrant)
+                ?.let { MedicineOwner.create(it.id) }
+            ?: MedicineOwner.create(registrant)
+        }
 
         return Medicine(id,
                         owner,
@@ -24,7 +32,7 @@ class MedicineDomainService() {
                         effects,
                         precautions,
                         null,
-                        isPublic,
+                        if (owner.isSharedGroup) true else isPublic,
                         registeredAt)
     }
 }
