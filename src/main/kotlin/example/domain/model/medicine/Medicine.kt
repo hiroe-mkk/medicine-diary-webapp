@@ -41,7 +41,7 @@ class Medicine(val id: MedicineId,
         this.dosageAndAdministration = dosageAndAdministration
         this.effects = effects
         this.precautions = precautions
-        this.isPublic = isPublic
+        this.isPublic = if (owner.isSharedGroup) true else isPublic
     }
 
     fun changeMedicineImage(medicineImageURL: MedicineImageURL) {
