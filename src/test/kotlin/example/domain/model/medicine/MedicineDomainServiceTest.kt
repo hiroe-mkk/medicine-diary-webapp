@@ -49,7 +49,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         }
 
         @Test
-        @DisplayName("自分以外のユーザーが所有する薬場合、薬の取得に失敗する")
+        @DisplayName("他のユーザーが所有する薬場合、薬の取得に失敗する")
         fun medicineOwnedByAnotherUser_gettingMedicineFails() {
             //given:
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId))
@@ -91,7 +91,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         }
 
         @Test
-        @DisplayName("自分以外のユーザーが所有する薬場合、薬の取得に失敗する")
+        @DisplayName("他のユーザーが所有する薬場合、薬の取得に失敗する")
         fun medicineOwnedByAnotherUser_gettingMedicineFails() {
             //given:
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId))
@@ -169,6 +169,106 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
 
         private fun createSharedGroup(accountId: AccountId) =
                 testSharedGroupInserter.insert(members = setOf(accountId)).id
+    }
+
+    @Nested
+    inner class GetViewableMedicine {
+        @Test
+        @DisplayName("所有している薬を取得する")
+        fun getOwnedMedicine() {
+            //given:
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId))
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(medicine.id, userAccountId)
+
+            //then:
+            assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
+        }
+
+        @Test
+        @DisplayName("他のユーザーが所有する薬場合、薬の取得に失敗する")
+        fun medicineOwnedByAnotherUser_gettingMedicineFails() {
+            //given:
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId))
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(medicine.id, userAccountId)
+
+            //then:
+            assertThat(actual).isNull()
+        }
+
+        @Test
+        @DisplayName("共有グループの薬を取得する")
+        fun getSharedGroupMedicine() {
+            //given:
+            val sharedGroupId = testSharedGroupInserter.insert(members = setOf(userAccountId)).id
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(medicine.id, userAccountId)
+
+            //then:
+            assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
+        }
+
+        @Test
+        @DisplayName("参加していない共有グループが所有する薬場合、薬の取得に失敗する")
+        fun medicineOwnedByNonParticipatingSharedGroup_gettingMedicineFails() {
+            //given:
+            val sharedGroupId = testSharedGroupInserter.insert().id
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(medicine.id, userAccountId)
+
+            //then:
+            assertThat(actual).isNull()
+        }
+
+        @Test
+        @DisplayName("共有グループのメンバーの薬を取得する")
+        fun getSharedGroupMemberMedicine() {
+            //given:
+            testSharedGroupInserter.insert(members = setOf(userAccountId, anotherUserAccountId)).id
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId),
+                                                       isPublic = true)
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(medicine.id, userAccountId)
+
+            //then:
+            assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
+        }
+
+        @Test
+        @DisplayName("共有グループのメンバーの薬が非公開の場合、薬の取得に失敗する")
+        fun medicineOwnedBySharedGroupMemberIsPrivate_gettingMedicineFails() {
+            //given:
+            testSharedGroupInserter.insert(members = setOf(userAccountId, anotherUserAccountId)).id
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId),
+                                                       isPublic = false)
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(medicine.id, userAccountId)
+
+            //then:
+            assertThat(actual).isNull()
+        }
+
+        @Test
+        @DisplayName("薬が見つからなかった場合、薬の取得に失敗する")
+        fun medicineNotFound_gettingMedicineFails() {
+            //given:
+            val badMedicineId = MedicineId("NonexistentId")
+
+            //when:
+            val actual = medicineDomainService.findViewableMedicine(badMedicineId, userAccountId)
+
+            //then:
+            assertThat(actual).isNull()
+        }
     }
 
     @Nested

@@ -16,7 +16,8 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
-        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession) // TODO: 閲覧可能な薬
+        val medicine = medicineDomainService.findViewableMedicine(medicineId, userSession.accountId)
+                       ?: throw MedicineNotFoundException(medicineId)
         return MedicineDto.from(medicine)
     }
 

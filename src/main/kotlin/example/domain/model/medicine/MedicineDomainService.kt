@@ -31,6 +31,16 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         return ownedMedicines + sharedGroupMedicines
     }
 
+    fun findViewableMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
+        val medicine = medicineRepository.findById(medicineId) ?: return null
+        if (medicine.isOwnedBy(accountId)) return medicine
+
+        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return null
+        if (medicine.isOwnedBy(sharedGroup.id)) return medicine
+
+        return if (medicine.isPublic && sharedGroup.members.contains(medicine.owner.accountId)) medicine else null
+    }
+
     fun createMedicine(id: MedicineId,
                        medicineName: MedicineName,
                        dosageAndAdministration: DosageAndAdministration,
