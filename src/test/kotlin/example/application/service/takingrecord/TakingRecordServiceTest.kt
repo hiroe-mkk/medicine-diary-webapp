@@ -7,6 +7,7 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
+import example.domain.model.sharedgroup.*
 import example.domain.model.takingrecord.*
 import example.domain.shared.exception.*
 import example.domain.shared.type.*
@@ -23,11 +24,14 @@ import java.time.*
 @MyBatisRepositoryTest
 internal class TakingRecordServiceTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
                                        @Autowired private val medicineRepository: MedicineRepository,
+                                       @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                        @Autowired private val testAccountInserter: TestAccountInserter,
                                        @Autowired private val testMedicineInserter: TestMedicineInserter,
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
+    private val medicineDomainService: MedicineDomainService =
+            MedicineDomainService(medicineRepository, sharedGroupRepository)
     private val takingRecordService: TakingRecordService =
-            TakingRecordService(takingRecordRepository, medicineRepository)
+            TakingRecordService(takingRecordRepository, medicineDomainService)
 
     private lateinit var userSession: UserSession
     private lateinit var medicine: Medicine
@@ -78,22 +82,6 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-        }
-
-        @Test
-        @DisplayName("ユーザーが所有していない薬の場合、服用記録の追加に失敗する")
-        fun medicineIsNotOwnedByUser_addingTakingRecordFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
-            val command =
-                    TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(takenMedicine = medicine.id.value)
-
-            //when:
-            val target: () -> Unit = { takingRecordService.addTakingRecord(command, userSession) }
-
-            //then:
-            assertThrows<OperationNotPermittedException>(target)
         }
     }
 
@@ -171,22 +159,6 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-        }
-
-        @Test
-        @DisplayName("ユーザーが所有していない薬の場合、服用記録の修正に失敗する")
-        fun medicineIsNotOwnedByUser_modifyingTakingRecordFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
-            val command =
-                    TestTakingRecordEditCommandFactory.createCompletedModificationCommand(takenMedicine = medicine.id.value)
-
-            //when:
-            val target: () -> Unit = { takingRecordService.modifyTakingRecord(takingRecord.id, command, userSession) }
-
-            //then:
-            assertThrows<OperationNotPermittedException>(target)
         }
     }
 

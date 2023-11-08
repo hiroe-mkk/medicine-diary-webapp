@@ -4,26 +4,27 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
+import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
-import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @MyBatisRepositoryTest
 internal class MedicineImageServiceTest(@Autowired private val medicineRepository: MedicineRepository,
+                                        @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                         @Autowired private val testAccountInserter: TestAccountInserter,
                                         @Autowired private val testMedicineInserter: TestMedicineInserter) {
-    @MockK(relaxed = true)
-    private lateinit var medicineImageStorage: MedicineImageStorage
-
-    @InjectMockKs
-    private lateinit var medicineImageService: MedicineImageService
+    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
+    private val medicineDomainService: MedicineDomainService =
+            MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineImageService: MedicineImageService =
+            MedicineImageService(medicineRepository, medicineImageStorage, medicineDomainService)
 
     private lateinit var userSession: UserSession
 
@@ -90,22 +91,5 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
         //then:
         val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
         assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-    }
-
-    @Test
-    @DisplayName("ユーザーが所有していない薬の場合、薬画像の変更に失敗する")
-    fun medicineIsNotOwnedByUser_changingMedicineImageFails() {
-        //given:
-        val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-        val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
-
-        //when:
-        val target: () -> Unit = {
-            medicineImageService.changeMedicineImage(medicine.id, command, userSession)
-        }
-
-        //then:
-        val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-        assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
     }
 }

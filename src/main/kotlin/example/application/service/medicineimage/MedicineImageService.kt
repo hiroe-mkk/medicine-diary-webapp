@@ -11,14 +11,15 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class MedicineImageService(private val medicineRepository: MedicineRepository,
-                           private val medicineImageStorage: MedicineImageStorage) {
+                           private val medicineImageStorage: MedicineImageStorage,
+                           private val medicineDomainService: MedicineDomainService) {
     /**
      * 薬画像を変更する
      */
     fun changeMedicineImage(medicineId: MedicineId,
                             command: ImageUploadCommand,
                             userSession: UserSession): MedicineImageURL {
-        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession)
 
         medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }
 
@@ -30,13 +31,9 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
         return medicineImageURL
     }
 
-    private fun findMedicineOrElseThrowException(medicineId: MedicineId,
-                                                 userSession: UserSession): Medicine {
-        return findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
-    }
-
-    private fun findMedicineOwnedBy(medicineId: MedicineId, userSession: UserSession): Medicine? {
-        val medicine = medicineRepository.findById(medicineId) ?: return null
-        return if (medicine.isOwnedBy(userSession.accountId)) medicine else null
+    private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,
+                                                     userSession: UserSession): Medicine {
+        return medicineDomainService.findUserMedicine(medicineId, userSession.accountId)
+               ?: throw MedicineNotFoundException(medicineId)
     }
 }

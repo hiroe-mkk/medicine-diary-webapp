@@ -16,7 +16,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findMedicineDetail(medicineId: MedicineId, userSession: UserSession): MedicineDetailDto {
-        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession) // TODO: 閲覧可能な薬
         return MedicineDetailDto.from(medicine)
     }
 
@@ -25,7 +25,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findAllMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
-        val medicines = medicineRepository.findByAccountId(userSession.accountId)
+        val medicines = medicineRepository.findByAccountId(userSession.accountId) // TODO
         return medicines.map { MedicineOverviewDto.from(it) }
     }
 
@@ -53,7 +53,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     fun getInitializedMedicineBasicInfoEditCommand(medicineId: MedicineId,
                                                    userSession: UserSession): MedicineBasicInfoEditCommand {
-        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession)
         return MedicineBasicInfoEditCommand.initialize(medicine)
     }
 
@@ -63,7 +63,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     fun updateMedicineBasicInfo(medicineId: MedicineId,
                                 command: MedicineBasicInfoEditCommand,
                                 userSession: UserSession) {
-        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession)
         medicine.changeBasicInfo(command.validatedMedicineName,
                                  command.validatedDosageAndAdministration,
                                  command.validatedEffects,
@@ -76,7 +76,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬を削除する
      */
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = findMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession)
         medicineRepository.delete(medicine.id)
     }
 
@@ -88,13 +88,9 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         return medicine.isOwnedBy(userSession.accountId)
     }
 
-    private fun findMedicineOrElseThrowException(medicineId: MedicineId,
-                                                 userSession: UserSession): Medicine {
-        return findMedicineOwnedBy(medicineId, userSession) ?: throw MedicineNotFoundException(medicineId)
-    }
-
-    private fun findMedicineOwnedBy(medicineId: MedicineId, userSession: UserSession): Medicine? { // TODO
-        val medicine = medicineRepository.findById(medicineId) ?: return null
-        return if (medicine.isOwnedBy(userSession.accountId)) medicine else null
+    private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,
+                                                     userSession: UserSession): Medicine {
+        return medicineDomainService.findUserMedicine(medicineId, userSession.accountId)
+               ?: throw MedicineNotFoundException(medicineId)
     }
 }

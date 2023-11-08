@@ -2,6 +2,7 @@ package example.domain.model.medicine
 
 import example.domain.model.account.*
 import example.domain.model.medicine.medicineImage.*
+import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import java.time.*
 
@@ -30,7 +31,9 @@ class Medicine(val id: MedicineId,
     var isPublic: Boolean = isPublic
         private set
 
-    fun isOwnedBy(accountId: AccountId): Boolean = owner.accountId == accountId // TODO
+    fun isOwnedBy(accountId: AccountId): Boolean = owner.accountId == accountId
+
+    fun isOwnedBy(sharedGroupId: SharedGroupId): Boolean = owner.sharedGroupId == sharedGroupId
 
     fun changeBasicInfo(medicineName: MedicineName,
                         dosageAndAdministration: DosageAndAdministration,

@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
-                          private val medicineRepository: MedicineRepository) {
+                          private val medicineDomainService: MedicineDomainService) {
     /**
      * 服用記録を追加する
      */
     fun addTakingRecord(command: TakingRecordEditCommand, userSession: UserSession): TakingRecordId {
-        val medicine = findMedicineOrElseThrowException(command.validatedTakenMedicine)
+        val medicine = findUserMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
         val takingRecord = TakingRecord.create(takingRecordRepository.createTakingRecordId(),
                                                userSession.accountId,
                                                medicine,
@@ -42,7 +42,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
     fun modifyTakingRecord(takingRecordId: TakingRecordId,
                            command: TakingRecordEditCommand,
                            userSession: UserSession) {
-        val medicine = findMedicineOrElseThrowException(command.validatedTakenMedicine)
+        val medicine = findUserMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
         val takingRecord = findTakingRecordOrElseThrowException(takingRecordId, userSession)
         takingRecord.modify(medicine,
                             command.validatedDose,
@@ -71,7 +71,9 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
         return if (takingRecord.isRecordedBy(userSession.accountId)) takingRecord else null
     }
 
-    private fun findMedicineOrElseThrowException(medicineId: MedicineId): Medicine {
-        return (medicineRepository.findById(medicineId) ?: throw MedicineNotFoundException(medicineId))
+    private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,
+                                                     userSession: UserSession): Medicine {
+        return medicineDomainService.findUserMedicine(medicineId, userSession.accountId)
+               ?: throw MedicineNotFoundException(medicineId)
     }
 }

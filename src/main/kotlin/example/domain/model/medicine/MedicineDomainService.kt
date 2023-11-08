@@ -7,7 +7,16 @@ import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-class MedicineDomainService(private val sharedGroupRepository: SharedGroupRepository) {
+class MedicineDomainService(private val medicineRepository: MedicineRepository,
+                            private val sharedGroupRepository: SharedGroupRepository) {
+    fun findUserMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
+        val medicine = medicineRepository.findById(medicineId) ?: return null
+        if (medicine.isOwnedBy(accountId)) return medicine
+
+        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return null
+        return if (medicine.isOwnedBy(sharedGroup.id)) medicine else null
+    }
+
     fun createMedicine(id: MedicineId,
                        medicineName: MedicineName,
                        dosageAndAdministration: DosageAndAdministration,
@@ -20,7 +29,7 @@ class MedicineDomainService(private val sharedGroupRepository: SharedGroupReposi
         val owner = if (isWantToOwn) {
             MedicineOwner.create(registrant)
         } else {
-            sharedGroupRepository.findByMember(registrant)
+            findParticipatingSharedGroup(registrant)
                 ?.let { MedicineOwner.create(it.id) }
             ?: MedicineOwner.create(registrant)
         }
@@ -35,4 +44,6 @@ class MedicineDomainService(private val sharedGroupRepository: SharedGroupReposi
                         if (owner.isSharedGroup) true else isPublic,
                         registeredAt)
     }
+
+    private fun findParticipatingSharedGroup(accountId: AccountId) = sharedGroupRepository.findByMember(accountId)
 }

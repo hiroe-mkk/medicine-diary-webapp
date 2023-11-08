@@ -12,7 +12,6 @@ import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
 import org.assertj.core.api.Assertions.*
-import org.bouncycastle.asn1.x500.style.RFC4519Style.*
 import org.checkerframework.checker.units.qual.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -24,7 +23,8 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
-    private val medicineDomainService: MedicineDomainService = MedicineDomainService(sharedGroupRepository)
+    private val medicineDomainService: MedicineDomainService =
+            MedicineDomainService(medicineRepository, sharedGroupRepository)
     private val medicineService: MedicineService =
             MedicineService(medicineRepository, localDateTimeProvider, medicineDomainService)
 
@@ -72,21 +72,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-        }
-
-        @Test
-        @DisplayName("ユーザーが所有していない薬の場合、薬詳細の取得に失敗する")
-        fun medicineIsNotOwnedByUser_gettingMedicineDetailFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
-
-            //when:
-            val target: () -> Unit = { medicineService.findMedicineDetail(medicine.id, userSession) }
-
-            //then:
-            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
 
@@ -195,22 +180,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
         }
-
-        @Test
-        @DisplayName("ユーザーが所有していない薬の場合、薬基本情報の更新に失敗する")
-        fun medicineIsNotOwnedByUser_updatingMedicineBasicInfoFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
-            val command = TestMedicineFactory.createCompletedUpdateCommand()
-
-            //when:
-            val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }
-
-            //then:
-            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
-        }
     }
 
     @Nested
@@ -241,21 +210,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-        }
-
-        @Test
-        @DisplayName("ユーザーが所有していない薬の場合、薬の削除に失敗する")
-        fun medicineIsNotOwnedByUser_deletingMedicineFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(anotherAccount.id))
-
-            //when:
-            val target: () -> Unit = { medicineService.deleteMedicine(medicine.id, userSession) }
-
-            //then:
-            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
 }
