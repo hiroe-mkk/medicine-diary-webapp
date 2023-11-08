@@ -17,12 +17,12 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         return medicineMapper.findOneByMedicineId(medicineId.value)?.toMedicine()
     }
 
-    override fun findByAccountId(accountId: AccountId): List<Medicine> {
-        return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }
+    override fun findByAccountId(accountId: AccountId): Set<Medicine> {
+        return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }.toSet()
     }
 
-    override fun findBySharedGroupId(sharedGroupId: SharedGroupId): List<Medicine> {
-        return medicineMapper.findAllBySharedGroupId(sharedGroupId.value).map { it.toMedicine() }
+    override fun findBySharedGroupId(sharedGroupId: SharedGroupId): Set<Medicine> {
+        return medicineMapper.findAllBySharedGroupId(sharedGroupId.value).map { it.toMedicine() }.toSet()
     }
 
     override fun save(medicine: Medicine) {

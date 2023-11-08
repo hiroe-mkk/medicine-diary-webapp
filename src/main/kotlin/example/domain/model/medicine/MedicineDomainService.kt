@@ -22,7 +22,7 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         return if (medicine.isOwnedBy(sharedGroup.id)) medicine else null
     }
 
-    fun findAllUserMedicines(accountId: AccountId): List<Medicine> {
+    fun findAllUserMedicines(accountId: AccountId): Set<Medicine> {
         val ownedMedicines = medicineRepository.findByAccountId(accountId)
         val sharedGroupMedicines = findParticipatingSharedGroup(accountId)
                                        ?.let {

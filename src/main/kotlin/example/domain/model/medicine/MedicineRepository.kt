@@ -8,9 +8,9 @@ interface MedicineRepository {
 
     fun findById(medicineId: MedicineId): Medicine?
 
-    fun findByAccountId(accountId: AccountId): List<Medicine>
+    fun findByAccountId(accountId: AccountId): Set<Medicine>
 
-    fun findBySharedGroupId(sharedGroupId: SharedGroupId): List<Medicine>
+    fun findBySharedGroupId(sharedGroupId: SharedGroupId): Set<Medicine>
 
     fun save(medicine: Medicine)
 
