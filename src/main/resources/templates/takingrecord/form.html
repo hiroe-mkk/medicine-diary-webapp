@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <div layout:fragment="content">
+    <div id="takingRecordForm" layout:fragment="content">
       <div class="container is-max-desktop p-3">
         <div class="content has-text-centered">
           <p class="icon-text is-size-4 is-flex is-justify-content-center">
@@ -26,37 +26,6 @@
           th:action="@{__${executePath}__}"
           th:object="${form}"
         >
-          <div class="field is-horizontal my-3">
-            <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">お薬</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <div
-                    class="select is-rounded is-fullwidth"
-                    th:classappend="${#fields.hasErrors('takenMedicine')} ? is-danger : is-info"
-                  >
-                    <select name="takenMedicine">
-                      <option value="">-----</option>
-                      <option
-                        th:each="medicine:${medicines}"
-                        th:value="${medicine.key}"
-                        th:text="${medicine.value}"
-                        th:selected="(${medicine.key} == *{takenMedicine})"
-                      ></option>
-                    </select>
-                  </div>
-                  <span
-                    class="help is-danger"
-                    th:if="${#fields.hasErrors('takenMedicine')}"
-                    th:errors="*{takenMedicine}"
-                  ></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
               <label class="label has-text-grey">
@@ -77,35 +46,6 @@
                     class="help is-danger"
                     th:if="${#fields.hasErrors('takenAt')}"
                     th:errors="*{takenAt}"
-                  ></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="field is-horizontal my-3">
-            <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">量</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control has-icons-right">
-                  <input
-                    class="input is-info is-rounded"
-                    type="number"
-                    name="quantity"
-                    th:value="*{quantity}"
-                    min="0"
-                    step="0.001"
-                    max="10000"
-                    th:errorclass="is-danger"
-                  />
-                  <!-- TODO: 単位を取得して表示する -->
-                  <span class="icon is-small is-right"></span>
-                  <span
-                    class="help is-danger"
-                    th:if="${#fields.hasErrors('quantity')}"
-                    th:errors="*{quantity}"
                   ></span>
                 </div>
               </div>
@@ -213,7 +153,9 @@
                     name="note"
                     placeholder="500文字以内で入力してください。"
                     th:errorclass="is-danger"
-                  >[[*{note}]]</textarea>
+                  >
+[[*{note}]]</textarea
+                  >
                   <span
                     class="help is-danger"
                     th:if="${#fields.hasErrors('note')}"

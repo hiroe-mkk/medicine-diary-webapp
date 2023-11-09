@@ -49,19 +49,6 @@ internal class TakingRecordAdditionControllerTest(@Autowired private val mockMvc
         }
 
         @Test
-        @WithMockAuthenticatedAccount
-        @DisplayName("薬が未登録の場合、最後にリクエストされた画面にリダイレクトする")
-        fun medicineIsNotRegistered_redirectToLastRequestedPage() {
-            //when:
-            val actions = mockMvc.perform(get(PATH)
-                                              .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine")))
-
-            //then:
-            actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/medicine"))
-        }
-
-        @Test
         @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectsToToppagePage() {
             //when:

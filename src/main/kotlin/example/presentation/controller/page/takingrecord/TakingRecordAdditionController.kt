@@ -21,15 +21,8 @@ import java.net.*
 @Controller
 @RequestMapping("/takingrecords/add")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class TakingRecordAdditionController(private val medicineService: MedicineService,
-                                     private val takingRecordService: TakingRecordService,
+class TakingRecordAdditionController(private val takingRecordService: TakingRecordService,
                                      private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("medicines")
-    fun medicines(): Map<String, String> {
-        val medicines = medicineService.findAllMedicineOverviews(userSessionProvider.getUserSession())
-        return medicines.associate { Pair(it.medicineId.value, it.medicineName.value) }
-    }
-
     @ModelAttribute("conditionLevels")
     fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.values()
 
@@ -43,17 +36,9 @@ class TakingRecordAdditionController(private val medicineService: MedicineServic
      * 服用記録追加画面を表示する
      */
     @GetMapping
-    fun displayTakingRecordAdditionPage(@ModelAttribute("medicines") medicines: Map<String, String>,
-                                        lastRequestedPagePath: LastRequestedPagePath?,
+    fun displayTakingRecordAdditionPage(lastRequestedPagePath: LastRequestedPagePath?,
                                         redirectAttributes: RedirectAttributes,
                                         model: Model): String {
-        if (medicines.isEmpty()) {
-            redirectAttributes.addFlashAttribute("resultMessage",
-                                                 ResultMessage.error("服用記録追加リクエストに失敗しました。",
-                                                                     "お薬が1件も登録されていない場合、服用記録を追加することはできません。"))
-            return "redirect:${redirectPath(lastRequestedPagePath)}"
-        }
-
         model.addAttribute("form", TakingRecordEditCommand.initialize())
         return "takingrecord/form"
     }
@@ -78,10 +63,7 @@ class TakingRecordAdditionController(private val medicineService: MedicineServic
                                                  ResultMessage.error("服用記録の追加に失敗しました。"))
         }
 
-        return "redirect:${redirectPath(lastRequestedPagePath)}"
-    }
-
-    private fun redirectPath(lastRequestedPagePath: LastRequestedPagePath?): String {
-        return lastRequestedPagePath?.value ?: "/mypage"
+        val redirectPath = lastRequestedPagePath?.value ?: "/mypage"
+        return "redirect:$redirectPath"
     }
 }

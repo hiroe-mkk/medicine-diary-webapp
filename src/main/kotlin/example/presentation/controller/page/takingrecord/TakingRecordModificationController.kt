@@ -17,15 +17,8 @@ import org.springframework.web.servlet.mvc.support.*
 @Controller
 @RequestMapping("/takingrecords/{takingRecordId}/modify")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class TakingRecordModificationController(private val medicineService: MedicineService,
-                                         private val takingRecordService: TakingRecordService,
+class TakingRecordModificationController(private val takingRecordService: TakingRecordService,
                                          private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("medicines")
-    fun medicines(): Map<String, String> {
-        val medicines = medicineService.findAllMedicineOverviews(userSessionProvider.getUserSession())
-        return medicines.associate { Pair(it.medicineId.value, it.medicineName.value) }
-    }
-
     @ModelAttribute("conditionLevels")
     fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.values()
 
