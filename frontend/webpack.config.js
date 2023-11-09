@@ -14,6 +14,7 @@ module.exports = {
     profileEdit: './src/main/js/profileEdit.js',
     sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
     medicineForm: './src/main/js/medicineForm.js',
+    takingRecordForm: './src/main/js/takingRecordForm.js',
     medicineDetail: './src/main/js/medicineDetail.js',
     medicineOverviews: './src/main/js/medicineOverviews.js',
   },

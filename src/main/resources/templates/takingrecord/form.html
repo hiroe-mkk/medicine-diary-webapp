@@ -6,6 +6,7 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/takingRecordForm.bundle.js}" defer></script>
   </head>
 
   <body>
@@ -26,6 +27,10 @@
           th:action="@{__${executePath}__}"
           th:object="${form}"
         >
+          <taken-medicine
+            th:attr="medicine-id=*{takenMedicine}, quantity=*{quantity}, medicine-id-errors=${#fields.errors('takenMedicine')}, quantity-errors=${#fields.errors('quantity')}"
+          ></taken-medicine>
+
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
               <label class="label has-text-grey">
@@ -54,12 +59,12 @@
 
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">経過観察</label>
+              <label class="label has-text-grey">経過</label>
             </div>
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <div class="notification has-background-white-bis py-3 px-5">
+                  <div class="notification has-background-white-bis py-2 px-4">
                     <div class="field my-3">
                       <label class="label has-text-grey">症状</label>
                       <div class="field-body">
@@ -153,9 +158,7 @@
                     name="note"
                     placeholder="500文字以内で入力してください。"
                     th:errorclass="is-danger"
-                  >
-[[*{note}]]</textarea
-                  >
+                  >[[*{note}]]</textarea>
                   <span
                     class="help is-danger"
                     th:if="${#fields.hasErrors('note')}"
