@@ -2,7 +2,6 @@ package example.domain.model.takingrecord
 
 import example.domain.model.account.*
 import example.domain.model.medicine.*
-import example.domain.shared.exception.*
 import example.domain.shared.type.*
 import java.time.*
 
@@ -35,9 +34,6 @@ class TakingRecord private constructor(val id: TakingRecordId,
                    followUp: FollowUp,
                    note: Note,
                    takenAt: LocalDateTime): TakingRecord {
-            if (takenMedicine.owner.accountId != recorder) // TODO
-                throw OperationNotPermittedException("このお薬の服用記録を追加することはできません。")
-
             return TakingRecord(takingRecordId, recorder, takenMedicine.id, dose, followUp, note, takenAt)
         }
 
@@ -59,9 +55,6 @@ class TakingRecord private constructor(val id: TakingRecordId,
                followUp: FollowUp,
                note: Note,
                takenAt: LocalDateTime) {
-        if (takenMedicine.owner.accountId != recorder) // TODO
-            throw OperationNotPermittedException("このお薬の服用記録に修正することはできません。")
-
         this.takenMedicine = takenMedicine.id
         this.dose = dose
         this.followUp = followUp
