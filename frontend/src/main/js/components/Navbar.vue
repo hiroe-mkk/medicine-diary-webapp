@@ -1,6 +1,9 @@
 <template>
   <nav id="navbar" class="navbar is-fixed-top has-background-info-dark">
     <div class="navbar-brand is-flex is-justify-content-space-between">
+      <a class="navbar-item" href="/">
+        <img :src="logo" alt="Logo" />
+      </a>
       <p
         class="navbar-burger has-text-white"
         :class="{ 'is-active': isOpened }"
@@ -90,6 +93,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import logo from '@main/images/logo_header.png';
 
 const props = defineProps({ isAuthenticated: Boolean, csrf: String });
 
