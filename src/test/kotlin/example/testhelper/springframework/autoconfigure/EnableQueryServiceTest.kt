@@ -11,11 +11,10 @@ import example.infrastructure.query.user.*
 import org.springframework.context.annotation.*
 
 /**
- * MyBatis に関連する構成のみを適用したクエリサービスのテストで利用可能なアノテーション
+ * MyBatis に関連する構成のみを適用したテストで利用可能なアノテーション
  */
-@MyBatisRepositoryTest
-@Import(MyBatisQueryServiceTest.Configuration::class)
-annotation class MyBatisQueryServiceTest {
+@Import(EnableQueryServiceTest.Configuration::class)
+annotation class EnableQueryServiceTest {
     class Configuration(private val takingRecordOverviewMapper: TakingRecordOverviewMapper,
                         private val takingRecordDetailMapper: TakingRecordDetailMapper,
                         private val sharedGroupDetailMapper: SharedGroupDetailMapper,
@@ -23,11 +22,11 @@ annotation class MyBatisQueryServiceTest {
                         private val medicineRepository: MedicineRepository,
                         private val sharedGroupRepository: SharedGroupRepository) {
         @Bean
-        fun takingRecordQueryService(): TakingRecordQueryService {
-            val medicineDomainService = MedicineDomainService(medicineRepository, sharedGroupRepository)
+        fun takingRecordOverviewQueryService(): TakingRecordQueryService {
             return MyBatisTakingRecordQueryService(takingRecordOverviewMapper,
                                                    takingRecordDetailMapper,
-                                                   medicineDomainService)
+                                                   MedicineDomainService(medicineRepository,
+                                                                         sharedGroupRepository))
         }
 
         @Bean

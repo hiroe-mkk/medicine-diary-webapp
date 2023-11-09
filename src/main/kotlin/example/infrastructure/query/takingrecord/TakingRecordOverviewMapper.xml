@@ -10,7 +10,7 @@
             LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
             LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
         WHERE
-            taken_medicine = #{medicineId} AND recorder = #{accountId};
+            taken_medicine = #{medicineId};
     </select>
 
     <select id="findAllByTakenMedicineAndRecorder" resultMap="TakingRecordOverviewResultMap">
@@ -21,7 +21,7 @@
             LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
             LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
         WHERE
-            taken_medicine = #{medicineId} AND recorder = #{accountId}
+            taken_medicine = #{medicineId}
         ORDER BY
             taken_at DESC
         LIMIT

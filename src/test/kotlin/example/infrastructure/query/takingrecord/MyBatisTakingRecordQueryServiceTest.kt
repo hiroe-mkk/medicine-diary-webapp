@@ -40,12 +40,12 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
         }
 
         //when:
-        val actualPage1 = takingRecordQueryService.findTakingRecordDetailsByTakenMedicine(medicine.id,
-                                                                                          userSession,
-                                                                                          PageRequest.of(0, 3))
-        val actualPage2 = takingRecordQueryService.findTakingRecordDetailsByTakenMedicine(medicine.id,
-                                                                                          userSession,
-                                                                                          PageRequest.of(1, 3))
+        val actualPage1 = takingRecordQueryService.findTakingRecordOverviewsByTakenMedicine(medicine.id,
+                                                                                            userSession,
+                                                                                            PageRequest.of(0, 3))
+        val actualPage2 = takingRecordQueryService.findTakingRecordOverviewsByTakenMedicine(medicine.id,
+                                                                                            userSession,
+                                                                                            PageRequest.of(1, 3))
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(2)
@@ -125,21 +125,6 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
             //then:
             val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
             assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(badTakingRecordId)
-        }
-
-        @Test
-        @DisplayName("ユーザーが記録していない服薬記録の場合、服薬記録詳細の取得に失敗する")
-        fun takingRecordIsNotRecordedByUser_gettingTakingRecordDetailFails() {
-            //given:
-            val (anotherAccount, _) = testAccountInserter.insertAccountAndProfile()
-            val takingRecord = testTakingRecordInserter.insert(anotherAccount.id, medicine.id)
-
-            //when:
-            val target: () -> Unit = { takingRecordQueryService.findTakingRecordDetail(takingRecord.id, userSession) }
-
-            //then:
-            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
-            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(takingRecord.id)
         }
     }
 }

@@ -5,10 +5,9 @@ import org.apache.ibatis.annotations.*
 
 @Mapper
 interface TakingRecordOverviewMapper {
-    fun countByTakenMedicineAndRecorder(medicineId: String, accountId: String): Long
+    fun countByTakenMedicineAndRecorder(medicineId: String): Long
 
     fun findAllByTakenMedicineAndRecorder(medicineId: String,
-                                          accountId: String,
                                           pageSize: Int,
                                           offset: Long): MutableList<TakingRecordOverview>
 }
