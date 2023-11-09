@@ -22,7 +22,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.*
 import org.springframework.context.annotation.*
 
 /**
- * MyBatis に関連する構成のみを適用したテストで利用可能なアノテーション
+ * MyBatis に関連する構成のみを適用したリポジトリのテストで利用可能なアノテーション
  */
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 組み込みデータベースへの置き換えを無効化する
@@ -33,11 +33,7 @@ annotation class MyBatisRepositoryTest {
                         private val profileMapper: ProfileMapper,
                         private val medicineMapper: MedicineMapper,
                         private val takingRecordMapper: TakingRecordMapper,
-                        private val takingRecordOverviewMapper: TakingRecordOverviewMapper,
-                        private val takingRecordDetailMapper: TakingRecordDetailMapper,
-                        private val sharedGroupMapper: SharedGroupMapper,
-                        private val sharedGroupDetailMapper: SharedGroupDetailMapper,
-                        private val userMapper: UserMapper) {
+                        private val sharedGroupMapper: SharedGroupMapper) {
         @Bean
         fun accountRepository(): AccountRepository = MyBatisAccountRepository(accountMapper)
 
@@ -52,16 +48,5 @@ annotation class MyBatisRepositoryTest {
 
         @Bean
         fun sharedGroupRepository(): SharedGroupRepository = MyBatisSharedGroupRepository(sharedGroupMapper)
-
-        @Bean
-        fun takingRecordOverviewQueryService(): TakingRecordQueryService {
-            return MyBatisTakingRecordQueryService(takingRecordOverviewMapper, takingRecordDetailMapper)
-        }
-
-        @Bean
-        fun sharedGroupQueryService(): SharedGroupQueryService = MyBatisSharedGroupQueryService(sharedGroupDetailMapper)
-
-        @Bean
-        fun userQueryService(): UserQueryService = MyBatisUserQueryService(userMapper)
     }
 }

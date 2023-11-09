@@ -9,7 +9,7 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
+@MyBatisQueryServiceTest
 internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryService: UserQueryService,
                                            @Autowired private val testAccountInserter: TestAccountInserter) {
     @Test

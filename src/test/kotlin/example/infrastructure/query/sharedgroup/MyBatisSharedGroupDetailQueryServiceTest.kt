@@ -10,7 +10,7 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
+@MyBatisQueryServiceTest
 internal class MyBatisSharedGroupDetailQueryServiceTest(@Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                                         @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                         @Autowired private val testAccountInserter: TestAccountInserter) {

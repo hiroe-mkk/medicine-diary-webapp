@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.*
 import org.springframework.data.domain.*
 import java.time.*
 
-@MyBatisRepositoryTest
+@MyBatisQueryServiceTest
 internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val takingRecordQueryService: TakingRecordQueryService,
                                                    @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
                                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
