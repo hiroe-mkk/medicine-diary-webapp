@@ -2,8 +2,8 @@
   <div
     class="notification py-3 px-5"
     :class="{
-      'has-background-white-bis': !hasErrors,
-      'has-background-danger-light': hasErrors,
+      'has-background-white-bis': errors.length === 0,
+      'has-background-danger-light': errors.length !== 0,
     }"
   >
     <div class="content m-3">
@@ -39,7 +39,7 @@
         追加する
       </button>
     </div>
-    <p class="help is-danger" v-for="error in errors">{{ error }}</p>
+    <span class="help is-danger" v-for="error in errors">{{ error }}</span>
   </div>
 
   <div class="modal" :class="{ 'is-active': isEditModalActive }">
@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { ArrayConverter } from '@main/js/composables/ArrayConverter.js';
 
 const props = defineProps({
@@ -105,7 +105,6 @@ const props = defineProps({
 
 const effects = reactive([]);
 const errors = reactive([]);
-const hasErrors = computed(() => errors.length !== 0);
 
 const isEditModalActive = ref(false);
 const editingEffect = reactive({ value: '', index: 0 });
