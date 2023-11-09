@@ -31,6 +31,15 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * ユーザーの薬概要一覧を取得する
+     */
+    @Transactional(readOnly = true)
+    fun findUserMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
+        val medicines = medicineDomainService.findAllUserMedicines(userSession.accountId)
+        return medicines.sortedByDescending { it.registeredAt }.map { MedicineOverviewDto.from(it) }
+    }
+
+    /**
      * 所有している薬か
      */
     @Transactional(readOnly = true)

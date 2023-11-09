@@ -110,6 +110,40 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                                        medicine1.effects))
             assertThat(actual).containsExactly(*expected)
         }
+
+        @Test
+        @DisplayName("ユーザーの薬概要一覧を取得する")
+        fun findUserMedicineOverviews() {
+            //given:
+            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
+            val medicine1 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
+                                                        registeredAt = localDateTime)
+            val medicine2 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
+                                                        registeredAt = localDateTime.plusDays(1))
+            val medicine3 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
+                                                        registeredAt = localDateTime.plusDays(2))
+
+            //when:
+            val actual = medicineService.findUserMedicineOverviews(userSession)
+
+            //then:
+            val expected = arrayOf(MedicineOverviewDto(medicine3.id,
+                                                       medicine3.medicineName,
+                                                       medicine3.dosageAndAdministration,
+                                                       medicine3.medicineImageURL,
+                                                       medicine3.effects),
+                                   MedicineOverviewDto(medicine2.id,
+                                                       medicine2.medicineName,
+                                                       medicine2.dosageAndAdministration,
+                                                       medicine2.medicineImageURL,
+                                                       medicine2.effects),
+                                   MedicineOverviewDto(medicine1.id,
+                                                       medicine1.medicineName,
+                                                       medicine1.dosageAndAdministration,
+                                                       medicine1.medicineImageURL,
+                                                       medicine1.effects))
+            assertThat(actual).containsExactly(*expected)
+        }
     }
 
     @Nested
