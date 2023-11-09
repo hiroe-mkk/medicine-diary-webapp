@@ -26,4 +26,3 @@ createApp({
     'confirmation-message': ConfirmationMessage,
   },
 }).mount('#medicineDetail');
-g;

@@ -173,9 +173,7 @@
                 name="precautions"
                 placeholder="500文字以内で入力してください。"
                 th:errorclass="is-danger"
-              >
-[[*{precautions}]]</textarea
-              >
+              >[[*{precautions}]]</textarea>
               <span
                 class="help is-danger"
                 th:if="${#fields.hasErrors('precautions')}"
