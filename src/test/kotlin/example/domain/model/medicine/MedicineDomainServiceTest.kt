@@ -225,6 +225,18 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         }
 
         @Test
+        @DisplayName("メンバーの薬一覧を取得する")
+        fun getMembersMedicines() {
+            //when:
+            val actual = medicineDomainService.findAllMembersMedicines(userAccountId)
+
+            //then:
+            assertThat(actual)
+                .extracting("id")
+                .containsExactlyInAnyOrder(memberMedicineWithPublic.id)
+        }
+
+        @Test
         @DisplayName("閲覧可能な薬一覧を取得する")
         fun getViewableMedicines() {
             //when:
