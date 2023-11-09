@@ -10,7 +10,7 @@ import org.springframework.context.annotation.*
 import org.springframework.stereotype.*
 
 /**
- * モックされた TestDataInserter の AutoConfiguration を有効にするアノテーション
+ * TestDataInserter の AutoConfiguration を有効にするアノテーション
  */
 @Import(EnableTestDataInserter.Configuration::class)
 annotation class EnableTestDataInserter {
