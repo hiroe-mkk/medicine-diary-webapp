@@ -147,34 +147,72 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
 
     @Nested
     inner class GetAllMedicines {
-        @Test
-        @DisplayName("ユーザーの薬一覧を取得する")
-        fun getUserMedicines() {
-            //given:
-            val memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        private lateinit var memberUserAccountId: AccountId
+
+        private lateinit var ownedMedicineWithPublic: Medicine
+        private lateinit var ownedMedicineWithPrivate: Medicine
+
+        private lateinit var anotherUserMedicineWithPublic: Medicine
+        private lateinit var anotherUserMedicineWithPrivate: Medicine
+
+        private lateinit var memberMedicineWithPublic: Medicine
+        private lateinit var memberMedicineWithPrivate: Medicine
+
+        private lateinit var participatingSharedGroupMedicine: Medicine
+        private lateinit var nonParticipatingSharedGroupMedicine: Medicine
+
+        @BeforeEach
+        internal fun setUp() {
+            memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
+
             val participatingSharedGroupId = createSharedGroup(userAccountId, memberUserAccountId)
             val nonParticipatingSharedGroupId = createSharedGroup(anotherUserAccountId)
 
-            val ownedMedicineWithPublic =
+            ownedMedicineWithPublic =
                     testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = true)
-            val ownedMedicineWithPrivate =
+            ownedMedicineWithPrivate =
                     testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = false)
-
-            val anotherUserMedicineWithPublic =
+            anotherUserMedicineWithPublic =
                     testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = true)
-            val anotherUserMedicineWithPrivate =
+            anotherUserMedicineWithPrivate =
                     testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = false)
-
-            val memberMedicineWithPublic =
+            memberMedicineWithPublic =
                     testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = true)
-            val memberMedicineWithPrivate =
+            memberMedicineWithPrivate =
                     testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = false)
-
-            val participatingSharedGroupMedicine =
+            participatingSharedGroupMedicine =
                     testMedicineInserter.insert(owner = MedicineOwner.create(participatingSharedGroupId))
-            val nonParticipatingSharedGroupMedicine =
+            nonParticipatingSharedGroupMedicine =
                     testMedicineInserter.insert(owner = MedicineOwner.create(nonParticipatingSharedGroupId))
+        }
 
+        @Test
+        @DisplayName("所有する薬一覧を取得する")
+        fun getOwnedMedicines() {
+            //when:
+            val actual = medicineDomainService.findAllOwnedMedicines(userAccountId)
+
+            //then:
+            assertThat(actual)
+                .extracting("id")
+                .containsExactlyInAnyOrder(ownedMedicineWithPublic.id, ownedMedicineWithPrivate.id)
+        }
+
+        @Test
+        @DisplayName("共有グループの薬一覧を取得する")
+        fun getSharedGroupMedicines() {
+            //when:
+            val actual = medicineDomainService.findAllSharedGroupMedicines(userAccountId)
+
+            //then:
+            assertThat(actual)
+                .extracting("id")
+                .containsExactlyInAnyOrder(participatingSharedGroupMedicine.id)
+        }
+
+        @Test
+        @DisplayName("ユーザーの薬一覧を取得する")
+        fun getUserMedicines() {
             //when:
             val actual = medicineDomainService.findAllUserMedicines(userAccountId)
 
@@ -189,31 +227,6 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         @Test
         @DisplayName("閲覧可能な薬一覧を取得する")
         fun getViewableMedicines() {
-            //given:
-            val memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
-            val participatingSharedGroupId = createSharedGroup(userAccountId, memberUserAccountId)
-            val nonParticipatingSharedGroupId = createSharedGroup(anotherUserAccountId)
-
-            val ownedMedicineWithPublic =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = true)
-            val ownedMedicineWithPrivate =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(userAccountId), isPublic = false)
-
-            val anotherUserMedicineWithPublic =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = true)
-            val anotherUserMedicineWithPrivate =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(anotherUserAccountId), isPublic = false)
-
-            val memberMedicineWithPublic =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = true)
-            val memberMedicineWithPrivate =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(memberUserAccountId), isPublic = false)
-
-            val participatingSharedGroupMedicine =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(participatingSharedGroupId))
-            val nonParticipatingSharedGroupMedicine =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(nonParticipatingSharedGroupId))
-
             //when:
             val actual = medicineDomainService.findAllViewableMedicines(userAccountId)
 
