@@ -39,8 +39,10 @@
         ></resultmessage>
         <resultmessage th:if="${resultMessage==null}"></resultmessage>
       </header>
-      <main class="hero-body has-background-info-light">
-        <div class="container is-widescreen p-3">
+      <main
+        class="hero-body has-background-info-light is-flex is-align-items-flex-start"
+      >
+        <div class="container is-widescreen p-0">
           <div layout:fragment="content"></div>
         </div>
       </main>
