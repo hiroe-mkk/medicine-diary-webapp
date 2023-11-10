@@ -49,15 +49,10 @@
               </span>
             </p>
           </div>
-          <div class="column p-3 is-three-quarters">
+          <div class="column p-3 is-three-quarters" th:if="${!members.isEmpty()}">
             <div
               class="notification has-background-white-bis has-text-left py-3 px-5"
             >
-              <a
-                class="has-text-weight-bold has-text-link"
-                th:href="@{/sharedgroup/management}"
-                >共有グループ</a
-              >
               <div class="is-flex is-align-items-center">
                 <div class="has-text-centered mx-2" th:each="member:${members}">
                   <div class="is-flex is-justify-content-center">
@@ -78,6 +73,18 @@
                     class="has-text-weight-bold has-text-grey-dark m-0 p-0"
                     th:text="${member.username}"
                   ></p>
+                </div>
+                <div class="has-text-centered mx-2">
+                  <a
+                    class="has-text-white-bis"
+                    th:href="@{/sharedgroup/management}"
+                  >
+                    <span
+                      class="icon fas fa-lg is-flex is-align-items-center has-text-link is-clickable ml-3"
+                    >
+                      <i class="fa-solid fa-ellipsis"></i>
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
