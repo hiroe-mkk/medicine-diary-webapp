@@ -52,6 +52,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * ユーザーの薬か
+     */
+    @Transactional(readOnly = true)
+    fun isUserMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
+        return medicineDomainService.findUserMedicine(medicineId, userSession.accountId) != null
+    }
+
+    /**
      * 薬を登録する
      */
     fun registerMedicine(command: MedicineBasicInfoEditCommand,

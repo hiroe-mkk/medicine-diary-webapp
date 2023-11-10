@@ -97,66 +97,74 @@
         th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
       ></taking-records>
 
-      <div class="bottom-fullwidth">
-        <div class="tabs is-fullwidth has-background-info-light">
-          <ul class="m-0">
-            <li>
-              <a class="px-0 py-4" @click="isEditModalActive = true">
-                <span
-                  class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+      <div th:if="${isUserMedicine}" th:remove="tag">
+        <div class="bottom-fullwidth">
+          <div class="tabs is-fullwidth has-background-info-light">
+            <ul class="m-0">
+              <li>
+                <a class="px-0 py-4" @click="isEditModalActive = true">
+                  <span
+                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                  >
+                    <i class="fa-regular fa-pen-to-square"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="px-0 py-4"
+                  @click="activateDeletionConfirmationModal()"
                 >
-                  <i class="fa-regular fa-pen-to-square"></i>
-                </span>
-              </a>
-            </li>
-            <li>
-              <a class="px-0 py-4" @click="activateDeletionConfirmationModal()">
-                <span
-                  class="icon fas fa-2x is-flex is-align-items-center has-text-link"
-                >
-                  <i class="fa-solid fa-trash-can"></i>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="modal" :class="{ 'is-active': isEditModalActive }">
-        <div class="modal-background" @click="isEditModalActive = false"></div>
-        <div class="modal-content is-flex is-justify-content-center">
-          <div class="content">
-            <a
-              class="button is-dark is-fullwidth is-small mb-1"
-              th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
-            >
-              <strong class="mx-6">お薬基本情報を更新する</strong>
-            </a>
-            <button
-              type="button"
-              class="button is-dark is-fullwidth is-small mb-1"
-              @click="activateMedicineImageChangeModal()"
-            >
-              <strong class="mx-6">お薬画像を変更する</strong>
-            </button>
-            <button
-              type="button"
-              class="button is-dark is-fullwidth is-small has-text-danger-dark mb-1"
-              @click="isEditModalActive = false"
-            >
-              <strong class="mx-6">キャンセル</strong>
-            </button>
+                  <span
+                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                  >
+                    <i class="fa-solid fa-trash-can"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
 
-      <confirmation-message
-        ref="confirmationMessage"
-        message="このお薬を削除しますか？"
-        details="服用記録を含む、お薬に関する全ての情報が削除されます。"
-        button-label="削除"
-        th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
-      ></confirmation-message>
+        <div class="modal" :class="{ 'is-active': isEditModalActive }">
+          <div
+            class="modal-background"
+            @click="isEditModalActive = false"
+          ></div>
+          <div class="modal-content is-flex is-justify-content-center">
+            <div class="content">
+              <a
+                class="button is-dark is-fullwidth is-small mb-1"
+                th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
+              >
+                <strong class="mx-6">お薬基本情報を更新する</strong>
+              </a>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateMedicineImageChangeModal()"
+              >
+                <strong class="mx-6">お薬画像を変更する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small has-text-danger-dark mb-1"
+                @click="isEditModalActive = false"
+              >
+                <strong class="mx-6">キャンセル</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <confirmation-message
+          ref="confirmationMessage"
+          message="このお薬を削除しますか？"
+          details="服用記録を含む、お薬に関する全ての情報が削除されます。"
+          button-label="削除"
+          th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
+        ></confirmation-message>
+      </div>
     </div>
   </body>
 </html>
