@@ -60,6 +60,7 @@
     <div
       class="modal"
       :class="{ 'is-active': isTakingRecordDetailModalActive }"
+      v-if="takingRecordDetail.value !== undefined"
     >
       <div
         class="modal-background"
@@ -80,7 +81,7 @@
               <i class="fa-solid fa-book-open"></i>
             </span>
           </p>
-          <div class="block m-3" v-if="takingRecordDetail.hasValue">
+          <div class="block m-3">
             <p class="is-flex is-justify-content-space-between mb-2">
               <strong>お薬</strong>
               <span>
@@ -165,7 +166,6 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { TakingRecordOverviews } from '@main/js/composables/model/TakingRecordOverviews.js';
-import { TakingRecordDetail } from '@main/js/composables/model/TakingRecordDetail.js';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
@@ -182,9 +182,8 @@ const takingRecordOverviews = reactive(
     medicine: props.medicineId,
   })
 );
-
+const takingRecordDetail = reactive({ value: undefined });
 const isTakingRecordDetailModalActive = ref(false);
-const takingRecordDetail = reactive(new TakingRecordDetail());
 
 const resultMessage = ref(null);
 
@@ -199,18 +198,22 @@ function loadTakingRecordOverviews() {
 }
 
 function activateTakingRecordDetailModal(takingRecordId) {
-  takingRecordDetail
-    .load(takingRecordId)
-    .then(() => {
-      isTakingRecordDetailModalActive.value = true;
-    })
-    .catch(() => {
-      resultMessage.value.activate(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  takingRecordDetail.value = undefined;
+
+  HttpRequestClient.submitGetRequest(
+    `/api/takingrecords/${takingRecordId}`
+      .then((data) => {
+        takingRecordDetail.value = data;
+        isTakingRecordDetailModalActive.value = true;
+      })
+      .catch((error) => {
+        resultMessage.value.activate(
+          'ERROR',
+          'エラーが発生しました。',
+          '通信状態をご確認のうえ、再度お試しください。'
+        );
+      })
+  );
 }
 
 function deleteTakingRecord(takingRecordId) {
