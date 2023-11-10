@@ -6,7 +6,7 @@
   <body>
     <div
       class="is-flex is-align-items-center"
-      th:fragment="macro(sharedGroup, isEditable)"
+      th:fragment="macro(sharedGroup, isParticipating)"
     >
       <div
         class="has-text-centered mx-2"
@@ -42,7 +42,7 @@
         <div class="is-flex is-justify-content-center">
           <figure
             class="image is-48x48 is-clickable m-1"
-            th:if="${isEditable}"
+            th:if="${isParticipating}"
             th:attr="'@click'=|activateInvitationCancellationConfirmationModal('${sharedGroup.sharedGroupId}', '*{invitee.accountId}')|"
           >
             <img
@@ -56,7 +56,7 @@
               th:if="*{invitee.profileImageURL == null}"
             />
           </figure>
-          <figure class="image is-48x48 m-1" th:if="${!isEditable}">
+          <figure class="image is-48x48 m-1" th:if="${!isParticipating}">
             <img
               class="is-rounded"
               th:src="${invitee.profileImageURL}"
@@ -74,7 +74,7 @@
           th:text="${invitee.username}"
         ></p>
       </div>
-      <div class="has-text-centered mx-2" th:if="${isEditable}">
+      <div class="has-text-centered mx-2" th:if="${isParticipating}">
         <div
           class="icon fas fa-2x is-flex is-align-items-center has-text-link is-clickable ml-3"
           @click="activateUserSearchModal()"
@@ -94,7 +94,7 @@
         button-label="取り消す"
         path="/sharedgroup/cancel"
         th:attr="csrf=${_csrf.token}"
-        th:if="${isEditable}"
+        th:if="${isParticipating}"
       >
       </confirmation-message>
     </div>
