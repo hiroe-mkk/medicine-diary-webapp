@@ -20,10 +20,8 @@ export class NotificationMessage {
   get color() {
     if (this._type === 'ERROR' || this._type === 'WARNING') {
       return 'is-danger';
-    } else if (this._type === 'INFO') {
-      return 'is-success';
     } else {
-      return 'is-info';
+      return 'is-link';
     }
   }
 

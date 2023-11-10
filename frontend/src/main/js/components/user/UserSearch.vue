@@ -11,7 +11,7 @@
           ></button>
         </div>
         <p
-          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+          class="is-size-5 has-text-weight-bold is-link has-text-centered"
         >
           ユーザー検索
         </p>

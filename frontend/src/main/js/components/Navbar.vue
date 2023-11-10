@@ -5,7 +5,7 @@
         <img :src="logo" alt="Logo" />
       </a>
       <p
-        class="navbar-burger has-text-white"
+        class="navbar-burger has-text-info-light"
         :class="{ 'is-active': isOpened }"
         @click="isOpened = !isOpened"
       >
@@ -18,7 +18,7 @@
     <div class="navbar-menu" :class="{ 'is-active': isOpened }">
       <div class="navbar-end px-3">
         <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-white is-hidden-touch" href="/mypage">
+          <a class="has-text-info-light is-hidden-touch" href="/mypage">
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -36,7 +36,7 @@
           </a>
         </div>
         <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-white is-hidden-touch" href="/medicines">
+          <a class="has-text-info-light is-hidden-touch" href="/medicines">
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -54,7 +54,7 @@
           </a>
         </div>
         <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-white is-hidden-touch" href="/takingrecords/add">
+          <a class="has-text-info-light is-hidden-touch" href="/takingrecords/add">
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -74,13 +74,13 @@
         <div class="navbar-item pb-0" v-if="!props.isAuthenticated">
           <!-- TODO: Google でログイン ボタンに変更する -->
           <a
-            class="button is-small is-rounded has-text-link-dark has-background-white is-hidden-touch"
+            class="button is-small is-rounded has-text-link-dark has-background-info-light is-hidden-touch"
             href="/oauth2/authorization/google"
           >
             <strong>ログイン</strong>
           </a>
           <a
-            class="button is-small is-rounded has-text-white has-background-link-dark is-hidden-desktop"
+            class="button is-small is-rounded has-text-white has-background-info-dark is-hidden-desktop"
             href="/oauth2/authorization/google"
           >
             <strong>ログイン</strong>

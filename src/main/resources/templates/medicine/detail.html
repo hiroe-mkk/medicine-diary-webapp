@@ -44,7 +44,7 @@
             >
               <div class="m-2">
                 <p
-                  class="mb-1 has-text-weight-bold has-text-link-dark has-text-centered"
+                  class="mb-1 has-text-weight-bold has-text-link has-text-centered"
                 >
                   用法・用量
                 </p>
@@ -72,7 +72,7 @@
                 </div>
                 <div th:if="*{!precautions.isBlank()}" th:remove="tag">
                   <p
-                    class="mb-1 has-text-weight-bold has-text-danger-dark has-text-centered"
+                    class="mb-1 has-text-weight-bold has-text-danger has-text-centered"
                   >
                     注意事項
                   </p>
@@ -143,7 +143,7 @@
             </button>
             <button
               type="button"
-              class="button is-dark is-fullwidth is-small has-text-danger mb-1"
+              class="button is-dark is-fullwidth is-small has-text-danger-dark mb-1"
               @click="isEditModalActive = false"
             >
               <strong class="mx-6">キャンセル</strong>

@@ -54,7 +54,7 @@
           ></button>
         </div>
         <p
-          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+          class="is-size-5 has-text-weight-bold has-text-link has-text-centered"
         >
           効能
         </p>

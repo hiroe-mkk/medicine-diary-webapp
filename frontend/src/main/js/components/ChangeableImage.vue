@@ -31,7 +31,7 @@
           ></button>
         </div>
         <div
-          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+          class="is-size-5 has-text-weight-bold has-text-link has-text-centered"
         >
           {{ `${props.imageName}を変更する` }}
         </div>

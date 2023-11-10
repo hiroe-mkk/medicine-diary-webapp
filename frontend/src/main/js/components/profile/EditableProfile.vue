@@ -31,8 +31,8 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateUsernameChangeModal()"
       >
-        <strong class="has-text-grey-dark">ユーザー名</strong>
-        <span class="icon is-small has-text-grey-dark">
+        <strong class="has-text-grey">ユーザー名</strong>
+        <span class="icon is-small has-text-link">
           <i class="fa-solid fa-greater-than"></i>
         </span>
       </div>
@@ -40,8 +40,8 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateProfileImageChangeModal()"
       >
-        <strong class="has-text-grey-dark">プロフィール画像</strong>
-        <span class="icon is-small has-text-grey-dark">
+        <strong class="has-text-grey">プロフィール画像</strong>
+        <span class="icon is-small has-text-link">
           <i class="fa-solid fa-greater-than"></i>
         </span>
       </div>
@@ -63,7 +63,7 @@
           ></button>
         </div>
         <p
-          class="is-size-5 has-text-weight-bold has-text-link-dark has-text-centered"
+          class="is-size-5 has-text-weight-bold has-text-link has-text-centered"
         >
           ユーザー名を変更する
         </p>

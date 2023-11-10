@@ -32,7 +32,7 @@
         </p>
         <p class="m-0">
           <span> {{ takingRecordOverview.takenAt }} </span>
-          <span class="icon is-small ml-2">
+          <span class="icon is-small ml-2 has-text-link">
             <i class="fa-solid fa-greater-than"></i>
           </span>
         </p>
