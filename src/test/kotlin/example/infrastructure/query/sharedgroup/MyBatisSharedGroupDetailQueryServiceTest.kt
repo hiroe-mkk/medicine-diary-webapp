@@ -2,10 +2,13 @@ package example.infrastructure.query.sharedgroup
 
 import example.application.query.shared.type.*
 import example.application.query.sharedgroup.*
+import example.application.shared.usersession.*
+import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import okhttp3.internal.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -14,17 +17,31 @@ import org.springframework.beans.factory.annotation.*
 internal class MyBatisSharedGroupDetailQueryServiceTest(@Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                                         @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                         @Autowired private val testAccountInserter: TestAccountInserter) {
+    private lateinit var user: Profile
+    private lateinit var userSession: UserSession
+
+    @BeforeEach
+    internal fun setUp() {
+        user = testAccountInserter.insertAccountAndProfile().second
+        userSession = UserSessionFactory.create(user.accountId)
+    }
+
     @Test
     @DisplayName("共有グループを取得する")
     fun getSharedGroups() {
         //given:
-        val (userAccount, userProfile) = testAccountInserter.insertAccountAndProfile()
-        val userSession = UserSessionFactory.create(userAccount.id)
-        val (anotherUser1Account, anotherUser1Profile) = testAccountInserter.insertAccountAndProfile()
-        val participatingSharedGroup = testSharedGroupInserter.insert(members = setOf(userAccount.id,
-                                                                                      anotherUser1Account.id))
-        val (anotherUser2Account, anotherUser2Profile) = testAccountInserter.insertAccountAndProfile()
-        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(anotherUser2Account.id),
+        val (_, participatingSharedGroupMember1) = testAccountInserter.insertAccountAndProfile()
+        val (_, participatingSharedGroupMember2) = testAccountInserter.insertAccountAndProfile()
+        val participatingSharedGroup =
+                testSharedGroupInserter.insert(members = setOf(user.accountId,
+                                                               participatingSharedGroupMember1.accountId,
+                                                               participatingSharedGroupMember2.accountId),
+                                               invitees = emptySet())
+
+        val (_, invitedSharedGroupMember1) = testAccountInserter.insertAccountAndProfile()
+        val (_, invitedSharedGroupMember2) = testAccountInserter.insertAccountAndProfile()
+        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(invitedSharedGroupMember1.accountId,
+                                                                                invitedSharedGroupMember2.accountId),
                                                                 invitees = setOf(userSession.accountId))
 
         //when:
@@ -32,22 +49,50 @@ internal class MyBatisSharedGroupDetailQueryServiceTest(@Autowired private val s
 
         //then:
         assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id)
-        assertThat(actual.participatingSharedGroup?.members).containsExactlyInAnyOrder(User(userProfile.accountId,
-                                                                                            userProfile.username,
-                                                                                            userProfile.profileImageURL),
-                                                                                       User(anotherUser1Profile.accountId,
-                                                                                            anotherUser1Profile.username,
-                                                                                            anotherUser1Profile.profileImageURL))
+        assertThat(actual.participatingSharedGroup?.members)
+            .extracting("accountId")
+            .containsExactlyInAnyOrder(user.accountId,
+                                       participatingSharedGroupMember1.accountId,
+                                       participatingSharedGroupMember2.accountId)
         assertThat(actual.participatingSharedGroup?.invitees).isEmpty()
+
+
         assertThat(actual.invitedSharedGroups)
             .extracting("sharedGroupId")
-            .containsExactlyInAnyOrder(invitedSharedGroup.id)
-        val expectedInvitedSharedGroup = actual.invitedSharedGroups.find { it.sharedGroupId == invitedSharedGroup.id }!!
-        assertThat(expectedInvitedSharedGroup.members).containsExactlyInAnyOrder(User(anotherUser2Profile.accountId,
-                                                                                      anotherUser2Profile.username,
-                                                                                      anotherUser2Profile.profileImageURL))
-        assertThat(expectedInvitedSharedGroup.invitees).containsExactlyInAnyOrder(User(userProfile.accountId,
-                                                                                       userProfile.username,
-                                                                                       userProfile.profileImageURL))
+            .containsExactly(invitedSharedGroup.id)
+        assertThat(actual.invitedSharedGroups.first().members)
+            .extracting("accountId")
+            .containsExactlyInAnyOrder(invitedSharedGroupMember1.accountId,
+                                       invitedSharedGroupMember2.accountId)
+        assertThat(actual.invitedSharedGroups.first().invitees)
+            .extracting("accountId")
+            .containsExactly(user.accountId)
+
+        val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == user.accountId }
+        assertThat(actualUser).isEqualTo(User(user.accountId,
+                                              user.username,
+                                              user.profileImageURL))
+    }
+
+    @Test
+    @DisplayName("参加している共有グループのメンバーを取得する")
+    fun getParticipatingSharedGroupMembers() {
+        val (_, member1) = testAccountInserter.insertAccountAndProfile()
+        val (_, member2) = testAccountInserter.insertAccountAndProfile()
+        val (_, invitee1) = testAccountInserter.insertAccountAndProfile()
+        testSharedGroupInserter.insert(members = setOf(user.accountId, member1.accountId, member2.accountId),
+                                       invitees = setOf(invitee1.accountId))
+
+        //when:
+        val actual = sharedGroupQueryService.findParticipatingSharedGroupMembers(userSession)
+
+        //then:
+        assertThat(actual)
+            .extracting("accountId")
+            .containsExactlyInAnyOrder(user.accountId, member1.accountId, member2.accountId)
+        val actualUser = actual.find { it.accountId == user.accountId }
+        assertThat(actualUser).isEqualTo(User(user.accountId,
+                                              user.username,
+                                              user.profileImageURL))
     }
 }

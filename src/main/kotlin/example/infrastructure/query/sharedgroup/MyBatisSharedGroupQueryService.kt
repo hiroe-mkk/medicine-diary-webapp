@@ -13,18 +13,26 @@ class MyBatisSharedGroupQueryService(private val sharedGroupDetailMapper: Shared
     override fun findSharedGroupDetails(userSession: UserSession): SharedGroups {
         val sharedGroups = sharedGroupDetailMapper.findAllByAccountId(userSession.accountId.value)
             .map { it.toSharedGroupDetail() }
-        val participatingSharedGroup = getParticipatingSharedGroup(sharedGroups, userSession)
-        val invitedSharedGroup = invitedSharedGroupDetails(participatingSharedGroup, sharedGroups).toSet()
+        val participatingSharedGroup = extractingParticipatingSharedGroup(sharedGroups, userSession)
+        val invitedSharedGroup = invitedSharedGroupDetails(participatingSharedGroup, sharedGroups)
         return SharedGroups(participatingSharedGroup, invitedSharedGroup)
     }
 
-    private fun getParticipatingSharedGroup(sharedGroups: Collection<SharedGroupDetail>,
-                                            userSession: UserSession): SharedGroupDetail? {
+    override fun findParticipatingSharedGroupMembers(userSession: UserSession): Set<User> {
+        return sharedGroupDetailMapper.findAllParticipatingSharedGroupMembersByAccountId(userSession.accountId.value)
+    }
+
+    private fun extractingParticipatingSharedGroup(sharedGroups: Collection<SharedGroupDetail>,
+                                                   userSession: UserSession): SharedGroupDetail? {
         return sharedGroups.find { it.members.map(User::accountId).contains(userSession.accountId) }
     }
 
     private fun invitedSharedGroupDetails(participatingSharedGroup: SharedGroupDetail?,
-                                          sharedGroups: Collection<SharedGroupDetail>): Collection<SharedGroupDetail> {
-        return if (participatingSharedGroup == null) sharedGroups else sharedGroups - participatingSharedGroup
+                                          sharedGroups: Collection<SharedGroupDetail>): Set<SharedGroupDetail> {
+        return if (participatingSharedGroup == null) {
+            sharedGroups.toSet()
+        } else {
+            (sharedGroups - participatingSharedGroup).toSet()
+        }
     }
 }
