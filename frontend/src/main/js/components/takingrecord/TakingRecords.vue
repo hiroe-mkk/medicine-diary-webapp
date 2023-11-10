@@ -50,7 +50,7 @@
         <button
           class="button is-small is-ghost"
           type="button"
-          @click="loadTakingRecordOverviews()"
+          @click="loadMoreTakingRecordOverviews()"
         >
           さらに表示する
         </button>
@@ -165,7 +165,10 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
-import { TakingRecordOverviews } from '@main/js/composables/model/TakingRecordOverviews.js';
+import {
+  TakingRecordOverviews,
+  Filter,
+} from '@main/js/composables/model/TakingRecordOverviews.js';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
@@ -177,22 +180,20 @@ const props = defineProps({
   csrf: String,
 });
 
-const takingRecordOverviews = reactive(
-  new TakingRecordOverviews({
-    medicine: props.medicineId,
-  })
-);
+const takingRecordOverviews = reactive(new TakingRecordOverviews());
 const takingRecordDetail = reactive({ value: undefined });
 const isTakingRecordDetailModalActive = ref(false);
 
 const resultMessage = ref(null);
 
 onMounted(() => {
-  loadTakingRecordOverviews();
+  takingRecordOverviews.load(new Filter(props.medicineId)).catch(() => {
+    resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
+  });
 });
 
-function loadTakingRecordOverviews() {
-  takingRecordOverviews.load().catch(() => {
+function loadMoreTakingRecordOverviews() {
+  takingRecordOverviews.loadMore().catch(() => {
     resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
   });
 }
@@ -206,7 +207,7 @@ function activateTakingRecordDetailModal(takingRecordId) {
         takingRecordDetail.value = data;
         isTakingRecordDetailModalActive.value = true;
       })
-      .catch((error) => {
+      .catch(() => {
         resultMessage.value.activate(
           'ERROR',
           'エラーが発生しました。',

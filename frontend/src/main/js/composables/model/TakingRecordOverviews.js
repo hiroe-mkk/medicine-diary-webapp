@@ -1,12 +1,13 @@
-import { TakingRecordDAO } from '@main/js/composables/TakingRecordDAO.js';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 
 export class TakingRecordOverviews {
-  constructor(filter) {
+  constructor() {
+    this._filter = undefined;
+    this._idToTakingRecordOverview = {};
+
     this._page = 0;
     this._sizePerPage = 10;
     this._totalPages = 0;
-    this._filter = filter;
-    this._idToTakingRecordOverview = {};
   }
 
   get values() {
@@ -21,22 +22,86 @@ export class TakingRecordOverviews {
     return this._page < this._totalPages;
   }
 
-  async load() {
-    const result = await TakingRecordDAO.findTakingRecordOverviews(
-      this._page,
-      this._sizePerPage,
-      this._filter
-    );
-    result.takingRecordOverviews.forEach((takingRecordOverview) => {
-      this._idToTakingRecordOverview[takingRecordOverview.takingRecordId] =
-        takingRecordOverview;
-    });
+  async load(filter) {
+    this._filter = filter.copy();
+    this._idToTakingRecordOverview = {};
 
-    this._page++;
-    this._totalPages = result.totalPages;
+    this._page = 0;
+    this._sizePerPage = 10;
+    this._totalPages = 0;
+
+    this.loadMore();
+  }
+
+  async loadMore() {
+    const params = this._filter.createParams();
+    params.append('page', this._page);
+    params.append('size', this._sizePerPage);
+
+    HttpRequestClient.submitGetRequest(
+      '/api/takingrecords?' + params.toString()
+    ).then((data) => {
+      data.takingRecordOverviews.forEach((takingRecordOverview) => {
+        this._idToTakingRecordOverview[takingRecordOverview.takingRecordId] =
+          takingRecordOverview;
+      });
+
+      this._page++;
+      this._totalPages = data.totalPages;
+    });
   }
 
   delete(takingRecordId) {
     delete this._idToTakingRecordOverview[takingRecordId];
+  }
+}
+
+export class Filter {
+  constructor() {
+    this._medicine = undefined;
+    this._members = [];
+    this._start = undefined;
+    this._end = undefined;
+  }
+
+  changeMedicine(medicine) {
+    this._medicine = medicine;
+  }
+
+  addMember(member) {
+    this._members.push(member);
+  }
+
+  removeMember(member) {
+    this._members = this._members.filter((element) => element !== member);
+  }
+
+  changeStart(start) {
+    this._start = start;
+  }
+
+  changeEnd(end) {
+    this._end = end;
+  }
+
+  copy() {
+    const copiedFilter = new Filter();
+    copiedFilter._medicine = this._medicine;
+    copiedFilter._members = [...this._members];
+    copiedFilter._start = this._start;
+    copiedFilter._end = this._end;
+    return copiedFilter;
+  }
+
+  createParams() {
+    const params = new URLSearchParams();
+    if (this._medicine !== undefined) params.append('medicine', this._medicine);
+    this._members.forEach((member) => {
+      params.append('members', member);
+    });
+    if (this._start !== undefined) params.append('start', this._start);
+    if (this._end !== undefined) params.append('end', this.end);
+
+    return params;
   }
 }
