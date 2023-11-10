@@ -27,8 +27,8 @@ class MypageController(private val profileService: ProfileService,
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
 
-        val sharedGroups = sharedGroupQueryService.findSharedGroupDetails(userSession)
-        model.addAttribute("participatingSharedGroup", sharedGroups.participatingSharedGroup)
+        val members = sharedGroupQueryService.findParticipatingSharedGroupMembers(userSession)
+        model.addAttribute("members", members - userSession)
         return "mypage"
     }
 }

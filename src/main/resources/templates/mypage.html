@@ -49,10 +49,7 @@
               </span>
             </p>
           </div>
-          <div
-            class="column p-3 is-three-quarters"
-            th:if="${participatingSharedGroup != null}"
-          >
+          <div class="column p-3 is-three-quarters">
             <div
               class="notification has-background-white-bis has-text-left py-3 px-5"
             >
@@ -61,9 +58,28 @@
                 th:href="@{/sharedgroup/management}"
                 >共有グループ</a
               >
-              <div
-                th:replace="~{fragments/sharedGroup::macro(${participatingSharedGroup}, 'false')}"
-              ></div>
+              <div class="is-flex is-align-items-center">
+                <div class="has-text-centered mx-2" th:each="member:${members}">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-48x48 m-1">
+                      <img
+                        class="is-rounded"
+                        th:src="${member.profileImageURL}"
+                        th:if="*{member.profileImageURL != null}"
+                      />
+                      <img
+                        class="is-rounded"
+                        :src="noProfileImage"
+                        th:if="*{member.profileImageURL == null}"
+                      />
+                    </figure>
+                  </div>
+                  <p
+                    class="has-text-weight-bold has-text-grey-dark m-0 p-0"
+                    th:text="${member.username}"
+                  ></p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
