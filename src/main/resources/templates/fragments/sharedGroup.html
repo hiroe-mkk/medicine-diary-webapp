@@ -12,7 +12,9 @@
         class="has-text-centered mx-2"
         th:each="member:${sharedGroup.members}"
       >
-        <p class="m-0">　</p>
+        <p class="is-size-7 m-0" th:if="${!sharedGroup.invitees.isEmpty()}">
+          　
+        </p>
         <div class="is-flex is-justify-content-center">
           <figure class="image is-48x48 m-1">
             <img
@@ -28,7 +30,7 @@
           </figure>
         </div>
         <p
-          class="has-text-weight-bold has-text-grey-dark m-0"
+          class="has-text-weight-bold has-text-grey-dark m-0 p-0"
           th:text="${member.username}"
         ></p>
       </div>
