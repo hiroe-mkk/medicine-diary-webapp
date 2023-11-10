@@ -2,26 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.query.takingrecord.TakingRecordOverviewMapper">
-    <select id="countByTakenMedicineAndRecorder" resultType="_long">
+    <select id="countByAccountIdsAndMedicineIdsAndRecorderAt" resultType="_long">
         SELECT
             COUNT(*)
         FROM
-            taking_records
-            LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
-            LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
+            <include refid="AllTables"/>
         WHERE
-            taken_medicine = #{medicineId};
+            <include refid="Filtering"/>;
     </select>
 
-    <select id="findAllByTakenMedicineAndRecorder" resultMap="TakingRecordOverviewResultMap">
+    <select id="findAllByAccountIdsAndMedicineIdsAndRecorderAt" resultMap="TakingRecordOverviewResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
-            taking_records
-            LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
-            LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
+            <include refid="AllTables"/>
         WHERE
-            taken_medicine = #{medicineId}
+            <include refid="Filtering"/>
         ORDER BY
             taken_at DESC
         LIMIT
@@ -32,6 +28,7 @@
 
     <sql id="AllColumns">
         taking_records.taking_record_id AS taking_record_id,
+        taking_records.recorder AS recorder,
         taking_records.before_taking AS before_taking,
         taking_records.after_taking AS after_taking,
         taking_records.taken_at AS taken_at,
@@ -41,6 +38,32 @@
         profiles.username,
         profiles.profile_image_url_endpoint,
         profiles.profile_image_url_path
+    </sql>
+
+    <sql id="AllTables">
+        taking_records
+        LEFT OUTER JOIN medicines ON taking_records.taken_medicine = medicines.medicine_id
+        LEFT OUTER JOIN profiles ON taking_records.recorder = profiles.account_id
+    </sql>
+
+    <sql id="Filtering">
+        <foreach collection="accountIds" item="accountId" open="recorder IN (" separator="," close=")">
+              #{accountId}
+        </foreach>
+        <foreach collection="medicineIds" item="medicineId" open="AND medicine_id IN (" separator="," close=")">
+              #{medicineId}
+        </foreach>
+        <choose>
+            <when test="start != null and end == null">
+                AND DATE(taken_at) <![CDATA[ >= ]]> #{start}
+            </when>
+            <when test="start == null and end != null">
+                AND DATE(taken_at) <![CDATA[ <= ]]> #{end}
+            </when>
+            <when test="start != null and end != null">
+                AND DATE(taken_at) #{start} between #{end}
+            </when>
+        </choose>
     </sql>
 
     <resultMap id="TakingRecordOverviewResultMap" type="example.application.query.takingrecord.TakingRecordOverview">

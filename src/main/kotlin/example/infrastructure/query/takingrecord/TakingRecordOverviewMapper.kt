@@ -2,12 +2,19 @@ package example.infrastructure.query.takingrecord
 
 import example.application.query.takingrecord.*
 import org.apache.ibatis.annotations.*
+import java.time.*
 
 @Mapper
 interface TakingRecordOverviewMapper {
-    fun countByTakenMedicineAndRecorder(medicineId: String): Long
+    fun countByAccountIdsAndMedicineIdsAndRecorderAt(accountIds: List<String>,
+                                                     medicineIds: List<String>,
+                                                     start: LocalDate?,
+                                                     end: LocalDate?): Long
 
-    fun findAllByTakenMedicineAndRecorder(medicineId: String,
-                                          pageSize: Int,
-                                          offset: Long): MutableList<TakingRecordOverview>
+    fun findAllByAccountIdsAndMedicineIdsAndRecorderAt(accountIds: List<String>,
+                                                       medicineIds: List<String>,
+                                                       start: LocalDate?,
+                                                       end: LocalDate?,
+                                                       pageSize: Int,
+                                                       offset: Long): List<TakingRecordOverview>
 }

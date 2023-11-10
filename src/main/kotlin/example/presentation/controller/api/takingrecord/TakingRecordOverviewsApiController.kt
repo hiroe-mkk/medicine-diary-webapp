@@ -22,9 +22,10 @@ class TakingRecordOverviewsApiController(private val takingRecordQueryService: T
     fun getTakingRecordOverviews(@RequestParam(name = "medicineid", required = true) medicineId: MedicineId,
                                  @PageableDefault(page = 0,
                                                   size = 10) pageable: Pageable): JSONTakingRecordOverviewsResponse {
-        val takingRecordOverviews = takingRecordQueryService.findTakingRecordOverviewsByTakenMedicine(medicineId,
-                                                                                                      userSessionProvider.getUserSession(),
-                                                                                                      pageable)
+        val userSession = userSessionProvider.getUserSession()
+        val filter = TakingRecordOverviewsFilter(medicineId, emptySet(), null, null)
+        val takingRecordOverviews =
+                takingRecordQueryService.findTakingRecordOverviewsPage(userSession, filter, pageable)
         return JSONTakingRecordOverviewsResponse.from(takingRecordOverviews)
     }
 }
