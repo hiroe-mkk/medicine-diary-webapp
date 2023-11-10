@@ -1,6 +1,7 @@
 package example.application.service.medicine
 
 import example.application.shared.usersession.*
+import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
@@ -21,7 +22,8 @@ import java.time.*
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                    @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
-                                   @Autowired private val testMedicineInserter: TestMedicineInserter) {
+                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                   @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
     private val medicineDomainService: MedicineDomainService =
             MedicineDomainService(medicineRepository, sharedGroupRepository)
@@ -79,70 +81,55 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     inner class GetMedicineOverviewsTest {
         @Test
         @DisplayName("薬概要一覧を取得する")
-        fun findAllMedicineOverviews() {
+        fun findMedicineOverviews() {
             //given:
-            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-            val medicine1 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
-                                                        registeredAt = localDateTime)
-            val medicine2 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
-                                                        registeredAt = localDateTime.plusDays(1))
-            val medicine3 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
-                                                        registeredAt = localDateTime.plusDays(2))
+            val memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
+            val sharedGroupId =
+                    testSharedGroupInserter.insert(members = setOf(userSession.accountId, memberUserAccountId)).id
+            val (ownedMedicine1, ownedMedicine2, ownedMedicine3) =
+                    createMedicines(MedicineOwner.create(userSession.accountId))
+            val (sharedGroupMedicine1, sharedGroupMedicine2, sharedGroupMedicine3) =
+                    createMedicines(MedicineOwner.create(sharedGroupId))
+            val (memberMedicine1, memberMedicine2, memberMedicine3) =
+                    createMedicines(MedicineOwner.create(memberUserAccountId))
 
             //when:
-            val actual = medicineService.findAllMedicineOverviews(userSession)
+            val actual = medicineService.findMedicineOverviews(userSession)
 
             //then:
-            val expected = arrayOf(MedicineOverviewDto(medicine3.id,
-                                                       medicine3.medicineName,
-                                                       medicine3.dosageAndAdministration,
-                                                       medicine3.medicineImageURL,
-                                                       medicine3.effects),
-                                   MedicineOverviewDto(medicine2.id,
-                                                       medicine2.medicineName,
-                                                       medicine2.dosageAndAdministration,
-                                                       medicine2.medicineImageURL,
-                                                       medicine2.effects),
-                                   MedicineOverviewDto(medicine1.id,
-                                                       medicine1.medicineName,
-                                                       medicine1.dosageAndAdministration,
-                                                       medicine1.medicineImageURL,
-                                                       medicine1.effects))
-            assertThat(actual).containsExactly(*expected)
+            assertThat(actual.ownedMedicines).extracting("medicineId")
+                .containsExactly(ownedMedicine3.id, ownedMedicine2.id, ownedMedicine1.id)
+            assertThat(actual.sharedGroupMedicines).extracting("medicineId")
+                .containsExactly(sharedGroupMedicine3.id, sharedGroupMedicine2.id, sharedGroupMedicine1.id)
+            assertThat(actual.membersMedicines).extracting("medicineId")
+                .containsExactly(memberMedicine3.id, memberMedicine2.id, memberMedicine1.id)
         }
 
         @Test
         @DisplayName("ユーザーの薬概要一覧を取得する")
         fun findUserMedicineOverviews() {
             //given:
-            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-            val medicine1 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
-                                                        registeredAt = localDateTime)
-            val medicine2 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
-                                                        registeredAt = localDateTime.plusDays(1))
-            val medicine3 = testMedicineInserter.insert(owner = MedicineOwner.create(userSession.accountId),
-                                                        registeredAt = localDateTime.plusDays(2))
+            val (medicine1, medicine2, medicine3) = createMedicines(MedicineOwner.create(userSession.accountId))
 
             //when:
             val actual = medicineService.findUserMedicineOverviews(userSession)
 
             //then:
-            val expected = arrayOf(MedicineOverviewDto(medicine3.id,
-                                                       medicine3.medicineName,
-                                                       medicine3.dosageAndAdministration,
-                                                       medicine3.medicineImageURL,
-                                                       medicine3.effects),
-                                   MedicineOverviewDto(medicine2.id,
-                                                       medicine2.medicineName,
-                                                       medicine2.dosageAndAdministration,
-                                                       medicine2.medicineImageURL,
-                                                       medicine2.effects),
-                                   MedicineOverviewDto(medicine1.id,
-                                                       medicine1.medicineName,
-                                                       medicine1.dosageAndAdministration,
-                                                       medicine1.medicineImageURL,
-                                                       medicine1.effects))
-            assertThat(actual).containsExactly(*expected)
+            assertThat(actual).extracting("medicineId").containsExactly(medicine3.id, medicine2.id, medicine1.id)
+        }
+
+        private fun createMedicines(medicineOwner: MedicineOwner): Triple<Medicine, Medicine, Medicine> {
+            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
+            val medicine1 = testMedicineInserter.insert(owner = medicineOwner,
+                                                        registeredAt = localDateTime,
+                                                        isPublic = true)
+            val medicine2 = testMedicineInserter.insert(owner = medicineOwner,
+                                                        registeredAt = localDateTime.plusDays(1),
+                                                        isPublic = true)
+            val medicine3 = testMedicineInserter.insert(owner = medicineOwner,
+                                                        registeredAt = localDateTime.plusDays(2),
+                                                        isPublic = true)
+            return Triple(medicine1, medicine2, medicine3)
         }
     }
 

@@ -25,9 +25,13 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬概要一覧を取得する
      */
     @Transactional(readOnly = true)
-    fun findAllMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
-        val medicines = medicineDomainService.findAllUserMedicines(userSession.accountId)
-        return medicines.sortedByDescending { it.registeredAt }.map { MedicineOverviewDto.from(it) }
+    fun findMedicineOverviews(userSession: UserSession): MedicineOverviews {
+        val ownedMedicines = medicineDomainService.findAllOwnedMedicines(userSession.accountId)
+        val sharedGroupMedicines = medicineDomainService.findAllSharedGroupMedicines(userSession.accountId)
+        val membersMedicines = medicineDomainService.findAllMembersMedicines(userSession.accountId)
+        return MedicineOverviews(convertToSortedDtoList(ownedMedicines),
+                                 convertToSortedDtoList(sharedGroupMedicines),
+                                 convertToSortedDtoList(membersMedicines))
     }
 
     /**
@@ -36,7 +40,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     @Transactional(readOnly = true)
     fun findUserMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
         val medicines = medicineDomainService.findAllUserMedicines(userSession.accountId)
-        return medicines.sortedByDescending { it.registeredAt }.map { MedicineOverviewDto.from(it) }
+        return convertToSortedDtoList(medicines)
     }
 
     /**
@@ -102,5 +106,9 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                                                      userSession: UserSession): Medicine {
         return medicineDomainService.findUserMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
+    }
+
+    private fun convertToSortedDtoList(medicines: Set<Medicine>): List<MedicineOverviewDto> {
+        return medicines.sortedByDescending { it.registeredAt }.map { MedicineOverviewDto.from(it) }
     }
 }

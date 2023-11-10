@@ -93,11 +93,9 @@
         </div>
       </div>
 
-      <div class="container is-max-desktop p-3">
-        <taking-records
-          th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
-        ></taking-records>
-      </div>
+      <taking-records
+        th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
+      ></taking-records>
 
       <div class="bottom-fullwidth">
         <div class="tabs is-fullwidth has-background-info-light">

@@ -5,6 +5,7 @@ createApp({
   data() {
     return {
       noMedicineImage: noMedicineImage,
+      type: 'OWNED',
     };
   },
 }).mount('#medicineOverviews');
