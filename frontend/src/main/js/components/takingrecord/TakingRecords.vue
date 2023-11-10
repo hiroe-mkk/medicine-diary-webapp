@@ -3,7 +3,7 @@
     <p class="icon-text is-size-4 is-flex is-justify-content-center">
       <strong class="has-text-grey-dark">服用記録</strong>
       <span class="icon has-text-grey-dark mx-2">
-        <i class="fa-regular fa-clipboard"></i>
+        <i class="fa-solid fa-book-open"></i>
       </span>
     </p>
   </div>
@@ -70,7 +70,7 @@
         <p class="icon-text is-size-5 is-flex is-justify-content-center">
           <strong class="has-text-grey-dark">服用記録</strong>
           <span class="icon has-text-grey-dark mx-2">
-            <i class="fa-regular fa-clipboard"></i>
+            <i class="fa-solid fa-book-open"></i>
           </span>
         </p>
         <div class="block m-3" v-if="takingRecordDetail.hasValue">
