@@ -179,7 +179,7 @@ const props = defineProps({
 
 const takingRecordOverviews = reactive(
   new TakingRecordOverviews({
-    medicineid: props.medicineId,
+    medicine: props.medicineId,
   })
 );
 

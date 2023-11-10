@@ -8,6 +8,7 @@ import org.springframework.data.web.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
+import java.time.*
 
 @Controller
 @RequestMapping("/api/takingrecords")
@@ -16,16 +17,16 @@ class TakingRecordOverviewsApiController(private val takingRecordQueryService: T
     /**
      * 服用記録概要一覧を取得する
      */
-    @GetMapping(params = ["medicineid"])
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getTakingRecordOverviews(@RequestParam(name = "medicineid", required = true) medicineId: MedicineId,
+    fun getTakingRecordOverviews(takingRecordOverviewsFilter: TakingRecordOverviewsFilter,
                                  @PageableDefault(page = 0,
                                                   size = 10) pageable: Pageable): JSONTakingRecordOverviewsResponse {
         val userSession = userSessionProvider.getUserSession()
-        val filter = TakingRecordOverviewsFilter(medicineId, emptySet(), null, null)
-        val takingRecordOverviews =
-                takingRecordQueryService.findTakingRecordOverviewsPage(userSession, filter, pageable)
+        val takingRecordOverviews = takingRecordQueryService.findTakingRecordOverviewsPage(userSession,
+                                                                                           takingRecordOverviewsFilter,
+                                                                                           pageable)
         return JSONTakingRecordOverviewsResponse.from(takingRecordOverviews)
     }
 }

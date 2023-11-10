@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @ControllerTest
 internal class TakingRecordOverviewsApiControllerTest(@Autowired private val mockMvc: MockMvc,
                                                       @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                      @Autowired private val testAccountInserter: TestAccountInserter,
+                                                      @Autowired private val sharedGroupInserter: TestSharedGroupInserter,
                                                       @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/takingrecords"
@@ -31,10 +33,16 @@ internal class TakingRecordOverviewsApiControllerTest(@Autowired private val moc
     fun getTakingRecordOverviews() {
         //given:
         val userSession = userSessionProvider.getUserSession()
+        val member = testAccountInserter.insertAccountAndProfile().second
+        sharedGroupInserter.insert(members = setOf(userSession.accountId, member.accountId))
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:
-        val actions = mockMvc.perform(get("${PATH}?medicineid=${medicine.id.value}"))
+        val actions = mockMvc.perform(get(PATH)
+                                          .param("medicine", medicine.id.value)
+                                          .param("members", userSession.accountId.value)
+                                          .param("members", member.accountId.value)
+                                          .param("start", medicine.registeredAt.toLocalDate().toString()))
 
         //then:
         actions.andExpect(status().isOk)
@@ -44,11 +52,8 @@ internal class TakingRecordOverviewsApiControllerTest(@Autowired private val moc
     @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
-        //given:
-        val medicineId = MedicineId("medicineId")
-
         //when:
-        val actions = mockMvc.perform(get("${PATH}?medicineid=${medicineId.value}"))
+        val actions = mockMvc.perform(get(PATH))
 
         //then:
         actions.andExpect(status().isUnauthorized)
