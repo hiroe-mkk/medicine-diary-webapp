@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/mypage")
 @SessionAttributes(types = [LastRequestedPagePath::class])
 class MypageController(private val profileService: ProfileService,
-                       private val userQueryService: UserQueryService,
                        private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
     fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/mypage")
@@ -27,9 +26,6 @@ class MypageController(private val profileService: ProfileService,
         val userSession = userSessionProvider.getUserSession()
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
-
-        val members = userQueryService.findMemberUsers(userSession)
-        model.addAttribute("members", members - userSession)
         return "mypage"
     }
 }

@@ -12,87 +12,40 @@
   <body>
     <div id="mypage" layout:fragment="content">
       <div class="container is-max-desktop p-3">
-        <div class="columns is-vcentered p-3">
-          <div class="column p-3">
-            <div class="is-flex is-justify-content-center">
-              <figure class="image is-128x128 m-2">
-                <img
-                  th:src="${profile.profileImageURL}"
-                  class="is-rounded"
-                  th:if="${profile.profileImageURL != null}"
-                />
-                <img
-                  :src="noProfileImage"
-                  class="is-rounded"
-                  th:if="${profile.profileImageURL == null}"
-                />
-              </figure>
-            </div>
-            <p class="icon-text is-flex is-justify-content-center">
-              <strong
-                class="is-size-4 has-text-grey-dark"
-                th:text="${profile.username}"
-                th:if="${!profile.username.isDefaultValue()}"
-              >
-              </strong>
-              <strong
-                class="is-size-5 has-text-grey"
-                th:if="${profile.username.isDefaultValue()}"
-              >
-                ( unknown )
-              </strong>
-              <span
-                class="icon fas fa-lg has-text-link is-clickable mx-1"
-                @click="isMenuModalActive = true"
-              >
-                <i class="fa-solid fa-gear"></i>
-              </span>
-            </p>
-          </div>
-          <div
-            class="column p-3 is-three-quarters"
-            th:if="${!members.isEmpty()}"
-          >
-            <div
-              class="notification has-background-white-bis has-text-left py-3 px-5"
-            >
-              <div class="is-flex is-align-items-center">
-                <div class="has-text-centered mx-2" th:each="member:${members}">
-                  <div class="is-flex is-justify-content-center">
-                    <figure class="image is-48x48 m-1">
-                      <img
-                        class="is-rounded"
-                        th:src="${member.profileImageURL}"
-                        th:if="*{member.profileImageURL != null}"
-                      />
-                      <img
-                        class="is-rounded"
-                        :src="noProfileImage"
-                        th:if="*{member.profileImageURL == null}"
-                      />
-                    </figure>
-                  </div>
-                  <p
-                    class="has-text-weight-bold has-text-grey-dark m-0 p-0"
-                    th:text="${member.username}"
-                  ></p>
-                </div>
-                <div class="has-text-centered mx-2">
-                  <a
-                    class="has-text-white-bis"
-                    th:href="@{/sharedgroup/management}"
-                  >
-                    <span
-                      class="icon fas fa-lg is-flex is-align-items-center has-text-link is-clickable ml-3"
-                    >
-                      <i class="fa-solid fa-ellipsis"></i>
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="is-flex is-justify-content-center">
+          <figure class="image is-128x128 m-2">
+            <img
+              th:src="${profile.profileImageURL}"
+              class="is-rounded"
+              th:if="${profile.profileImageURL != null}"
+            />
+            <img
+              :src="noProfileImage"
+              class="is-rounded"
+              th:if="${profile.profileImageURL == null}"
+            />
+          </figure>
         </div>
+        <p class="icon-text is-flex is-justify-content-center">
+          <strong
+            class="is-size-4 has-text-grey-dark"
+            th:text="${profile.username}"
+            th:if="${!profile.username.isDefaultValue()}"
+          >
+          </strong>
+          <strong
+            class="is-size-5 has-text-grey"
+            th:if="${profile.username.isDefaultValue()}"
+          >
+            ( unknown )
+          </strong>
+          <span
+            class="icon fas fa-lg has-text-link is-clickable mx-1"
+            @click="isMenuModalActive = true"
+          >
+            <i class="fa-solid fa-gear"></i>
+          </span>
+        </p>
       </div>
 
       <taking-records th:attr="csrf=${_csrf.token}"></taking-records>
