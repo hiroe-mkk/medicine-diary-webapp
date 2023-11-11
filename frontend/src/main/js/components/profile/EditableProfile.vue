@@ -32,8 +32,8 @@
         @click="activateUsernameChangeModal()"
       >
         <strong class="has-text-grey">ユーザー名</strong>
-        <span class="icon is-small has-text-link">
-          <i class="fa-solid fa-greater-than"></i>
+        <span class="icon fas fa-lg has-text-link">
+          <i class="fa-solid fa-angle-right"></i>
         </span>
       </div>
       <div
@@ -41,8 +41,8 @@
         @click="activateProfileImageChangeModal()"
       >
         <strong class="has-text-grey">プロフィール画像</strong>
-        <span class="icon is-small has-text-link">
-          <i class="fa-solid fa-greater-than"></i>
+        <span class="icon fas fa-lg has-text-link">
+          <i class="fa-solid fa-angle-right"></i>
         </span>
       </div>
     </div>
