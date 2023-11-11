@@ -8,10 +8,6 @@ import org.springframework.stereotype.*
 @Component
 class SharedGroupDomainService(private val sharedGroupRepository: SharedGroupRepository,
                                private val profileRepository: ProfileRepository) {
-    fun isShareableState(accountId: AccountId): Boolean {
-        return isParticipatingInSharedGroup(accountId) || isUsernameDefaultValue(accountId)
-    }
-
     fun requireShareableState(accountId: AccountId) {
         if (isParticipatingInSharedGroup(accountId)) throw ShareException("参加できる共有グループは1つまでです。")
         if (isUsernameDefaultValue(accountId)) throw ShareException("ユーザー名が設定されていません。")
