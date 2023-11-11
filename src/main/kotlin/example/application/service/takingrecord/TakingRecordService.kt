@@ -13,6 +13,18 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
                           private val takingRecordDomainService: TakingRecordDomainService,
                           private val medicineDomainService: MedicineDomainService) {
     /**
+     * 修正用の服用記録編集コマンドを取得する
+     */
+    fun getRegistrationTakingRecordEditCommand(medicineId: MedicineId?,
+                                               userSession: UserSession): TakingRecordEditCommand {
+        return if (medicineId != null && medicineDomainService.isAvailableMedicine(medicineId, userSession.accountId)) {
+            TakingRecordEditCommand.initialize(medicineId)
+        } else {
+            TakingRecordEditCommand.initialize()
+        }
+    }
+
+    /**
      * 服用記録を追加する
      */
     fun addTakingRecord(command: TakingRecordEditCommand, userSession: UserSession): TakingRecordId {
@@ -29,10 +41,10 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
     }
 
     /**
-     * 初期化された修正用の服用記録編集コマンドを取得する
+     * 修正用の服用記録編集コマンドを取得する
      */
-    fun getInitializedTakingRecordEditCommand(takingRecordId: TakingRecordId,
-                                              userSession: UserSession): TakingRecordEditCommand {
+    fun getModificationTakingRecordEditCommand(takingRecordId: TakingRecordId,
+                                               userSession: UserSession): TakingRecordEditCommand {
         val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
         return TakingRecordEditCommand.initialize(takingRecord)
     }

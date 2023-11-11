@@ -48,7 +48,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun isOwnedMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
-        return medicineDomainService.findOwnedMedicine(medicineId, userSession.accountId) != null
+        return medicineDomainService.isOwnedMedicine(medicineId, userSession.accountId)
     }
 
     /**
@@ -56,7 +56,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun isAvailableMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
-        return medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId) != null
+        return medicineDomainService.isAvailableMedicine(medicineId, userSession.accountId)
     }
 
     /**

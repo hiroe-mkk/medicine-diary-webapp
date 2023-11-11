@@ -36,10 +36,13 @@ class TakingRecordAdditionController(private val takingRecordService: TakingReco
      * 服用記録追加画面を表示する
      */
     @GetMapping
-    fun displayTakingRecordAdditionPage(lastRequestedPagePath: LastRequestedPagePath?,
+    fun displayTakingRecordAdditionPage(@RequestParam(name = "medicine", required = false) medicineId: MedicineId?,
+                                        lastRequestedPagePath: LastRequestedPagePath?,
                                         redirectAttributes: RedirectAttributes,
                                         model: Model): String {
-        model.addAttribute("form", TakingRecordEditCommand.initialize())
+        val command = takingRecordService.getRegistrationTakingRecordEditCommand(medicineId,
+                                                                                 userSessionProvider.getUserSession())
+        model.addAttribute("form", command)
         return "takingrecord/form"
     }
 

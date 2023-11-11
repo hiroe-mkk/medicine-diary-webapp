@@ -104,12 +104,19 @@ const resultMessage = ref(null);
 onMounted(async () => {
   medicineIdErrors.push(...ArrayConverter.fromString(props.medicineIdErrors));
   quantityErrors.push(...ArrayConverter.fromString(props.quantityErrors));
+
   await loadMedicines();
   if (props.medicineId !== undefined) {
     takenMedicine.medicine = medicines.find(
       (medicine) => medicine.medicineId === props.medicineId
     );
-    takenMedicine.quantity = props.quantity;
+
+    if (props.quantity == 0) {
+      takenMedicine.quantity =
+        takenMedicine.medicine.dosageAndAdministration.quantity;
+    } else {
+      takenMedicine.quantity = props.quantity;
+    }
   }
 });
 

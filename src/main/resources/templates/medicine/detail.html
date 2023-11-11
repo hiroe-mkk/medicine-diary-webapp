@@ -111,6 +111,15 @@
                 </a>
               </li>
               <li>
+                <a class="px-0 py-4" th:href="@{/takingrecords/add?medicine={medicine}(medicine=*{medicineId})}">
+                  <span
+                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                  >
+                    <i class="fa-solid fa-file-pen"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
                 <a class="px-0 py-4" @click="isEditModalActive = true">
                   <span
                     class="icon fas fa-2x is-flex is-align-items-center has-text-link"

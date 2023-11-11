@@ -39,8 +39,8 @@ data class TakingRecordEditCommand(@field:NotWhitespaceOnly(message = "※お薬
                                           ?: LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
 
     companion object {
-        fun initialize(): TakingRecordEditCommand {
-            return TakingRecordEditCommand("",
+        fun initialize(medicineId: MedicineId? = null): TakingRecordEditCommand {
+            return TakingRecordEditCommand(medicineId?.value ?: "",
                                            0.0,
                                            "",
                                            ConditionLevel.A_LITTLE_BAD,

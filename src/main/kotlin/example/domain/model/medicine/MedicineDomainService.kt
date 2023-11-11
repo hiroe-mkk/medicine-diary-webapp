@@ -18,6 +18,10 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         return medicineRepository.findByAccountId(accountId)
     }
 
+    fun isOwnedMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
+        return findOwnedMedicine(medicineId, accountId) != null
+    }
+
     fun findAllSharedGroupMedicines(accountId: AccountId): Set<Medicine> {
         val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
         return medicineRepository.findBySharedGroupId(sharedGroup.id)
@@ -41,6 +45,10 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         val ownedMedicines = findAllOwnedMedicines(accountId)
         val sharedGroupMedicines = findAllSharedGroupMedicines(accountId)
         return ownedMedicines + sharedGroupMedicines
+    }
+
+    fun isAvailableMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
+        return findAvailableMedicine(medicineId, accountId) != null
     }
 
     fun findViewableMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {

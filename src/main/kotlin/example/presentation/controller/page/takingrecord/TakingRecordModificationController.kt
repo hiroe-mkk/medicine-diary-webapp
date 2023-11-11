@@ -34,8 +34,8 @@ class TakingRecordModificationController(private val takingRecordService: Taking
     @GetMapping
     fun displayTakingRecordModificationPage(@PathVariable takingRecordId: TakingRecordId,
                                             model: Model): String {
-        val command = takingRecordService.getInitializedTakingRecordEditCommand(takingRecordId,
-                                                                                userSessionProvider.getUserSession())
+        val command = takingRecordService.getModificationTakingRecordEditCommand(takingRecordId,
+                                                                                 userSessionProvider.getUserSession())
         model.addAttribute("form", command)
         return "takingrecord/form"
     }
