@@ -16,7 +16,7 @@
           　
         </p>
         <div class="is-flex is-justify-content-center">
-          <figure class="image is-48x48 m-1">
+          <figure class="image is-64x64 m-0">
             <img
               class="is-rounded"
               th:src="${member.profileImageURL}"
@@ -41,7 +41,7 @@
         <p class="is-size-7 has-text-grey m-0">招待中</p>
         <div class="is-flex is-justify-content-center">
           <figure
-            class="image is-48x48 is-clickable m-1"
+            class="image is-64x64 is-clickable m-1"
             th:if="${isParticipating}"
             th:attr="'@click'=|activateInvitationCancellationConfirmationModal('${sharedGroup.sharedGroupId}', '*{invitee.accountId}')|"
           >
@@ -56,7 +56,7 @@
               th:if="*{invitee.profileImageURL == null}"
             />
           </figure>
-          <figure class="image is-48x48 m-1" th:if="${!isParticipating}">
+          <figure class="image is-64x64 m-1" th:if="${!isParticipating}">
             <img
               class="is-rounded"
               th:src="${invitee.profileImageURL}"

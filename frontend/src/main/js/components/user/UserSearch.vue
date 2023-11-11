@@ -35,11 +35,11 @@
         <div class="content m-3" v-if="searchResults.length !== 0">
           <template v-for="user in searchResults">
             <div
-              class="media px-3 is-flex is-align-items-center is-clickable"
+              class="media px-3 is-flex is-align-items-center is-clickable p-3 m-0"
               @click="selected(user)"
             >
               <div class="media-left">
-                <figure class="image is-64x64 mx-3">
+                <figure class="image is-64x64 m-0">
                   <img
                     :src="user.profileImageURL"
                     class="is-rounded"

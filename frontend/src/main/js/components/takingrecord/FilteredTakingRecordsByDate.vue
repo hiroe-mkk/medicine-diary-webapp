@@ -10,12 +10,12 @@
     </div>
     <div class="content m-2" v-if="takingRecords.size !== 0">
       <div
-        class="media is-flex is-align-items-center is-clickable mx-2"
+        class="media is-flex is-align-items-center is-clickable p-3 m-0"
         v-for="(takingRecord, takingRecordId) in takingRecords.values"
         @click="activateTakingRecordModal(takingRecordId)"
       >
         <div class="media-left">
-          <figure class="image is-64x64 mx-3">
+          <figure class="image is-64x64 m-0">
             <img
               :src="takingRecord.recorder.profileImageURL"
               class="is-rounded"

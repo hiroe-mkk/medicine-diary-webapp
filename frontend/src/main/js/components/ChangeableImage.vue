@@ -40,7 +40,7 @@
             class="is-flex is-justify-content-center"
             v-if="!imageTrimmingManager.isTrimming && image !== undefined"
           >
-            <figure class="image is-128x128 mx-3">
+            <figure class="image is-128x128 m-0">
               <img :src="image" />
             </figure>
           </div>

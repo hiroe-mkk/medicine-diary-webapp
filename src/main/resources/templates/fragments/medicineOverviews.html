@@ -8,11 +8,11 @@
     <div th:fragment="macro(medicineOverviews)" th:remove="tag">
       <div th:if="${!medicineOverviews.isEmpty()}">
         <div
-          class="media mx-6"
+          class="media p-3 m-0"
           th:each="medicineOverview:${medicineOverviews}"
           th:object="${medicineOverview}"
         >
-          <div class="media-left">
+          <div class="media-left m-0">
             <a
               class="image is-96x96 is-clickable mx-3"
               th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
