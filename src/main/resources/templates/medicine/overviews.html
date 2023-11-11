@@ -14,7 +14,7 @@
       <div class="container is-max-desktop p-3">
         <div class="content has-text-centered">
           <p class="icon-text is-size-4 is-flex is-justify-content-center">
-            <strong class="has-text-grey-dark">お薬</strong>
+            <strong class="has-text-grey-dark">お薬一覧</strong>
             <span class="icon has-text-grey-dark mx-2">
               <i class="fa-solid fa-capsules"></i>
             </span>
@@ -88,6 +88,15 @@
             </li>
           </ul>
         </div>
+      </div>
+      <div class="bottom-right-button">
+        <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">
+          <p
+            class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"
+          >
+            <i class="fa-solid fa-file-pen"></i>
+          </p>
+        </a>
       </div>
     </div>
   </body>

@@ -54,21 +54,21 @@
           </a>
         </div>
         <div class="navbar-item pb-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-info-light is-hidden-touch" href="/takingrecords/add">
+          <a class="has-text-info-light is-hidden-touch" href="/takingrecords">
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
-              <i class="fa-solid fa-file-pen"></i>
+              <i class="fa-solid fa-book-open"></i>
             </span>
           </a>
           <a
             class="icon-text has-text-link-dark is-hidden-desktop"
-            href="/takingrecords/add"
+            href="/takingrecords"
           >
             <span class="icon fas fa-lg is-flex is-align-items-center">
-              <i class="fa-solid fa-file-pen"></i>
+              <i class="fa-solid fa-book-open"></i>
             </span>
-            <strong>服用記録を追加する</strong>
+            <strong>服用記録一覧</strong>
           </a>
         </div>
         <div class="navbar-item pb-0" v-if="!props.isAuthenticated">
