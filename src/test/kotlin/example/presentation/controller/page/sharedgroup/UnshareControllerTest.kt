@@ -25,11 +25,11 @@ internal class UnshareControllerTest(@Autowired private val mockMvc: MockMvc,
         private const val PATH = "/sharedgroup/unshare"
     }
 
-    private lateinit var anotherAccountId: AccountId
+    private lateinit var user1AccountId: AccountId
 
     @BeforeEach
     internal fun setUp() {
-        anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Test
@@ -38,7 +38,7 @@ internal class UnshareControllerTest(@Autowired private val mockMvc: MockMvc,
     fun unshareSucceeds_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId, userSession.accountId))
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(post(PATH)
@@ -73,7 +73,7 @@ internal class UnshareControllerTest(@Autowired private val mockMvc: MockMvc,
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
 
         //then:
         actions.andExpect(status().isFound)

@@ -38,8 +38,8 @@ internal class ProfileImageServiceTest(@Autowired private val profileRepository:
     @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
     fun profileImageIsNotSet_changingProfileImageSucceeds() {
         //given:
-        val (account, _) = testAccountInserter.insertAccountAndProfile(profileImageURL = null)
-        val userSession = UserSessionFactory.create(account.id)
+        val requesterAccountId = testAccountInserter.insertAccountAndProfile(profileImageURL = null).first.id
+        val userSession = UserSessionFactory.create(requesterAccountId)
 
         //when:
         val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
@@ -56,8 +56,9 @@ internal class ProfileImageServiceTest(@Autowired private val profileRepository:
     fun profileImageIsSet_changingProfileImageSucceeds() {
         //given:
         val oldProfileImageURL = ProfileImageURL("endpoint", "/profileimage/oldProfileImage")
-        val (account, _) = testAccountInserter.insertAccountAndProfile(profileImageURL = oldProfileImageURL)
-        val userSession = UserSessionFactory.create(account.id)
+        val requesterAccountId =
+                testAccountInserter.insertAccountAndProfile(profileImageURL = oldProfileImageURL).first.id
+        val userSession = UserSessionFactory.create(requesterAccountId)
 
         //when:
         val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)

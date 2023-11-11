@@ -24,15 +24,15 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
                                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                                    @Autowired private val sharedGroupInserter: TestSharedGroupInserter) {
-    private lateinit var user: Profile
+    private lateinit var requesterProfile: Profile
     private lateinit var userSession: UserSession
-    private lateinit var ownedMedicine: Medicine
+    private lateinit var requesterMedicine: Medicine
 
     @BeforeEach
     internal fun setUp() {
-        user = testAccountInserter.insertAccountAndProfile().second
-        userSession = UserSessionFactory.create(user.accountId)
-        ownedMedicine = testMedicineInserter.insert(MedicineOwner.create(user.accountId))
+        requesterProfile = testAccountInserter.insertAccountAndProfile().second
+        userSession = UserSessionFactory.create(requesterProfile.accountId)
+        requesterMedicine = testMedicineInserter.insert(MedicineOwner.create(requesterProfile.accountId))
     }
 
     @Test
@@ -40,14 +40,14 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
     fun getTakingRecordOverviews() {
         //given:
         val (_, member) = testAccountInserter.insertAccountAndProfile()
-        val sharedGroup = sharedGroupInserter.insert(members = setOf(user.accountId, member.accountId))
+        val sharedGroup = sharedGroupInserter.insert(members = setOf(requesterProfile.accountId, member.accountId))
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
-        val userTakingRecord = testTakingRecordInserter.insert(user.accountId, sharedGroupMedicine.id)
+
+        val requesterTakingRecord = testTakingRecordInserter.insert(requesterProfile.accountId, sharedGroupMedicine.id)
         val memberTakingRecord = testTakingRecordInserter.insert(member.accountId, sharedGroupMedicine.id)
         val filter = TakingRecordOverviewsFilter(sharedGroupMedicine.id,
                                                  setOf(member.accountId),
-                                                 null,
-                                                 null)
+                                                 null, null)
 
         //when:
         val actualPage1 = takingRecordQueryService.findTakingRecordOverviewsPage(userSession,
@@ -86,23 +86,23 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
         @DisplayName("服用記録詳細を取得する")
         fun getTakingRecordDetail() {
             //given:
-            val takingRecord = testTakingRecordInserter.insert(userSession.accountId, ownedMedicine.id)
+            val takingRecord = testTakingRecordInserter.insert(userSession.accountId, requesterMedicine.id)
 
             //when:
             val actual = takingRecordQueryService.findTakingRecordDetail(takingRecord.id, userSession)
 
             //then:
             val expected = TakingRecordDetail(takingRecord.id,
-                                              ownedMedicine.id,
-                                              ownedMedicine.medicineName,
+                                              requesterMedicine.id,
+                                              requesterMedicine.medicineName,
                                               takingRecord.dose,
-                                              ownedMedicine.dosageAndAdministration.takingUnit,
+                                              requesterMedicine.dosageAndAdministration.takingUnit,
                                               takingRecord.followUp,
                                               takingRecord.note,
                                               takingRecord.takenAt,
                                               User(userSession.accountId,
-                                                   user.username,
-                                                   user.profileImageURL))
+                                                   requesterProfile.username,
+                                                   requesterProfile.profileImageURL))
             assertThat(actual).isEqualTo(expected)
         }
 

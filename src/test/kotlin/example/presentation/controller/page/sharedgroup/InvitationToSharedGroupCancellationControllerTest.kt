@@ -27,11 +27,11 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
         private const val PATH = "/sharedgroup/cancel"
     }
 
-    private lateinit var anotherAccountId: AccountId
+    private lateinit var user1AccountId: AccountId
 
     @BeforeEach
     internal fun setUp() {
-        anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Test
@@ -41,13 +41,13 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
         //given:
         val userSession = userSessionProvider.getUserSession()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
-                                                         invitees = setOf(anotherAccountId))
+                                                         invitees = setOf(user1AccountId))
 
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
                                           .param("sharedGroupId", sharedGroup.id.value)
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
 
         //then:
         actions.andExpect(status().isFound)
@@ -65,7 +65,7 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
                                           .param("sharedGroupId", badSharedGroupId.value)
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
         //then:
         actions.andExpect(status().isNotFound)
             .andExpect(view().name("error/notFoundError"))
@@ -81,7 +81,7 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
                                           .param("sharedGroupId", sharedGroupId.value)
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
 
         //then:
         actions.andExpect(status().isFound)

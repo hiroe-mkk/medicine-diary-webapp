@@ -22,13 +22,13 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         @DisplayName("作成済みのアカウントを取得する")
         fun getAlreadyCreatedAccount() {
             //given:
-            val (account, _) = testAccountInserter.insertAccountAndProfile()
+            val (requesterAccount, _) = testAccountInserter.insertAccountAndProfile()
 
             //when:
-            val actual = accountService.findOrElseCreateAccount(account.credential)
+            val actual = accountService.findOrElseCreateAccount(requesterAccount.credential)
 
             //then:
-            assertThat(actual).usingRecursiveComparison().isEqualTo(account)
+            assertThat(actual).usingRecursiveComparison().isEqualTo(requesterAccount)
         }
 
         @Test
@@ -57,8 +57,8 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
     @DisplayName("アカウントを削除する")
     fun deleteAccount() {
         //given:
-        val (account, _) = testAccountInserter.insertAccountAndProfile()
-        val userSession = UserSessionFactory.create(account.id)
+        val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        val userSession = UserSessionFactory.create(requesterAccountId)
 
         //when:
         accountService.deleteAccount(userSession)

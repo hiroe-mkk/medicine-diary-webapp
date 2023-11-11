@@ -25,11 +25,11 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
         private const val PATH = "/sharedgroup/share"
     }
 
-    private lateinit var anotherAccountId: AccountId
+    private lateinit var user1AccountId: AccountId
 
     @BeforeEach
     internal fun setUp() {
-        anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Test
@@ -39,7 +39,7 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
 
         //then:
         actions.andExpect(status().isFound)
@@ -57,7 +57,7 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
 
         //then:
         actions.andExpect(status().isFound)
@@ -87,7 +87,7 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("accountId", anotherAccountId.value))
+                                          .param("accountId", user1AccountId.value))
 
         actions.andExpect(status().isFound)
             .andExpect(redirectedUrl("/"))

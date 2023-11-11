@@ -19,23 +19,23 @@ internal class TakingRecordDomainServiceTest(@Autowired private val takingRecord
                                              @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val takingRecordDomainService: TakingRecordDomainService = TakingRecordDomainService(takingRecordRepository)
 
-    private lateinit var userAccountId: AccountId
-    private lateinit var medicine: Medicine
+    private lateinit var requesterAccountId: AccountId
+    private lateinit var requesterMedicine: Medicine
 
     @BeforeEach
     internal fun setUp() {
-        userAccountId = testAccountInserter.insertAccountAndProfile().first.id
-        medicine = testMedicineInserter.insert(MedicineOwner.create(userAccountId))
+        requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        requesterMedicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
     }
 
     @Test
     @DisplayName("服用記録を取得する")
     fun getTakingRecord() {
         //given:
-        val takingRecord = testTakingRecordInserter.insert(userAccountId, medicine.id)
+        val takingRecord = testTakingRecordInserter.insert(requesterAccountId, requesterMedicine.id)
 
         //when:
-        val actual = takingRecordDomainService.findOwnedTakingRecord(takingRecord.id, userAccountId)
+        val actual = takingRecordDomainService.findOwnedTakingRecord(takingRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).usingRecursiveComparison().isEqualTo(takingRecord)
@@ -45,11 +45,11 @@ internal class TakingRecordDomainServiceTest(@Autowired private val takingRecord
     @DisplayName("他のユーザーが記録した服用記録の場合、服用記録の取得に失敗する")
     fun takingRecordRecordedByAnotherUser_gettingTakingRecordFails() {
         //given:
-        val anotherUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
-        val takingRecord = testTakingRecordInserter.insert(anotherUserAccountId, medicine.id)
+        val user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
+        val takingRecord = testTakingRecordInserter.insert(user1AccountId, requesterMedicine.id)
 
         //when:
-        val actual = takingRecordDomainService.findOwnedTakingRecord(takingRecord.id, userAccountId)
+        val actual = takingRecordDomainService.findOwnedTakingRecord(takingRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).isNull()

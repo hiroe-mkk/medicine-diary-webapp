@@ -36,13 +36,13 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             TakingRecordService(takingRecordRepository, takingRecordDomainService, medicineDomainService)
 
     private lateinit var userSession: UserSession
-    private lateinit var medicine: Medicine
+    private lateinit var requesterMedicine: Medicine
 
     @BeforeEach
     internal fun setUp() {
-        val (account, _) = testAccountInserter.insertAccountAndProfile()
-        userSession = UserSessionFactory.create(account.id)
-        medicine = testMedicineInserter.insert(MedicineOwner.create(account.id))
+        val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        userSession = UserSessionFactory.create(requesterAccountId)
+        requesterMedicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
     }
 
     @Nested
@@ -52,7 +52,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
         fun addTakingRecord() {
             //given:
             val command =
-                    TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(takenMedicine = medicine.id.value)
+                    TestTakingRecordEditCommandFactory.createCompletedAdditionCommand(takenMedicine = requesterMedicine.id.value)
 
             //when:
             val newTakingRecordId = takingRecordService.addTakingRecord(command, userSession)
@@ -62,7 +62,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             val expected = TakingRecord.reconstruct(
                     newTakingRecordId,
                     userSession.accountId,
-                    medicine.id,
+                    requesterMedicine.id,
                     command.validatedDose,
                     command.validFollowUp,
                     command.validatedNote,
@@ -94,7 +94,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
         @BeforeEach
         internal fun setUp() {
-            takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
+            takingRecord = testTakingRecordInserter.insert(userSession.accountId, requesterMedicine.id)
             val newTakenMedicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId)).id.value
             command = TestTakingRecordEditCommandFactory.createCompletedModificationCommand(newTakenMedicine)
         }
@@ -155,7 +155,7 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
 
         @BeforeEach
         internal fun setUp() {
-            takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
+            takingRecord = testTakingRecordInserter.insert(userSession.accountId, requesterMedicine.id)
         }
 
         @Test

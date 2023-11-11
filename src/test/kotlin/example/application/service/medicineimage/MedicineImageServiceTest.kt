@@ -32,8 +32,8 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
 
     @BeforeEach
     internal fun setUp() {
-        val (account, _) = testAccountInserter.insertAccountAndProfile()
-        userSession = UserSessionFactory.create(account.id)
+        val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        userSession = UserSessionFactory.create(requesterAccountId)
         every {
             medicineImageStorage.createURL()
         } returns MedicineImageURL("endpoint", "/medicineimage/newMedicineImage")

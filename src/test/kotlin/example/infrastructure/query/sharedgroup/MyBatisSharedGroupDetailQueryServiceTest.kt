@@ -21,21 +21,21 @@ internal class MyBatisSharedGroupDetailQueryServiceTest(@Autowired private val s
     @DisplayName("共有グループを取得する")
     fun getSharedGroups() {
         //given:
-        val user = testAccountInserter.insertAccountAndProfile().second
-        val userSession = UserSessionFactory.create(user.accountId)
+        val requester = testAccountInserter.insertAccountAndProfile().second
+        val userSession = UserSessionFactory.create(requester.accountId)
 
-        val (_, participatingSharedGroupMember1) = testAccountInserter.insertAccountAndProfile()
-        val (_, participatingSharedGroupMember2) = testAccountInserter.insertAccountAndProfile()
+        // 参加している共有グループ
+        val (_, member1OfParticipatingSharedGroup) = testAccountInserter.insertAccountAndProfile()
+        val (_, member2OfParticipatingSharedGroup) = testAccountInserter.insertAccountAndProfile()
         val participatingSharedGroup =
-                testSharedGroupInserter.insert(members = setOf(user.accountId,
-                                                               participatingSharedGroupMember1.accountId,
-                                                               participatingSharedGroupMember2.accountId),
+                testSharedGroupInserter.insert(members = setOf(requester.accountId,
+                                                               member1OfParticipatingSharedGroup.accountId,
+                                                               member2OfParticipatingSharedGroup.accountId),
                                                invitees = emptySet())
 
-        val (_, invitedSharedGroupMember1) = testAccountInserter.insertAccountAndProfile()
-        val (_, invitedSharedGroupMember2) = testAccountInserter.insertAccountAndProfile()
-        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(invitedSharedGroupMember1.accountId,
-                                                                                invitedSharedGroupMember2.accountId),
+        // 招待された共有グループ
+        val (_, member1OfInvitedSharedGroup) = testAccountInserter.insertAccountAndProfile()
+        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(member1OfInvitedSharedGroup.accountId),
                                                                 invitees = setOf(userSession.accountId))
 
         //when:
@@ -45,9 +45,9 @@ internal class MyBatisSharedGroupDetailQueryServiceTest(@Autowired private val s
         assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id)
         assertThat(actual.participatingSharedGroup?.members)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(user.accountId,
-                                       participatingSharedGroupMember1.accountId,
-                                       participatingSharedGroupMember2.accountId)
+            .containsExactlyInAnyOrder(requester.accountId,
+                                       member1OfParticipatingSharedGroup.accountId,
+                                       member2OfParticipatingSharedGroup.accountId)
         assertThat(actual.participatingSharedGroup?.invitees).isEmpty()
 
 
@@ -56,15 +56,14 @@ internal class MyBatisSharedGroupDetailQueryServiceTest(@Autowired private val s
             .containsExactly(invitedSharedGroup.id)
         assertThat(actual.invitedSharedGroups.first().members)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(invitedSharedGroupMember1.accountId,
-                                       invitedSharedGroupMember2.accountId)
+            .containsExactlyInAnyOrder(member1OfInvitedSharedGroup.accountId)
         assertThat(actual.invitedSharedGroups.first().invitees)
             .extracting("accountId")
-            .containsExactly(user.accountId)
+            .containsExactly(requester.accountId)
 
-        val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == user.accountId }
-        assertThat(actualUser).isEqualTo(User(user.accountId,
-                                              user.username,
-                                              user.profileImageURL))
+        val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == requester.accountId }
+        assertThat(actualUser).isEqualTo(User(requester.accountId,
+                                              requester.username,
+                                              requester.profileImageURL))
     }
 }

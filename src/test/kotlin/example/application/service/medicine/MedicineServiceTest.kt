@@ -34,8 +34,8 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
     @BeforeEach
     internal fun setUp() {
-        val (account, _) = testAccountInserter.insertAccountAndProfile()
-        userSession = UserSessionFactory.create(account.id)
+        val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        userSession = UserSessionFactory.create(requesterAccountId)
     }
 
     @Nested

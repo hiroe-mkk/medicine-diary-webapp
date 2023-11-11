@@ -25,13 +25,12 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
     private val profileService: ProfileService = ProfileService(profileRepository, profileDomainService)
 
     private lateinit var userSession: UserSession
-    private lateinit var profile: Profile
+    private lateinit var requesterProfile: Profile
 
     @BeforeEach
     internal fun setUp() {
-        val (createdAccount, createdProfile) = testAccountInserter.insertAccountAndProfile()
-        profile = createdProfile
-        userSession = UserSessionFactory.create(createdAccount.id)
+        requesterProfile = testAccountInserter.insertAccountAndProfile().second
+        userSession = UserSessionFactory.create(requesterProfile.accountId)
     }
 
     @Test
@@ -41,7 +40,7 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
         val actual = profileService.findProfile(userSession)
 
         //then:
-        val expected = ProfileDto(profile.username, profile.profileImageURL)
+        val expected = ProfileDto(requesterProfile.username, requesterProfile.profileImageURL)
         assertThat(actual).isEqualTo(expected)
     }
 

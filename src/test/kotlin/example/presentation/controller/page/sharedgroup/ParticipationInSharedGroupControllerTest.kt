@@ -25,11 +25,11 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
         private const val PATH = "/sharedgroup/participate"
     }
 
-    private lateinit var anotherAccountId: AccountId
+    private lateinit var user1AccountId: AccountId
 
     @BeforeEach
     internal fun setUp() {
-        anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Test
@@ -38,7 +38,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
     fun participateInSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId),
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
                                                          invitees = setOf(userSession.accountId))
 
         //when:
@@ -57,7 +57,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
     fun participationInSharedGroupFails_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId, userSession.accountId),
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId),
                                                          invitees = setOf(userSession.accountId))
 
         //when:

@@ -25,11 +25,11 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
         private const val PATH = "/sharedgroup/reject"
     }
 
-    private lateinit var anotherAccountId: AccountId
+    private lateinit var user1AccountId: AccountId
 
     @BeforeEach
     internal fun setUp() {
-        anotherAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Test
@@ -38,7 +38,7 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
     fun rejectInvitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(anotherAccountId),
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
                                                          invitees = setOf(userSession.accountId))
 
         //when:
