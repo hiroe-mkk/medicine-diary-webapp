@@ -17,7 +17,7 @@ import org.springframework.context.annotation.*
 @Import(MyBatisQueryServiceTest.Configuration::class)
 annotation class MyBatisQueryServiceTest {
     class Configuration(private val displayTakingRecordMapper: DisplayTakingRecordMapper,
-                        private val sharedGroupDetailMapper: SharedGroupDetailMapper,
+                        private val displaySharedGroupMapper: DisplaySharedGroupMapper,
                         private val userMapper: UserMapper,
                         private val medicineRepository: MedicineRepository,
                         private val sharedGroupRepository: SharedGroupRepository) {
@@ -28,7 +28,7 @@ annotation class MyBatisQueryServiceTest {
         }
 
         @Bean
-        fun sharedGroupQueryService(): SharedGroupQueryService = MyBatisSharedGroupQueryService(sharedGroupDetailMapper)
+        fun sharedGroupQueryService(): SharedGroupQueryService = MyBatisSharedGroupQueryService(displaySharedGroupMapper)
 
         @Bean
         fun userQueryService(): UserQueryService = MyBatisUserQueryService(userMapper)

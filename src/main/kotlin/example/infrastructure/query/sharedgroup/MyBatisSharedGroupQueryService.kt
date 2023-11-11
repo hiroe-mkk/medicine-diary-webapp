@@ -8,23 +8,22 @@ import org.springframework.transaction.annotation.*
 
 @Component
 @Transactional
-class MyBatisSharedGroupQueryService(private val sharedGroupDetailMapper: SharedGroupDetailMapper)
+class MyBatisSharedGroupQueryService(private val displaySharedGroupMapper: DisplaySharedGroupMapper)
     : SharedGroupQueryService {
-    override fun findSharedGroupDetails(userSession: UserSession): SharedGroups {
-        val sharedGroups = sharedGroupDetailMapper.findAllByAccountId(userSession.accountId.value)
-            .map { it.toSharedGroupDetail() }
+    override fun findSharedGroup(userSession: UserSession): SharedGroups {
+        val sharedGroups = displaySharedGroupMapper.findAllByAccountId(userSession.accountId.value)
         val participatingSharedGroup = extractingParticipatingSharedGroup(sharedGroups, userSession)
-        val invitedSharedGroup = invitedSharedGroupDetails(participatingSharedGroup, sharedGroups)
+        val invitedSharedGroup = invitedSharedGroups(participatingSharedGroup, sharedGroups)
         return SharedGroups(participatingSharedGroup, invitedSharedGroup)
     }
 
-    private fun extractingParticipatingSharedGroup(sharedGroups: Collection<SharedGroupDetail>,
-                                                   userSession: UserSession): SharedGroupDetail? {
+    private fun extractingParticipatingSharedGroup(sharedGroups: Collection<DisplaySharedGroup>,
+                                                   userSession: UserSession): DisplaySharedGroup? {
         return sharedGroups.find { it.members.map(User::accountId).contains(userSession.accountId) }
     }
 
-    private fun invitedSharedGroupDetails(participatingSharedGroup: SharedGroupDetail?,
-                                          sharedGroups: Collection<SharedGroupDetail>): Set<SharedGroupDetail> {
+    private fun invitedSharedGroups(participatingSharedGroup: DisplaySharedGroup?,
+                                    sharedGroups: Collection<DisplaySharedGroup>): Set<DisplaySharedGroup> {
         return if (participatingSharedGroup == null) {
             sharedGroups.toSet()
         } else {
