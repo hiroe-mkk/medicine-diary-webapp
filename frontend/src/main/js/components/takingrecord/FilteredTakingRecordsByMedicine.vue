@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-max-desktop p-3">
+  <div class="container is-max-desktop p-3" v-if="takingRecords.size !== 0">
     <div class="content has-text-centered">
       <p class="icon-text is-size-4 is-flex is-justify-content-center">
         <strong class="has-text-grey-dark">服用記録</strong>
