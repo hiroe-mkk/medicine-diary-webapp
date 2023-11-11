@@ -6,7 +6,22 @@
 >
   <head>
     <meta charset="UTF-8" />
+    <script th:src="@{/dist/js/takingRecords.bundle.js}" defer></script>
   </head>
 
-  <body></body>
+  <body>
+    <div id="takingRecords" layout:fragment="content">
+      <taking-records th:attr="csrf=${_csrf.token}"></taking-records>
+
+      <div class="bottom-right-button">
+        <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">
+          <p
+            class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"
+          >
+            <i class="fa-solid fa-file-pen"></i>
+          </p>
+        </a>
+      </div>
+    </div>
+  </body>
 </html>
