@@ -23,10 +23,22 @@ class MedicineDetailController(private val medicineService: MedicineService,
      * 薬詳細画面を表示する
      */
     @GetMapping
-    fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId, model: Model): String {
+    fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId,
+                                  model: Model,
+                                  lastRequestedPagePath: LastRequestedPagePath?): String {
         val userSession = userSessionProvider.getUserSession()
         model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
         model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
+        val lastRequestPagePath = lastRequestPagePath(medicineId, lastRequestedPagePath)
+        model.addAttribute("lastRequestPagePath", lastRequestPagePath)
         return "medicine/detail"
+    }
+
+    private fun lastRequestPagePath(medicineId: MedicineId, lastRequestedPagePath: LastRequestedPagePath?): String {
+        return if (lastRequestedPagePath?.value == null || lastRequestedPagePath.value == "/medicines/${medicineId}") {
+            "/medicines"
+        } else {
+            lastRequestedPagePath.value
+        }
     }
 }

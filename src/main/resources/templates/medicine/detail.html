@@ -102,6 +102,15 @@
           <div class="tabs is-fullwidth has-background-info-light">
             <ul class="m-0">
               <li>
+                <a class="px-0 py-4" th:href="@{__${lastRequestPagePath}__}">
+                  <span
+                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                  >
+                    <i class="fa-solid fa-reply"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
                 <a class="px-0 py-4" @click="isEditModalActive = true">
                   <span
                     class="icon fas fa-2x is-flex is-align-items-center has-text-link"
