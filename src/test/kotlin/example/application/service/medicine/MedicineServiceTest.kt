@@ -106,13 +106,13 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         }
 
         @Test
-        @DisplayName("ユーザーの薬概要一覧を取得する")
-        fun findUserMedicineOverviews() {
+        @DisplayName("服用可能な薬概要一覧を取得する")
+        fun findAvailableMedicineOverviews() {
             //given:
             val (medicine1, medicine2, medicine3) = createMedicines(MedicineOwner.create(userSession.accountId))
 
             //when:
-            val actual = medicineService.findUserMedicineOverviews(userSession)
+            val actual = medicineService.findAvailableMedicineOverviews(userSession)
 
             //then:
             assertThat(actual).extracting("medicineId").containsExactly(medicine3.id, medicine2.id, medicine1.id)

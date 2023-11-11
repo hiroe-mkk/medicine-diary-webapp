@@ -21,8 +21,8 @@ internal class MedicineOverviewsApiControllerTest(@Autowired private val mockMvc
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("ユーザーの薬概要一覧を取得する")
-    fun getUserMedicineOverviews() {
+    @DisplayName("服用可能な薬概要一覧を取得する")
+    fun getAvailableMedicineOverviews() {
         //when:
         val actions = mockMvc.perform(get("${PATH}?user"))
 

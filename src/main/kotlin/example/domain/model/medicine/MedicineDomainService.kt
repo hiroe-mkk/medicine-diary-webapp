@@ -29,7 +29,7 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         return medicineRepository.findByAccountIds(members).filter { it.isPublic }.toSet()
     }
 
-    fun findUserMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
+    fun findAvailableMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
         val medicine = medicineRepository.findById(medicineId) ?: return null
         if (medicine.isOwnedBy(accountId)) return medicine
 
@@ -37,7 +37,7 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
         return if (medicine.isOwnedBy(sharedGroup.id)) medicine else null
     }
 
-    fun findAllUserMedicines(accountId: AccountId): Set<Medicine> {
+    fun findAllAvailableMedicines(accountId: AccountId): Set<Medicine> {
         val ownedMedicines = findAllOwnedMedicines(accountId)
         val sharedGroupMedicines = findAllSharedGroupMedicines(accountId)
         return ownedMedicines + sharedGroupMedicines

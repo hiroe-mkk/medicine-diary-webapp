@@ -19,7 +19,7 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
     fun changeMedicineImage(medicineId: MedicineId,
                             command: ImageUploadCommand,
                             userSession: UserSession): MedicineImageURL {
-        val medicine = findUserMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
 
         medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }
 
@@ -31,9 +31,9 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
         return medicineImageURL
     }
 
-    private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,
-                                                     userSession: UserSession): Medicine {
-        return medicineDomainService.findUserMedicine(medicineId, userSession.accountId)
+    private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
+                                                          userSession: UserSession): Medicine {
+        return medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }

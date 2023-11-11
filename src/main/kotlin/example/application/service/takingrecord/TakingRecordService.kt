@@ -16,7 +16,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 服用記録を追加する
      */
     fun addTakingRecord(command: TakingRecordEditCommand, userSession: UserSession): TakingRecordId {
-        val medicine = findUserMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
+        val medicine = findAvailableMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
         val takingRecord = TakingRecord.create(takingRecordRepository.createTakingRecordId(),
                                                userSession.accountId,
                                                medicine,
@@ -43,7 +43,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
     fun modifyTakingRecord(takingRecordId: TakingRecordId,
                            command: TakingRecordEditCommand,
                            userSession: UserSession) {
-        val medicine = findUserMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
+        val medicine = findAvailableMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
         val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
         takingRecord.modify(medicine,
                             command.validatedDose,
@@ -67,9 +67,9 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
                ?: throw TakingRecordNotFoundException(takingRecordId)
     }
 
-    private fun findUserMedicineOrElseThrowException(medicineId: MedicineId,
-                                                     userSession: UserSession): Medicine {
-        return medicineDomainService.findUserMedicine(medicineId, userSession.accountId)
+    private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
+                                                          userSession: UserSession): Medicine {
+        return medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }

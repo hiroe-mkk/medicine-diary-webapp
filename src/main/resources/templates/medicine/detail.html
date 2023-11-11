@@ -97,7 +97,7 @@
         th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
       ></taking-records>
 
-      <div th:if="${isUserMedicine}" th:remove="tag">
+      <div th:if="${isAvailableMedicine}" th:remove="tag">
         <div class="bottom-fullwidth">
           <div class="tabs is-fullwidth has-background-info-light">
             <ul class="m-0">

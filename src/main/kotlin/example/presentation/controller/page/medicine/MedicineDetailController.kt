@@ -26,7 +26,7 @@ class MedicineDetailController(private val medicineService: MedicineService,
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId, model: Model): String {
         val userSession = userSessionProvider.getUserSession()
         model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
-        model.addAttribute("isUserMedicine", medicineService.isUserMedicine(medicineId, userSession))
+        model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
         return "medicine/detail"
     }
 }
