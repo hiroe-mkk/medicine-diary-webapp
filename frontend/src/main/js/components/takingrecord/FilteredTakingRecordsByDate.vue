@@ -28,14 +28,16 @@
             />
           </figure>
         </div>
-        <div
-          class="media-content has-text-grey-dark is-flex is-justify-content-space-between"
-        >
-          <p class="m-0 has-text-weight-bold">
-            {{ takingRecord.takenMedicine.medicineName }}
+        <div class="media-content has-text-grey-dark">
+          <p class="m-0">
+            <span class="has-text-weight-bold">
+              {{ takingRecord.takenMedicine.medicineName }}
+            </span>
           </p>
           <p class="has-text-right m-0">
-            <span> {{ toTime(takingRecord.takenAt) }} </span>
+            <span>
+              {{ TakingRecordUtils.toTime(takingRecord.takenAt) }}
+            </span>
           </p>
         </div>
         <div class="media-right">
@@ -104,11 +106,18 @@
               <span>
                 <span>{{ selectedTakingRecord.value.followUp.symptom }}</span>
                 (
-                <span>{{
+                <small>{{
                   selectedTakingRecord.value.followUp.beforeTaking
-                }}</span>
+                }}</small>
                 <span
-                  class="icon is-small mx-3"
+                  v-html="
+                    TakingRecordUtils.toIcon(
+                      selectedTakingRecord.value.followUp.beforeTaking
+                    )
+                  "
+                ></span>
+                <span
+                  class="icon is-small mx-2"
                   v-if="
                     selectedTakingRecord.value.followUp.afterTaking !==
                     undefined
@@ -116,13 +125,25 @@
                 >
                   <i class="fa-solid fa-angles-right"></i>
                 </span>
-                <span
+                <small
                   v-if="
                     selectedTakingRecord.value.followUp.afterTaking !==
                     undefined
                   "
                 >
                   {{ selectedTakingRecord.value.followUp.afterTaking }}
+                </small>
+                <span
+                  v-html="
+                    TakingRecordUtils.toIcon(
+                      selectedTakingRecord.value.followUp.afterTaking
+                    )
+                  "
+                  v-if="
+                    selectedTakingRecord.value.followUp.afterTaking !==
+                    undefined
+                  "
+                >
                 </span>
                 )
               </span>
@@ -179,6 +200,7 @@ import { ref, reactive, onMounted } from 'vue';
 import {
   TakingRecords,
   Filter,
+  TakingRecordUtils,
 } from '@main/js/composables/model/TakingRecords.js';
 import {
   HttpRequestClient,
@@ -215,10 +237,6 @@ function loadMoreTakingRecords() {
   takingRecords.loadMore().catch(() => {
     resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
   });
-}
-
-function toTime(dateTime) {
-  return dateTime.slice(11, 19);
 }
 
 function activateTakingRecordModal(takingRecordId) {

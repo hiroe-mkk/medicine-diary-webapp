@@ -59,6 +59,34 @@ export class TakingRecords {
   }
 }
 
+export class TakingRecordUtils {
+  static toTime(dateTime) {
+    return dateTime.slice(11, 19);
+  }
+
+  static toIcon(conditionLevel) {
+    let icon;
+    switch (conditionLevel) {
+      case '良い':
+        icon = '<i class="fa-regular fa-face-laugh-squint"></i>';
+        break;
+      case '普通':
+        icon = '<i class="fa-regular fa-face-smile"></i>';
+        break;
+      case '少し悪い':
+        icon = '<i class="fa-regular fa-face-frown"></i>';
+        break;
+      case '悪い':
+        icon = '<i class="fa-regular fa-face-sad-tear"></i>';
+        break;
+      case 'とても悪い':
+        icon = '<i class="fa-regular fa-face-dizzy"></i>';
+        break;
+    }
+    return `<span class="icon is-small mx-1">${icon}</span>`;
+  }
+}
+
 export class Filter {
   constructor(medicineId, allMembers, start, end) {
     this.medicine = medicineId;

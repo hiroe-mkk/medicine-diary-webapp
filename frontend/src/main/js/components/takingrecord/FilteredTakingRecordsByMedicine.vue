@@ -30,19 +30,26 @@
         </div>
         <div class="media-content has-text-grey-dark">
           <p class="m-0">
-            <span>{{ takingRecord.followUp.symptom }}</span>
-            (
-            <span>{{ takingRecord.followUp.beforeTaking }}</span>
+            <span class="has-text-weight-bold">
+              {{ takingRecord.followUp.symptom }}
+            </span>
             <span
-              class="icon is-small mx-3"
+              v-html="
+                TakingRecordUtils.toIcon(takingRecord.followUp.beforeTaking)
+              "
+            ></span>
+            <span
+              class="icon is-small"
               v-if="takingRecord.followUp.afterTaking !== undefined"
             >
               <i class="fa-solid fa-angles-right"></i>
             </span>
-            <span v-if="takingRecord.followUp.afterTaking !== undefined">
-              {{ takingRecord.followUp.afterTaking }}
-            </span>
-            )
+            <span
+              v-if="takingRecord.followUp.afterTaking !== undefined"
+              v-html="
+                TakingRecordUtils.toIcon(takingRecord.followUp.afterTaking)
+              "
+            ></span>
           </p>
           <p class="has-text-right m-0">
             <span> {{ takingRecord.takenAt }} </span>
@@ -114,11 +121,18 @@
               <span>
                 <span>{{ selectedTakingRecord.value.followUp.symptom }}</span>
                 (
-                <span>{{
+                <small>{{
                   selectedTakingRecord.value.followUp.beforeTaking
-                }}</span>
+                }}</small>
                 <span
-                  class="icon is-small mx-3"
+                  v-html="
+                    TakingRecordUtils.toIcon(
+                      selectedTakingRecord.value.followUp.beforeTaking
+                    )
+                  "
+                ></span>
+                <span
+                  class="icon is-small mx-2"
                   v-if="
                     selectedTakingRecord.value.followUp.afterTaking !==
                     undefined
@@ -126,13 +140,25 @@
                 >
                   <i class="fa-solid fa-angles-right"></i>
                 </span>
-                <span
+                <small
                   v-if="
                     selectedTakingRecord.value.followUp.afterTaking !==
                     undefined
                   "
                 >
                   {{ selectedTakingRecord.value.followUp.afterTaking }}
+                </small>
+                <span
+                  v-html="
+                    TakingRecordUtils.toIcon(
+                      selectedTakingRecord.value.followUp.afterTaking
+                    )
+                  "
+                  v-if="
+                    selectedTakingRecord.value.followUp.afterTaking !==
+                    undefined
+                  "
+                >
                 </span>
                 )
               </span>
@@ -189,6 +215,7 @@ import { ref, reactive, onMounted } from 'vue';
 import {
   TakingRecords,
   Filter,
+  TakingRecordUtils,
 } from '@main/js/composables/model/TakingRecords.js';
 import {
   HttpRequestClient,
