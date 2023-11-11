@@ -1,8 +1,8 @@
 package example.presentation.controller.api.takingrecord
 
+import example.application.service.account.*
 import example.domain.model.medicine.*
-import example.domain.model.takingrecord.*
-import example.presentation.controller.api.medicine.*
+import example.presentation.controller.api.profile.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -18,25 +18,31 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class TakingRecordDetailApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
-                                                   @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class TakingRecordApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                             @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                             @Autowired private val testAccountInserter: TestAccountInserter,
+                                             @Autowired private val sharedGroupInserter: TestSharedGroupInserter,
+                                             @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/api/takingrecords/{takingRecordId}"
+        private const val PATH = "/api/takingrecords"
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("服用記録詳細を取得する")
-    fun getTakingRecordDetail() {
+    @DisplayName("服用記録一覧を取得する")
+    fun getTakingRecords() {
         //given:
         val userSession = userSessionProvider.getUserSession()
+        val member = testAccountInserter.insertAccountAndProfile().second
+        sharedGroupInserter.insert(members = setOf(userSession.accountId, member.accountId))
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
-        val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
 
         //when:
-        val actions = mockMvc.perform(get(PATH, takingRecord.id))
+        val actions = mockMvc.perform(get(PATH)
+                                          .param("medicine", medicine.id.value)
+                                          .param("members", userSession.accountId.value)
+                                          .param("members", member.accountId.value)
+                                          .param("start", medicine.registeredAt.toLocalDate().toString()))
 
         //then:
         actions.andExpect(status().isOk)
@@ -44,28 +50,10 @@ internal class TakingRecordDetailApiControllerTest(@Autowired private val mockMv
     }
 
     @Test
-    @WithMockAuthenticatedAccount
-    @DisplayName("服用記録が見つからなかった場合、ステータスコード404のレスポンスを返す")
-    fun takingRecordNotFound_returnsResponseWithStatus404() {
-        //then:
-        val badTakingRecordId = TakingRecordId("NonexistentId")
-
-        //when:
-        val actions = mockMvc.perform(get(PATH, badTakingRecordId))
-
-        //then:
-        actions.andExpect(status().isNotFound)
-    }
-
-
-    @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
-        //given:
-        val takingRecordId = TakingRecordId("takingRecordId")
-
         //when:
-        val actions = mockMvc.perform(get(PATH, takingRecordId))
+        val actions = mockMvc.perform(get(PATH))
 
         //then:
         actions.andExpect(status().isUnauthorized)

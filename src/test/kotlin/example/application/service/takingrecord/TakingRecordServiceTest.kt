@@ -2,7 +2,6 @@ package example.application.service.takingrecord
 
 import com.ninjasquad.springmockk.*
 import example.application.query.takingrecord.*
-import example.application.query.takingrecord.TakingRecordDetail.*
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*

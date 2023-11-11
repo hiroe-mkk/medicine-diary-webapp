@@ -16,8 +16,7 @@ import org.springframework.context.annotation.*
 @MyBatisRepositoryTest
 @Import(MyBatisQueryServiceTest.Configuration::class)
 annotation class MyBatisQueryServiceTest {
-    class Configuration(private val takingRecordOverviewMapper: TakingRecordOverviewMapper,
-                        private val takingRecordDetailMapper: TakingRecordDetailMapper,
+    class Configuration(private val displayTakingRecordMapper: DisplayTakingRecordMapper,
                         private val sharedGroupDetailMapper: SharedGroupDetailMapper,
                         private val userMapper: UserMapper,
                         private val medicineRepository: MedicineRepository,
@@ -25,9 +24,7 @@ annotation class MyBatisQueryServiceTest {
         @Bean
         fun takingRecordQueryService(): TakingRecordQueryService {
             val medicineDomainService = MedicineDomainService(medicineRepository, sharedGroupRepository)
-            return MyBatisTakingRecordQueryService(takingRecordOverviewMapper,
-                                                   takingRecordDetailMapper,
-                                                   medicineDomainService)
+            return MyBatisTakingRecordQueryService(displayTakingRecordMapper, medicineDomainService)
         }
 
         @Bean

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="container is-max-desktop p-3"
-    v-if="takingRecordOverviews.size !== 0"
-  >
+  <div class="container is-max-desktop p-3" v-if="takingRecords.size !== 0">
     <div class="content has-text-centered">
       <p class="icon-text is-size-4 is-flex is-justify-content-center">
         <strong class="has-text-grey-dark">服用記録</strong>
@@ -13,44 +10,56 @@
     </div>
     <div class="content m-2">
       <div
-        class="media mx-2 is-clickable"
-        v-for="(
-          takingRecordOverview, takingRecordId
-        ) in takingRecordOverviews.values"
-        @click="activateTakingRecordDetailModal(takingRecordId)"
+        class="media is-flex is-align-items-center is-clickable mx-2"
+        v-for="(takingRecord, takingRecordId) in takingRecords.values"
+        @click="activateTakingRecordModal(takingRecordId)"
       >
-        <div
-          class="media-content has-text-grey-dark is-flex is-justify-content-space-between"
-        >
+        <div class="media-left">
+          <figure class="image is-64x64 mx-3">
+            <img
+              :src="takingRecord.recorder.profileImageURL"
+              class="is-rounded"
+              v-if="takingRecord.recorder.profileImageURL !== undefined"
+            />
+            <img
+              :src="noProfileImage"
+              class="is-rounded"
+              v-if="takingRecord.recorder.profileImageURL === undefined"
+            />
+          </figure>
+        </div>
+        <div class="media-content has-text-grey-dark">
           <p class="m-0">
-            <span>{{ takingRecordOverview.beforeTaking }}</span>
+            <span>{{ takingRecord.followUp.symptom }}</span>
+            (
+            <span>{{ takingRecord.followUp.beforeTaking }}</span>
             <span
               class="icon is-small mx-3"
-              v-if="takingRecordOverview.afterTaking !== undefined"
+              v-if="takingRecord.followUp.afterTaking !== undefined"
             >
               <i class="fa-solid fa-angles-right"></i>
             </span>
-            <span v-if="takingRecordOverview.afterTaking !== undefined">
-              {{ takingRecordOverview.afterTaking }}
+            <span v-if="takingRecord.followUp.afterTaking !== undefined">
+              {{ takingRecord.followUp.afterTaking }}
             </span>
+            )
           </p>
-          <p class="m-0">
-            <span> {{ takingRecordOverview.takenAt }} </span>
-            <span class="icon is-small ml-2 has-text-link">
-              <i class="fa-solid fa-greater-than"></i>
-            </span>
+          <p class="has-text-right m-0">
+            <span> {{ takingRecord.takenAt }} </span>
+          </p>
+        </div>
+        <div class="media-right">
+          <p class="icon fas fa-lg ml-2 has-text-link">
+            <i class="fa-solid fa-angle-right"></i>
           </p>
         </div>
       </div>
       <!-- TODO: 自動的に読み込まれるように変更する -->
-      <div
-        class="has-text-centered mt-2"
-        v-if="takingRecordOverviews.canLoadMore"
-      >
+      <div class="has-text-centered mt-2" v-if="takingRecords.canLoadMore">
         <button
           class="button is-small is-ghost"
           type="button"
-          @click="loadMoreTakingRecordOverviews()"
+          @click="loadMoreTakingRecord()"
         >
           さらに表示する
         </button>
@@ -59,12 +68,12 @@
 
     <div
       class="modal"
-      :class="{ 'is-active': isTakingRecordDetailModalActive }"
-      v-if="takingRecordDetail.value !== undefined"
+      :class="{ 'is-active': isSelectedTakingRecordModalActive }"
+      v-if="selectedTakingRecord.value !== undefined"
     >
       <div
         class="modal-background"
-        @click="isTakingRecordDetailModalActive = false"
+        @click="isSelectedTakingRecordModalActive = false"
       ></div>
       <div class="modal-content">
         <div class="notification has-background-link-light py-3 px-5">
@@ -72,7 +81,7 @@
             <button
               class="delete"
               type="button"
-              @click="isTakingRecordDetailModalActive = false"
+              @click="isSelectedTakingRecordModalActive = false"
             ></button>
           </div>
           <p class="icon-text is-size-5 is-flex is-justify-content-center">
@@ -87,43 +96,53 @@
               <span>
                 <a
                   class="is-underlined has-text-info has-text-weight-semibold"
-                  :href="`/medicines/${takingRecordDetail.value.takenMedicine.medicineId}`"
+                  :href="`/medicines/${selectedTakingRecord.value.takenMedicine.medicineId}`"
                 >
-                  {{ takingRecordDetail.value.takenMedicine.medicineName }}
+                  {{ selectedTakingRecord.value.takenMedicine.medicineName }}
                 </a>
                 <span class="ml-2">{{
-                  takingRecordDetail.value.takenMedicine.dose
+                  selectedTakingRecord.value.takenMedicine.dose
                 }}</span>
               </span>
             </p>
             <p class="is-flex is-justify-content-space-between mb-2">
               <strong>お薬を服用した時間</strong>
-              <span>{{ takingRecordDetail.value.takenAt }}</span>
+              <span>{{ selectedTakingRecord.value.takenAt }}</span>
             </p>
             <p class="is-flex is-justify-content-space-between mb-2">
               <strong>症状</strong>
               <span>
-                <span>{{ takingRecordDetail.value.symptom }}</span>
+                <span>{{ selectedTakingRecord.value.followUp.symptom }}</span>
                 (
-                <span>{{ takingRecordDetail.value.beforeTaking }}</span>
+                <span>{{
+                  selectedTakingRecord.value.followUp.beforeTaking
+                }}</span>
                 <span
                   class="icon is-small mx-3"
-                  v-if="takingRecordDetail.value.afterTaking !== undefined"
+                  v-if="
+                    selectedTakingRecord.value.followUp.afterTaking !==
+                    undefined
+                  "
                 >
                   <i class="fa-solid fa-angles-right"></i>
                 </span>
-                <span v-if="takingRecordDetail.value.afterTaking !== undefined">
-                  {{ takingRecordDetail.value.afterTaking }}
+                <span
+                  v-if="
+                    selectedTakingRecord.value.followUp.afterTaking !==
+                    undefined
+                  "
+                >
+                  {{ selectedTakingRecord.value.followUp.afterTaking }}
                 </span>
                 )
               </span>
             </p>
             <p
               class="has-text-left mb-2"
-              v-if="takingRecordDetail.value.note !== ''"
+              v-if="selectedTakingRecord.value.note !== ''"
             >
               <strong>ノート</strong>
-              <span class="m-2">{{ takingRecordDetail.value.note }}</span>
+              <span class="m-2">{{ selectedTakingRecord.value.note }}</span>
             </p>
           </div>
           <div class="block">
@@ -131,7 +150,7 @@
               <p class="control">
                 <a
                   class="button is-small is-rounded is-outlined is-link"
-                  :href="`/takingrecords/${takingRecordDetail.value.takingRecordId}/modify`"
+                  :href="`/takingrecords/${selectedTakingRecord.value.takingRecordId}/modify`"
                 >
                   <span class="icon is-flex is-align-items-center mr-0">
                     <i class="fa-regular fa-pen-to-square"></i>
@@ -144,7 +163,9 @@
                   type="button"
                   class="button is-small is-rounded is-outlined is-danger"
                   @click="
-                    deleteTakingRecord(takingRecordDetail.value.takingRecordId)
+                    deleteTakingRecord(
+                      selectedTakingRecord.value.takingRecordId
+                    )
                   "
                 >
                   <span class="icon is-flex is-align-items-center mr-0">
@@ -166,23 +187,24 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import {
-  TakingRecordOverviews,
+  TakingRecords,
   Filter,
-} from '@main/js/composables/model/TakingRecordOverviews.js';
+} from '@main/js/composables/model/TakingRecords.js';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
+import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
   medicineId: String,
   csrf: String,
 });
 
-const takingRecordOverviews = reactive(new TakingRecordOverviews());
-const takingRecordDetail = reactive({ value: undefined });
-const isTakingRecordDetailModalActive = ref(false);
+const takingRecords = reactive(new TakingRecords());
+const selectedTakingRecord = reactive({ value: undefined });
+const isSelectedTakingRecordModalActive = ref(false);
 
 const resultMessage = ref(null);
 
@@ -190,7 +212,7 @@ onMounted(async () => {
   await HttpRequestClient.submitGetRequest('/api/users?member')
     .then((data) => {
       const members = data.users.map((user) => user.accountId);
-      takingRecordOverviews.load(new Filter(props.medicineId, members));
+      takingRecords.load(new Filter(props.medicineId, members));
     })
     .catch(() => {
       resultMessage.value.activate(
@@ -200,27 +222,15 @@ onMounted(async () => {
     });
 });
 
-function loadMoreTakingRecordOverviews() {
-  takingRecordOverviews.loadMore().catch(() => {
+function loadMoreTakingRecord() {
+  takingRecords.loadMore().catch(() => {
     resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
   });
 }
 
-function activateTakingRecordDetailModal(takingRecordId) {
-  takingRecordDetail.value = undefined;
-
-  HttpRequestClient.submitGetRequest(`/api/takingrecords/${takingRecordId}`)
-    .then((data) => {
-      takingRecordDetail.value = data;
-      isTakingRecordDetailModalActive.value = true;
-    })
-    .catch(() => {
-      resultMessage.value.activate(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+function activateTakingRecordModal(takingRecordId) {
+  selectedTakingRecord.value = takingRecords.getTakingRecord(takingRecordId);
+  isSelectedTakingRecordModalActive.value = true;
 }
 
 function deleteTakingRecord(takingRecordId) {
@@ -232,8 +242,8 @@ function deleteTakingRecord(takingRecordId) {
     form
   )
     .then(() => {
-      takingRecordOverviews.delete(takingRecordId);
-      isTakingRecordDetailModalActive.value = false;
+      takingRecords.delete(takingRecordId);
+      isSelectedTakingRecordModalActive.value = false;
       resultMessage.value.activate('INFO', `服用記録の削除が完了しました。`);
     })
     .catch((error) => {

@@ -1,9 +1,9 @@
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 
-export class TakingRecordOverviews {
+export class TakingRecords {
   constructor() {
     this._filter = undefined;
-    this._idToTakingRecordOverview = {};
+    this._idToTakingRecord = {};
 
     this._page = 0;
     this._sizePerPage = 10;
@@ -11,20 +11,24 @@ export class TakingRecordOverviews {
   }
 
   get values() {
-    return this._idToTakingRecordOverview;
+    return this._idToTakingRecord;
   }
 
   get size() {
-    return Object.keys(this._idToTakingRecordOverview).length;
+    return Object.keys(this._idToTakingRecord).length;
   }
 
   get canLoadMore() {
     return this._page < this._totalPages;
   }
 
+  getTakingRecord(takingRecordId) {
+    return this._idToTakingRecord[takingRecordId];
+  }
+
   async load(filter) {
     this._filter = filter.copy();
-    this._idToTakingRecordOverview = {};
+    this._idToTakingRecord = {};
 
     this._page = 0;
     this._sizePerPage = 10;
@@ -41,9 +45,8 @@ export class TakingRecordOverviews {
     HttpRequestClient.submitGetRequest(
       '/api/takingrecords?' + params.toString()
     ).then((data) => {
-      data.takingRecordOverviews.forEach((takingRecordOverview) => {
-        this._idToTakingRecordOverview[takingRecordOverview.takingRecordId] =
-          takingRecordOverview;
+      data.takingRecords.forEach((takingRecord) => {
+        this._idToTakingRecord[takingRecord.takingRecordId] = takingRecord;
       });
 
       this._page++;
@@ -52,7 +55,7 @@ export class TakingRecordOverviews {
   }
 
   delete(takingRecordId) {
-    delete this._idToTakingRecordOverview[takingRecordId];
+    delete this._idToTakingRecord[takingRecordId];
   }
 }
 
@@ -77,10 +80,10 @@ export class Filter {
 
   copy() {
     const copiedFilter = new Filter();
-    copiedFilter._medicine = this.medicine;
+    copiedFilter.medicine = this.medicine;
     copiedFilter._members = { ...this._members };
-    copiedFilter._start = this.start;
-    copiedFilter._end = this.end;
+    copiedFilter.start = this.start;
+    copiedFilter.end = this.end;
     return copiedFilter;
   }
 

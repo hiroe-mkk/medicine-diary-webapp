@@ -16,7 +16,7 @@ class TakingRecordDeletionApiController(private val takingRecordService: TakingR
      */
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun getTakingRecordDetail(@PathVariable takingRecordId: TakingRecordId) {
+    fun deleteTakingRecord(@PathVariable takingRecordId: TakingRecordId) {
         takingRecordService.deleteTakingRecord(takingRecordId,
                                                userSessionProvider.getUserSession())
     }
