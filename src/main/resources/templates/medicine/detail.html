@@ -115,19 +115,7 @@
                   <span
                     class="icon fas fa-2x is-flex is-align-items-center has-text-link"
                   >
-                    <i class="fa-regular fa-pen-to-square"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="px-0 py-4"
-                  @click="activateDeletionConfirmationModal()"
-                >
-                  <span
-                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
-                  >
-                    <i class="fa-solid fa-trash-can"></i>
+                    <i class="fa-solid fa-ellipsis"></i>
                   </span>
                 </a>
               </li>
@@ -146,14 +134,21 @@
                 class="button is-dark is-fullwidth is-small mb-1"
                 th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
               >
-                <strong class="mx-6">お薬基本情報を更新する</strong>
+                <strong class="mx-6">基本情報を更新する</strong>
               </a>
               <button
                 type="button"
                 class="button is-dark is-fullwidth is-small mb-1"
                 @click="activateMedicineImageChangeModal()"
               >
-                <strong class="mx-6">お薬画像を変更する</strong>
+                <strong class="mx-6">画像を変更する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateDeletionConfirmationModal()"
+              >
+                <strong>お薬を削除する</strong>
               </button>
               <button
                 type="button"
