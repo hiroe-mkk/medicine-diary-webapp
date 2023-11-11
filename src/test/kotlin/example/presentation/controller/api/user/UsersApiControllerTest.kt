@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class UserSearchApiControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
         private const val PATH = "/api/users"
     }
@@ -24,8 +24,8 @@ internal class UserSearchApiControllerTest(@Autowired private val mockMvc: MockM
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("ユーザーを検索する")
-    fun searchForUsers() {
+    @DisplayName("キーワードでユーザー一覧を取得する")
+    fun getUsersByKeyword() {
         //when:
         val actions = mockMvc.perform(get("${PATH}?keyword=${keyword}"))
 

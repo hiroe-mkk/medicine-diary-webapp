@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/users")
-class UserSearchApiController(private val userQueryService: UserQueryService,
-                              private val userSessionProvider: UserSessionProvider) {
+class UsersApiController(private val userQueryService: UserQueryService,
+                         private val userSessionProvider: UserSessionProvider) {
     /**
-     * ユーザーを検索する
+     * キーワードでユーザー一覧を取得する
      */
     @GetMapping(params = ["keyword"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun searchForUsers(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsersResponse {
+    fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsersResponse {
         val users = userQueryService.findByKeyword(keyword ?: "", userSessionProvider.getUserSession())
         return JSONUsersResponse.from(users)
     }
