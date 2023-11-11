@@ -1,6 +1,7 @@
 package example.presentation.controller.page
 
 import example.application.query.sharedgroup.*
+import example.application.query.user.*
 import example.application.service.profile.*
 import example.presentation.shared.*
 import example.presentation.shared.session.*
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/mypage")
 @SessionAttributes(types = [LastRequestedPagePath::class])
 class MypageController(private val profileService: ProfileService,
-                       private val sharedGroupQueryService: SharedGroupQueryService,
+                       private val userQueryService: UserQueryService,
                        private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
     fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/mypage")
@@ -27,7 +28,7 @@ class MypageController(private val profileService: ProfileService,
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
 
-        val members = sharedGroupQueryService.findParticipatingSharedGroupMembers(userSession)
+        val members = userQueryService.findMemberUsers(userSession)
         model.addAttribute("members", members - userSession)
         return "mypage"
     }

@@ -32,22 +32,6 @@
             );
     </select>
 
-    <select id="findAllParticipatingSharedGroupMembersByAccountId" resultMap="UserResultMap">
-        SELECT
-            profiles.account_id AS account_id,
-            profiles.username AS username,
-            profiles.profile_image_url_endpoint AS profile_image_url_endpoint,
-            profiles.profile_image_url_path AS profile_image_url_path
-        FROM
-            members LEFT OUTER JOIN profiles ON members.member = profiles.account_id
-        WHERE
-            members.shared_group_id IN(
-             SELECT shared_group_id
-             FROM members
-             WHERE members.member = #{accountId}
-            );
-    </select>
-
     <resultMap id="SharedGroupDetailResultEntityResultMap" type="example.infrastructure.query.sharedgroup.SharedGroupDetailResultEntity">
         <constructor>
             <idArg column="shared_group_id" javaType="SharedGroupId" resultMap="SharedGroupIdResultMap"/>

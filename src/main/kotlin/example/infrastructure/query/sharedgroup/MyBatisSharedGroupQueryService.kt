@@ -18,10 +18,6 @@ class MyBatisSharedGroupQueryService(private val sharedGroupDetailMapper: Shared
         return SharedGroups(participatingSharedGroup, invitedSharedGroup)
     }
 
-    override fun findParticipatingSharedGroupMembers(userSession: UserSession): Set<User> {
-        return sharedGroupDetailMapper.findAllParticipatingSharedGroupMembersByAccountId(userSession.accountId.value)
-    }
-
     private fun extractingParticipatingSharedGroup(sharedGroups: Collection<SharedGroupDetail>,
                                                    userSession: UserSession): SharedGroupDetail? {
         return sharedGroups.find { it.members.map(User::accountId).contains(userSession.accountId) }

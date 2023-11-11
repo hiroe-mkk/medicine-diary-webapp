@@ -12,4 +12,8 @@ class MyBatisUserQueryService(private val userMapper: UserMapper) : UserQuerySer
     override fun findByKeyword(keyword: String, userSession: UserSession): List<User> {
         return userMapper.findManyByKeyword(keyword, userSession.accountId.value)
     }
+
+    override fun findMemberUsers(userSession: UserSession): List<User> {
+        return userMapper.findAllUserMembers(userSession.accountId.value)
+    }
 }

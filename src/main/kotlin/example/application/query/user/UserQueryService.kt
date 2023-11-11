@@ -5,7 +5,12 @@ import example.application.shared.usersession.*
 
 interface UserQueryService {
     /**
-     * ユーザー検索
+     * キーワードでユーザー一覧を取得する
      */
     fun findByKeyword(keyword: String, userSession: UserSession): List<User>
+
+    /**
+     * メンバーユーザー一覧を取得する
+     */
+    fun findMemberUsers(userSession: UserSession): List<User>
 }

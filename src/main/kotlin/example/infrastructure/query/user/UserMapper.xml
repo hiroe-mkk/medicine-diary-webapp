@@ -18,6 +18,23 @@
         LIMIT 100
     </select>
 
+    <select id="findAllUserMembers" resultMap="UserResultMap">
+        SELECT
+            profiles.account_id AS account_id,
+            profiles.username AS username,
+            profiles.profile_image_url_endpoint AS profile_image_url_endpoint,
+            profiles.profile_image_url_path AS profile_image_url_path
+        FROM
+            members
+            LEFT OUTER JOIN profiles ON members.member = profiles.account_id
+        WHERE
+            members.shared_group_id IN(
+             SELECT shared_group_id
+             FROM members
+             WHERE members.member = #{accountId}
+            );
+    </select>
+
     <resultMap id="UserResultMap" type="example.application.query.shared.type.User">
         <constructor>
             <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
