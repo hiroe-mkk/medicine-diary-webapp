@@ -20,4 +20,15 @@ class UsersApiController(private val userQueryService: UserQueryService,
         val users = userQueryService.findByKeyword(keyword ?: "", userSessionProvider.getUserSession())
         return JSONUsersResponse.from(users)
     }
+
+    /**
+     * メンバーユーザー一覧を取得する
+     */
+    @GetMapping(params = ["member"])
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    fun getMemberUsers(): JSONUsersResponse {
+        val users = userQueryService.findMemberUsers(userSessionProvider.getUserSession())
+        return JSONUsersResponse.from(users)
+    }
 }
