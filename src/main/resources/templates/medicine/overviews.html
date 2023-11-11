@@ -55,16 +55,19 @@
         <div
           v-show="type === 'OWNED'"
           th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.ownedMedicines})}"
+          v-clock
         ></div>
         <div
           th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.sharedGroupMedicines})}"
           v-show="type === 'SHARED_GROUP'"
           th:if="${isParticipatingInSharedGroup}"
+          v-clock
         ></div>
         <div
           th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.membersMedicines})}"
           v-show="type === 'MEMBERS'"
           th:if="${isParticipatingInSharedGroup}"
+          v-clock
         ></div>
       </div>
 
