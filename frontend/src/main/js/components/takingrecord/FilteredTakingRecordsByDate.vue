@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-max-desktop p-3" v-if="takingRecords.size !== 0">
+  <div class="container is-max-desktop p-3">
     <div class="content has-text-centered">
       <p class="icon-text is-size-4 is-flex is-justify-content-center">
         <strong class="has-text-grey-dark">きょうの服用記録</strong>
@@ -8,7 +8,7 @@
         </span>
       </p>
     </div>
-    <div class="content m-2">
+    <div class="content m-2" v-if="takingRecords.size !== 0">
       <div
         class="media is-flex is-align-items-center is-clickable mx-2"
         v-for="(takingRecord, takingRecordId) in takingRecords.values"
@@ -57,142 +57,14 @@
         </button>
       </div>
     </div>
-
-    <div
-      class="modal"
-      :class="{ 'is-active': isSelectedTakingRecordModalActive }"
-      v-if="selectedTakingRecord.value !== undefined"
-    >
-      <div
-        class="modal-background"
-        @click="isSelectedTakingRecordModalActive = false"
-      ></div>
-      <div class="modal-content">
-        <div class="notification has-background-link-light py-3 px-5">
-          <div class="has-text-right">
-            <button
-              class="delete"
-              type="button"
-              @click="isSelectedTakingRecordModalActive = false"
-            ></button>
-          </div>
-          <p class="icon-text is-size-5 is-flex is-justify-content-center">
-            <strong class="has-text-grey-dark">服用記録</strong>
-            <span class="icon has-text-grey-dark mx-2">
-              <i class="fa-solid fa-book-open"></i>
-            </span>
-          </p>
-          <div class="block m-3">
-            <p class="is-flex is-justify-content-space-between mb-2">
-              <strong>お薬</strong>
-              <span>
-                <a
-                  class="is-underlined has-text-info has-text-weight-semibold"
-                  :href="`/medicines/${selectedTakingRecord.value.takenMedicine.medicineId}`"
-                >
-                  {{ selectedTakingRecord.value.takenMedicine.medicineName }}
-                </a>
-                <span class="ml-2">{{
-                  selectedTakingRecord.value.takenMedicine.dose
-                }}</span>
-              </span>
-            </p>
-            <p class="is-flex is-justify-content-space-between mb-2">
-              <strong>お薬を服用した時間</strong>
-              <span>{{ selectedTakingRecord.value.takenAt }}</span>
-            </p>
-            <p class="is-flex is-justify-content-space-between mb-2">
-              <strong>症状</strong>
-              <span>
-                <span>{{ selectedTakingRecord.value.followUp.symptom }}</span>
-                (
-                <small>{{
-                  selectedTakingRecord.value.followUp.beforeTaking
-                }}</small>
-                <span
-                  v-html="
-                    TakingRecordUtils.toIcon(
-                      selectedTakingRecord.value.followUp.beforeTaking
-                    )
-                  "
-                ></span>
-                <span
-                  class="icon is-small mx-2"
-                  v-if="
-                    selectedTakingRecord.value.followUp.afterTaking !==
-                    undefined
-                  "
-                >
-                  <i class="fa-solid fa-angles-right"></i>
-                </span>
-                <small
-                  v-if="
-                    selectedTakingRecord.value.followUp.afterTaking !==
-                    undefined
-                  "
-                >
-                  {{ selectedTakingRecord.value.followUp.afterTaking }}
-                </small>
-                <span
-                  v-html="
-                    TakingRecordUtils.toIcon(
-                      selectedTakingRecord.value.followUp.afterTaking
-                    )
-                  "
-                  v-if="
-                    selectedTakingRecord.value.followUp.afterTaking !==
-                    undefined
-                  "
-                >
-                </span>
-                )
-              </span>
-            </p>
-            <p
-              class="has-text-left mb-2"
-              v-if="selectedTakingRecord.value.note !== ''"
-            >
-              <strong>ノート</strong>
-              <span class="m-2">{{ selectedTakingRecord.value.note }}</span>
-            </p>
-          </div>
-          <div class="block">
-            <div class="field is-grouped is-grouped-centered">
-              <p class="control">
-                <a
-                  class="button is-small is-rounded is-outlined is-link"
-                  :href="`/takingrecords/${selectedTakingRecord.value.takingRecordId}/modify`"
-                >
-                  <span class="icon is-flex is-align-items-center mr-0">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                  </span>
-                  <span class="is-size-7 has-text-weight-bold">修正する</span>
-                </a>
-              </p>
-              <p class="control">
-                <button
-                  type="button"
-                  class="button is-small is-rounded is-outlined is-danger"
-                  @click="
-                    deleteTakingRecord(
-                      selectedTakingRecord.value.takingRecordId
-                    )
-                  "
-                >
-                  <span class="icon is-flex is-align-items-center mr-0">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </span>
-                  <span class="is-size-7 has-text-weight-bold">削除する</span>
-                </button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <ResultMessage ref="resultMessage"></ResultMessage>
   </div>
+
+  <TakingRecord
+    ref="takingRecord"
+    :csrf="props.csrf"
+    @deleted="takingRecordDeleted"
+  ></TakingRecord>
+  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
@@ -202,19 +74,15 @@ import {
   Filter,
   TakingRecordUtils,
 } from '@main/js/composables/model/TakingRecords.js';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
+import TakingRecord from '@main/js/components/takingrecord/TakingRecord.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({ csrf: String });
 
 const takingRecords = reactive(new TakingRecords());
-const selectedTakingRecord = reactive({ value: undefined });
-const isSelectedTakingRecordModalActive = ref(false);
-
+const takingRecord = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
@@ -240,51 +108,12 @@ function loadMoreTakingRecords() {
 }
 
 function activateTakingRecordModal(takingRecordId) {
-  selectedTakingRecord.value = takingRecords.getTakingRecord(takingRecordId);
-  isSelectedTakingRecordModalActive.value = true;
+  takingRecord.value.activateTakingRecordModal(
+    takingRecords.getTakingRecord(takingRecordId)
+  );
 }
 
-function deleteTakingRecord(takingRecordId) {
-  const form = new FormData();
-  form.set('_csrf', props.csrf);
-
-  HttpRequestClient.submitPostRequest(
-    `/api/takingrecords/${takingRecordId}/delete`,
-    form
-  )
-    .then(() => {
-      takingRecords.delete(takingRecordId);
-      isSelectedTakingRecordModalActive.value = false;
-      resultMessage.value.activate('INFO', `服用記録の削除が完了しました。`);
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          resultMessage.value.activate(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          resultMessage.value.activate(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      resultMessage.value.activate(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+function takingRecordDeleted(takingRecordId) {
+  takingRecords.delete(takingRecordId);
 }
 </script>
