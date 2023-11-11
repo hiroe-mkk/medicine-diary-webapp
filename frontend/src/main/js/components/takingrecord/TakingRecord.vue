@@ -83,7 +83,7 @@
             <span class="m-2">{{ takingRecord.value.note }}</span>
           </p>
         </div>
-        <div class="block">
+        <div class="block" v-if="takingRecord.value.isOwned">
           <div class="field is-grouped is-grouped-centered">
             <p class="control">
               <a

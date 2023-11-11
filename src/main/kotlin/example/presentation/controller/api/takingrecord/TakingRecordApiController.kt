@@ -27,6 +27,6 @@ class TakingRecordApiController(private val takingRecordQueryService: TakingReco
         val page = takingRecordQueryService.findTakingRecordsPage(userSession,
                                                                   takingRecordFilter,
                                                                   pageable)
-        return JSONTakingRecordsResponse.from(page)
+        return JSONTakingRecordsResponse.from(page, userSession)
     }
 }

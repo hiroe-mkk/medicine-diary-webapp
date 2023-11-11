@@ -3,6 +3,7 @@ package example.presentation.controller.api.takingrecord
 import com.fasterxml.jackson.annotation.*
 import example.application.query.takingrecord.*
 import example.application.service.takingrecord.*
+import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
@@ -17,11 +18,11 @@ class JSONTakingRecordsResponse(val number: Int,
                                 val totalPages: Int,
                                 val takingRecords: List<JSONTakingRecord>) {
     companion object {
-        fun from(page: Page<DisplayTakingRecord>): JSONTakingRecordsResponse {
+        fun from(page: Page<DisplayTakingRecord>, userSession: UserSession): JSONTakingRecordsResponse {
             return JSONTakingRecordsResponse(page.number,
                                              page.totalPages,
                                              page.content.map {
-                                                 JSONTakingRecord.from(it)
+                                                 JSONTakingRecord.from(it, userSession)
                                              })
         }
     }
@@ -31,9 +32,10 @@ class JSONTakingRecordsResponse(val number: Int,
                            val followUp: JSONFollowUp,
                            val note: String,
                            val takenAt: String,
-                           val recorder: JSONRecorder) {
+                           val recorder: JSONRecorder,
+                           val isOwned: Boolean) {
         companion object {
-            fun from(displayTakingRecord: DisplayTakingRecord): JSONTakingRecord {
+            fun from(displayTakingRecord: DisplayTakingRecord, userSession: UserSession): JSONTakingRecord {
                 return JSONTakingRecord(displayTakingRecord.takingRecordId.value,
                                         JSONTakenMedicine.from(displayTakingRecord),
                                         JSONFollowUp.from(displayTakingRecord),
@@ -41,7 +43,8 @@ class JSONTakingRecordsResponse(val number: Int,
                                         DateTimeFormatter
                                             .ofPattern("yyyy/M/d HH:mm")
                                             .format(displayTakingRecord.takenAt),
-                                        JSONRecorder.from(displayTakingRecord))
+                                        JSONRecorder.from(displayTakingRecord),
+                                        displayTakingRecord.recorder.accountId == userSession.accountId)
             }
         }
 
