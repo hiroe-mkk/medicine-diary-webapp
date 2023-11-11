@@ -16,8 +16,11 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 修正用の服用記録編集コマンドを取得する
      */
     fun getRegistrationTakingRecordEditCommand(medicineId: MedicineId?,
-                                               userSession: UserSession): TakingRecordEditCommand {
-        return if (medicineId != null && medicineDomainService.isAvailableMedicine(medicineId, userSession.accountId)) {
+                                               userSession: UserSession): TakingRecordEditCommand? {
+        val availableMedicineIds = medicineDomainService.findAllAvailableMedicines(userSession.accountId).map { it.id }
+        if (availableMedicineIds.isEmpty()) return null
+
+        return if (medicineId != null && availableMedicineIds.contains(medicineId)) {
             TakingRecordEditCommand.initialize(medicineId)
         } else {
             TakingRecordEditCommand.initialize()
