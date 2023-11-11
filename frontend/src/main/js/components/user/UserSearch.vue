@@ -10,9 +10,7 @@
             @click="isSearchModalActive = false"
           ></button>
         </div>
-        <p
-          class="is-size-5 has-text-weight-bold is-link has-text-centered"
-        >
+        <p class="is-size-5 has-text-weight-bold is-link has-text-centered">
           ユーザー検索
         </p>
         <div class="field my-3 is-grouped">
@@ -34,8 +32,8 @@
             </button>
           </p>
         </div>
-        <div class="content m-3" v-if="searchResults.value !== undefined">
-          <template v-for="user in searchResults.value.users">
+        <div class="content m-3" v-if="searchResults.length !== 0">
+          <template v-for="user in searchResults">
             <div
               class="media px-3 is-flex is-align-items-center is-clickable"
               @click="selected(user)"
@@ -102,26 +100,27 @@ defineExpose({ activateSearchModal });
 
 const isSearchModalActive = ref(false);
 const keyword = ref('');
-const searchResults = reactive({ value: undefined });
+const searchResults = reactive([]);
 
 const resultMessage = ref(null);
 const confirmationMessage = ref(null);
 
 function activateSearchModal() {
   keyword.value = '';
-  searchResults.value = undefined;
+  searchResults.splice(0, searchResults.length);
   isSearchModalActive.value = true;
 }
 
 function search() {
+  searchResults.splice(0, searchResults.length);
   const params = new URLSearchParams();
   params.set('keyword', keyword.value);
 
   return HttpRequestClient.submitGetRequest('/api/users?' + params.toString())
     .then((data) => {
-      searchResults.value = data;
+      searchResults.push(...data.users);
     })
-    .catch((error) => {
+    .catch(() => {
       resultMessage.value.activate(
         'ERROR',
         'エラーが発生しました。',
