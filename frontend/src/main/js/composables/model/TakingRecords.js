@@ -60,14 +60,14 @@ export class TakingRecords {
 }
 
 export class Filter {
-  constructor(medicineId, allMembers) {
+  constructor(medicineId, allMembers, start, end) {
     this.medicine = medicineId;
     this._members = {};
     if (allMembers !== undefined) {
       allMembers.forEach((accountId) => (this._members[accountId] = true));
     }
-    this.start = undefined;
-    this.end = undefined;
+    this.start = start;
+    this.end = end;
   }
 
   enableMember(accountId) {

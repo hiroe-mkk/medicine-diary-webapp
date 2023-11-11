@@ -2,7 +2,7 @@
   <div class="container is-max-desktop p-3" v-if="takingRecords.size !== 0">
     <div class="content has-text-centered">
       <p class="icon-text is-size-4 is-flex is-justify-content-center">
-        <strong class="has-text-grey-dark">服用記録</strong>
+        <strong class="has-text-grey-dark">きょうの服用記録</strong>
         <span class="icon has-text-grey-dark mx-2">
           <i class="fa-solid fa-book-open"></i>
         </span>
@@ -28,24 +28,14 @@
             />
           </figure>
         </div>
-        <div class="media-content has-text-grey-dark">
-          <p class="m-0">
-            <span>{{ takingRecord.followUp.symptom }}</span>
-            (
-            <span>{{ takingRecord.followUp.beforeTaking }}</span>
-            <span
-              class="icon is-small mx-3"
-              v-if="takingRecord.followUp.afterTaking !== undefined"
-            >
-              <i class="fa-solid fa-angles-right"></i>
-            </span>
-            <span v-if="takingRecord.followUp.afterTaking !== undefined">
-              {{ takingRecord.followUp.afterTaking }}
-            </span>
-            )
+        <div
+          class="media-content has-text-grey-dark is-flex is-justify-content-space-between"
+        >
+          <p class="m-0 has-text-weight-bold">
+            {{ takingRecord.takenMedicine.medicineName }}
           </p>
           <p class="has-text-right m-0">
-            <span> {{ takingRecord.takenAt }} </span>
+            <span> {{ toTime(takingRecord.takenAt) }} </span>
           </p>
         </div>
         <div class="media-right">
@@ -197,10 +187,7 @@ import {
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 
-const props = defineProps({
-  medicineId: String,
-  csrf: String,
-});
+const props = defineProps({ csrf: String });
 
 const takingRecords = reactive(new TakingRecords());
 const selectedTakingRecord = reactive({ value: undefined });
@@ -212,7 +199,9 @@ onMounted(async () => {
   await HttpRequestClient.submitGetRequest('/api/users?member')
     .then((data) => {
       const members = data.users.map((user) => user.accountId);
-      takingRecords.load(new Filter(props.medicineId, members));
+      const date = new Date().toLocaleDateString().slice(0, 10);
+      const filter = new Filter(props.medicineId, members, date, date);
+      takingRecords.load(filter);
     })
     .catch(() => {
       resultMessage.value.activate(
@@ -226,6 +215,10 @@ function loadMoreTakingRecords() {
   takingRecords.loadMore().catch(() => {
     resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
   });
+}
+
+function toTime(dateTime) {
+  return dateTime.slice(11, 19);
 }
 
 function activateTakingRecordModal(takingRecordId) {
