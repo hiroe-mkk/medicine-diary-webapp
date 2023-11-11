@@ -39,7 +39,7 @@
               @click="selected(user)"
             >
               <div class="media-left">
-                <figure class="image is-64x64">
+                <figure class="image is-64x64 mx-3">
                   <img
                     :src="user.profileImageURL"
                     class="is-rounded"

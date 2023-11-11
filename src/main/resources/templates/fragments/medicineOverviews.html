@@ -14,13 +14,13 @@
         >
           <div class="media-left">
             <a
-              class="image is-96x96 is-clickable"
+              class="image is-96x96 is-clickable mx-3"
               th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
               th:if="*{medicineImageURL != null}"
             >
               <img th:src="*{medicineImageURL}" />
             </a>
-            <a class="image is-96x96" th:if="*{medicineImageURL == null}">
+            <a class="image is-96x96 mx-3" th:if="*{medicineImageURL == null}">
               <img :src="noMedicineImage" />
             </a>
           </div>
