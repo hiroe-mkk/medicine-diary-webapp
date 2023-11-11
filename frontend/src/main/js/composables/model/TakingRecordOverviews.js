@@ -57,50 +57,41 @@ export class TakingRecordOverviews {
 }
 
 export class Filter {
-  constructor() {
-    this._medicine = undefined;
-    this._members = [];
-    this._start = undefined;
-    this._end = undefined;
+  constructor(medicineId, allMembers) {
+    this.medicine = medicineId;
+    this._members = {};
+    if (allMembers !== undefined) {
+      allMembers.forEach((accountId) => (this._members[accountId] = true));
+    }
+    this.start = undefined;
+    this.end = undefined;
   }
 
-  changeMedicine(medicine) {
-    this._medicine = medicine;
+  enableMember(accountId) {
+    this._members[accountId].isEnabled = true;
   }
 
-  addMember(member) {
-    this._members.push(member);
-  }
-
-  removeMember(member) {
-    this._members = this._members.filter((element) => element !== member);
-  }
-
-  changeStart(start) {
-    this._start = start;
-  }
-
-  changeEnd(end) {
-    this._end = end;
+  disableMember(accountId) {
+    this._members[accountId].isEnabled = false;
   }
 
   copy() {
     const copiedFilter = new Filter();
-    copiedFilter._medicine = this._medicine;
-    copiedFilter._members = [...this._members];
-    copiedFilter._start = this._start;
-    copiedFilter._end = this._end;
+    copiedFilter._medicine = this.medicine;
+    copiedFilter._members = { ...this._members };
+    copiedFilter._start = this.start;
+    copiedFilter._end = this.end;
     return copiedFilter;
   }
 
   createParams() {
     const params = new URLSearchParams();
-    if (this._medicine !== undefined) params.append('medicine', this._medicine);
-    this._members.forEach((member) => {
-      params.append('members', member);
+    if (this.medicine !== undefined) params.append('medicine', this.medicine);
+    Object.keys(this._members).forEach((accountId) => {
+      if (this._members[accountId]) params.append('members', accountId);
     });
-    if (this._start !== undefined) params.append('start', this._start);
-    if (this._end !== undefined) params.append('end', this.end);
+    if (this.start !== undefined) params.append('start', this.start);
+    if (this.end !== undefined) params.append('end', this.end);
 
     return params;
   }

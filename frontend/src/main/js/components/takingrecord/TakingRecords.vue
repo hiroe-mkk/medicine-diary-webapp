@@ -186,10 +186,18 @@ const isTakingRecordDetailModalActive = ref(false);
 
 const resultMessage = ref(null);
 
-onMounted(() => {
-  takingRecordOverviews.load(new Filter(props.medicineId)).catch(() => {
-    resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
-  });
+onMounted(async () => {
+  await HttpRequestClient.submitGetRequest('/api/users?member')
+    .then((data) => {
+      const members = data.users.map((user) => user.accountId);
+      takingRecordOverviews.load(new Filter(props.medicineId, members));
+    })
+    .catch(() => {
+      resultMessage.value.activate(
+        'ERROR',
+        '服用記録の読み込みに失敗しました。'
+      );
+    });
 });
 
 function loadMoreTakingRecordOverviews() {
@@ -201,20 +209,18 @@ function loadMoreTakingRecordOverviews() {
 function activateTakingRecordDetailModal(takingRecordId) {
   takingRecordDetail.value = undefined;
 
-  HttpRequestClient.submitGetRequest(
-    `/api/takingrecords/${takingRecordId}`
-      .then((data) => {
-        takingRecordDetail.value = data;
-        isTakingRecordDetailModalActive.value = true;
-      })
-      .catch(() => {
-        resultMessage.value.activate(
-          'ERROR',
-          'エラーが発生しました。',
-          '通信状態をご確認のうえ、再度お試しください。'
-        );
-      })
-  );
+  HttpRequestClient.submitGetRequest(`/api/takingrecords/${takingRecordId}`)
+    .then((data) => {
+      takingRecordDetail.value = data;
+      isTakingRecordDetailModalActive.value = true;
+    })
+    .catch(() => {
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
 }
 
 function deleteTakingRecord(takingRecordId) {
