@@ -91,6 +91,9 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         }
     }
 
+    /**
+     * 参加している共有グループか
+     */
     fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
         return sharedGroupDomainService.isParticipatingInSharedGroup(userSession.accountId)
     }
