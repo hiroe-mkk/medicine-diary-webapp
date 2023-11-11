@@ -63,7 +63,7 @@
                 AND DATE(taken_at) <![CDATA[ <= ]]> #{end}
             </when>
             <when test="start != null and end != null">
-                AND DATE(taken_at) #{start} between #{end}
+                AND DATE(taken_at) BETWEEN #{start} AND #{end}
             </when>
         </choose>
     </sql>
