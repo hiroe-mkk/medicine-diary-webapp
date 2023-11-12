@@ -1,29 +1,29 @@
 package example.infrastructure.query.sharedgroup
 
-import example.application.query.shared.type.*
 import example.application.query.sharedgroup.*
 import example.application.shared.usersession.*
+import example.domain.model.account.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
 @Component
 @Transactional
-class MyBatisSharedGroupQueryService(private val displaySharedGroupMapper: DisplaySharedGroupMapper)
+class MyBatisSharedGroupQueryService(private val jsonSharedGroupMapper: JSONSharedGroupMapper)
     : SharedGroupQueryService {
-    override fun findSharedGroup(userSession: UserSession): SharedGroups {
-        val sharedGroups = displaySharedGroupMapper.findAllByAccountId(userSession.accountId.value)
+    override fun findSharedGroup(userSession: UserSession): JSONSharedGroups {
+        val sharedGroups = jsonSharedGroupMapper.findAllByAccountId(userSession.accountId.value)
         val participatingSharedGroup = extractingParticipatingSharedGroup(sharedGroups, userSession)
         val invitedSharedGroup = invitedSharedGroups(participatingSharedGroup, sharedGroups)
-        return SharedGroups(participatingSharedGroup, invitedSharedGroup)
+        return JSONSharedGroups(participatingSharedGroup, invitedSharedGroup)
     }
 
-    private fun extractingParticipatingSharedGroup(sharedGroups: Collection<DisplaySharedGroup>,
-                                                   userSession: UserSession): DisplaySharedGroup? {
-        return sharedGroups.find { it.members.map(User::accountId).contains(userSession.accountId) }
+    private fun extractingParticipatingSharedGroup(sharedGroups: Collection<JSONSharedGroup>,
+                                                   userSession: UserSession): JSONSharedGroup? {
+        return sharedGroups.find { it.members.map { AccountId(it.accountId) }.contains(userSession.accountId) }
     }
 
-    private fun invitedSharedGroups(participatingSharedGroup: DisplaySharedGroup?,
-                                    sharedGroups: Collection<DisplaySharedGroup>): Set<DisplaySharedGroup> {
+    private fun invitedSharedGroups(participatingSharedGroup: JSONSharedGroup?,
+                                    sharedGroups: Collection<JSONSharedGroup>): Set<JSONSharedGroup> {
         return if (participatingSharedGroup == null) {
             sharedGroups.toSet()
         } else {

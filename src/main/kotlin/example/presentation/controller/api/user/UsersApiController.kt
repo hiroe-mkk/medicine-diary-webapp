@@ -16,9 +16,8 @@ class UsersApiController(private val userQueryService: UserQueryService,
     @GetMapping(params = ["keyword"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsersResponse {
-        val users = userQueryService.findByKeyword(keyword ?: "", userSessionProvider.getUserSession())
-        return JSONUsersResponse.from(users)
+    fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsers {
+        return userQueryService.findJSONUsersByKeyword(keyword ?: "", userSessionProvider.getUserSession())
     }
 
     /**
@@ -27,8 +26,7 @@ class UsersApiController(private val userQueryService: UserQueryService,
     @GetMapping(params = ["member"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getMemberUsers(): JSONUsersResponse {
-        val users = userQueryService.findMemberUsers(userSessionProvider.getUserSession())
-        return JSONUsersResponse.from(users)
+    fun getMemberUsers(): JSONUsers {
+        return userQueryService.findMemberJSONUsers(userSessionProvider.getUserSession())
     }
 }

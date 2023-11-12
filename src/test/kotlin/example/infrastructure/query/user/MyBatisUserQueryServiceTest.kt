@@ -32,12 +32,12 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
         val user2AccountId = testAccountInserter.insertAccountAndProfile(username = Username("user2")).first.id
 
         //when:
-        val actual = userQueryService.findByKeyword("user", userSession)
+        val actual = userQueryService.findJSONUsersByKeyword("user", userSession)
 
         //when:
-        assertThat(actual)
+        assertThat(actual.users)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(user1AccountId, user2AccountId)
+            .containsExactlyInAnyOrder(user1AccountId.value, user2AccountId.value)
     }
 
     @Test
@@ -52,15 +52,17 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
                                        invitees = setOf(invitee1.accountId))
 
         //when:
-        val actual = userQueryService.findMemberUsers(userSession)
+        val actual = userQueryService.findMemberJSONUsers(userSession)
 
         //then:
-        assertThat(actual)
+        assertThat(actual.users)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(requesterProfile.accountId, member1.accountId, member2.accountId)
-        val actualUser = actual.find { it.accountId == requesterProfile.accountId }
-        assertThat(actualUser).isEqualTo(User(requesterProfile.accountId,
-                                              requesterProfile.username,
-                                              requesterProfile.profileImageURL))
+            .containsExactlyInAnyOrder(requesterProfile.accountId.value,
+                                       member1.accountId.value,
+                                       member2.accountId.value)
+        val actualUser = actual.users.find { it.accountId == requesterProfile.accountId.value }
+        assertThat(actualUser).isEqualTo(JSONUser(requesterProfile.accountId.value,
+                                                  requesterProfile.username.value,
+                                                  requesterProfile.profileImageURL?.toURL()))
     }
 }

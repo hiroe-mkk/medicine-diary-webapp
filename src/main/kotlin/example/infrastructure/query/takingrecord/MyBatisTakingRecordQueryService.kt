@@ -10,27 +10,29 @@ import java.time.*
 
 @Component
 @Transactional(readOnly = true)
-class MyBatisTakingRecordQueryService(private val displayTakingRecordMapper: DisplayTakingRecordMapper,
+class MyBatisTakingRecordQueryService(private val jsonTakingRecordMapper: JSONTakingRecordMapper,
                                       medicineDomainService: MedicineDomainService)
     : TakingRecordQueryService(medicineDomainService) {
     override fun findFilteredTakingRecordsPage(accountIds: Collection<AccountId>,
                                                medicineIds: Collection<MedicineId>,
                                                startedDate: LocalDate?,
                                                endDate: LocalDate?,
-                                               pageable: Pageable): Page<DisplayTakingRecord> {
+                                               pageable: Pageable,
+                                               requester: AccountId): Page<JSONTakingRecord> {
         val accountIdValues = accountIds.map { it.value }
         val medicineIdValues = medicineIds.map { it.value }
 
-        val total = displayTakingRecordMapper.countByAccountIdsAndMedicineIdsAndRecorderAt(accountIdValues,
-                                                                                           medicineIdValues,
-                                                                                           startedDate,
-                                                                                           endDate)
-        val content = displayTakingRecordMapper.findAllByAccountIdsAndMedicineIdsAndRecorderAt(accountIdValues,
-                                                                                               medicineIdValues,
-                                                                                               startedDate,
-                                                                                               endDate,
-                                                                                               pageable.pageSize,
-                                                                                               pageable.offset)
+        val total = jsonTakingRecordMapper.countByAccountIdsAndMedicineIdsAndRecorderAt(accountIdValues,
+                                                                                        medicineIdValues,
+                                                                                        startedDate,
+                                                                                        endDate)
+        val content = jsonTakingRecordMapper.findAllByAccountIdsAndMedicineIdsAndRecorderAt(accountIdValues,
+                                                                                            medicineIdValues,
+                                                                                            startedDate,
+                                                                                            endDate,
+                                                                                            pageable.pageSize,
+                                                                                            pageable.offset,
+                                                                                            requester.value)
         return PageImpl(content, pageable, total)
     }
 }

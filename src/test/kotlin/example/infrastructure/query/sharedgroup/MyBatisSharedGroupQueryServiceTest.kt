@@ -2,6 +2,7 @@ package example.infrastructure.query.sharedgroup
 
 import example.application.query.shared.type.*
 import example.application.query.sharedgroup.*
+import example.application.query.user.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
@@ -42,28 +43,28 @@ internal class MyBatisSharedGroupQueryServiceTest(@Autowired private val sharedG
         val actual = sharedGroupQueryService.findSharedGroup(userSession)
 
         //then:
-        assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id)
+        assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id.value)
         assertThat(actual.participatingSharedGroup?.members)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(requester.accountId,
-                                       member1OfParticipatingSharedGroup.accountId,
-                                       member2OfParticipatingSharedGroup.accountId)
+            .containsExactlyInAnyOrder(requester.accountId.value,
+                                       member1OfParticipatingSharedGroup.accountId.value,
+                                       member2OfParticipatingSharedGroup.accountId.value)
         assertThat(actual.participatingSharedGroup?.invitees).isEmpty()
 
 
         assertThat(actual.invitedSharedGroups)
             .extracting("sharedGroupId")
-            .containsExactly(invitedSharedGroup.id)
+            .containsExactly(invitedSharedGroup.id.value)
         assertThat(actual.invitedSharedGroups.first().members)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(member1OfInvitedSharedGroup.accountId)
+            .containsExactlyInAnyOrder(member1OfInvitedSharedGroup.accountId.value)
         assertThat(actual.invitedSharedGroups.first().invitees)
             .extracting("accountId")
-            .containsExactly(requester.accountId)
+            .containsExactly(requester.accountId.value)
 
-        val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == requester.accountId }
-        assertThat(actualUser).isEqualTo(User(requester.accountId,
-                                              requester.username,
-                                              requester.profileImageURL))
+        val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == requester.accountId.value }
+        assertThat(actualUser).isEqualTo(JSONUser(requester.accountId.value,
+                                                  requester.username.value,
+                                                  requester.profileImageURL?.toURL()))
     }
 }

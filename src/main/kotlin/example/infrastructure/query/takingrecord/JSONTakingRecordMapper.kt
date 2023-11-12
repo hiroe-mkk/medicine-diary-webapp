@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*
 import java.time.*
 
 @Mapper
-interface DisplayTakingRecordMapper {
+interface JSONTakingRecordMapper {
     fun countByAccountIdsAndMedicineIdsAndRecorderAt(accountIds: List<String>,
                                                      medicineIds: List<String>,
                                                      start: LocalDate?,
@@ -16,5 +16,6 @@ interface DisplayTakingRecordMapper {
                                                        start: LocalDate?,
                                                        end: LocalDate?,
                                                        pageSize: Int,
-                                                       offset: Long): List<DisplayTakingRecord>
+                                                       offset: Long,
+                                                       requester: String): List<JSONTakingRecord>
 }

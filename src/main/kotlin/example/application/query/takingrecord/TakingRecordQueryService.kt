@@ -15,7 +15,7 @@ abstract class TakingRecordQueryService(private val medicineDomainService: Medic
      */
     fun findTakingRecordsPage(userSession: UserSession,
                               filter: TakingRecordFilter,
-                              pageable: Pageable): Page<DisplayTakingRecord> {
+                              pageable: Pageable): Page<JSONTakingRecord> {
         if (filter.members.isEmpty()) return Page.empty()
 
         val viewableMedicineIds = requireViewableMedicineIds(filter, userSession)
@@ -25,7 +25,8 @@ abstract class TakingRecordQueryService(private val medicineDomainService: Medic
                                              viewableMedicineIds,
                                              filter.start,
                                              filter.end,
-                                             pageable)
+                                             pageable,
+                                             userSession.accountId)
     }
 
     private fun requireViewableMedicineIds(filter: TakingRecordFilter,
@@ -43,5 +44,6 @@ abstract class TakingRecordQueryService(private val medicineDomainService: Medic
                                                medicineIds: Collection<MedicineId>,
                                                startedDate: LocalDate?,
                                                endDate: LocalDate?,
-                                               pageable: Pageable): Page<DisplayTakingRecord>
+                                               pageable: Pageable,
+                                               requester: AccountId): Page<JSONTakingRecord>
 }

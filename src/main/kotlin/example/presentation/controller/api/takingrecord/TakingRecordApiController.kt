@@ -22,11 +22,10 @@ class TakingRecordApiController(private val takingRecordQueryService: TakingReco
     @ResponseBody
     fun getTakingRecords(takingRecordFilter: TakingRecordFilter,
                          @PageableDefault(page = 0,
-                                          size = 10) pageable: Pageable): JSONTakingRecordsResponse {
-        val userSession = userSessionProvider.getUserSession()
-        val page = takingRecordQueryService.findTakingRecordsPage(userSession,
+                                          size = 10) pageable: Pageable): JSONTakingRecords {
+        val page = takingRecordQueryService.findTakingRecordsPage(userSessionProvider.getUserSession(),
                                                                   takingRecordFilter,
                                                                   pageable)
-        return JSONTakingRecordsResponse.from(page, userSession)
+        return JSONTakingRecords.from(page)
     }
 }

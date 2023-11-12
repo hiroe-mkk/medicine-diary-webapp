@@ -6,5 +6,5 @@ interface SharedGroupQueryService {
     /**
      * 共有グループ一覧を取得する
      */
-    fun findSharedGroup(userSession: UserSession): SharedGroups
+    fun findSharedGroup(userSession: UserSession): JSONSharedGroups
 }
