@@ -39,7 +39,19 @@
       </div>
     </div>
 
-    <div class="content m-0" v-if="takingRecords.size !== 0">
+    <div
+      class="content m-5"
+      v-if="takingRecords.isLoaded && takingRecords.size === 0"
+      v-clock
+    >
+      <p class="has-text-weight-bold has-text-info">服用記録がありません。</p>
+    </div>
+
+    <div
+      class="content m-0"
+      v-if="takingRecords.isLoaded && takingRecords.size !== 0"
+      v-clock
+    >
       <div
         class="media is-flex is-align-items-center is-clickable p-3 m-0"
         v-for="(takingRecord, takingRecordId) in takingRecords.values"

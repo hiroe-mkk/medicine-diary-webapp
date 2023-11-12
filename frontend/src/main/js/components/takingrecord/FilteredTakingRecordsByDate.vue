@@ -1,6 +1,6 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
-    <div class="notification has-background-white-bis p-3">
+    <div class="notification has-background-white p-3">
       <div class="content">
         <p class="icon-text is-size-4 is-flex is-justify-content-center m-3">
           <strong class="has-text-grey-dark">本日の服用記録</strong>
@@ -42,7 +42,19 @@
         </div>
       </div>
 
-      <div class="content m-2" v-if="takingRecords.size !== 0" v-clock>
+      <div
+        class="content m-5"
+        v-if="takingRecords.isLoaded && takingRecords.size === 0"
+        v-clock
+      >
+        <p class="has-text-weight-bold has-text-info">お薬を服用していません。</p>
+      </div>
+
+      <div
+        class="content m-2"
+        v-if="takingRecords.isLoaded && takingRecords.size !== 0"
+        v-clock
+      >
         <div
           class="media is-flex is-align-items-center is-clickable p-3 m-0"
           v-for="(takingRecord, takingRecordId) in takingRecords.values"

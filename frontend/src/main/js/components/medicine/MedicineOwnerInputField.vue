@@ -6,7 +6,7 @@
     <div class="field-body">
       <div class="field">
         <div class="control">
-          <div class="notification has-background-white-bis py-3 px-5">
+          <div class="notification has-background-white py-3 px-5">
             <div class="field my-3">
               <div class="field-body">
                 <div class="field is-narrow">

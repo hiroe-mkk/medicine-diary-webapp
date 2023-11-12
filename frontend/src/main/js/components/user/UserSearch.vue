@@ -2,7 +2,7 @@
   <div class="modal" :class="{ 'is-active': isSearchModalActive }">
     <div class="modal-background" @click="isSearchModalActive = false"></div>
     <div class="modal-content">
-      <div class="notification has-background-white-bis py-3 px-5">
+      <div class="notification has-background-white py-3 px-5">
         <div class="has-text-right">
           <button
             class="delete"

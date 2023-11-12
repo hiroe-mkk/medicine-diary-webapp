@@ -21,7 +21,7 @@
     ></div>
     <div class="modal-content">
       <div
-        class="notification has-background-white-bis has-text-centered py-3 px-5"
+        class="notification has-background-white has-text-centered py-3 px-5"
       >
         <div class="has-text-right">
           <button

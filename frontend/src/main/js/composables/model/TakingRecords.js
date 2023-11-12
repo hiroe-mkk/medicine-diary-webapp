@@ -2,8 +2,9 @@ import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 
 export class TakingRecords {
   constructor() {
-    this._filter = undefined;
     this._idToTakingRecord = {};
+    this._isLoaded = false;
+    this._filter = undefined;
 
     this._page = 0;
     this._sizePerPage = 10;
@@ -18,6 +19,10 @@ export class TakingRecords {
     return Object.keys(this._idToTakingRecord).length;
   }
 
+  get isLoaded() {
+    return this._isLoaded;
+  }
+
   get canLoadMore() {
     return this._page < this._totalPages;
   }
@@ -27,6 +32,7 @@ export class TakingRecords {
   }
 
   async load(filter) {
+    this._isLoaded = false;
     this._filter = filter.copy();
     this._idToTakingRecord = {};
 
@@ -51,6 +57,7 @@ export class TakingRecords {
 
       this._page++;
       this._totalPages = data.totalPages;
+      this._isLoaded = true;
     });
   }
 
