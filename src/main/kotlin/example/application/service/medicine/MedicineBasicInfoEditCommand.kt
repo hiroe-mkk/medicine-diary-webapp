@@ -29,7 +29,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
                                         val effects: List<@Valid EffectInputField> = emptyList(),
                                         @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
                                         val precautions: String,
-                                        val isPublic: Boolean = true) {
+                                        val isPublic: Boolean = false) {
     val validatedMedicineName: MedicineName = MedicineName(medicineName.trim())
     val validatedDosageAndAdministration: DosageAndAdministration =
             DosageAndAdministration(Dose(quantity ?: 0.0),

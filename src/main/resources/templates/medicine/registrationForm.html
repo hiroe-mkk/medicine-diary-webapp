@@ -25,63 +25,10 @@
             th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
           ></div>
 
-          <div
-            class="field is-horizontal"
+          <medicine-owner
+            th:attr="':is-want-to-own'=${isWantToOwn}, ':is-public'=${form.isPublic}"
             th:if="${isParticipatingInSharedGroup}"
-          >
-            <div class="field-label">　</div>
-            <div class="field-body">
-              <div class="field is-narrow">
-                <div class="control">
-                  <label class="radio">
-                    <input
-                      type="radio"
-                      name="isWantToOwn"
-                      value="true"
-                      th:checked="${isWantToOwn}"
-                    />
-                    <strong class="has-text-grey">
-                      あなたのお薬として登録する
-                    </strong>
-                  </label>
-                  <label class="radio">
-                    <input
-                      type="radio"
-                      value="false"
-                      name="isWantToOwn"
-                      th:checked="${!isWantToOwn}"
-                    />
-                    <strong class="has-text-grey">
-                      共有グループのお薬として登録する
-                    </strong>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="field is-horizontal my-3"
-            th:if="${isParticipatingInSharedGroup}"
-          >
-            <div class="field-label">　</div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <label class="checkbox">
-                    <input
-                      type="checkbox"
-                      name="isPublic"
-                      th:checked="${form.isPublic}"
-                    />
-                    <strong class="has-text-grey">
-                      共有グループメンバーからの閲覧を許可する
-                    </strong>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+          ></medicine-owner>
 
           <div class="field is-grouped is-grouped-centered my-3">
             <p class="control">
