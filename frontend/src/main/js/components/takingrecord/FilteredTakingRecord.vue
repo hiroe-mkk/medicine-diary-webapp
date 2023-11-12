@@ -9,14 +9,16 @@
       </p>
     </div>
 
-    <div class="content is-inline-block m-0">
+    <div
+      class="content is-inline-block m-0"
+      v-if="props.isParticipatingInSharedGroup"
+    >
       <div class="is-flex is-align-items-center">
         <div
           class="is-clickable mx-2"
           :class="{ opacity: !filter.isMemberActive(member.accountId) }"
           @click="toggleMemberActive(member.accountId)"
           v-for="member in members"
-          v-if="members.length !== 1"
         >
           <div class="is-flex is-justify-content-center">
             <figure class="image is-48x48 m-0">
@@ -104,6 +106,7 @@
 
   <TakingRecord
     ref="takingRecord"
+    :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
     :csrf="props.csrf"
     @deleted="takingRecordDeleted"
   ></TakingRecord>
@@ -115,14 +118,16 @@ import { ref, reactive, onMounted } from 'vue';
 import {
   TakingRecords,
   Filter,
-  TakingRecordUtils,
 } from '@main/js/composables/model/TakingRecords.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 import TakingRecord from '@main/js/components/takingrecord/TakingRecord.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 
-const props = defineProps({ csrf: String });
+const props = defineProps({
+  isParticipatingInSharedGroup: Boolean,
+  csrf: String,
+});
 
 const members = reactive([]);
 const filter = reactive(new Filter());

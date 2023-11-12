@@ -77,6 +77,7 @@
 
   <TakingRecord
     ref="takingRecord"
+    :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
     :csrf="props.csrf"
     @deleted="takingRecordDeleted"
   ></TakingRecord>
@@ -97,6 +98,7 @@ import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
   medicineId: String,
+  isParticipatingInSharedGroup: Boolean,
   csrf: String,
 });
 

@@ -48,7 +48,7 @@
         </p>
       </div>
 
-      <taking-records th:attr="csrf=${_csrf.token}"></taking-records>
+      <taking-records th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"></taking-records>
 
       <div class="modal" :class="{ 'is-active': isMenuModalActive }">
         <div class="modal-background" @click="isMenuModalActive = false"></div>

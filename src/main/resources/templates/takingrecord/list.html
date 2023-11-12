@@ -11,7 +11,7 @@
 
   <body>
     <div id="takingRecords" layout:fragment="content">
-      <taking-records th:attr="csrf=${_csrf.token}"></taking-records>
+      <taking-records th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"></taking-records>
 
       <div class="bottom-right-button">
         <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">

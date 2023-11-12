@@ -25,10 +25,10 @@ class MedicineOverviewsController(private val medicineService: MedicineService,
      */
     @GetMapping
     fun displayMedicineOverviewsPage(model: Model): String {
-        val medicineOverviews = medicineService.findMedicineOverviews(userSessionProvider.getUserSession())
+        val userSession = userSessionProvider.getUserSession()
+        val medicineOverviews = medicineService.findMedicineOverviews(userSession)
         model.addAttribute("medicineOverviews", medicineOverviews)
-        model.addAttribute("isParticipatingInSharedGroup",
-                           sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSession()))
+        model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
         return "medicine/overviews"
     }
 }

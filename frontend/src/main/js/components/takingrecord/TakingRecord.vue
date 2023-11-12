@@ -78,9 +78,18 @@
               )
             </span>
           </p>
-          <p class="has-text-left mb-2" v-if="takingRecord.value.note !== ''">
+          <p class="has-text-left" v-if="takingRecord.value.note !== ''">
             <strong>ノート</strong>
-            <span class="m-2">{{ takingRecord.value.note }}</span>
+            <p class="notification has-background-white has-text-left py-2 px-3 my-2 mx-0">
+              <span class="is-underlined p-1">{{ takingRecord.value.note }}</span>
+            </p>
+          </p>
+          <p
+            class="has-text-right mb-2"
+            v-if="props.isParticipatingInSharedGroup"
+          >
+            <strong>recorded by  </strong>
+            <span>{{ takingRecord.value.recorder.username }}</span>
           </p>
         </div>
         <div class="block" v-if="takingRecord.value.isOwned">
@@ -126,7 +135,10 @@ import {
 import { TakingRecordUtils } from '@main/js/composables/model/TakingRecords.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
-const props = defineProps({ csrf: String });
+const props = defineProps({
+  isParticipatingInSharedGroup: Boolean,
+  csrf: String,
+});
 const emits = defineEmits(['deleted']);
 defineExpose({ activateTakingRecordModal });
 
