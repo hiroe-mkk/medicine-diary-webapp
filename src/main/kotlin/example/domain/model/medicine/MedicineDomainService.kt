@@ -67,7 +67,7 @@ class MedicineDomainService(private val medicineRepository: MedicineRepository,
 
     fun findAllViewableMedicines(accountId: AccountId): Set<Medicine> {
         val ownedMedicines = findAllOwnedMedicines(accountId)
-        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
+        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return ownedMedicines
         val sharedGroupMedicines = medicineRepository.findBySharedGroupId(sharedGroup.id)
         val members = sharedGroup.members - accountId
         val membersMedicines = medicineRepository.findByAccountIds(members).filter { it.isPublic }

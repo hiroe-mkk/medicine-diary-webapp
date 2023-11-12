@@ -48,7 +48,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "â€»ã
                                                 emptyList(),
                                                 emptyList(),
                                                 "",
-                                                true)
+                                                false)
         }
 
         fun initialize(medicine: Medicine): MedicineBasicInfoEditCommand {

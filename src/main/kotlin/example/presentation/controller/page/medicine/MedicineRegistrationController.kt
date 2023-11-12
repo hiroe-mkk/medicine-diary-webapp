@@ -40,11 +40,15 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
      * 薬を登録する
      */
     @PostMapping
-    fun registerMedicine(@ModelAttribute("isWantToOwn") isWantToOwn: Boolean = false,
+    fun registerMedicine(isWantToOwn: Boolean = true,
                          @ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                          bindingResult: BindingResult,
+                         model: Model,
                          redirectAttributes: RedirectAttributes): String {
-        if (bindingResult.hasErrors()) return "medicine/registrationForm"
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("isWantToOwn", isWantToOwn)
+            return "medicine/registrationForm"
+        }
 
         medicineService.registerMedicine(medicineBasicInfoEditCommand,
                                          isWantToOwn,
