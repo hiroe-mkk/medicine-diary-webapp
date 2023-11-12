@@ -12,6 +12,9 @@ createApp({
     };
   },
   methods: {
+    goBack() {
+      window.history.back();
+    },
     activateMedicineImageChangeModal() {
       this.isEditModalActive = false;
       this.$refs.changeableImage.activateChangeModal();
