@@ -30,10 +30,7 @@
             th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
           ></div>
 
-          <div
-            class="field is-horizontal my-3"
-            th:if="${isOwned}"
-          >
+          <div class="field is-horizontal my-3" th:if="${isOwned}">
             <div class="field-label">　</div>
             <div class="field-body">
               <div class="field">
@@ -55,7 +52,16 @@
 
           <div class="field is-grouped is-grouped-centered my-3">
             <p class="control">
-              <button class="button is-rounded is-link">完了</button>
+              <button class="button is-small is-rounded is-link">完了</button>
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                class="button is-small is-rounded is-outlined is-danger"
+                @click="goBack()"
+              >
+                キャンセル
+              </button>
             </p>
           </div>
         </form>

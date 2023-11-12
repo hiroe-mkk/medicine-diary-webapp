@@ -159,9 +159,7 @@
                     name="note"
                     placeholder="500文字以内で入力してください。"
                     th:errorclass="is-danger"
-                  >
-[[*{note}]]</textarea
-                  >
+                  >[[*{note}]]</textarea>
                   <span
                     class="help is-danger"
                     th:if="${#fields.hasErrors('note')}"
@@ -173,7 +171,16 @@
           </div>
           <div class="field is-grouped is-grouped-centered my-3">
             <p class="control">
-              <button class="button is-rounded is-link">完了</button>
+              <button class="button is-small is-rounded is-link">完了</button>
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                class="button is-small is-rounded is-outlined is-danger"
+                @click="goBack()"
+              >
+                キャンセル
+              </button>
             </p>
           </div>
         </form>

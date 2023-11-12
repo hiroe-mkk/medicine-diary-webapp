@@ -3,6 +3,11 @@ import EffectsInputField from '@main/js/components/medicine/EffectsInputField.vu
 import MedicineOwnerInputField from '@main/js/components/medicine/MedicineOwnerInputField.vue';
 
 createApp({
+  methods: {
+    goBack() {
+      window.history.back();
+    },
+  },
   components: {
     effects: EffectsInputField,
     'medicine-owner': MedicineOwnerInputField,
