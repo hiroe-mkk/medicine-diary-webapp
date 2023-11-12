@@ -8,6 +8,7 @@
         </span>
       </p>
     </div>
+
     <div class="content m-2" v-if="takingRecords.size !== 0">
       <div
         class="media is-flex is-align-items-center is-clickable p-3 m-0"
@@ -107,8 +108,10 @@ const resultMessage = ref(null);
 onMounted(async () => {
   await HttpRequestClient.submitGetRequest('/api/users?member')
     .then((data) => {
-      const members = data.users.map((user) => user.accountId);
-      takingRecords.load(new Filter(props.medicineId, members));
+      const filter = new Filter();
+      filter.initializeMembers(data.users.map((user) => user.accountId));
+      filter.medicine = props.medicineId;
+      takingRecords.load(filter);
     })
     .catch(() => {
       resultMessage.value.activate(

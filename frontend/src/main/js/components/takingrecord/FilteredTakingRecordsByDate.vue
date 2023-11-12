@@ -1,6 +1,6 @@
 <template>
-  <div class="container is-max-desktop p-3">
-    <div class="content has-text-centered">
+  <div class="container has-text-centered is-max-desktop p-3">
+    <div class="content">
       <p class="icon-text is-size-4 is-flex is-justify-content-center">
         <strong class="has-text-grey-dark">きょうの服用記録</strong>
         <span class="icon has-text-grey-dark mx-2">
@@ -8,6 +8,37 @@
         </span>
       </p>
     </div>
+
+    <div class="content is-inline-block m-0">
+      <div class="is-flex is-align-items-center">
+        <div
+          class="is-clickable mx-2"
+          :class="{ opacity: !filter.isMemberActive(member.accountId) }"
+          @click="toggleMemberActive(member.accountId)"
+          v-for="member in members"
+          v-if="members.length !== 1"
+        >
+          <div class="is-flex is-justify-content-center">
+            <figure class="image is-48x48 m-0">
+              <img
+                class="is-rounded"
+                :src="member.profileImageURL"
+                v-if="member.profileImageURL !== undefined"
+              />
+              <img
+                class="is-rounded"
+                :src="noProfileImage"
+                v-if="member.profileImageURL === undefined"
+              />
+            </figure>
+          </div>
+          <p class="is-size-7 has-text-weight-bold has-text-grey-dark m-0 p-0">
+            {{ member.username }}
+          </p>
+        </div>
+      </div>
+    </div>
+
     <div class="content m-2" v-if="takingRecords.size !== 0">
       <div
         class="media is-flex is-align-items-center is-clickable p-3 m-0"
@@ -28,13 +59,13 @@
             />
           </figure>
         </div>
-        <div class="media-content has-text-grey-dark">
+        <div class="media-content has-text-left has-text-grey-dark">
           <p class="m-0">
             <span class="has-text-weight-bold">
               {{ takingRecord.takenMedicine.medicineName }}
             </span>
           </p>
-          <p class="has-text-right m-0">
+          <p class="m-0">
             <span>
               {{ TakingRecordUtils.toTime(takingRecord.takenAt) }}
             </span>
@@ -81,16 +112,22 @@ import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({ csrf: String });
 
+const members = reactive([]);
+const filter = reactive(new Filter());
 const takingRecords = reactive(new TakingRecords());
 const takingRecord = ref(null);
+
 const resultMessage = ref(null);
 
 onMounted(async () => {
   await HttpRequestClient.submitGetRequest('/api/users?member')
     .then((data) => {
-      const members = data.users.map((user) => user.accountId);
+      members.push(...data.users);
+      filter.initializeMembers(members.map((user) => user.accountId));
       const date = new Date().toLocaleDateString().slice(0, 10);
-      const filter = new Filter(props.medicineId, members, date, date);
+      filter.start = date;
+      filter.end = date;
+
       takingRecords.load(filter);
     })
     .catch(() => {
@@ -100,6 +137,11 @@ onMounted(async () => {
       );
     });
 });
+
+function toggleMemberActive(accountId) {
+  filter.toggleMemberActive(accountId);
+  takingRecords.load(filter);
+}
 
 function loadMoreTakingRecords() {
   takingRecords.loadMore().catch(() => {

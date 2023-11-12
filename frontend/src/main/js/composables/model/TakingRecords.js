@@ -88,28 +88,32 @@ export class TakingRecordUtils {
 }
 
 export class Filter {
-  constructor(medicineId, allMembers, start, end) {
-    this.medicine = medicineId;
+  constructor() {
+    this.medicine = undefined;
+    this._members = undefined;
+    this.start = undefined;
+    this.end = undefined;
+  }
+
+  initializeMembers(accountIds) {
     this._members = {};
-    if (allMembers !== undefined) {
-      allMembers.forEach((accountId) => (this._members[accountId] = true));
+    if (accountIds !== undefined) {
+      accountIds.forEach((accountId) => (this._members[accountId] = true));
     }
-    this.start = start;
-    this.end = end;
   }
 
-  enableMember(accountId) {
-    this._members[accountId].isEnabled = true;
+  isMemberActive(accountId) {
+    return this._members[accountId];
   }
 
-  disableMember(accountId) {
-    this._members[accountId].isEnabled = false;
+  toggleMemberActive(accountId) {
+    this._members[accountId] = !this._members[accountId];
   }
 
   copy() {
     const copiedFilter = new Filter();
     copiedFilter.medicine = this.medicine;
-    copiedFilter._members = { ...this._members };
+    copiedFilter._members = this._members;
     copiedFilter.start = this.start;
     copiedFilter.end = this.end;
     return copiedFilter;

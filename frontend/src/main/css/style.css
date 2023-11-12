@@ -14,3 +14,7 @@
 [v-clock] {
   display: none;
 }
+
+.opacity {
+  opacity: 0.3;
+}
