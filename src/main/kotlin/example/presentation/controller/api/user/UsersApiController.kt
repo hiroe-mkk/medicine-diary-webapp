@@ -11,6 +11,16 @@ import org.springframework.web.bind.annotation.*
 class UsersApiController(private val userQueryService: UserQueryService,
                          private val userSessionProvider: UserSessionProvider) {
     /**
+     * ユーザーを取得する
+     */
+    @GetMapping(params = ["own"])
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    fun getUser(): JSONUser {
+        return userQueryService.findUser(userSessionProvider.getUserSession())
+    }
+
+    /**
      * キーワードでユーザー一覧を取得する
      */
     @GetMapping(params = ["keyword"])
@@ -23,7 +33,7 @@ class UsersApiController(private val userQueryService: UserQueryService,
     /**
      * メンバーユーザー一覧を取得する
      */
-    @GetMapping(params = ["member"])
+    @GetMapping(params = ["members"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getMemberUsers(): JSONUsers {

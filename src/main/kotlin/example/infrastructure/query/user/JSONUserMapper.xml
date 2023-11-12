@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.query.user.JSONUserMapper">
+    <select id="findOneByAccountId" resultMap="JSONUserResultMap">
+        SELECT
+            account_id,
+            username,
+            CONCAT(profile_image_url_endpoint, profile_image_url_path) AS profile_image_url
+        FROM
+            profiles
+        WHERE
+            account_id = #{accountId};
+    </select>
+
     <select id="findManyByKeyword" resultMap="JSONUserResultMap">
         SELECT
             account_id,
@@ -30,7 +41,8 @@
              SELECT shared_group_id
              FROM members
              WHERE members.member = #{accountId}
-            );
+            )
+            AND account_id != #{accountId};
     </select>
 
     <resultMap id="JSONUserResultMap" type="example.application.query.user.JSONUser">

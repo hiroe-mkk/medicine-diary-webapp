@@ -25,6 +25,18 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
     }
 
     @Test
+    @DisplayName("ユーザーを取得する")
+    fun getUser() {
+        //when:
+        val actual = userQueryService.findUser(userSession)
+
+        //then:
+        assertThat(actual).isEqualTo(JSONUser(requesterProfile.accountId.value,
+                                              requesterProfile.username.value,
+                                              requesterProfile.profileImageURL?.toURL()))
+    }
+
+    @Test
     @DisplayName("キーワードでユーザー一覧を取得する")
     fun getUsersByKeyword() {
         //given:
@@ -57,12 +69,6 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
         //then:
         assertThat(actual.users)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(requesterProfile.accountId.value,
-                                       member1.accountId.value,
-                                       member2.accountId.value)
-        val actualUser = actual.users.find { it.accountId == requesterProfile.accountId.value }
-        assertThat(actualUser).isEqualTo(JSONUser(requesterProfile.accountId.value,
-                                                  requesterProfile.username.value,
-                                                  requesterProfile.profileImageURL?.toURL()))
+            .containsExactlyInAnyOrder(member1.accountId.value, member2.accountId.value)
     }
 }

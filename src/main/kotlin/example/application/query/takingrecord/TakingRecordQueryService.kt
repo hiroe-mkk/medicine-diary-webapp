@@ -16,12 +16,12 @@ abstract class TakingRecordQueryService(private val medicineDomainService: Medic
     fun findTakingRecordsPage(userSession: UserSession,
                               filter: TakingRecordFilter,
                               pageable: Pageable): Page<JSONTakingRecord> {
-        if (filter.members.isEmpty()) return Page.empty()
+        if (filter.accountids.isEmpty()) return Page.empty()
 
         val viewableMedicineIds = requireViewableMedicineIds(filter, userSession)
         if (viewableMedicineIds.isEmpty()) return Page.empty()
 
-        return findFilteredTakingRecordsPage(filter.members,
+        return findFilteredTakingRecordsPage(filter.accountids,
                                              viewableMedicineIds,
                                              filter.start,
                                              filter.end,
@@ -31,10 +31,10 @@ abstract class TakingRecordQueryService(private val medicineDomainService: Medic
 
     private fun requireViewableMedicineIds(filter: TakingRecordFilter,
                                            userSession: UserSession): Collection<MedicineId> {
-        return if (filter.medicine == null) {
+        return if (filter.medicineid == null) {
             medicineDomainService.findAllViewableMedicines(userSession.accountId).map { it.id }
         } else {
-            val viewableMedicine = medicineDomainService.findViewableMedicine(filter.medicine,
+            val viewableMedicine = medicineDomainService.findViewableMedicine(filter.medicineid,
                                                                               userSession.accountId)
             if (viewableMedicine != null) listOf(viewableMedicine.id) else listOf()
         }

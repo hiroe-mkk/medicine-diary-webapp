@@ -96,31 +96,32 @@ export class TakingRecordUtils {
 
 export class Filter {
   constructor() {
-    this.medicine = undefined;
-    this._members = undefined;
+    this.medicineId = undefined;
+    this.accountIds = {};
     this.start = undefined;
     this.end = undefined;
   }
 
-  initializeMembers(accountIds) {
-    this._members = {};
-    if (accountIds !== undefined) {
-      accountIds.forEach((accountId) => (this._members[accountId] = true));
-    }
+  addAccountId(accountId) {
+    this.accountIds[accountId] = true;
   }
 
-  isMemberActive(accountId) {
-    return this._members[accountId];
+  addAllAccountIds(accountIds) {
+    accountIds.forEach((accountId) => (this.accountIds[accountId] = true));
   }
 
-  toggleMemberActive(accountId) {
-    this._members[accountId] = !this._members[accountId];
+  isUserActive(accountId) {
+    return this.accountIds[accountId];
+  }
+
+  toggleUserActive(accountId) {
+    this.accountIds[accountId] = !this.accountIds[accountId];
   }
 
   copy() {
     const copiedFilter = new Filter();
-    copiedFilter.medicine = this.medicine;
-    copiedFilter._members = this._members;
+    copiedFilter.medicineId = this.medicineId;
+    copiedFilter.accountIds = this.accountIds;
     copiedFilter.start = this.start;
     copiedFilter.end = this.end;
     return copiedFilter;
@@ -128,9 +129,11 @@ export class Filter {
 
   createParams() {
     const params = new URLSearchParams();
-    if (this.medicine !== undefined) params.append('medicine', this.medicine);
-    Object.keys(this._members).forEach((accountId) => {
-      if (this._members[accountId]) params.append('members', accountId);
+    if (this.medicineId !== undefined) {
+      params.append('medicineid', this.medicineId);
+    }
+    Object.keys(this.accountIds).forEach((accountId) => {
+      if (this.accountIds[accountId]) params.append('accountids', accountId);
     });
     if (this.start !== undefined) params.append('start', this.start);
     if (this.end !== undefined) params.append('end', this.end);

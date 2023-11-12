@@ -4,6 +4,11 @@ import example.application.shared.usersession.*
 
 interface UserQueryService {
     /**
+     * ユーザーを取得する
+     */
+    fun findUser(userSession: UserSession): JSONUser
+
+    /**
      * メンバーユーザー一覧を取得する
      */
     fun findMemberJSONUsers(userSession: UserSession): JSONUsers

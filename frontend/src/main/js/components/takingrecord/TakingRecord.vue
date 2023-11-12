@@ -25,7 +25,7 @@
         </p>
         <div class="block m-3">
           <p class="is-flex is-justify-content-space-between mb-2">
-            <strong>お薬</strong>
+            <strong>服用したお薬</strong>
             <span>
               <a
                 class="is-underlined has-text-info has-text-weight-semibold"
@@ -39,7 +39,7 @@
             </span>
           </p>
           <p class="is-flex is-justify-content-space-between mb-2">
-            <strong>お薬を服用した時間</strong>
+            <strong>服用した日時</strong>
             <span>{{ takingRecord.value.takenAt }}</span>
           </p>
           <p class="is-flex is-justify-content-space-between mb-2">
@@ -93,7 +93,7 @@
           </p>
         </div>
         <div class="block" v-if="takingRecord.value.isOwned">
-          <div class="field is-grouped is-grouped-centered">
+          <div class="field is-grouped is-grouped-centered pb-2">
             <p class="control">
               <a
                 class="button is-small is-rounded is-outlined is-link"

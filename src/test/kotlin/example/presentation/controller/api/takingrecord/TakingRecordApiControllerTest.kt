@@ -39,9 +39,9 @@ internal class TakingRecordApiControllerTest(@Autowired private val mockMvc: Moc
 
         //when:
         val actions = mockMvc.perform(get(PATH)
-                                          .param("medicine", medicine.id.value)
-                                          .param("members", userSession.accountId.value)
-                                          .param("members", member.accountId.value)
+                                          .param("medicineid", medicine.id.value)
+                                          .param("accountids", userSession.accountId.value)
+                                          .param("accountids", member.accountId.value)
                                           .param("start", medicine.registeredAt.toLocalDate().toString()))
 
         //then:

@@ -17,28 +17,28 @@
         <div class="is-flex is-align-items-center">
           <div
             class="is-clickable mx-2"
-            :class="{ opacity: !filter.isMemberActive(member.accountId) }"
-            @click="toggleMemberActive(member.accountId)"
-            v-for="member in members"
+            :class="{ opacity: !filter.isUserActive(user.accountId) }"
+            @click="toggleUserActive(user.accountId)"
+            v-for="user in users"
           >
             <div class="is-flex is-justify-content-center">
               <figure class="image is-48x48 m-0">
                 <img
                   class="is-rounded"
-                  :src="member.profileImageURL"
-                  v-if="member.profileImageURL !== undefined"
+                  :src="user.profileImageURL"
+                  v-if="user.profileImageURL !== undefined"
                 />
                 <img
                   class="is-rounded"
                   :src="noProfileImage"
-                  v-if="member.profileImageURL === undefined"
+                  v-if="user.profileImageURL === undefined"
                 />
               </figure>
             </div>
             <p
               class="is-size-7 has-text-weight-bold has-text-grey-dark m-0 p-0"
             >
-              {{ member.username }}
+              {{ user.username }}
             </p>
           </div>
         </div>
@@ -49,7 +49,9 @@
         v-if="takingRecords.isLoaded && takingRecords.size === 0"
         v-clock
       >
-        <p class="has-text-weight-bold has-text-info">お薬を服用していません。</p>
+        <p class="has-text-weight-bold has-text-info">
+          お薬を服用していません。
+        </p>
       </div>
 
       <div
@@ -134,7 +136,7 @@ const props = defineProps({
   csrf: String,
 });
 
-const members = reactive([]);
+const users = reactive([]);
 const filter = reactive(new Filter());
 const takingRecords = reactive(new TakingRecords());
 const takingRecord = ref(null);
@@ -142,15 +144,10 @@ const takingRecord = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?member')
+  await HttpRequestClient.submitGetRequest('/api/users?own')
     .then((data) => {
-      members.push(...data.users);
-      filter.initializeMembers(members.map((user) => user.accountId));
-      const date = new Date().toLocaleDateString().slice(0, 10);
-      filter.start = date;
-      filter.end = date;
-
-      takingRecords.load(filter);
+      users.push(data);
+      filter.addAccountId(users.map((user) => user.accountId));
     })
     .catch(() => {
       resultMessage.value.activate(
@@ -158,10 +155,29 @@ onMounted(async () => {
         '服用記録の読み込みに失敗しました。'
       );
     });
+
+  if (props.isParticipatingInSharedGroup) {
+    await HttpRequestClient.submitGetRequest('/api/users?members')
+      .then((data) => {
+        users.push(...data.users);
+        filter.addAllAccountIds(users.map((user) => user.accountId));
+      })
+      .catch(() => {
+        resultMessage.value.activate(
+          'ERROR',
+          '服用記録の読み込みに失敗しました。'
+        );
+      });
+  }
+
+  const date = new Date().toLocaleDateString().slice(0, 10);
+  filter.start = date;
+  filter.end = date;
+  takingRecords.load(filter);
 });
 
-function toggleMemberActive(accountId) {
-  filter.toggleMemberActive(accountId);
+function toggleUserActive(accountId) {
+  filter.toggleUserActive(accountId);
   takingRecords.load(filter);
 }
 

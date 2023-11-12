@@ -102,18 +102,18 @@ const props = defineProps({
   csrf: String,
 });
 
+const users = reactive([]);
+const filter = reactive(new Filter());
 const takingRecords = reactive(new TakingRecords());
 const takingRecord = ref(null);
 
 const resultMessage = ref(null);
 
 onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?member')
+  await HttpRequestClient.submitGetRequest('/api/users?own')
     .then((data) => {
-      const filter = new Filter();
-      filter.initializeMembers(data.users.map((user) => user.accountId));
-      filter.medicine = props.medicineId;
-      takingRecords.load(filter);
+      users.push(data);
+      filter.addAccountId(users.map((user) => user.accountId));
     })
     .catch(() => {
       resultMessage.value.activate(
@@ -121,6 +121,23 @@ onMounted(async () => {
         '服用記録の読み込みに失敗しました。'
       );
     });
+
+  if (props.isParticipatingInSharedGroup) {
+    await HttpRequestClient.submitGetRequest('/api/users?members')
+      .then((data) => {
+        users.push(...data.users);
+        filter.addAllAccountIds(users.map((user) => user.accountId));
+      })
+      .catch(() => {
+        resultMessage.value.activate(
+          'ERROR',
+          '服用記録の読み込みに失敗しました。'
+        );
+      });
+  }
+
+  filter.medicineId = props.medicineId;
+  takingRecords.load(filter);
 });
 
 function loadMoreTakingRecords() {
