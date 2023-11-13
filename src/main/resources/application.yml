@@ -16,7 +16,19 @@ spring:
           github:
             clientId: '${GITHUB_CLIENT_ID}'
             clientSecret: '${GITHUB_CLIENT_SECRET}'
-  # TODO: flyway を利用するように変更する
+          line:
+            clientId: '${LINE_CLIENT_ID}'
+            clientSecret: '${LINE_CLIENT_SECRET}'
+            provider: 'line'
+            scope: 'profile'
+            authorizationGrantType: 'authorization_code'
+            redirectUri: 'http://localhost:8080/login/oauth2/code/line'
+        provider:
+          line:
+            authorizationUri: 'https://access.line.me/oauth2/v2.1/authorize'
+            tokenUri: 'https://api.line.me/oauth2/v2.1/token'
+            userInfoUri: 'https://api.line.me/v2/profile'
+            userNameAttribute: 'userId'
   sql:
     init:
       mode: always

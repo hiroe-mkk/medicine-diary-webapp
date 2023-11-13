@@ -104,10 +104,10 @@
                     ログイン
                   </p>
                 </div>
-                <div class="block">
+                <div class="block is-inline-block">
                   <p class="my-1">
                     <a
-                      class="button is-small px-5"
+                      class="button is-fullwidth is-small px-5"
                       href="/oauth2/authorization/google"
                     >
                       <span
@@ -120,7 +120,7 @@
                   </p>
                   <p class="my-1">
                     <a
-                      class="button is-small px-5"
+                      class="button is-fullwidth is-small px-5"
                       href="/oauth2/authorization/github"
                     >
                       <span
@@ -129,6 +129,19 @@
                         <i class="fa-brands fa-github"></i>
                       </span>
                       <strong>GitHubでログイン</strong>
+                    </a>
+                  </p>
+                  <p class="my-1">
+                    <a
+                      class="button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/line"
+                    >
+                      <span
+                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                      >
+                        <i class="has-text-success fa-brands fa-line"></i>
+                      </span>
+                      <strong>LINEでログイン</strong>
                     </a>
                   </p>
                 </div>
@@ -168,10 +181,10 @@
                     新規登録(無料)して利用を開始しましょう。
                   </p>
                 </div>
-                <div class="block">
+                <div class="block is-inline-block">
                   <p class="my-1">
                     <a
-                      class="button is-small px-5"
+                      class="button is-fullwidth is-small px-5"
                       href="/oauth2/authorization/google"
                     >
                       <span
@@ -184,7 +197,7 @@
                   </p>
                   <p class="my-1">
                     <a
-                      class="button is-small px-5"
+                      class="button is-fullwidth is-small px-5"
                       href="/oauth2/authorization/github"
                     >
                       <span
@@ -193,6 +206,19 @@
                         <i class="fa-brands fa-github"></i>
                       </span>
                       <strong>GitHubでログイン</strong>
+                    </a>
+                  </p>
+                  <p class="my-1">
+                    <a
+                      class="button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/line"
+                    >
+                      <span
+                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                      >
+                        <i class="has-text-success fa-brands fa-line"></i>
+                      </span>
+                      <strong>LINEでログイン</strong>
                     </a>
                   </p>
                 </div>
