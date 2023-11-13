@@ -47,10 +47,10 @@
             <span>
               <span>{{ takingRecord.value.followUp.symptom }}</span>
               (
-              <small>{{ takingRecord.value.followUp.beforeTaking }}</small>
+              <small>{{ TakingRecordUtils.convertConditionLevelToString(takingRecord.value.followUp.beforeTaking) }}</small>
               <span
                 v-html="
-                  TakingRecordUtils.toIcon(
+                  TakingRecordUtils.convertConditionLevelToIcon(
                     takingRecord.value.followUp.beforeTaking
                   )
                 "
@@ -64,11 +64,11 @@
               <small
                 v-if="takingRecord.value.followUp.afterTaking !== undefined"
               >
-                {{ takingRecord.value.followUp.afterTaking }}
+                {{ TakingRecordUtils.convertConditionLevelToString(takingRecord.value.followUp.afterTaking) }}
               </small>
               <span
                 v-html="
-                  TakingRecordUtils.toIcon(
+                  TakingRecordUtils.convertConditionLevelToIcon(
                     takingRecord.value.followUp.afterTaking
                   )
                 "

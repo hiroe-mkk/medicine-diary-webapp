@@ -71,26 +71,41 @@ export class TakingRecordUtils {
     return dateTime.slice(11, 19);
   }
 
-  static toIcon(conditionLevel) {
+  static convertConditionLevelToIcon(conditionLevel) {
     let icon;
     switch (conditionLevel) {
-      case '良い':
+      case 'GOOD':
         icon = '<i class="fa-regular fa-face-laugh-squint"></i>';
         break;
-      case '普通':
+      case 'NOT_BAD':
         icon = '<i class="fa-regular fa-face-smile"></i>';
         break;
-      case '少し悪い':
+      case 'A_LITTLE_BAD':
         icon = '<i class="fa-regular fa-face-frown"></i>';
         break;
-      case '悪い':
+      case 'BAD':
         icon = '<i class="fa-regular fa-face-sad-tear"></i>';
         break;
-      case 'とても悪い':
+      case 'VERY_BAD':
         icon = '<i class="fa-regular fa-face-dizzy"></i>';
         break;
     }
     return `<span class="icon is-small mx-1">${icon}</span>`;
+  }
+
+  static convertConditionLevelToString(conditionLevel) {
+    switch (conditionLevel) {
+      case 'GOOD':
+        return '良い';
+      case 'NOT_BAD':
+        return '普通';
+      case 'A_LITTLE_BAD':
+        return '少し悪い';
+      case 'BAD':
+        return '悪い';
+      case 'VERY_BAD':
+        return 'とても悪い';
+    }
   }
 }
 

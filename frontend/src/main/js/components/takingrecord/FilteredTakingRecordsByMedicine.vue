@@ -36,7 +36,7 @@
             </span>
             <span
               v-html="
-                TakingRecordUtils.toIcon(takingRecord.followUp.beforeTaking)
+                TakingRecordUtils.convertConditionLevelToIcon(takingRecord.followUp.beforeTaking)
               "
             ></span>
             <span
@@ -48,7 +48,7 @@
             <span
               v-if="takingRecord.followUp.afterTaking !== undefined"
               v-html="
-                TakingRecordUtils.toIcon(takingRecord.followUp.afterTaking)
+                TakingRecordUtils.convertConditionLevelToIcon(takingRecord.followUp.afterTaking)
               "
             ></span>
           </p>
