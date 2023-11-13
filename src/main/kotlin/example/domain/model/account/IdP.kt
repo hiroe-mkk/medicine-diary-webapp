@@ -4,7 +4,8 @@ package example.domain.model.account
  * IdP
  */
 enum class IdP(val registrationId: String) {
-    GOOGLE("google");
+    GOOGLE("google"),
+    GITHUB("github");
 
     companion object {
         private val stringToEnum: Map<String, IdP> = values().associateBy { it.registrationId }

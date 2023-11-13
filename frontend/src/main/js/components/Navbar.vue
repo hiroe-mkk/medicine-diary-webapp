@@ -118,6 +118,19 @@
                       <strong>Googleでログイン</strong>
                     </a>
                   </p>
+                  <p class="my-1">
+                    <a
+                      class="button is-small px-5"
+                      href="/oauth2/authorization/github"
+                    >
+                      <span
+                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                      >
+                        <i class="fa-brands fa-github"></i>
+                      </span>
+                      <strong>GitHubでログイン</strong>
+                    </a>
+                  </p>
                 </div>
                 <div class="block is-size-7">
                   <p
@@ -167,6 +180,19 @@
                         <i class="fa-brands fa-google"></i>
                       </span>
                       <strong>Googleでログイン</strong>
+                    </a>
+                  </p>
+                  <p class="my-1">
+                    <a
+                      class="button is-small px-5"
+                      href="/oauth2/authorization/github"
+                    >
+                      <span
+                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                      >
+                        <i class="fa-brands fa-github"></i>
+                      </span>
+                      <strong>GitHubでログイン</strong>
                     </a>
                   </p>
                 </div>

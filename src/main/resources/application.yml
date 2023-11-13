@@ -13,6 +13,9 @@ spring:
           google:
             clientId: '${GOOGLE_OAUTH2_CLIENT_ID}'
             clientSecret: '${GOOGLE_OAUTH2_CLIENT_SECRET}'
+          github:
+            clientId: '${GITHUB_CLIENT_ID}'
+            clientSecret: '${GITHUB_CLIENT_SECRET}'
   # TODO: flyway を利用するように変更する
   sql:
     init:
