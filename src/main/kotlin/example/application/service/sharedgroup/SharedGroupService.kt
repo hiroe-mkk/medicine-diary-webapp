@@ -39,17 +39,24 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
+     * 共有グループに参加する
+     */
+    fun participateInSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+        val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
+        sharedGroupParticipationService.requireParticipationPossible(userSession.accountId)
+
+        sharedGroup.participateIn(userSession.accountId)
+        sharedGroupRepository.save(sharedGroup)
+    }
+
+    /**
      * 共有グループへの招待を拒否する
      */
     fun rejectInvitationToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.rejectInvitation(userSession.accountId)
-        if (sharedGroup.shouldDelete()) {
-            sharedGroupRepository.delete(sharedGroupId)
-        } else {
-            sharedGroupRepository.save(sharedGroup)
-        }
+        sharedGroupRepository.save(sharedGroup)
     }
 
     /**
@@ -59,21 +66,6 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
 
         sharedGroup.cancelInvitation(target)
-        if (sharedGroup.shouldDelete()) {
-            sharedGroupRepository.delete(sharedGroupId)
-        } else {
-            sharedGroupRepository.save(sharedGroup)
-        }
-    }
-
-    /**
-     * 共有グループに参加する
-     */
-    fun participateInSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
-        sharedGroupParticipationService.requireParticipationPossible(userSession.accountId)
-
-        sharedGroup.participateIn(userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
     }
 

@@ -217,21 +217,6 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("条件を満たす場合、共有グループは削除される")
-        fun conditionsAreMet_SharedGroupIsDeleted() {
-            //given:
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
-                                                             invitees = setOf(userSession.accountId))
-
-            //when:
-            sharedGroupService.rejectInvitationToSharedGroup(sharedGroup.id, userSession)
-
-            //then:
-            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
-            assertThat(foundSharedGroup).isNull()
-        }
-
-        @Test
         @DisplayName("共有グループが見つからなかった場合、共有グループへの招待の拒否に失敗する")
         fun sharedGroupNotFound_rejectingInvitationToSharedGroupFails() {
             //given:
@@ -278,21 +263,6 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
             assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
             assertThat(foundSharedGroup?.invitees).isEmpty()
-        }
-
-        @Test
-        @DisplayName("条件を満たす場合、共有グループは削除される")
-        fun conditionsAreMet_SharedGroupIsDeleted() {
-            //given:
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
-                                                             invitees = setOf(user1AccountId))
-
-            //when:
-            sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, user1AccountId, userSession)
-
-            //then:
-            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
-            assertThat(foundSharedGroup).isNull()
         }
 
         @Test
@@ -430,10 +400,10 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("条件を満たす場合、共有グループは削除される")
-        fun conditionsAreMet_SharedGroupIsDeleted() {
+        @DisplayName("削除するとメンバー数が0になる場合、共有グループは削除される")
+        fun memberIsEmptyAfterDeletion_SharedGroupIsDeleted() {
             //given:
-            val members = setOf(userSession.accountId, user1AccountId)
+            val members = setOf(userSession.accountId)
             val sharedGroup = testSharedGroupInserter.insert(members = members)
 
             //when:

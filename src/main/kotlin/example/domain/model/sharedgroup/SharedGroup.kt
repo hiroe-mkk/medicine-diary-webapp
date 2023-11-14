@@ -23,7 +23,9 @@ class SharedGroup(val id: SharedGroupId,
 
     fun isInvited(accountId: AccountId): Boolean = invitees.contains(accountId)
 
-    fun shouldDelete(): Boolean = members.isEmpty() || members.size + invitees.size <= 1
+    fun shouldDelete(): Boolean {
+        return members.isEmpty()
+    }
 
     fun invite(invitee: AccountId, inviter: AccountId) {
         if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
