@@ -18,10 +18,7 @@
     <div class="navbar-menu" :class="{ 'is-active': isMenuOpened }">
       <div class="navbar-end p-2">
         <div class="navbar-item py-0" v-if="props.isAuthenticated">
-          <a
-            class="has-text-info-light is-hidden-touch mr-2"
-            href="/mypage"
-          >
+          <a class="has-text-info-light is-hidden-touch mr-2" href="/mypage">
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -39,10 +36,7 @@
           </a>
         </div>
         <div class="navbar-item py-0" v-if="props.isAuthenticated">
-          <a
-            class="has-text-info-light is-hidden-touch mr-2"
-            href="/medicines"
-          >
+          <a class="has-text-info-light is-hidden-touch mr-2" href="/medicines">
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -82,7 +76,6 @@
         </div>
 
         <div class="navbar-item" v-if="!props.isAuthenticated">
-          <!-- TODO: Google でログイン ボタンに変更する -->
           <p>
             <span
               class="button is-small is-rounded has-text-link-dark has-background-info-light py-0 px-3 mx-1"
@@ -107,50 +100,50 @@
               <div
                 class="notification has-background-white has-text-centered py-3 px-5"
               >
-                <div class="block m-2">
+                <div class="block mt-2 mb-1">
                   <img :src="logo_dark" alt="Logo" />
                   <p class="has-text-weight-bold has-text-link is-size-5 p-0">
                     ログイン
                   </p>
                 </div>
-                <div class="block is-inline-block">
+                <div class="block is-inline-block mt-3 mb-4">
                   <p class="my-1">
                     <a
-                      class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/github"
+                      class="yahoo-color has-text-white button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/yahoo"
                     >
                       <span
-                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                        class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-2"
                       >
-                        <i class="fa-brands fa-github"></i>
+                        <img :src="yahoo_icon" alr="YahooIcon" />
                       </span>
-                      <strong>GitHubでログイン</strong>
+                      <strong>Yahoo! JAPANでログイン</strong>
                     </a>
                   </p>
                   <p class="my-1">
                     <a
-                      class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/line"
+                      class="line-color has-text-white button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/github"
                     >
                       <span
-                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                        class="icon fas fa-lg is-flex is-align-items-center mr-2"
                       >
-                        <i class="has-text-success fa-brands fa-line"></i>
+                        <img :src="line_icon" alr="LineIcon" />
                       </span>
                       <strong>LINEでログイン</strong>
                     </a>
                   </p>
                   <p class="my-1">
                     <a
-                      class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/yahoo"
+                      class="github-color has-text-white button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/github"
                     >
                       <span
-                        class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-0"
+                        class="icon fas fa-lg is-flex is-align-items-center mr-2"
                       >
-                        <i class="fa-brands fa-yahoo"></i>
+                        <img :src="github_icon" alr="GitHubIcon" />
                       </span>
-                      <strong>Yahoo! JAPANでログイン</strong>
+                      <strong>GitHubでログイン</strong>
                     </a>
                   </p>
                 </div>
@@ -190,44 +183,44 @@
                     新規登録(無料)して利用を開始しましょう。
                   </p>
                 </div>
-                <div class="block is-inline-block">
+                <div class="block is-inline-block mt-3 mb-4">
                   <p class="my-1">
                     <a
-                      class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/github"
+                      class="yahoo-color has-text-white button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/yahoo"
                     >
                       <span
-                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                        class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-2"
                       >
-                        <i class="fa-brands fa-github"></i>
+                        <img :src="yahoo_icon" alr="YahooIcon" />
                       </span>
-                      <strong>GitHubでログイン</strong>
+                      <strong>Yahoo! JAPANでログイン</strong>
                     </a>
                   </p>
                   <p class="my-1">
                     <a
-                      class="button is-fullwidth is-small px-5"
+                      class="line-color has-text-white button is-fullwidth is-small px-5"
                       href="/oauth2/authorization/line"
                     >
                       <span
-                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
+                        class="icon fas fa-lg is-flex is-align-items-center mr-2"
                       >
-                        <i class="has-text-success fa-brands fa-line"></i>
+                        <img :src="line_icon" alr="LineIcon" />
                       </span>
                       <strong>LINEでログイン</strong>
                     </a>
                   </p>
                   <p class="my-1">
                     <a
-                      class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/yahoo"
+                      class="github-color has-text-white button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/github"
                     >
                       <span
-                        class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-0"
+                        class="icon fas fa-lg is-flex is-align-items-center mr-2"
                       >
-                        <i class="fa-brands fa-yahoo"></i>
+                        <img :src="github_icon" alr="GitHubIcon" />
                       </span>
-                      <strong>Yahoo! JAPANでログイン</strong>
+                      <strong>GitHubでログイン</strong>
                     </a>
                   </p>
                 </div>
@@ -263,6 +256,9 @@
 import { ref } from 'vue';
 import logo from '@main/images/logo_header.png';
 import logo_dark from '@main/images/logo_header_dark.png';
+import yahoo_icon from '@main/images/yahoo_icon.png';
+import line_icon from '@main/images/line_icon.png';
+import github_icon from '@main/images/github_icon.png';
 
 const props = defineProps({ isAuthenticated: Boolean, csrf: String });
 
@@ -270,3 +266,17 @@ const isMenuOpened = ref(false);
 const isAccountRegistrationModalActive = ref(false);
 const isLoginModalActive = ref(false);
 </script>
+
+<style scoped>
+.yahoo-color {
+  background-color: #ff0033;
+}
+
+.line-color {
+  background-color: #06c755;
+}
+
+.github-color {
+  background-color: #24292f;
+}
+</style>
