@@ -8,13 +8,13 @@
     <div th:fragment="macro(medicineOverviews)" th:remove="tag">
       <div th:if="${!medicineOverviews.isEmpty()}">
         <div
-          class="media p-3 m-0"
+          class="media is-flex is-align-items-center p-3 m-0"
           th:each="medicineOverview:${medicineOverviews}"
           th:object="${medicineOverview}"
         >
-          <div class="media-left m-0">
+          <div class="media-left">
             <a
-              class="image is-96x96 is-clickable mx-3"
+              class="image is-96x96 is-clickable m-0"
               th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
               th:if="*{medicineImageURL != null}"
             >
@@ -24,45 +24,28 @@
               <img :src="noMedicineImage" />
             </a>
           </div>
-          <div class="media-content">
-            <div class="block m-2 has-text-grey-dark">
-              <a
-                class="is-info has-text-weight-bold is-underlined"
-                th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
-                th:text="*{medicineName}"
-              ></a>
-              <div
-                class="has-text-right"
-                th:object="${medicineOverview.dosageAndAdministration}"
-              >
-                <p class="mb-2" th:text="'1回 ' + *{dose} + *{takingUnit}"></p>
-                <p class="mb-2" th:if="*{!timingOptions.isEmpty()}">
-                  <span th:text="'1日 ' + *{timesPerDay} + '回'"></span>
-                  (
-                  <span
-                    th:each="timing:*{timingOptions}"
-                    th:text=" ${timing.str}"
-                  ></span>
-                  )
-                </p>
-              </div>
-              <div class="tags m-1">
-                <span
-                  class="tag is-warning is-rounded has-text-weight-bold"
-                  th:each="effect:*{effects.values}"
-                  th:text="${effect}"
-                ></span>
-              </div>
-            </div>
+          <div class="media-content has-text-grey-dark">
+            <a
+              class="has-text-info has-text-weight-bold is-underlined"
+              th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
+              th:text="*{medicineName}"
+            ></a>
+            <p class="tags is-flex is-justify-content-flex-end m-1">
+              <span
+                class="tag is-warning is-rounded has-text-weight-bold"
+                th:each="effect:*{effects.values}"
+                th:text="${effect}"
+              ></span>
+            </p>
           </div>
         </div>
       </div>
 
       <div
-        class="content has-text-centered"
+        class="content has-text-centered p-5"
         th:if="${medicineOverviews.isEmpty()}"
       >
-        <p class="has-text-weight-bold has-text-info">
+        <p class="has-text-weight-bold has-text-grey">
           お薬が登録されていません。
         </p>
       </div>

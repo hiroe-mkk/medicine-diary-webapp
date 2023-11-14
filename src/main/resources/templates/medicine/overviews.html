@@ -12,7 +12,7 @@
   <body>
     <div id="medicineOverviews" layout:fragment="content">
       <div class="container is-max-desktop p-3">
-        <div class="content has-text-centered">
+        <div class="content has-text-centered mb-3">
           <p class="icon-text is-size-4 is-flex is-justify-content-center">
             <strong class="has-text-grey-dark">お薬一覧</strong>
             <span class="icon has-text-grey-dark mx-2">
@@ -52,23 +52,25 @@
           </div>
         </div>
 
-        <div
-          v-show="type === 'OWNED'"
-          th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.ownedMedicines})}"
-          v-clock
-        ></div>
-        <div
-          th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.sharedGroupMedicines})}"
-          v-show="type === 'SHARED_GROUP'"
-          th:if="${isParticipatingInSharedGroup}"
-          v-clock
-        ></div>
-        <div
-          th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.membersMedicines})}"
-          v-show="type === 'MEMBERS'"
-          th:if="${isParticipatingInSharedGroup}"
-          v-clock
-        ></div>
+        <div class="notification has-background-white p-3">
+          <div
+            v-show="type === 'OWNED'"
+            th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.ownedMedicines})}"
+            v-clock
+          ></div>
+          <div
+            th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.sharedGroupMedicines})}"
+            v-show="type === 'SHARED_GROUP'"
+            th:if="${isParticipatingInSharedGroup}"
+            v-clock
+          ></div>
+          <div
+            th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.membersMedicines})}"
+            v-show="type === 'MEMBERS'"
+            th:if="${isParticipatingInSharedGroup}"
+            v-clock
+          ></div>
+        </div>
       </div>
 
       <div class="bottom-fullwidth">

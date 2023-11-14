@@ -80,8 +80,8 @@
           </p>
           <p class="has-text-left" v-if="takingRecord.value.note !== ''">
             <strong>ノート</strong>
-            <p class="notification has-background-white has-text-left py-2 px-3 my-2 mx-0">
-              <span class="is-underlined p-1">{{ takingRecord.value.note }}</span>
+            <p class="notification has-background-white-bis has-text-left py-2 px-3 my-2 mx-0">
+              {{ takingRecord.value.note }}
             </p>
           </p>
           <p

@@ -16,9 +16,12 @@
     </div>
 
     <div class="navbar-menu" :class="{ 'is-active': isMenuOpened }">
-      <div class="navbar-end px-3">
-        <div class="navbar-item py-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-info-light is-hidden-touch" href="/mypage">
+      <div class="navbar-end p-2">
+        <div class="navbar-item py-0" v-if="props.isAuthenticated">
+          <a
+            class="has-text-info-light is-hidden-touch mr-2"
+            href="/mypage"
+          >
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -26,7 +29,7 @@
             </span>
           </a>
           <a
-            class="icon-text has-text-link-dark is-hidden-desktop"
+            class="icon-text has-text-link-dark is-hidden-desktop mb-2"
             href="/mypage"
           >
             <span class="icon fas fa-lg is-flex is-align-items-center">
@@ -35,8 +38,11 @@
             <strong>マイページ</strong>
           </a>
         </div>
-        <div class="navbar-item py-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-info-light is-hidden-touch" href="/medicines">
+        <div class="navbar-item py-0" v-if="props.isAuthenticated">
+          <a
+            class="has-text-info-light is-hidden-touch mr-2"
+            href="/medicines"
+          >
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -44,7 +50,7 @@
             </span>
           </a>
           <a
-            class="icon-text has-text-link-dark is-hidden-desktop"
+            class="icon-text has-text-link-dark is-hidden-desktop mb-2"
             href="/medicines"
           >
             <span class="icon fas fa-lg is-flex is-align-items-center">
@@ -53,8 +59,11 @@
             <strong>お薬一覧</strong>
           </a>
         </div>
-        <div class="navbar-item py-0 mr-2" v-if="props.isAuthenticated">
-          <a class="has-text-info-light is-hidden-touch" href="/takingrecords">
+        <div class="navbar-item py-0" v-if="props.isAuthenticated">
+          <a
+            class="has-text-info-light is-hidden-touch mr-2"
+            href="/takingrecords"
+          >
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
             >
@@ -100,7 +109,7 @@
               >
                 <div class="block m-2">
                   <img :src="logo_dark" alt="Logo" />
-                  <p class="has-text-weight-bold has-text-grey is-size-5 p-2">
+                  <p class="has-text-weight-bold has-text-link is-size-5 p-0">
                     ログイン
                   </p>
                 </div>
@@ -153,7 +162,7 @@
                       isLoginModalActive = false;
                     "
                   >
-                    新規登録
+                    アカウントをお持ちでない方はこちらから
                   </p>
                 </div>
               </div>

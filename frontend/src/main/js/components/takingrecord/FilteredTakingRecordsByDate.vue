@@ -1,17 +1,20 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="notification has-background-white p-3">
-      <div class="content">
+      <div class="content mb-3">
         <p class="icon-text is-size-4 is-flex is-justify-content-center m-3">
-          <strong class="has-text-grey-dark">本日の服用記録</strong>
-          <span class="icon has-text-grey-dark mx-2">
+          <strong class="has-text-grey-dark">
+            {{ todayWithoutYear() }}
+          </strong>
+          <strong class="has-text-grey-dark mx-2">の服用記録</strong>
+          <span class="icon has-text-grey-dark mx-1">
             <i class="fa-solid fa-book-open"></i>
           </span>
         </p>
       </div>
 
       <div
-        class="content is-inline-block m-0"
+        class="content is-inline-block pt-2 m-0"
         v-if="props.isParticipatingInSharedGroup"
       >
         <div class="is-flex is-align-items-center">
@@ -45,17 +48,17 @@
       </div>
 
       <div
-        class="content m-5"
+        class="content p-5"
         v-if="takingRecords.isLoaded && takingRecords.size === 0"
         v-clock
       >
-        <p class="has-text-weight-bold has-text-info">
+        <p class="has-text-weight-bold has-text-grey">
           お薬を服用していません。
         </p>
       </div>
 
       <div
-        class="content m-2"
+        class="content p-2"
         v-if="takingRecords.isLoaded && takingRecords.size !== 0"
         v-clock
       >
@@ -64,7 +67,7 @@
           v-for="(takingRecord, takingRecordId) in takingRecords.values"
           @click="activateTakingRecordModal(takingRecordId)"
         >
-          <div class="media-left">
+          <div class="media-left" v-if="props.isParticipatingInSharedGroup">
             <figure class="image is-64x64 m-0">
               <img
                 :src="takingRecord.recorder.profileImageURL"
@@ -78,20 +81,46 @@
               />
             </figure>
           </div>
-          <div class="media-content has-text-left has-text-grey-dark">
-            <p class="m-0">
-              <span class="has-text-weight-bold">
+          <div class="media-content has-text-grey-dark">
+            <p class="m-0 has-text-left">
+              <strong>
                 {{ takingRecord.takenMedicine.medicineName }}
-              </span>
-            </p>
-            <p class="m-0">
+              </strong>
+              (
               <span>
-                {{ TakingRecordUtils.toTime(takingRecord.takenAt) }}
+                {{ takingRecord.followUp.symptom }}
               </span>
+              <span
+                v-html="
+                  TakingRecordUtils.convertConditionLevelToIcon(
+                    takingRecord.followUp.beforeTaking
+                  )
+                "
+              ></span>
+              <span
+                class="icon is-small"
+                v-if="takingRecord.followUp.afterTaking !== undefined"
+              >
+                <i class="fa-solid fa-angles-right"></i>
+              </span>
+              <span
+                v-if="takingRecord.followUp.afterTaking !== undefined"
+                v-html="
+                  TakingRecordUtils.convertConditionLevelToIcon(
+                    takingRecord.followUp.afterTaking
+                  )
+                "
+              ></span>
+              )
+            </p>
+            <p class="has-text-right m-0">
+              <strong>
+                {{ TakingRecordUtils.toTime(takingRecord.takenAt) }}
+              </strong>
             </p>
           </div>
           <div class="media-right">
-            <p class="icon fas fa-lg ml-2 has-text-link">
+            <p class="icon fas fa-lg has-text-link">
               <i class="fa-solid fa-angle-right"></i>
             </p>
           </div>
@@ -170,11 +199,19 @@ onMounted(async () => {
       });
   }
 
-  const date = new Date().toLocaleDateString().slice(0, 10);
-  filter.start = date;
-  filter.end = date;
+  filter.start = today();
+  filter.end = today();
   takingRecords.load(filter);
 });
+
+function today() {
+  return new Date().toLocaleDateString().slice(0, 10);
+}
+
+function todayWithoutYear() {
+  const today = new Date();
+  return `${today.getMonth() + 1}月${today.getDate()}日`;
+}
 
 function toggleUserActive(accountId) {
   filter.toggleUserActive(accountId);

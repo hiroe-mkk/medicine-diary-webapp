@@ -11,8 +11,8 @@
 
   <body>
     <div id="medicineDetail" th:object="${medicine}" layout:fragment="content">
-      <div class="container is-max-widescreen p-3">
-        <div class="content has-text-centered">
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered mb-3">
           <p class="icon-text is-size-4">
             <strong
               class="has-text-grey-dark"
@@ -60,26 +60,36 @@
                   th:remove="tag"
                 >
                   <p class="mb-2 is-flex is-justify-content-space-between">
-                    <span>1回あたりの服用量</span>
+                    <strong>1回あたりの服用量</strong>
                     <span th:text="*{dose} + *{takingUnit}"></span>
                   </p>
                   <p class="mb-2 is-flex is-justify-content-space-between">
-                    <span>1日あたりの服用回数</span>
+                    <strong>1日あたりの服用回数</strong>
                     <span th:text="*{timesPerDay} + '回'"></span>
                   </p>
-                  <span class="mb-2" th:if="*{!timingOptions.isEmpty()}"
-                    >服用するタイミング</span
+                  <p
+                    class="mb-2 is-flex is-justify-content-space-between"
+                    th:if="*{!timingOptions.isEmpty()}"
                   >
-                  <p class="mb-2 is-flex is-justify-content-flex-end">
-                    <span
-                      th:each="timing:*{timingOptions}"
-                      th:text=" ${timing.str}"
-                    ></span>
+                    <strong class="mb-2"> 服用するタイミング </strong>
+                    <span>
+                      <span
+                        th:each="timing, status:*{timingOptions}"
+                        th:remove="tag"
+                      >
+                        <span th:text=" ${timing.str}"></span>
+                        <span
+                          th:if="${__*{timingOptions.size}__ != __${status.count}__}"
+                        >
+                          /
+                        </span>
+                      </span>
+                    </span>
                   </p>
                 </div>
                 <div th:if="*{!precautions.isBlank()}" th:remove="tag">
                   <p
-                    class="mb-1 has-text-weight-bold has-text-danger has-text-centered"
+                    class="mb-1 has-text-weight-bold has-text-danger-dark has-text-centered"
                   >
                     注意事項
                   </p>
@@ -88,7 +98,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tags are-medium m-1">
+              <div class="tags has-text-right m-0">
                 <span
                   class="tag mb-0 is-warning is-rounded has-text-weight-bold"
                   th:each="effect:*{effects.values}"

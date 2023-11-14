@@ -1,6 +1,6 @@
 <template>
   <div class="container is-max-desktop p-3" v-if="takingRecords.size !== 0">
-    <div class="content has-text-centered">
+    <div class="content has-text-centered mb-3">
       <p class="icon-text is-size-4 is-flex is-justify-content-center">
         <strong class="has-text-grey-dark">服用記録</strong>
         <span class="icon has-text-grey-dark mx-2">
@@ -9,68 +9,74 @@
       </p>
     </div>
 
-    <div class="content m-2" v-if="takingRecords.size !== 0">
-      <div
-        class="media is-flex is-align-items-center is-clickable p-3 m-0"
-        v-for="(takingRecord, takingRecordId) in takingRecords.values"
-        @click="activateTakingRecordModal(takingRecordId)"
-      >
-        <div class="media-left">
-          <figure class="image is-64x64 m-0">
-            <img
-              :src="takingRecord.recorder.profileImageURL"
-              class="is-rounded"
-              v-if="takingRecord.recorder.profileImageURL !== undefined"
-            />
-            <img
-              :src="noProfileImage"
-              class="is-rounded"
-              v-if="takingRecord.recorder.profileImageURL === undefined"
-            />
-          </figure>
-        </div>
-        <div class="media-content has-text-grey-dark">
-          <p class="m-0">
-            <span class="has-text-weight-bold">
-              {{ takingRecord.followUp.symptom }}
-            </span>
-            <span
-              v-html="
-                TakingRecordUtils.convertConditionLevelToIcon(takingRecord.followUp.beforeTaking)
-              "
-            ></span>
-            <span
-              class="icon is-small"
-              v-if="takingRecord.followUp.afterTaking !== undefined"
-            >
-              <i class="fa-solid fa-angles-right"></i>
-            </span>
-            <span
-              v-if="takingRecord.followUp.afterTaking !== undefined"
-              v-html="
-                TakingRecordUtils.convertConditionLevelToIcon(takingRecord.followUp.afterTaking)
-              "
-            ></span>
-          </p>
-          <p class="has-text-right m-0">
-            <span> {{ takingRecord.takenAt }} </span>
-          </p>
-        </div>
-        <div class="media-right">
-          <p class="icon fas fa-lg ml-2 has-text-link">
-            <i class="fa-solid fa-angle-right"></i>
-          </p>
-        </div>
-      </div>
-      <!-- TODO: 自動的に読み込まれるように変更する -->
-      <div class="has-text-centered mt-2" v-if="takingRecords.canLoadMore">
-        <button
-          class="button is-small is-ghost"
-          type="button"
-          @click="loadMoreTakingRecords()"
+    <div class="notification has-background-white p-3">
+      <div class="content m-2" v-if="takingRecords.size !== 0">
+        <div
+          class="media is-flex is-align-items-center is-clickable p-3 m-0"
+          v-for="(takingRecord, takingRecordId) in takingRecords.values"
+          @click="activateTakingRecordModal(takingRecordId)"
         >
-          さらに表示する
-        </button>
+          <div class="media-left" v-if="props.isParticipatingInSharedGroup">
+            <figure class="image is-64x64 m-0">
+              <img
+                :src="takingRecord.recorder.profileImageURL"
+                class="is-rounded"
+                v-if="takingRecord.recorder.profileImageURL !== undefined"
+              />
+              <img
+                :src="noProfileImage"
+                class="is-rounded"
+                v-if="takingRecord.recorder.profileImageURL === undefined"
+              />
+            </figure>
+          </div>
+          <div class="media-content has-text-grey-dark">
+            <p class="has-text-left m-0">
+              <strong>
+                {{ takingRecord.followUp.symptom }}
+              </strong>
+              <span
+                v-html="
+                  TakingRecordUtils.convertConditionLevelToIcon(
+                    takingRecord.followUp.beforeTaking
+                  )
+                "
+              ></span>
+              <span
+                class="icon is-small"
+                v-if="takingRecord.followUp.afterTaking !== undefined"
+              >
+                <i class="fa-solid fa-angles-right"></i>
+              </span>
+              <span
+                v-if="takingRecord.followUp.afterTaking !== undefined"
+                v-html="
+                  TakingRecordUtils.convertConditionLevelToIcon(
+                    takingRecord.followUp.afterTaking
+                  )
+                "
+              ></span>
+            </p>
+            <p class="has-text-right m-0">
+              <strong> {{ takingRecord.takenAt }} </strong>
+            </p>
+          </div>
+          <div class="media-right">
+            <p class="icon fas fa-lg has-text-link">
+              <i class="fa-solid fa-angle-right"></i>
+            </p>
+          </div>
+        </div>
+        <!-- TODO: 自動的に読み込まれるように変更する -->
+        <div class="has-text-centered mt-2" v-if="takingRecords.canLoadMore">
+          <button
+            class="button is-small is-ghost"
+            type="button"
+            @click="loadMoreTakingRecords()"
+          >
+            さらに表示する
+          </button>
+        </div>
       </div>
     </div>
   </div>
