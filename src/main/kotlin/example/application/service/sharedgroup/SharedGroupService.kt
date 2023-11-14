@@ -18,11 +18,11 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
         requireAccountExists(target)
-        sharedGroupParticipationService.requireSharePossible(userSession.accountId)
 
-        val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(),
-                                             userSession.accountId,
-                                             target)
+        sharedGroupParticipationService.requireSharePossible(userSession.accountId)
+        val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
+
+        sharedGroup.invite(target, userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
         return sharedGroup.id
     }

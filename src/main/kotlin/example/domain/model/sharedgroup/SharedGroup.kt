@@ -14,8 +14,8 @@ class SharedGroup(val id: SharedGroupId,
         private set
 
     companion object {
-        fun create(id: SharedGroupId, requester: AccountId, target: AccountId): SharedGroup {
-            return SharedGroup(id, setOf(requester), setOf(target))
+        fun create(id: SharedGroupId, accountId: AccountId): SharedGroup {
+            return SharedGroup(id, setOf(accountId), emptySet())
         }
     }
 
@@ -26,14 +26,11 @@ class SharedGroup(val id: SharedGroupId,
     fun shouldDelete(): Boolean = members.isEmpty() || members.size + invitees.size <= 1
 
     fun invite(invitee: AccountId, inviter: AccountId) {
-        requireInvitableState(invitee, inviter)
-        invitees += invitee
-    }
-
-    private fun requireInvitableState(invitee: AccountId, inviter: AccountId) {
         if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
         if (isParticipatingIn(invitee)) throw InvitationToSharedGroupException("既に共有グループに参加しているユーザーです。")
         if (isInvited(invitee)) throw InvitationToSharedGroupException("既に共有グループに招待されているユーザーです。")
+
+        invitees += invitee
     }
 
     fun rejectInvitation(invitee: AccountId) {
