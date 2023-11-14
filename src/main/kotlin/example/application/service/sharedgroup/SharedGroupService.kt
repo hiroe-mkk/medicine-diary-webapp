@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val accountRepository: AccountRepository,
-                         private val sharedGroupDomainService: SharedGroupDomainService) {
+                         private val sharedGroupParticipationService: SharedGroupParticipationService) {
     /**
      * 共有する
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
         requireAccountExists(target)
-        sharedGroupDomainService.requireShareableState(userSession.accountId)
+        sharedGroupParticipationService.requireSharePossible(userSession.accountId)
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(),
                                              userSession.accountId,
@@ -71,7 +71,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     fun participateInSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
-        sharedGroupDomainService.requireParticipationPossibleState(userSession.accountId)
+        sharedGroupParticipationService.requireParticipationPossible(userSession.accountId)
 
         sharedGroup.participateIn(userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
@@ -95,7 +95,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 参加している共有グループか
      */
     fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
-        return sharedGroupDomainService.isParticipatingInSharedGroup(userSession.accountId)
+        return sharedGroupParticipationService.isParticipatingInSharedGroup(userSession.accountId)
     }
 
     private fun findParticipatingSharedGroupOrElseThrowException(sharedGroupId: SharedGroupId,

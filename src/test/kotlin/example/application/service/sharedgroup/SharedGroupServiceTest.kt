@@ -21,8 +21,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                       @Autowired private val accountRepository: AccountRepository,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val shareRequestService: SharedGroupDomainService =
-            SharedGroupDomainService(sharedGroupRepository, profileRepository)
+    private val shareRequestService: SharedGroupParticipationService =
+            SharedGroupParticipationService(sharedGroupRepository, profileRepository)
     private val sharedGroupService: SharedGroupService =
             SharedGroupService(sharedGroupRepository, accountRepository, shareRequestService)
 
