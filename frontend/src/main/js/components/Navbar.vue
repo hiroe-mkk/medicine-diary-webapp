@@ -144,6 +144,19 @@
                       <strong>LINEでログイン</strong>
                     </a>
                   </p>
+                  <p class="my-1">
+                    <a
+                      class="button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/yahoo"
+                    >
+                      <span
+                        class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-0"
+                      >
+                        <i class="fa-brands fa-yahoo"></i>
+                      </span>
+                      <strong>Yahoo! JAPANでログイン</strong>
+                    </a>
+                  </p>
                 </div>
                 <div class="block is-size-7">
                   <p
@@ -219,6 +232,19 @@
                         <i class="has-text-success fa-brands fa-line"></i>
                       </span>
                       <strong>LINEでログイン</strong>
+                    </a>
+                  </p>
+                  <p class="my-1">
+                    <a
+                      class="button is-fullwidth is-small px-5"
+                      href="/oauth2/authorization/yahoo"
+                    >
+                      <span
+                        class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-0"
+                      >
+                        <i class="fa-brands fa-yahoo"></i>
+                      </span>
+                      <strong>Yahoo! JAPANでログイン</strong>
                     </a>
                   </p>
                 </div>
