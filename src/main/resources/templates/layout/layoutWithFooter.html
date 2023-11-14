@@ -28,7 +28,7 @@
   </head>
 
   <body>
-    <div class="hero is-fullheight-with-navbar">
+    <div class="hero is-fullheight-with-navbar max">
       <header id="header" class="hero-head">
         <navbar
           th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
@@ -45,6 +45,14 @@
           <div layout:fragment="content"></div>
         </div>
       </main>
+      <footer class="hero-footer has-text-centered pb-3">
+        <a
+          class="button is-size-7 has-text-link is-ghost"
+          th:href="@{/service/agreement}"
+        >
+          利用規約
+        </a>
+      </footer>
     </div>
   </body>
 </html>

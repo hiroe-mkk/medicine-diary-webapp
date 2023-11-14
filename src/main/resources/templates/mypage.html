@@ -2,7 +2,7 @@
 <html
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/layout}"
+  layout:decorate="~{layout/layoutWithFooter}"
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
@@ -48,7 +48,9 @@
         </p>
       </div>
 
-      <taking-records th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"></taking-records>
+      <taking-records
+        th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+      ></taking-records>
 
       <div class="modal" :class="{ 'is-active': isMenuModalActive }">
         <div class="modal-background" @click="isMenuModalActive = false"></div>
