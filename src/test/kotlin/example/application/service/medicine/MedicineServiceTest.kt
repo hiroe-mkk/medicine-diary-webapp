@@ -30,6 +30,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
     private val medicineDomainService: MedicineDomainService =
             MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineCreationService: MedicineCreationService = MedicineCreationService(sharedGroupRepository)
     private val medicineDeletionService: MedicineDeletionService =
             MedicineDeletionService(medicineRepository,
                                     medicineImageStorage,
@@ -38,6 +39,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     private val medicineService: MedicineService = MedicineService(medicineRepository,
                                                                    localDateTimeProvider,
                                                                    medicineDomainService,
+                                                                   medicineCreationService,
                                                                    medicineDeletionService)
 
     private lateinit var userSession: UserSession

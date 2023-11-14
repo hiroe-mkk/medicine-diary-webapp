@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.*
 class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
                       private val medicineDomainService: MedicineDomainService,
+                      private val medicineCreationService: MedicineCreationService,
                       private val medicineDeletionService: MedicineDeletionService) {
     /**
      * 薬を取得する
@@ -66,15 +67,15 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     fun registerMedicine(command: MedicineBasicInfoEditCommand,
                          isWantToOwn: Boolean,
                          userSession: UserSession): MedicineId {
-        val medicine = medicineDomainService.createMedicine(medicineRepository.createMedicineId(),
-                                                            command.validatedMedicineName,
-                                                            command.validatedDosageAndAdministration,
-                                                            command.validatedEffects,
-                                                            command.validatedPrecautions,
-                                                            command.isPublic,
-                                                            localDateTimeProvider.now(),
-                                                            userSession.accountId,
-                                                            isWantToOwn)
+        val medicine = medicineCreationService.create(medicineRepository.createMedicineId(),
+                                                      command.validatedMedicineName,
+                                                      command.validatedDosageAndAdministration,
+                                                      command.validatedEffects,
+                                                      command.validatedPrecautions,
+                                                      command.isPublic,
+                                                      localDateTimeProvider.now(),
+                                                      userSession.accountId,
+                                                      isWantToOwn)
         medicineRepository.save(medicine)
         return medicine.id
     }
