@@ -77,7 +77,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
 
         sharedGroup.unshare(userSession.accountId)
         if (sharedGroup.shouldDelete()) {
-            sharedGroupRepository.delete(sharedGroupId)
+            sharedGroupRepository.deleteById(sharedGroupId)
         } else {
             sharedGroupRepository.save(sharedGroup)
         }

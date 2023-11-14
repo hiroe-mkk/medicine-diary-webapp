@@ -17,15 +17,15 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         return medicineMapper.findOneByMedicineId(medicineId.value)?.toMedicine()
     }
 
-    override fun findByAccountId(accountId: AccountId): Set<Medicine> {
+    override fun findByOwner(accountId: AccountId): Set<Medicine> {
         return medicineMapper.findAllByAccountId(accountId.value).map { it.toMedicine() }.toSet()
     }
 
-    override fun findByAccountIds(accountIds: Collection<AccountId>): Set<Medicine> {
+    override fun findByOwners(accountIds: Collection<AccountId>): Set<Medicine> {
         return medicineMapper.findAllByAccountIds(accountIds.map { it.value }).map { it.toMedicine() }.toSet()
     }
 
-    override fun findBySharedGroupId(sharedGroupId: SharedGroupId): Set<Medicine> {
+    override fun findByOwner(sharedGroupId: SharedGroupId): Set<Medicine> {
         return medicineMapper.findAllBySharedGroupId(sharedGroupId.value).map { it.toMedicine() }.toSet()
     }
 
@@ -64,7 +64,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
                                         OrderedEntitiesConverter.convert(effects))
     }
 
-    override fun delete(medicineId: MedicineId) {
+    override fun deleteById(medicineId: MedicineId) {
         medicineMapper.deleteAllTimingOptions(medicineId.value)
         medicineMapper.deleteAllEffects(medicineId.value)
         medicineMapper.deleteOneMedicine(medicineId.value)

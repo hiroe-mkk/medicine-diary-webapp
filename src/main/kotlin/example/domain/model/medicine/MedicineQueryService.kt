@@ -13,7 +13,7 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
     }
 
     fun findAllOwnedMedicines(accountId: AccountId): Set<Medicine> {
-        return medicineRepository.findByAccountId(accountId)
+        return medicineRepository.findByOwner(accountId)
     }
 
     fun isOwnedMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
@@ -22,13 +22,13 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
 
     fun findAllSharedGroupMedicines(accountId: AccountId): Set<Medicine> {
         val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
-        return medicineRepository.findBySharedGroupId(sharedGroup.id)
+        return medicineRepository.findByOwner(sharedGroup.id)
     }
 
     fun findAllMembersMedicines(accountId: AccountId): Set<Medicine> {
         val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
         val members = sharedGroup.members - accountId
-        return medicineRepository.findByAccountIds(members).filter { it.isPublic }.toSet()
+        return medicineRepository.findByOwners(members).filter { it.isPublic }.toSet()
     }
 
     fun findAvailableMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
@@ -66,9 +66,9 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
     fun findAllViewableMedicines(accountId: AccountId): Set<Medicine> {
         val ownedMedicines = findAllOwnedMedicines(accountId)
         val sharedGroup = findParticipatingSharedGroup(accountId) ?: return ownedMedicines
-        val sharedGroupMedicines = medicineRepository.findBySharedGroupId(sharedGroup.id)
+        val sharedGroupMedicines = medicineRepository.findByOwner(sharedGroup.id)
         val members = sharedGroup.members - accountId
-        val membersMedicines = medicineRepository.findByAccountIds(members).filter { it.isPublic }
+        val membersMedicines = medicineRepository.findByOwners(members).filter { it.isPublic }
         return ownedMedicines + sharedGroupMedicines + membersMedicines
     }
 

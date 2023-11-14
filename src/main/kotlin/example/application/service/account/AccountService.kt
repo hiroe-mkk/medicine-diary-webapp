@@ -32,7 +32,7 @@ class AccountService(private val accountRepository: AccountRepository,
      */
     fun deleteAccount(userSession: UserSession) {
         val account = accountRepository.findById(userSession.accountId) ?: return
-        profileRepository.delete(account.id)
-        accountRepository.delete(account.id)
+        profileRepository.deleteByAccountId(account.id)
+        accountRepository.deleteById(account.id)
     }
 }

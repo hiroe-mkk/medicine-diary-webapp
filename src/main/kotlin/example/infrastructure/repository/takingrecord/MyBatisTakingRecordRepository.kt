@@ -31,7 +31,7 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
         takingRecordMapper.deleteOneByTakingRecordId(takingRecordId.value)
     }
 
-    override fun deleteByMedicineId(medicineId: MedicineId) {
+    override fun deleteAllByTakenMedicine(medicineId: MedicineId) {
         takingRecordMapper.deleteAllByMedicineId(medicineId.value)
     }
 }

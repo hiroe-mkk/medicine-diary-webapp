@@ -9,5 +9,5 @@ interface AccountRepository {
 
     fun save(account: Account)
 
-    fun delete(accountId: AccountId)
+    fun deleteById(accountId: AccountId)
 }

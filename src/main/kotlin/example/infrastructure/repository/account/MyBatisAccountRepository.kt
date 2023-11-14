@@ -48,7 +48,7 @@ class MyBatisAccountRepository(private val accountMapper: AccountMapper) : Accou
         }
     }
 
-    override fun delete(accountId: AccountId) {
+    override fun deleteById(accountId: AccountId) {
         val account = findById(accountId) ?: return
 
         if (account.credential is OAuth2Credential) {

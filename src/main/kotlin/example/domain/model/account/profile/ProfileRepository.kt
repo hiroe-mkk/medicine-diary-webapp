@@ -9,5 +9,5 @@ interface ProfileRepository {
 
     fun save(profile: Profile)
 
-    fun delete(accountId: AccountId)
+    fun deleteByAccountId(accountId: AccountId)
 }

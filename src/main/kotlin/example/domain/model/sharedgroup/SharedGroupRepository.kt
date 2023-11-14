@@ -11,5 +11,5 @@ interface SharedGroupRepository {
 
     fun save(sharedGroup: SharedGroup)
 
-    fun delete(sharedGroupId: SharedGroupId)
+    fun deleteById(sharedGroupId: SharedGroupId)
 }

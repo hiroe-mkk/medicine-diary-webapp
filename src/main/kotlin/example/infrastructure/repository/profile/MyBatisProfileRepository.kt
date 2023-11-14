@@ -22,7 +22,7 @@ class MyBatisProfileRepository(private val profileMapper: ProfileMapper) : Profi
                                     profile.profileImageURL?.path)
     }
 
-    override fun delete(accountId: AccountId) {
+    override fun deleteByAccountId(accountId: AccountId) {
         profileMapper.deleteProfile(accountId.value)
     }
 }

@@ -40,7 +40,7 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
                                             sharedGroup.invitees.map { it.value })
     }
 
-    override fun delete(sharedGroupId: SharedGroupId) {
+    override fun deleteById(sharedGroupId: SharedGroupId) {
         sharedGroupMapper.deleteAllMembers(sharedGroupId.value)
         sharedGroupMapper.deleteAllInvitees(sharedGroupId.value)
     }

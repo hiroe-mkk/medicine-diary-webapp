@@ -12,8 +12,8 @@ class MedicineDeletionService(private val medicineRepository: MedicineRepository
                               private val medicineQueryService: MedicineQueryService) {
     fun deleteOne(medicineId: MedicineId, accountId: AccountId) {
         val medicine = medicineQueryService.findAvailableMedicine(medicineId, accountId) ?: return
-        takingRecordRepository.deleteByMedicineId(medicineId)
-        medicineRepository.delete(medicine.id)
+        takingRecordRepository.deleteAllByTakenMedicine(medicineId)
+        medicineRepository.deleteById(medicine.id)
         medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }
     }
 }

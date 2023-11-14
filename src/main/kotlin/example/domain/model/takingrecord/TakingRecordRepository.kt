@@ -11,5 +11,5 @@ interface TakingRecordRepository {
 
     fun deleteById(takingRecordId: TakingRecordId)
 
-    fun deleteByMedicineId(medicineId: MedicineId)
+    fun deleteAllByTakenMedicine(medicineId: MedicineId)
 }
