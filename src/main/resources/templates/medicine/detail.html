@@ -2,7 +2,7 @@
 <html
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/layout}"
+  layout:decorate="~{layout/layoutWithFooter}"
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
@@ -13,11 +13,18 @@
     <div id="medicineDetail" th:object="${medicine}" layout:fragment="content">
       <div class="container is-max-widescreen p-3">
         <div class="content has-text-centered">
-          <p class="is-size-4">
+          <p class="icon-text is-size-4">
             <strong
               class="has-text-grey-dark"
               th:text="*{medicineName}"
             ></strong>
+            <span
+              class="icon fas fa-lg is-clickable is-flex is-align-items-center has-text-link ml-2"
+              @click="isEditModalActive = true"
+              th:if="${isAvailableMedicine}"
+            >
+              <i class="fa-solid fa-ellipsis"></i>
+            </span>
           </p>
         </div>
 
@@ -98,43 +105,6 @@
       ></taking-records>
 
       <div th:if="${isAvailableMedicine}" th:remove="tag">
-        <div class="bottom-fullwidth">
-          <div class="tabs is-fullwidth has-background-info-light">
-            <ul class="m-0">
-              <li>
-                <a class="px-0 py-4" @click="goBack()">
-                  <span
-                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
-                  >
-                    <i class="fa-solid fa-reply"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="px-0 py-4"
-                  th:href="@{/takingrecords/add?medicine={medicine}(medicine=*{medicineId})}"
-                >
-                  <span
-                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
-                  >
-                    <i class="fa-solid fa-file-pen"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a class="px-0 py-4" @click="isEditModalActive = true">
-                  <span
-                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
-                  >
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
         <div class="modal" :class="{ 'is-active': isEditModalActive }">
           <div
             class="modal-background"
@@ -180,6 +150,19 @@
           button-label="削除"
           th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
         ></confirmation-message>
+      </div>
+
+      <div class="bottom-right-button">
+        <a
+          class="button is-rounded is-link"
+          th:href="@{/takingrecords/add?medicine={medicine}(medicine=*{medicineId})}"
+        >
+          <p
+            class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"
+          >
+            <i class="fa-solid fa-file-pen"></i>
+          </p>
+        </a>
       </div>
     </div>
   </body>
