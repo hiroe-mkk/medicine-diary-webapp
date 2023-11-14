@@ -4,9 +4,9 @@ spring:
     oauth2:
       client:
         registration:
-          google:
-            clientId: 'googleClientId'
-            clientSecret: 'googleClientSecret'
+          github:
+            clientId: 'testGitHubClientId'
+            clientSecret: 'testGitHubClientSecret' #ダミーデータでテスト実行可能
   datasource:
     driverClassName: 'com.mysql.cj.jdbc.Driver'
     url: 'jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:13306}/medicine_diary'

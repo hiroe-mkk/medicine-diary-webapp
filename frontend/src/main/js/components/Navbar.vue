@@ -108,19 +108,6 @@
                   <p class="my-1">
                     <a
                       class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/google"
-                    >
-                      <span
-                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
-                      >
-                        <i class="fa-brands fa-google"></i>
-                      </span>
-                      <strong>Googleでログイン</strong>
-                    </a>
-                  </p>
-                  <p class="my-1">
-                    <a
-                      class="button is-fullwidth is-small px-5"
                       href="/oauth2/authorization/github"
                     >
                       <span
@@ -195,19 +182,6 @@
                   </p>
                 </div>
                 <div class="block is-inline-block">
-                  <p class="my-1">
-                    <a
-                      class="button is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/google"
-                    >
-                      <span
-                        class="icon fas fa-lg is-flex is-align-items-center mr-0"
-                      >
-                        <i class="fa-brands fa-google"></i>
-                      </span>
-                      <strong>Googleでログイン</strong>
-                    </a>
-                  </p>
                   <p class="my-1">
                     <a
                       class="button is-fullwidth is-small px-5"

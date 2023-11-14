@@ -35,7 +35,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         @DisplayName("新規に作成されたアカウントを取得する")
         fun getNewlyCreatedAccount() {
             //given:
-            val credential = OAuth2Credential(IdP.GOOGLE, "testSubject")
+            val credential = OAuth2Credential(IdP.GITHUB, "testSubject")
 
             //when:
             val actual = accountService.findOrElseCreateAccount(credential)

@@ -14,7 +14,7 @@ class TestAccountInserter(private val accountRepository: AccountRepository,
      * テスト用のアカウントとプロフィールを生成して、リポジトリに保存する
      */
     fun insertAccountAndProfile(id: AccountId = AccountId("testAccountId$num"),
-                                credential: Credential = OAuth2Credential(IdP.GOOGLE,
+                                credential: Credential = OAuth2Credential(IdP.GITHUB,
                                                                           "testSubject${num++}"),
                                 username: Username = Username("testUsername"),
                                 profileImageURL: ProfileImageURL? = null): Pair<Account, Profile> {
