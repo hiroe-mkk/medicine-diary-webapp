@@ -5,6 +5,7 @@ import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
+import example.domain.model.takingrecord.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.medicineimage.*
 import example.testhelper.factory.*
@@ -20,15 +21,21 @@ import java.time.*
 
 @MyBatisRepositoryTest
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
+                                   @Autowired private val takingRecordRepository: TakingRecordRepository,
                                    @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
     private val medicineDomainService: MedicineDomainService =
             MedicineDomainService(medicineRepository, sharedGroupRepository)
-    private val medicineService: MedicineService =
-            MedicineService(medicineRepository, localDateTimeProvider, medicineDomainService)
+    private val medicineService: MedicineService = MedicineService(medicineRepository,
+                                                                   medicineImageStorage,
+                                                                   takingRecordRepository,
+                                                                   localDateTimeProvider,
+                                                                   medicineDomainService)
 
     private lateinit var userSession: UserSession
 
@@ -209,7 +216,10 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬を削除する")
         fun deleteMedicine() {
             //given:
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
+            val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage")
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId),
+                                                       medicineImageURL = medicineImageURL)
+            val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
 
             //when:
             medicineService.deleteMedicine(medicine.id, userSession)
@@ -217,6 +227,9 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val foundMedicine = medicineRepository.findById(medicine.id)
             assertThat(foundMedicine).isNull()
+            val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
+            assertThat(foundTakingRecord).isNull()
+            verify(exactly = 1) { medicineImageStorage.delete(medicineImageURL) }
         }
 
         @Test
