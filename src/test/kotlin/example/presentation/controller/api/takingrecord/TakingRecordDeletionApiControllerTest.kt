@@ -44,7 +44,7 @@ internal class TakingRecordDeletionApiControllerTest(@Autowired private val mock
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("服用記録が見つからなかった場合、ステータスコード404のレスポンスを返す")
+    @DisplayName("服用記録が見つからなかった場合、ステータスコード204のレスポンスを返す")
     fun takingRecordNotFound_returnsResponseWithStatus404() {
         //then:
         val badTakingRecordId = TakingRecordId("NonexistentId")
@@ -54,9 +54,8 @@ internal class TakingRecordDeletionApiControllerTest(@Autowired private val mock
                                           .with(csrf()))
 
         //then:
-        actions.andExpect(status().isNotFound)
+        actions.andExpect(status().isNoContent)
     }
-
 
     @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")

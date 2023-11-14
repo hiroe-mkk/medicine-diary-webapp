@@ -231,19 +231,5 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             assertThat(foundTakingRecord).isNull()
             verify(exactly = 1) { medicineImageStorage.delete(medicineImageURL) }
         }
-
-        @Test
-        @DisplayName("薬が見つからなかった場合、薬の削除に失敗する")
-        fun medicineNotFound_deletingMedicineFails() {
-            //given:
-            val badMedicineId = MedicineId("NonexistentId")
-
-            //when:
-            val target: () -> Unit = { medicineService.deleteMedicine(badMedicineId, userSession) }
-
-            //then:
-            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-        }
     }
 }

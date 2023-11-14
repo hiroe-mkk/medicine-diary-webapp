@@ -72,7 +72,8 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 服用記録を削除する
      */
     fun deleteTakingRecord(takingRecordId: TakingRecordId, userSession: UserSession) {
-        val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
+        val takingRecord = takingRecordDomainService.findOwnedTakingRecord(takingRecordId,
+                                                                           userSession.accountId) ?: return
         takingRecordRepository.deleteById(takingRecord.id)
     }
 

@@ -44,7 +44,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
+    @DisplayName("薬が見つからなかった場合、薬概要一覧画面にリダイレクトする")
     fun medicineDetailNotFound_displayNotFoundErrorPage() {
         //given:
         val badMedicineId = MedicineId("NonexistentId")
@@ -54,8 +54,8 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
                                           .with(csrf()))
 
         //then:
-        actions.andExpect(status().isNotFound)
-            .andExpect(view().name("error/notFoundError"))
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/medicines"))
     }
 
     @Test

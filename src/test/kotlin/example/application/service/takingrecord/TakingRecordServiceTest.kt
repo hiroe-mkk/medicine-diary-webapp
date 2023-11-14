@@ -167,19 +167,5 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
             val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
             assertThat(foundTakingRecord).isNull()
         }
-
-        @Test
-        @DisplayName("服用記録が見つからなかった場合、服用記録の削除に失敗する")
-        fun takingRecordNotFound_deletingTakingRecordFails() {
-            //given:
-            val badTakingRecordId = TakingRecordId("NonexistentId")
-
-            //when:
-            val target: () -> Unit = { takingRecordService.deleteTakingRecord(badTakingRecordId, userSession) }
-
-            //then:
-            val takingRecordNotFoundException = assertThrows<TakingRecordNotFoundException>(target)
-            assertThat(takingRecordNotFoundException.takingRecordId).isEqualTo(badTakingRecordId)
-        }
     }
 }

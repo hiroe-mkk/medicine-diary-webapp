@@ -110,7 +110,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬を削除する
      */
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
         takingRecordRepository.deleteByMedicineId(medicineId)
         medicineRepository.delete(medicine.id)
         medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }
