@@ -25,17 +25,20 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                    @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
     private val medicineDomainService: MedicineDomainService =
             MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineDeletionService: MedicineDeletionService =
+            MedicineDeletionService(medicineRepository,
+                                    medicineImageStorage,
+                                    takingRecordRepository,
+                                    medicineDomainService)
     private val medicineService: MedicineService = MedicineService(medicineRepository,
-                                                                   medicineImageStorage,
-                                                                   takingRecordRepository,
                                                                    localDateTimeProvider,
-                                                                   medicineDomainService)
+                                                                   medicineDomainService,
+                                                                   medicineDeletionService)
 
     private lateinit var userSession: UserSession
 
@@ -207,29 +210,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
             assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
-        }
-    }
-
-    @Nested
-    inner class DeleteMedicineTest {
-        @Test
-        @DisplayName("薬を削除する")
-        fun deleteMedicine() {
-            //given:
-            val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage")
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId),
-                                                       medicineImageURL = medicineImageURL)
-            val takingRecord = testTakingRecordInserter.insert(userSession.accountId, medicine.id)
-
-            //when:
-            medicineService.deleteMedicine(medicine.id, userSession)
-
-            //then:
-            val foundMedicine = medicineRepository.findById(medicine.id)
-            assertThat(foundMedicine).isNull()
-            val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
-            assertThat(foundTakingRecord).isNull()
-            verify(exactly = 1) { medicineImageStorage.delete(medicineImageURL) }
         }
     }
 }

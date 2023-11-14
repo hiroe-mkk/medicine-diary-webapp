@@ -2,8 +2,6 @@ package example.application.service.medicine
 
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
-import example.domain.model.takingrecord.*
 import example.domain.shared.type.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
@@ -11,10 +9,9 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class MedicineService(private val medicineRepository: MedicineRepository,
-                      private val medicineImageStorage: MedicineImageStorage,
-                      private val takingRecordRepository: TakingRecordRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
-                      private val medicineDomainService: MedicineDomainService) {
+                      private val medicineDomainService: MedicineDomainService,
+                      private val medicineDeletionService: MedicineDeletionService) {
     /**
      * 薬を取得する
      */
@@ -110,10 +107,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬を削除する
      */
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
-        takingRecordRepository.deleteByMedicineId(medicineId)
-        medicineRepository.delete(medicine.id)
-        medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }
+        medicineDeletionService.deleteOne(medicineId, userSession.accountId)
     }
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
