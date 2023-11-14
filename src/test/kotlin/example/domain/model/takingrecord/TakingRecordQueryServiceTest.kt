@@ -13,11 +13,11 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @MyBatisRepositoryTest
-internal class TakingRecordDomainServiceTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
-                                             @Autowired private val testAccountInserter: TestAccountInserter,
-                                             @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                             @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val takingRecordDomainService: TakingRecordDomainService = TakingRecordDomainService(takingRecordRepository)
+internal class TakingRecordQueryServiceTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
+                                            @Autowired private val testAccountInserter: TestAccountInserter,
+                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                            @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
+    private val takingRecordQueryService: TakingRecordQueryService = TakingRecordQueryService(takingRecordRepository)
 
     private lateinit var requesterAccountId: AccountId
     private lateinit var requesterMedicine: Medicine
@@ -35,7 +35,7 @@ internal class TakingRecordDomainServiceTest(@Autowired private val takingRecord
         val takingRecord = testTakingRecordInserter.insert(requesterAccountId, requesterMedicine.id)
 
         //when:
-        val actual = takingRecordDomainService.findOwnedTakingRecord(takingRecord.id, requesterAccountId)
+        val actual = takingRecordQueryService.findOwnedTakingRecord(takingRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).usingRecursiveComparison().isEqualTo(takingRecord)
@@ -49,7 +49,7 @@ internal class TakingRecordDomainServiceTest(@Autowired private val takingRecord
         val takingRecord = testTakingRecordInserter.insert(user1AccountId, requesterMedicine.id)
 
         //when:
-        val actual = takingRecordDomainService.findOwnedTakingRecord(takingRecord.id, requesterAccountId)
+        val actual = takingRecordQueryService.findOwnedTakingRecord(takingRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).isNull()

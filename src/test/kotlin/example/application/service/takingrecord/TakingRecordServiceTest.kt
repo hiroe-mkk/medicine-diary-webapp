@@ -8,6 +8,7 @@ import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import example.domain.model.takingrecord.*
+import example.domain.model.takingrecord.TakingRecordQueryService
 import example.domain.shared.exception.*
 import example.domain.shared.type.*
 import example.testhelper.factory.*
@@ -29,10 +30,10 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val medicineQueryService: MedicineQueryService =
             MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val takingRecordDomainService: TakingRecordDomainService =
-            TakingRecordDomainService(takingRecordRepository)
+    private val takingRecordQueryService: TakingRecordQueryService =
+            TakingRecordQueryService(takingRecordRepository)
     private val takingRecordService: TakingRecordService =
-            TakingRecordService(takingRecordRepository, takingRecordDomainService, medicineQueryService)
+            TakingRecordService(takingRecordRepository, takingRecordQueryService, medicineQueryService)
 
     private lateinit var userSession: UserSession
     private lateinit var requesterMedicine: Medicine

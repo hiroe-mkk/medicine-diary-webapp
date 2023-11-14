@@ -2,6 +2,7 @@ package example.infrastructure.query.takingrecord
 
 import example.application.query.shared.type.*
 import example.application.query.takingrecord.*
+import example.application.query.takingrecord.TakingRecordQueryService
 import example.application.query.user.*
 import example.application.service.takingrecord.*
 import example.application.shared.usersession.*

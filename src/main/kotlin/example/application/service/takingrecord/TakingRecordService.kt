@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
-                          private val takingRecordDomainService: TakingRecordDomainService,
+                          private val takingRecordQueryService: TakingRecordQueryService,
                           private val medicineQueryService: MedicineQueryService) {
     /**
      * 修正用の服用記録編集コマンドを取得する
@@ -72,14 +72,14 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      * 服用記録を削除する
      */
     fun deleteTakingRecord(takingRecordId: TakingRecordId, userSession: UserSession) {
-        val takingRecord = takingRecordDomainService.findOwnedTakingRecord(takingRecordId,
-                                                                           userSession.accountId) ?: return
+        val takingRecord = takingRecordQueryService.findOwnedTakingRecord(takingRecordId,
+                                                                          userSession.accountId) ?: return
         takingRecordRepository.deleteById(takingRecord.id)
     }
 
     private fun findOwnedTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,
                                                           userSession: UserSession): TakingRecord {
-        return takingRecordDomainService.findOwnedTakingRecord(takingRecordId, userSession.accountId)
+        return takingRecordQueryService.findOwnedTakingRecord(takingRecordId, userSession.accountId)
                ?: throw TakingRecordNotFoundException(takingRecordId)
     }
 
