@@ -9,9 +9,9 @@ import org.springframework.stereotype.*
 class MedicineDeletionService(private val medicineRepository: MedicineRepository,
                               private val medicineImageStorage: MedicineImageStorage,
                               private val takingRecordRepository: TakingRecordRepository,
-                              private val medicineDomainService: MedicineDomainService) {
+                              private val medicineQueryService: MedicineQueryService) {
     fun deleteOne(medicineId: MedicineId, accountId: AccountId) {
-        val medicine = medicineDomainService.findAvailableMedicine(medicineId, accountId) ?: return
+        val medicine = medicineQueryService.findAvailableMedicine(medicineId, accountId) ?: return
         takingRecordRepository.deleteByMedicineId(medicineId)
         medicineRepository.delete(medicine.id)
         medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }

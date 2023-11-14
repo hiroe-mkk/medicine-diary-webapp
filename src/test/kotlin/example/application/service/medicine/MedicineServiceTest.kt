@@ -28,17 +28,17 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
-    private val medicineDomainService: MedicineDomainService =
-            MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
     private val medicineCreationService: MedicineCreationService = MedicineCreationService(sharedGroupRepository)
     private val medicineDeletionService: MedicineDeletionService =
             MedicineDeletionService(medicineRepository,
                                     medicineImageStorage,
                                     takingRecordRepository,
-                                    medicineDomainService)
+                                    medicineQueryService)
     private val medicineService: MedicineService = MedicineService(medicineRepository,
                                                                    localDateTimeProvider,
-                                                                   medicineDomainService,
+                                                                   medicineQueryService,
                                                                    medicineCreationService,
                                                                    medicineDeletionService)
 

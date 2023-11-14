@@ -23,8 +23,8 @@ annotation class MyBatisQueryServiceTest {
                         private val sharedGroupRepository: SharedGroupRepository) {
         @Bean
         fun takingRecordQueryService(): TakingRecordQueryService {
-            val medicineDomainService = MedicineDomainService(medicineRepository, sharedGroupRepository)
-            return MyBatisTakingRecordQueryService(JSONTakingRecordMapper, medicineDomainService)
+            val medicineQueryService = MedicineQueryService(medicineRepository, sharedGroupRepository)
+            return MyBatisTakingRecordQueryService(JSONTakingRecordMapper, medicineQueryService)
         }
 
         @Bean

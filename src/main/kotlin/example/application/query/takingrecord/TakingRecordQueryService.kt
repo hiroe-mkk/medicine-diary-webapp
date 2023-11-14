@@ -8,7 +8,7 @@ import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-abstract class TakingRecordQueryService(private val medicineDomainService: MedicineDomainService) {
+abstract class TakingRecordQueryService(private val medicineQueryService: MedicineQueryService) {
     // TODO: クエリサービスにおいてドメインサービスを呼び出すべきではない？
     /**
      * 服用記録一覧ページを取得する
@@ -32,10 +32,10 @@ abstract class TakingRecordQueryService(private val medicineDomainService: Medic
     private fun requireViewableMedicineIds(filter: TakingRecordFilter,
                                            userSession: UserSession): Collection<MedicineId> {
         return if (filter.medicineid == null) {
-            medicineDomainService.findAllViewableMedicines(userSession.accountId).map { it.id }
+            medicineQueryService.findAllViewableMedicines(userSession.accountId).map { it.id }
         } else {
-            val viewableMedicine = medicineDomainService.findViewableMedicine(filter.medicineid,
-                                                                              userSession.accountId)
+            val viewableMedicine = medicineQueryService.findViewableMedicine(filter.medicineid,
+                                                                             userSession.accountId)
             if (viewableMedicine != null) listOf(viewableMedicine.id) else listOf()
         }
     }

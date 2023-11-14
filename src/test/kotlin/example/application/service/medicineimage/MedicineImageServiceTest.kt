@@ -21,10 +21,10 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
                                         @Autowired private val testAccountInserter: TestAccountInserter,
                                         @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
-    private val medicineDomainService: MedicineDomainService =
-            MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
     private val medicineImageService: MedicineImageService =
-            MedicineImageService(medicineRepository, medicineImageStorage, medicineDomainService)
+            MedicineImageService(medicineRepository, medicineImageStorage, medicineQueryService)
 
     private lateinit var userSession: UserSession
 

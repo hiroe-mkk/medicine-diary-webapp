@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
-                      private val medicineDomainService: MedicineDomainService,
+                      private val medicineQueryService: MedicineQueryService,
                       private val medicineCreationService: MedicineCreationService,
                       private val medicineDeletionService: MedicineDeletionService) {
     /**
@@ -18,7 +18,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
-        val medicine = medicineDomainService.findViewableMedicine(medicineId, userSession.accountId)
+        val medicine = medicineQueryService.findViewableMedicine(medicineId, userSession.accountId)
                        ?: throw MedicineNotFoundException(medicineId)
         return MedicineDto.from(medicine)
     }
@@ -28,9 +28,9 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findMedicineOverviews(userSession: UserSession): MedicineOverviews {
-        val ownedMedicines = medicineDomainService.findAllOwnedMedicines(userSession.accountId)
-        val sharedGroupMedicines = medicineDomainService.findAllSharedGroupMedicines(userSession.accountId)
-        val membersMedicines = medicineDomainService.findAllMembersMedicines(userSession.accountId)
+        val ownedMedicines = medicineQueryService.findAllOwnedMedicines(userSession.accountId)
+        val sharedGroupMedicines = medicineQueryService.findAllSharedGroupMedicines(userSession.accountId)
+        val membersMedicines = medicineQueryService.findAllMembersMedicines(userSession.accountId)
         return MedicineOverviews(convertToSortedDtoList(ownedMedicines),
                                  convertToSortedDtoList(sharedGroupMedicines),
                                  convertToSortedDtoList(membersMedicines))
@@ -41,7 +41,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findAvailableMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
-        val medicines = medicineDomainService.findAllAvailableMedicines(userSession.accountId)
+        val medicines = medicineQueryService.findAllAvailableMedicines(userSession.accountId)
         return convertToSortedDtoList(medicines)
     }
 
@@ -50,7 +50,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun isOwnedMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
-        return medicineDomainService.isOwnedMedicine(medicineId, userSession.accountId)
+        return medicineQueryService.isOwnedMedicine(medicineId, userSession.accountId)
     }
 
     /**
@@ -58,7 +58,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun isAvailableMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
-        return medicineDomainService.isAvailableMedicine(medicineId, userSession.accountId)
+        return medicineQueryService.isAvailableMedicine(medicineId, userSession.accountId)
     }
 
     /**
@@ -113,7 +113,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
-        return medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId)
+        return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 

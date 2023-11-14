@@ -11,8 +11,8 @@ import java.time.*
 @Component
 @Transactional(readOnly = true)
 class MyBatisTakingRecordQueryService(private val jsonTakingRecordMapper: JSONTakingRecordMapper,
-                                      medicineDomainService: MedicineDomainService)
-    : TakingRecordQueryService(medicineDomainService) {
+                                      medicineQueryService: MedicineQueryService)
+    : TakingRecordQueryService(medicineQueryService) {
     override fun findFilteredTakingRecordsPage(accountIds: Collection<AccountId>,
                                                medicineIds: Collection<MedicineId>,
                                                startedDate: LocalDate?,

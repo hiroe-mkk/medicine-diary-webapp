@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class MedicineImageService(private val medicineRepository: MedicineRepository,
                            private val medicineImageStorage: MedicineImageStorage,
-                           private val medicineDomainService: MedicineDomainService) {
+                           private val medicineQueryService: MedicineQueryService) {
     /**
      * 薬画像を変更する
      */
@@ -33,7 +33,7 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
-        return medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId)
+        return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }

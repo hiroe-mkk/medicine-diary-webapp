@@ -23,7 +23,7 @@ annotation class EnableQueryServiceTest {
         @Bean
         fun takingRecordQueryService(): TakingRecordQueryService {
             return MyBatisTakingRecordQueryService(JSONTakingRecordMapper,
-                                                   MedicineDomainService(medicineRepository, sharedGroupRepository))
+                                                   MedicineQueryService(medicineRepository, sharedGroupRepository))
         }
 
         @Bean

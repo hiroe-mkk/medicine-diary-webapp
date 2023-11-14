@@ -16,13 +16,13 @@ import org.springframework.beans.factory.annotation.*
 import java.time.*
 
 @MyBatisRepositoryTest
-internal class MedicineDomainServiceTest(@Autowired private val medicineRepository: MedicineRepository,
-                                         @Autowired private val sharedGroupRepository: SharedGroupRepository,
-                                         @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                         @Autowired private val testAccountInserter: TestAccountInserter,
-                                         @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
-    private val medicineDomainService: MedicineDomainService =
-            MedicineDomainService(medicineRepository, sharedGroupRepository)
+internal class MedicineQueryServiceTest(@Autowired private val medicineRepository: MedicineRepository,
+                                        @Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                        @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                        @Autowired private val testAccountInserter: TestAccountInserter,
+                                        @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
 
     private lateinit var requesterAccountId: AccountId
     private lateinit var user1AccountId: AccountId
@@ -42,7 +42,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(requesterAccountId))
 
             //when:
-            val actual = medicineDomainService.findOwnedMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findOwnedMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
@@ -55,7 +55,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
 
             //when:
-            val actual = medicineDomainService.findOwnedMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findOwnedMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -68,7 +68,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val badMedicineId = MedicineId("NonexistentId")
 
             //when:
-            val actual = medicineDomainService.findOwnedMedicine(badMedicineId, requesterAccountId)
+            val actual = medicineQueryService.findOwnedMedicine(badMedicineId, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -84,7 +84,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(requesterAccountId))
 
             //when:
-            val actual = medicineDomainService.findAvailableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findAvailableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
@@ -97,7 +97,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
 
             //when:
-            val actual = medicineDomainService.findAvailableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findAvailableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -111,7 +111,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
 
             //when:
-            val actual = medicineDomainService.findAvailableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findAvailableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
@@ -125,7 +125,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
 
             //when:
-            val actual = medicineDomainService.findAvailableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findAvailableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -138,7 +138,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val badMedicineId = MedicineId("NonexistentId")
 
             //when:
-            val actual = medicineDomainService.findAvailableMedicine(badMedicineId, requesterAccountId)
+            val actual = medicineQueryService.findAvailableMedicine(badMedicineId, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -154,7 +154,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(requesterAccountId))
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
@@ -167,7 +167,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -181,7 +181,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
@@ -195,7 +195,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -210,7 +210,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
                                                        isPublic = true)
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(medicine)
@@ -225,7 +225,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
                                                        isPublic = false)
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(medicine.id, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(medicine.id, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -238,7 +238,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
             val badMedicineId = MedicineId("NonexistentId")
 
             //when:
-            val actual = medicineDomainService.findViewableMedicine(badMedicineId, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(badMedicineId, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -290,7 +290,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         @DisplayName("所有する薬一覧を取得する")
         fun getOwnedMedicines() {
             //when:
-            val actual = medicineDomainService.findAllOwnedMedicines(requesterAccountId)
+            val actual = medicineQueryService.findAllOwnedMedicines(requesterAccountId)
 
             //then:
             assertThat(actual)
@@ -302,7 +302,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         @DisplayName("共有グループの薬一覧を取得する")
         fun getSharedGroupMedicines() {
             //when:
-            val actual = medicineDomainService.findAllSharedGroupMedicines(requesterAccountId)
+            val actual = medicineQueryService.findAllSharedGroupMedicines(requesterAccountId)
 
             //then:
             assertThat(actual)
@@ -314,7 +314,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         @DisplayName("服用可能な薬一覧を取得する")
         fun getAvailableMedicines() {
             //when:
-            val actual = medicineDomainService.findAllAvailableMedicines(requesterAccountId)
+            val actual = medicineQueryService.findAllAvailableMedicines(requesterAccountId)
 
             //then:
             assertThat(actual)
@@ -328,7 +328,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         @DisplayName("メンバーの薬一覧を取得する")
         fun getMembersMedicines() {
             //when:
-            val actual = medicineDomainService.findAllMembersMedicines(requesterAccountId)
+            val actual = medicineQueryService.findAllMembersMedicines(requesterAccountId)
 
             //then:
             assertThat(actual)
@@ -340,7 +340,7 @@ internal class MedicineDomainServiceTest(@Autowired private val medicineReposito
         @DisplayName("閲覧可能な薬一覧を取得する")
         fun getViewableMedicines() {
             //when:
-            val actual = medicineDomainService.findAllViewableMedicines(requesterAccountId)
+            val actual = medicineQueryService.findAllViewableMedicines(requesterAccountId)
 
             //then:
             assertThat(actual)

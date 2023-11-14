@@ -22,13 +22,13 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
                                            @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
-    private val medicineDomainService: MedicineDomainService =
-            MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
     private val medicineDeletionService: MedicineDeletionService =
             MedicineDeletionService(medicineRepository,
                                     medicineImageStorage,
                                     takingRecordRepository,
-                                    medicineDomainService)
+                                    medicineQueryService)
 
     @Test
     @DisplayName("薬を削除する")

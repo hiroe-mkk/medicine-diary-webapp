@@ -27,12 +27,12 @@ internal class TakingRecordServiceTest(@Autowired private val takingRecordReposi
                                        @Autowired private val testAccountInserter: TestAccountInserter,
                                        @Autowired private val testMedicineInserter: TestMedicineInserter,
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val medicineDomainService: MedicineDomainService =
-            MedicineDomainService(medicineRepository, sharedGroupRepository)
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
     private val takingRecordDomainService: TakingRecordDomainService =
             TakingRecordDomainService(takingRecordRepository)
     private val takingRecordService: TakingRecordService =
-            TakingRecordService(takingRecordRepository, takingRecordDomainService, medicineDomainService)
+            TakingRecordService(takingRecordRepository, takingRecordDomainService, medicineQueryService)
 
     private lateinit var userSession: UserSession
     private lateinit var requesterMedicine: Medicine

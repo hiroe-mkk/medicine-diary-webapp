@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class TakingRecordService(private val takingRecordRepository: TakingRecordRepository,
                           private val takingRecordDomainService: TakingRecordDomainService,
-                          private val medicineDomainService: MedicineDomainService) {
+                          private val medicineQueryService: MedicineQueryService) {
     /**
      * 修正用の服用記録編集コマンドを取得する
      */
     fun getRegistrationTakingRecordEditCommand(medicineId: MedicineId?,
                                                userSession: UserSession): TakingRecordEditCommand? {
-        val availableMedicineIds = medicineDomainService.findAllAvailableMedicines(userSession.accountId).map { it.id }
+        val availableMedicineIds = medicineQueryService.findAllAvailableMedicines(userSession.accountId).map { it.id }
         if (availableMedicineIds.isEmpty()) return null
 
         return if (medicineId != null && availableMedicineIds.contains(medicineId)) {
@@ -85,7 +85,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
-        return medicineDomainService.findAvailableMedicine(medicineId, userSession.accountId)
+        return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }
