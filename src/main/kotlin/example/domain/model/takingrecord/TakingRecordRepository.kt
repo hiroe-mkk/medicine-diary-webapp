@@ -1,5 +1,7 @@
 package example.domain.model.takingrecord
 
+import example.domain.model.medicine.*
+
 interface TakingRecordRepository {
     fun createTakingRecordId(): TakingRecordId
 
@@ -7,5 +9,7 @@ interface TakingRecordRepository {
 
     fun save(takingRecord: TakingRecord)
 
-    fun delete(takingRecordId: TakingRecordId)
+    fun deleteById(takingRecordId: TakingRecordId)
+
+    fun deleteByMedicineId(medicineId: MedicineId)
 }

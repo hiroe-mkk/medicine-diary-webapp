@@ -11,7 +11,7 @@
             taking_record_id = #{takingRecordId};
     </select>
 
-    <insert id="upsertTakingRecord">
+    <insert id="upsert">
         INSERT INTO taking_records(
             taking_record_id,
             recorder,
@@ -42,10 +42,16 @@
             taken_at = #{takenAt};
     </insert>
 
-    <delete id="deleteTakingRecord">
+    <delete id="deleteOneByTakingRecordId">
         DELETE FROM taking_records
         WHERE taking_record_id = #{takingRecordId};
     </delete>
+
+    <delete id="deleteAllByMedicineId">
+        DELETE FROM taking_records
+        WHERE taken_medicine = #{medicineId};
+    </delete>
+
 
     <sql id="AllColumns">
         taking_record_id AS taking_record_id,

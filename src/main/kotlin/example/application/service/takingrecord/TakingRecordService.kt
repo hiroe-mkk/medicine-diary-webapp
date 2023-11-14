@@ -73,7 +73,7 @@ class TakingRecordService(private val takingRecordRepository: TakingRecordReposi
      */
     fun deleteTakingRecord(takingRecordId: TakingRecordId, userSession: UserSession) {
         val takingRecord = findOwnedTakingRecordOrElseThrowException(takingRecordId, userSession)
-        takingRecordRepository.delete(takingRecord.id)
+        takingRecordRepository.deleteById(takingRecord.id)
     }
 
     private fun findOwnedTakingRecordOrElseThrowException(takingRecordId: TakingRecordId,

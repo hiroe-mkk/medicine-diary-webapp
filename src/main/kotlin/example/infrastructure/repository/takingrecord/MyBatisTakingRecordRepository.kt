@@ -1,5 +1,6 @@
 package example.infrastructure.repository.takingrecord
 
+import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
 import org.springframework.stereotype.*
 import java.util.*
@@ -15,18 +16,22 @@ class MyBatisTakingRecordRepository(private val takingRecordMapper: TakingRecord
     }
 
     override fun save(takingRecord: TakingRecord) {
-        takingRecordMapper.upsertTakingRecord(takingRecord.id.value,
-                                              takingRecord.recorder.value,
-                                              takingRecord.takenMedicine.value,
-                                              takingRecord.dose.quantity,
-                                              takingRecord.followUp.symptom,
-                                              takingRecord.followUp.beforeTaking,
-                                              takingRecord.followUp.afterTaking,
-                                              takingRecord.note.value,
-                                              takingRecord.takenAt)
+        takingRecordMapper.upsert(takingRecord.id.value,
+                                  takingRecord.recorder.value,
+                                  takingRecord.takenMedicine.value,
+                                  takingRecord.dose.quantity,
+                                  takingRecord.followUp.symptom,
+                                  takingRecord.followUp.beforeTaking,
+                                  takingRecord.followUp.afterTaking,
+                                  takingRecord.note.value,
+                                  takingRecord.takenAt)
     }
 
-    override fun delete(takingRecordId: TakingRecordId) {
-        takingRecordMapper.deleteTakingRecord(takingRecordId.value)
+    override fun deleteById(takingRecordId: TakingRecordId) {
+        takingRecordMapper.deleteOneByTakingRecordId(takingRecordId.value)
+    }
+
+    override fun deleteByMedicineId(medicineId: MedicineId) {
+        takingRecordMapper.deleteAllByMedicineId(medicineId.value)
     }
 }
