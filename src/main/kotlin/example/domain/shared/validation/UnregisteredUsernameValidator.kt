@@ -5,9 +5,9 @@ import jakarta.validation.*
 import org.springframework.stereotype.*
 
 @Component
-class UnregisteredUsernameValidator(private val profileDomainService: ProfileDomainService) :
+class UnregisteredUsernameValidator(private val usernameChangeValidationService: UsernameChangeValidationService) :
         ConstraintValidator<UnregisteredUsername, String> {
     override fun isValid(username: String?, context: ConstraintValidatorContext): Boolean {
-        return profileDomainService.isUsernameChangeableState(Username(username ?: ""))
+        return usernameChangeValidationService.canUsernameChange(Username(username ?: ""))
     }
 }

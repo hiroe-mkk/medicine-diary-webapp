@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class ProfileService(private val profileRepository: ProfileRepository,
-                     private val profileDomainService: ProfileDomainService) {
+                     private val usernameChangeValidationService: UsernameChangeValidationService) {
     /**
      * プロフィールを取得する
      */
@@ -25,7 +25,7 @@ class ProfileService(private val profileRepository: ProfileRepository,
         val profile = findProfileOrElseThrowException(userSession)
         if (command.validatedUsername == profile.username) return
 
-        profileDomainService.requireUsernameChangeableState(command.validatedUsername)
+        usernameChangeValidationService.requireUsernameChangePossible(command.validatedUsername)
 
         profile.changeUsername(command.validatedUsername)
         profileRepository.save(profile)

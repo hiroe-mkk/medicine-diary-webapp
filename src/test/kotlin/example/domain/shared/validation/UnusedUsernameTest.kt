@@ -22,7 +22,7 @@ internal class UnusedUsernameTest(@Autowired private val validator: Validator,
     @TestConfiguration
     class Configuration(@Autowired private val profileRepository: ProfileRepository) {
         @Bean
-        fun profileDomainService(): ProfileDomainService = ProfileDomainService(profileRepository)
+        fun profileDomainService(): UsernameChangeValidationService = UsernameChangeValidationService(profileRepository)
     }
 
     @Test
