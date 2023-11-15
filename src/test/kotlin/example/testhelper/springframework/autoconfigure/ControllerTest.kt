@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @SpringBootTest
 @UseMockObjectStorageClient
-@EnableTestDataInserter
+@EnableTestDataInserterAutoConfiguration
 @Transactional
 @AutoConfigureMockMvc
 annotation class ControllerTest

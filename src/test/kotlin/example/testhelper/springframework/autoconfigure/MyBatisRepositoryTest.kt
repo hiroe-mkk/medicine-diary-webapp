@@ -26,7 +26,7 @@ import org.springframework.context.annotation.*
  */
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 組み込みデータベースへの置き換えを無効化する
-@EnableTestDataInserter
+@EnableTestDataInserterAutoConfiguration
 @Import(MyBatisRepositoryTest.Configuration::class)
 annotation class MyBatisRepositoryTest {
     class Configuration(private val accountMapper: AccountMapper,

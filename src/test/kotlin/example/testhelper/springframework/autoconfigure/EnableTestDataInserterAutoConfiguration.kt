@@ -12,8 +12,8 @@ import org.springframework.stereotype.*
 /**
  * TestDataInserter の AutoConfiguration を有効にするアノテーション
  */
-@Import(EnableTestDataInserter.Configuration::class)
-annotation class EnableTestDataInserter {
+@Import(EnableTestDataInserterAutoConfiguration.Configuration::class)
+annotation class EnableTestDataInserterAutoConfiguration {
     class Configuration(private val accountRepository: AccountRepository,
                         private val profileRepository: ProfileRepository,
                         private val medicineRepository: MedicineRepository,
