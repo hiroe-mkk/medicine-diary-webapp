@@ -40,7 +40,7 @@
         profiles.account_id,
         profiles.username,
         CONCAT(profile_image_url_endpoint, profile_image_url_path) AS profile_image_url,
-        profiles.account_id = #{requester} AS is_own
+        profiles.account_id = #{requester} AS is_recorded_by_self
     </sql>
 
     <sql id="AllTables">
@@ -80,7 +80,7 @@
             <arg column="taken_at" javaType="String"/>
             <arg column="{account_id, username, profile_image_url}"
                  javaType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap"/>
-            <arg column="is_own" javaType="_boolean"/>
+            <arg column="is_recorded_by_self" javaType="_boolean"/>
         </constructor>
     </resultMap>
 

@@ -8,4 +8,4 @@ data class JSONTakingRecord(val takingRecordId: String,
                             val note: String,
                             val takenAt: String,
                             val recorder: JSONUser,
-                            val isOwned: Boolean)
+                            val isRecordedBySelf: Boolean)

@@ -92,7 +92,7 @@
             <span>{{ takingRecord.value.recorder.username }}</span>
           </p>
         </div>
-        <div class="block" v-if="takingRecord.value.isOwned">
+        <div class="block" v-if="takingRecord.value.isRecordedBySelf">
           <div class="field is-grouped is-grouped-centered pb-2">
             <p class="control">
               <a
