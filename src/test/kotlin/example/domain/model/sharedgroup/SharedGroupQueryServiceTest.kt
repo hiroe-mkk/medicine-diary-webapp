@@ -30,8 +30,7 @@ internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupQue
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
 
             //when:
-            val actual = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroup.id,
-                                                                              requesterAccountId)
+            val actual = sharedGroupQueryService.findParticipatingSharedGroup(requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(sharedGroup)
@@ -44,8 +43,7 @@ internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupQue
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId))
 
             //when:
-            val actual = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroup.id,
-                                                                              requesterAccountId)
+            val actual = sharedGroupQueryService.findParticipatingSharedGroup(requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -62,25 +60,23 @@ internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupQue
                                                              invitees = setOf(requesterAccountId))
 
             //when:
-            val actual = sharedGroupQueryService.findInvitedSharedGroup(sharedGroup.id,
-                                                                        requesterAccountId)
+            val actual = sharedGroupQueryService.findInvitedSharedGroups(requesterAccountId)
 
             //then:
-            assertThat(actual).usingRecursiveComparison().isEqualTo(sharedGroup)
+            assertThat(actual).extracting("id").containsExactly(sharedGroup.id)
         }
 
         @Test
         @DisplayName("招待されていない共有グループの場合、共有グループの取得に失敗する")
         fun notInvitedInSharedGroup_gettingSharedGroupFails() {
             //given:
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId))
+            testSharedGroupInserter.insert(members = setOf(user1AccountId))
 
             //when:
-            val actual = sharedGroupQueryService.findInvitedSharedGroup(sharedGroup.id,
-                                                                        requesterAccountId)
+            val actual = sharedGroupQueryService.findInvitedSharedGroups(requesterAccountId)
 
             //then:
-            assertThat(actual).isNull()
+            assertThat(actual).isEmpty()
         }
     }
 }

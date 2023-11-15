@@ -19,6 +19,10 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         return sharedGroupMapper.findOneByMember(accountId.value)?.toSharedGroup()
     }
 
+    override fun findByInvitee(accountId: AccountId): Set<SharedGroup> {
+        return sharedGroupMapper.findAllByInvitee(accountId.value).map { it.toSharedGroup() }.toSet()
+    }
+
     override fun save(sharedGroup: SharedGroup) {
         upsertAllMembers(sharedGroup)
         upsertAllInvitees(sharedGroup)

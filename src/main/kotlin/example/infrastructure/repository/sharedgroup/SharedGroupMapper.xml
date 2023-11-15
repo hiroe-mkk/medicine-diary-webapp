@@ -26,6 +26,20 @@
             );
     </select>
 
+    <select id="findAllByInvitee" resultMap="SharedGroupResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            members
+            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+        WHERE
+            invitees.shared_group_id IN(
+             SELECT shared_group_id
+             FROM invitees
+             WHERE invitees.invitee = #{accountId}
+            );
+    </select>
+
     <insert id="insertAllMembers">
         INSERT INTO members(
             shared_group_id,

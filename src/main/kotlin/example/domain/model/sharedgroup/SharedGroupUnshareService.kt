@@ -9,7 +9,8 @@ class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRe
                                 private val sharedGroupQueryService: SharedGroupQueryService,
                                 private val medicineDeletionService: MedicineDeletionService) {
     fun unshare(sharedGroupId: SharedGroupId, accountId: AccountId) {
-        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroupId, accountId) ?: return
+        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(accountId)
+                              ?.let { if (it.id == sharedGroupId) it else null } ?: return
 
         sharedGroup.unshare(accountId)
         if (sharedGroup.shouldDelete()) {

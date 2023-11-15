@@ -8,6 +8,8 @@ interface SharedGroupMapper {
 
     fun findOneByMember(accountId: String): SharedGroupResultEntity?
 
+    fun findAllByInvitee(accountId: String): Set<SharedGroupResultEntity>
+
     fun insertAllMembers(sharedGroupId: String, members: Collection<String>)
 
     fun insertAllInvitees(sharedGroupId: String, invitees: Collection<String>)
