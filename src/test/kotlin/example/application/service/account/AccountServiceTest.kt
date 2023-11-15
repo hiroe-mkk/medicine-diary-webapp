@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.*
 @DomainLayerTest
 internal class AccountServiceTest(@Autowired private val accountRepository: AccountRepository,
                                   @Autowired private val profileRepository: ProfileRepository,
+                                  @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                   @Autowired private val medicineRepository: MedicineRepository,
                                   @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                  @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                   @Autowired private val medicineDeletionService: MedicineDeletionService,
                                   @Autowired private val testAccountInserter: TestAccountInserter,
                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
@@ -27,6 +29,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
     private val accountService: AccountService = AccountService(accountRepository,
                                                                 profileRepository,
                                                                 takingRecordRepository,
+                                                                sharedGroupUnshareService,
                                                                 medicineDeletionService)
 
     @Nested
@@ -85,5 +88,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         assertThat(foundMedicine).isNull()
         val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
         assertThat(foundTakingRecord).isNull()
+        val foundParticipatingSharedGroup = sharedGroupRepository.findByMember(requesterAccountId)
+        assertThat(foundParticipatingSharedGroup).isNull()
     }
 }
