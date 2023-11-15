@@ -114,10 +114,10 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
         }
 
         @Test
-        @DisplayName("参加していない共有グループが所有する薬場合、薬の取得に失敗する")
+        @DisplayName("参加していない共有グループが所有する薬の場合、薬の取得に失敗する")
         fun medicineOwnedByNonParticipatingSharedGroup_gettingMedicineFails() {
             //given:
-            val sharedGroupId = testSharedGroupInserter.insert().id
+            val sharedGroupId = testSharedGroupInserter.insert(members = setOf(user1AccountId)).id
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
 
             //when:
@@ -184,10 +184,10 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
         }
 
         @Test
-        @DisplayName("参加していない共有グループが所有する薬場合、薬の取得に失敗する")
+        @DisplayName("参加していない共有グループが所有する薬の場合、薬の取得に失敗する")
         fun medicineOwnedByNonParticipatingSharedGroup_gettingMedicineFails() {
             //given:
-            val sharedGroupId = testSharedGroupInserter.insert().id
+            val sharedGroupId = testSharedGroupInserter.insert(members = setOf(user1AccountId)).id
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
 
             //when:
