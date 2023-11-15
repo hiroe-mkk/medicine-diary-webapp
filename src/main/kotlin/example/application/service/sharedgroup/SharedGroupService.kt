@@ -4,7 +4,6 @@ import SharedGroupNotFoundException
 import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
-import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
@@ -15,7 +14,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
                          private val accountRepository: AccountRepository,
                          private val sharedGroupQueryService: SharedGroupQueryService,
                          private val sharedGroupParticipationService: SharedGroupParticipationService,
-                         private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService) {
+                         private val sharedGroupUnshareService: SharedGroupUnshareService) {
     /**
      * 共有する
      */
@@ -79,16 +78,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有を解除する
      */
     fun unshare(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroupId,
-                                                                               userSession.accountId) ?: return
-
-        sharedGroup.unshare(userSession.accountId)
-        if (sharedGroup.shouldDelete()) {
-            medicineAndTakingRecordsDeletionService.deleteAllSharedGroupMedicines(sharedGroup.id)
-            sharedGroupRepository.deleteById(sharedGroupId)
-        } else {
-            sharedGroupRepository.save(sharedGroup)
-        }
+        return sharedGroupUnshareService.unshare(sharedGroupId, userSession.accountId)
     }
 
     /**
