@@ -34,13 +34,16 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
     private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
     private val medicineQueryService: MedicineQueryService =
             MedicineQueryService(medicineRepository, sharedGroupRepository)
+    private val sharedGroupQueryService: SharedGroupQueryService = SharedGroupQueryService(sharedGroupRepository)
     private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
             MedicineAndTakingRecordsDeletionService(medicineRepository,
                                                     medicineImageStorage,
                                                     takingRecordRepository,
                                                     medicineQueryService)
+
     private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
                                                                             accountRepository,
+                                                                            sharedGroupQueryService,
                                                                             shareRequestService,
                                                                             medicineAndTakingRecordsDeletionService)
 
@@ -148,19 +151,20 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("共有グループが見つからなかった場合、共有グループへの招待に失敗する")
-        fun sharedGroupNotFound_invitingToSharedGroupFails() {
+        @DisplayName("参加している共有グループが見つからなかった場合、共有グループへの招待に失敗する")
+        fun participatingSharedGroupNotFound_invitingToSharedGroupFails() {
             //given:
-            val badSharedGroupId = SharedGroupId("NonexistentId")
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(createAccount().id,
+                                                                             createAccount().id))
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(badSharedGroupId, user1AccountId, userSession)
+                sharedGroupService.inviteToSharedGroup(sharedGroup.id, user1AccountId, userSession)
             }
 
             //then:
             val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
-            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
+            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
         }
 
         @Test
@@ -182,23 +186,6 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("共有グループに参加していない場合、共有グループへの招待に失敗する")
-        fun notParticipatingInSharedGroup_invitingToSharedGroupFails() {
-            //given:
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(createAccount().id,
-                                                                             createAccount().id))
-
-            //when:
-            val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(sharedGroup.id, user1AccountId, userSession)
-            }
-
-            //then:
-            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
-            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
-        }
-
-        @Test
         @DisplayName("対象ユーザーが既に指定された共有グループに参加している場合、共有グループへの招待に失敗する")
         fun targetIsParticipatingInShredGroup_invitingToSharedGroupFails() {
             //given:
@@ -212,46 +199,6 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
             //then:
             assertThrows<InvitationToSharedGroupException>(target)
-        }
-    }
-
-    @Nested
-    inner class RejectInvitationToSharedGroupTest {
-        @Test
-        @DisplayName("共有グループへの招待を拒否する")
-        fun rejectInvitation() {
-            //given:
-            val members = setOf(user1AccountId, createAccount().id)
-            val sharedGroup = testSharedGroupInserter.insert(members = members,
-                                                             invitees = setOf(userSession.accountId))
-
-            //when:
-            sharedGroupService.rejectInvitationToSharedGroup(sharedGroup.id, userSession)
-
-            //then:
-            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
-            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
-            assertThat(foundSharedGroup?.invitees).isEmpty()
-        }
-    }
-
-    @Nested
-    inner class CancelInvitationToSharedGroupTest {
-        @Test
-        @DisplayName("共有グループへの招待を取り消す")
-        fun cancelInvitation() {
-            //given:
-            val members = setOf(userSession.accountId, createAccount().id)
-            val sharedGroup = testSharedGroupInserter.insert(members = members,
-                                                             invitees = setOf(user1AccountId))
-
-            //when:
-            sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, user1AccountId, userSession)
-
-            //then:
-            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
-            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
-            assertThat(foundSharedGroup?.invitees).isEmpty()
         }
     }
 
@@ -274,22 +221,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
 
         @Test
-        @DisplayName("共有グループが見つからなかった場合、共有グループへの参加に失敗する")
-        fun sharedGroupNotFound_participatingInSharedGroupFails() {
-            //given:
-            val badSharedGroupId = SharedGroupId("NonexistentId")
-
-            //when:
-            val target: () -> Unit = { sharedGroupService.participateInSharedGroup(badSharedGroupId, userSession) }
-
-            //then:
-            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
-            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
-        }
-
-        @Test
-        @DisplayName("共有グループに招待されていない場合、共有グループへの参加に失敗する")
-        fun notInvitedToSharedGroup_participatingInSharedGroupFails() {
+        @DisplayName("招待されている共有グループが見つからなかった場合、共有グループへの参加に失敗する")
+        fun invitedSharedGroupNotFound_participatingInSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(createAccount().id,
                                                                              createAccount().id))
@@ -334,6 +267,46 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
             //then:
             assertThrows<ParticipationInSharedGroupException>(target)
+        }
+    }
+
+    @Nested
+    inner class RejectInvitationToSharedGroupTest {
+        @Test
+        @DisplayName("共有グループへの招待を拒否する")
+        fun rejectInvitation() {
+            //given:
+            val members = setOf(user1AccountId, createAccount().id)
+            val sharedGroup = testSharedGroupInserter.insert(members = members,
+                                                             invitees = setOf(userSession.accountId))
+
+            //when:
+            sharedGroupService.rejectInvitationToSharedGroup(sharedGroup.id, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
+            assertThat(foundSharedGroup?.invitees).isEmpty()
+        }
+    }
+
+    @Nested
+    inner class CancelInvitationToSharedGroupTest {
+        @Test
+        @DisplayName("共有グループへの招待を取り消す")
+        fun cancelInvitation() {
+            //given:
+            val members = setOf(userSession.accountId, createAccount().id)
+            val sharedGroup = testSharedGroupInserter.insert(members = members,
+                                                             invitees = setOf(user1AccountId))
+
+            //when:
+            sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, user1AccountId, userSession)
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
+            assertThat(foundSharedGroup?.invitees).isEmpty()
         }
     }
 

@@ -13,17 +13,17 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val accountRepository: AccountRepository,
+                         private val sharedGroupQueryService: SharedGroupQueryService,
                          private val sharedGroupParticipationService: SharedGroupParticipationService,
                          private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService) {
     /**
      * 共有する
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
-        requireAccountExists(target)
-
         sharedGroupParticipationService.requireSharePossible(userSession.accountId)
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
 
+        requireAccountExists(target)
         sharedGroup.invite(target, userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
         return sharedGroup.id
@@ -33,7 +33,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに招待する
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
-        val sharedGroup = findParticipatingSharedGroupOrElseThrowException(sharedGroupId, userSession)
+        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroupId, userSession.accountId)
+                          ?: throw SharedGroupNotFoundException(sharedGroupId)
         requireAccountExists(target)
 
         sharedGroup.invite(target, userSession.accountId)
@@ -44,7 +45,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに参加する
      */
     fun participateInSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findInvitedSharedGroupOrElseThrowException(sharedGroupId, userSession)
+        val sharedGroup = sharedGroupQueryService.findInvitedSharedGroup(sharedGroupId, userSession.accountId)
+                          ?: throw SharedGroupNotFoundException(sharedGroupId)
         sharedGroupParticipationService.requireParticipationPossible(userSession.accountId)
 
         sharedGroup.participateIn(userSession.accountId)
@@ -55,7 +57,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループへの招待を拒否する
      */
     fun rejectInvitationToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findInvitedSharedGroup(sharedGroupId, userSession) ?: return
+        val sharedGroup = sharedGroupQueryService.findInvitedSharedGroup(sharedGroupId,
+                                                                         userSession.accountId) ?: return
 
         sharedGroup.rejectInvitation(userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
@@ -65,7 +68,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループへの招待を取り消す
      */
     fun cancelInvitationToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
-        val sharedGroup = findParticipatingSharedGroup(sharedGroupId, userSession) ?: return
+        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroupId,
+                                                                               userSession.accountId) ?: return
 
         sharedGroup.cancelInvitation(target)
         sharedGroupRepository.save(sharedGroup)
@@ -75,7 +79,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有を解除する
      */
     fun unshare(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = findParticipatingSharedGroup(sharedGroupId, userSession) ?: return
+        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(sharedGroupId,
+                                                                               userSession.accountId) ?: return
 
         sharedGroup.unshare(userSession.accountId)
         if (sharedGroup.shouldDelete()) {
@@ -91,30 +96,6 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
         return sharedGroupParticipationService.isParticipatingInSharedGroup(userSession.accountId)
-    }
-
-    private fun findParticipatingSharedGroupOrElseThrowException(sharedGroupId: SharedGroupId,
-                                                                 userSession: UserSession): SharedGroup {
-        return findParticipatingSharedGroup(sharedGroupId, userSession)
-               ?: throw SharedGroupNotFoundException(sharedGroupId)
-    }
-
-    private fun findParticipatingSharedGroup(sharedGroupId: SharedGroupId,
-                                             userSession: UserSession): SharedGroup? {
-        return sharedGroupRepository.findById(sharedGroupId)
-            ?.let { if (it.isParticipatingIn(userSession.accountId)) it else null }
-    }
-
-    private fun findInvitedSharedGroupOrElseThrowException(sharedGroupId: SharedGroupId,
-                                                           userSession: UserSession): SharedGroup {
-        return findInvitedSharedGroup(sharedGroupId, userSession)
-               ?: throw SharedGroupNotFoundException(sharedGroupId)
-    }
-
-    private fun findInvitedSharedGroup(sharedGroupId: SharedGroupId,
-                                       userSession: UserSession): SharedGroup? {
-        return sharedGroupRepository.findById(sharedGroupId)
-            ?.let { if (it.isInvited(userSession.accountId)) it else null }
     }
 
     private fun requireAccountExists(target: AccountId) {
