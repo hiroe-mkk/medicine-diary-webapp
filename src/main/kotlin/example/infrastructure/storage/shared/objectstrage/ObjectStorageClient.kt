@@ -8,4 +8,6 @@ interface ObjectStorageClient {
     fun put(URL: URL, fileContent: FileContent)
 
     fun remove(URL: URL)
+
+    fun removeAll(urls: Collection<URL>)
 }

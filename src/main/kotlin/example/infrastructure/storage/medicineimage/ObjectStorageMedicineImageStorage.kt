@@ -20,4 +20,8 @@ class ObjectStorageMedicineImageStorage(private val objectStorageClient: ObjectS
     override fun delete(medicineImageURL: MedicineImageURL) {
         objectStorageClient.remove(medicineImageURL)
     }
+
+    override fun deleteAll(medicineImageURLs: Collection<MedicineImageURL>) {
+        objectStorageClient.removeAll(medicineImageURLs)
+    }
 }

@@ -32,5 +32,11 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                      .build())
     }
 
+    override fun removeAll(urls: Collection<URL>) {
+        val builder = RemoveObjectArgs.builder().bucket(minioProperties.bucketName)
+        urls.forEach { builder.`object`(convertToObjectName(it)) }
+        minioClient.removeObject(builder.build())
+    }
+
     private fun convertToObjectName(URL: URL): String = URL.path.substring(1)
 }

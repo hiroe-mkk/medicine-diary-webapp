@@ -32,5 +32,12 @@ class S3ObjectStorageClient(private val s3Properties: S3Properties,
         amazonS3.deleteObject(s3Properties.bucketName, convertToObjectName(URL))
     }
 
+    override fun removeAll(urls: Collection<URL>) {
+        val keys = urls.map { DeleteObjectsRequest.KeyVersion(convertToObjectName(it)) }.toMutableList()
+        val deleteObjectsRequest = DeleteObjectsRequest(s3Properties.bucketName)
+            .withKeys(keys)
+        amazonS3.deleteObjects(deleteObjectsRequest)
+    }
+
     private fun convertToObjectName(URL: URL): String = URL.path.substring(1)
 }
