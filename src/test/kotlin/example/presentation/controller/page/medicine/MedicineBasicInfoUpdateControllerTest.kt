@@ -74,7 +74,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
     @Nested
     inner class UpdateMedicineBasicInfoTest {
         private val medicineName = "ロキソニンSプレミアム"
-        private val takingUnit = "錠"
+        private val doseUnit = "錠"
         private val quantity = 2.0
         private val timesPerDay = 3
         private val timingOptions = listOf(Timing.AS_NEEDED)
@@ -94,7 +94,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .with(csrf())
                                               .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
@@ -121,7 +121,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .with(csrf())
                                               .param("medicineName", invalidMedicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
@@ -146,7 +146,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .with(csrf())
                                               .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])
@@ -170,7 +170,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .with(csrf())
                                               .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("timingOptions", timingOptions[0].name)
                                               .param("effects", effects[0])

@@ -28,13 +28,13 @@ class JSONMedicineOverviewsResponse(val medicines: List<JSONMedicineOverviews>) 
     }
 
     class JSONDosageAndAdministration(val quantity: String,
-                                      val takingUnit: String,
+                                      val doseUnit: String,
                                       val timesPerDay: String,
                                       val timingOptions: List<String>) {
         companion object {
             fun from(dosageAndAdministration: DosageAndAdministration): JSONDosageAndAdministration {
                 return JSONDosageAndAdministration(dosageAndAdministration.dose.toString(),
-                                                   dosageAndAdministration.takingUnit,
+                                                   dosageAndAdministration.doseUnit,
                                                    dosageAndAdministration.timesPerDay.toString(),
                                                    dosageAndAdministration.timingOptions.map { it.str })
             }

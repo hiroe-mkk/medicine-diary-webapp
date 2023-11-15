@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS medicines (
   shared_group_id VARCHAR(36),
   medicine_name VARCHAR(30) NOT NULL,
   quantity DOUBLE NOT NULL,
-  taking_unit VARCHAR(10) NOT NULL,
+  dose_unit VARCHAR(10) NOT NULL,
   times_per_day INT NOT NULL,
   precautions VARCHAR(500) NOT NULL,
   medicine_image_url_endpoint VARCHAR(50),

@@ -71,7 +71,7 @@ internal class MyBatisJSONTakingRecordQueryServiceTest(@Autowired private val JS
         return JSONTakingRecord(takingRecord.id.value,
                                 JSONTakenMedicine(medicine.id.value,
                                                   medicine.medicineName.value,
-                                                  takingRecord.dose.toString() + medicine.dosageAndAdministration.takingUnit),
+                                                  takingRecord.dose.toString() + medicine.dosageAndAdministration.doseUnit),
                                 JSONFollowUp(takingRecord.followUp.symptom,
                                              takingRecord.followUp.beforeTaking.name,
                                              takingRecord.followUp.afterTaking?.name),

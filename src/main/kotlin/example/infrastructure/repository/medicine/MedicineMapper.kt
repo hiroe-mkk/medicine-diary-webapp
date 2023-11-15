@@ -20,7 +20,7 @@ interface MedicineMapper {
                           sharedGroupId: String?,
                           medicineName: String,
                           quantity: Double,
-                          takingUnit: String,
+                          doseUnit: String,
                           timesPerDay: Int,
                           precautions: String,
                           medicineImageURLEndpoint: String?,

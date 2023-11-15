@@ -48,7 +48,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
     @Nested
     inner class RegisterMedicineTest {
         private val medicineName = "ロキソニンS"
-        private val takingUnit = "錠"
+        private val doseUnit = "錠"
         private val quantity = 1.0
         private val timesPerDay = 3
         private val effects = arrayOf("頭痛", "解熱")
@@ -65,7 +65,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .with(csrf())
                                               .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
@@ -90,7 +90,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .with(csrf())
                                               .param("medicineName", invalidMedicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])
@@ -111,7 +111,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .with(csrf())
                                               .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
-                                              .param("takingUnit", takingUnit)
+                                              .param("doseUnit", doseUnit)
                                               .param("timesPerDay", timesPerDay.toString())
                                               .param("effects", effects[0])
                                               .param("effects", effects[1])

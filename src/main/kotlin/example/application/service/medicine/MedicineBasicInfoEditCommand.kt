@@ -19,7 +19,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
                                         val quantity: Double?,
                                         @field:NotWhitespaceOnly(message = "※お薬の単位を入力してください。")
                                         @field:Size(max = 10, message = "※{max}文字以内で入力してください。")
-                                        val takingUnit: String,
+                                        val doseUnit: String,
                                         @field:NotNull(message = "※1日当たりの服用回数を入力してください。")
                                         @field:Min(value = 1, message = "※{value}以上の数値を入力してください。")
                                         @field:Max(value = 100, message = "※{value}以下の数値を入力してください。")
@@ -54,7 +54,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
         fun initialize(medicine: Medicine): MedicineBasicInfoEditCommand {
             return MedicineBasicInfoEditCommand(medicine.medicineName.value,
                                                 medicine.dosageAndAdministration.dose.quantity,
-                                                medicine.dosageAndAdministration.takingUnit,
+                                                medicine.dosageAndAdministration.doseUnit,
                                                 medicine.dosageAndAdministration.timesPerDay,
                                                 medicine.dosageAndAdministration.timingOptions,
                                                 medicine.effects.values.map(::EffectInputField),

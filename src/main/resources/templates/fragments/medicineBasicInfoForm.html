@@ -64,15 +64,15 @@
                         <input
                           class="input is-info is-rounded"
                           type="text"
-                          name="takingUnit"
-                          th:value="*{takingUnit}"
+                          name="doseUnit"
+                          th:value="*{doseUnit}"
                           placeholder="単位"
                           th:errorclass="is-danger"
                         />
                         <span
                           class="help is-danger"
-                          th:if="${#fields.hasErrors('takingUnit')}"
-                          th:errors="*{takingUnit}"
+                          th:if="${#fields.hasErrors('doseUnit')}"
+                          th:errors="*{doseUnit}"
                         ></span>
                       </div>
                     </div>

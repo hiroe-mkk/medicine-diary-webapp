@@ -34,7 +34,7 @@ object TestMedicineFactory {
 
     fun createCompletedRegistrationCommand(medicineName: String = "ロキソニンS",
                                            quantity: Double = 1.0,
-                                           takingUnit: String = "錠",
+                                           doseUnit: String = "錠",
                                            timesPerDay: Int = 3,
                                            timingOptions: List<Timing> = emptyList(),
                                            effects: List<EffectInputField> = listOf(
@@ -44,7 +44,7 @@ object TestMedicineFactory {
                                            isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
-                                            takingUnit,
+                                            doseUnit,
                                             timesPerDay,
                                             timingOptions,
                                             effects,
@@ -54,7 +54,7 @@ object TestMedicineFactory {
 
     fun createCompletedUpdateCommand(medicineName: String = "ロキソニンSプレミアム",
                                      quantity: Double = 2.0,
-                                     takingUnit: String = "錠",
+                                     doseUnit: String = "錠",
                                      timesPerDay: Int = 2,
                                      timingOptions: List<Timing> = listOf(Timing.AS_NEEDED),
                                      effects: List<EffectInputField> = listOf(EffectInputField("頭痛"),
@@ -64,7 +64,7 @@ object TestMedicineFactory {
                                      isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
-                                            takingUnit,
+                                            doseUnit,
                                             timesPerDay,
                                             timingOptions,
                                             effects,

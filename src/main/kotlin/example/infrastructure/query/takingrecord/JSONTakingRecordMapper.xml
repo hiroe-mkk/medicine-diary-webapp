@@ -36,7 +36,7 @@
          DATE_FORMAT(taking_records.taken_at, '%Y/%m/%d %H:%i') AS taken_at,
         medicines.medicine_id AS medicine_id,
         medicines.medicine_name AS medicine_name,
-        CONCAT(taking_records.quantity, medicines.taking_unit) AS dose,
+        CONCAT(taking_records.quantity, medicines.dose_unit) AS dose,
         profiles.account_id,
         profiles.username,
         CONCAT(profile_image_url_endpoint, profile_image_url_path) AS profile_image_url,

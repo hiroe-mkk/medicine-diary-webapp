@@ -63,7 +63,7 @@
                     v-if="takenMedicine.medicine !== undefined"
                   >
                     {{
-                      takenMedicine.medicine.dosageAndAdministration.takingUnit
+                      takenMedicine.medicine.dosageAndAdministration.doseUnit
                     }}
                   </span>
                   <span class="help is-danger" v-for="error in quantityErrors">
