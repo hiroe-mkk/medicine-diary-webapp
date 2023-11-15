@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class AccountService(private val accountRepository: AccountRepository,
                      private val profileRepository: ProfileRepository,
+                     private val sharedGroupRepository: SharedGroupRepository,
                      private val takingRecordRepository: TakingRecordRepository,
+                     private val sharedGroupQueryService: SharedGroupQueryService,
                      private val sharedGroupUnshareService: SharedGroupUnshareService,
                      private val medicineDeletionService: MedicineDeletionService) {
     /**
@@ -41,6 +43,11 @@ class AccountService(private val accountRepository: AccountRepository,
         takingRecordRepository.deleteByRecorder(account.id)
         medicineDeletionService.deleteAllOwnedMedicines(userSession.accountId)
         sharedGroupUnshareService.unshare(userSession.accountId)
+        val invitedSharedGroups = sharedGroupQueryService.findInvitedSharedGroups(userSession.accountId)
+        invitedSharedGroups.forEach {
+            it.rejectInvitation(userSession.accountId)
+            sharedGroupRepository.save(it)
+        }
 
         profileRepository.deleteByAccountId(account.id)
         accountRepository.deleteById(account.id)

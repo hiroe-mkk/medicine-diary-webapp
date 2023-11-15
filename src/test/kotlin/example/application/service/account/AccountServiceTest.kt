@@ -21,14 +21,18 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
                                   @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                   @Autowired private val medicineRepository: MedicineRepository,
                                   @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                  @Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                   @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                   @Autowired private val medicineDeletionService: MedicineDeletionService,
+                                  @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                   @Autowired private val testAccountInserter: TestAccountInserter,
                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val accountService: AccountService = AccountService(accountRepository,
                                                                 profileRepository,
+                                                                sharedGroupRepository,
                                                                 takingRecordRepository,
+                                                                sharedGroupQueryService,
                                                                 sharedGroupUnshareService,
                                                                 medicineDeletionService)
 
@@ -73,8 +77,12 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         //given:
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         val userSession = UserSessionFactory.create(requesterAccountId)
+        testSharedGroupInserter.insert(members = setOf(requesterAccountId))
+        testSharedGroupInserter.insert(members = setOf(testAccountInserter.insertAccountAndProfile().first.id),
+                                       invitees = setOf(requesterAccountId))
         val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
         val takingRecord = testTakingRecordInserter.insert(requesterAccountId, medicine.id)
+
 
         //when:
         accountService.deleteAccount(userSession)
@@ -84,11 +92,13 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         assertThat(foundAccount).isNull()
         val foundProfile = profileRepository.findByAccountId(userSession.accountId)
         assertThat(foundProfile).isNull()
+        val foundParticipatingSharedGroup = sharedGroupRepository.findByMember(requesterAccountId)
+        assertThat(foundParticipatingSharedGroup).isNull()
+        val foundInvitedSharedGroup = sharedGroupRepository.findByInvitee(requesterAccountId)
+        assertThat(foundInvitedSharedGroup).isEmpty()
         val foundMedicine = medicineRepository.findById(medicine.id)
         assertThat(foundMedicine).isNull()
         val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
         assertThat(foundTakingRecord).isNull()
-        val foundParticipatingSharedGroup = sharedGroupRepository.findByMember(requesterAccountId)
-        assertThat(foundParticipatingSharedGroup).isNull()
     }
 }
