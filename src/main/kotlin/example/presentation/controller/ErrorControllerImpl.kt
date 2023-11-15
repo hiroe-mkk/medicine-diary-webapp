@@ -1,5 +1,6 @@
 package example.presentation.controller
 
+import example.presentation.controller.api.*
 import jakarta.servlet.*
 import jakarta.servlet.http.*
 import org.springframework.boot.web.servlet.error.*
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.*
 @Controller
 @RequestMapping("/error")
 class ErrorControllerImpl : ErrorController {
-    @RequestMapping
+    @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
     fun handleExceptionOccurredInPageController(request: HttpServletRequest): ModelAndView {
         val httpStatus = getHttpStatus(request)
         return ModelAndView().apply {
@@ -25,6 +26,17 @@ class ErrorControllerImpl : ErrorController {
                 "error/error"
             }
         }
+    }
+
+    @RequestMapping
+    fun handleExceptionOccurredInApiController(request: HttpServletRequest): ResponseEntity<Any> {
+        val httpStatus = getHttpStatus(request)
+        val errorResultResource = if (httpStatus == HttpStatus.NOT_FOUND) {
+            JSONErrorResponse.create("このページはご利用いただけません。")
+        } else {
+            JSONErrorResponse.create("システムエラーが発生しました。")
+        }
+        return ResponseEntity.status(httpStatus).body(errorResultResource)
     }
 
     private fun getHttpStatus(request: HttpServletRequest): HttpStatus {

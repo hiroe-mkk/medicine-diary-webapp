@@ -1,28 +1,44 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/layout}"
->
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="UTF-8" th:remove="tag" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>お薬日記</title>
+    <meta
+      name="description"
+      content="お薬日記は、お薬や服用したお薬の記録を家族やパートナーと共有することができる Web アプリケーションです。"
+    />
+    <link rel="icon" th:href="@{/images/favicon.ico}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
   </head>
 
   <body>
-    <div layout:fragment="content" th:remove="tag">
-      <div class="content has-text-centered">
-        <p class="subtitle is-4 has-text-weight-semibold">
-          システムエラーが発生しました。
-        </p>
-        <p class="subtitle has-text-danger is-6">
-          お手数ですが、最初から再度お試しください。
-        </p>
-          <div class="block">
-            <a class="is-underlined has-text-info has-text-weight-semibold" th:href="@{/}">
-              トップページに戻る
-            </a>
+    <div class="hero is-fullheight-with-navbar">
+      <main
+        class="hero-body has-background-info-light is-flex is-align-items-flex-start py-5"
+      >
+        <div class="container is-widescreen">
+          <div class="content has-text-centered">
+            <p class="subtitle is-4 has-text-weight-semibold">
+              システムエラーが発生しました。
+            </p>
+            <p class="subtitle has-text-danger is-6">
+              お手数ですが、最初から再度お試しください。
+            </p>
+            <div class="block">
+              <a
+                class="is-underlined has-text-info has-text-weight-semibold"
+                th:href="@{/}"
+              >
+                トップページに戻る
+              </a>
+            </div>
           </div>
-      </div>
+        </div>
+      </main>
     </div>
   </body>
 </html>
