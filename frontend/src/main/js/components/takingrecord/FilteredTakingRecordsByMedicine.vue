@@ -124,7 +124,8 @@ onMounted(async () => {
     .catch(() => {
       resultMessage.value.activate(
         'ERROR',
-        '服用記録の読み込みに失敗しました。'
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
       );
     });
 
@@ -137,7 +138,8 @@ onMounted(async () => {
       .catch(() => {
         resultMessage.value.activate(
           'ERROR',
-          '服用記録の読み込みに失敗しました。'
+          'エラーが発生しました。',
+          '通信状態をご確認のうえ、再度お試しください。'
         );
       });
   }
@@ -148,7 +150,11 @@ onMounted(async () => {
 
 function loadMoreTakingRecords() {
   takingRecords.loadMore().catch(() => {
-    resultMessage.value.activate('ERROR', '服用記録の読み込みに失敗しました。');
+    resultMessage.value.activate(
+      'ERROR',
+      'エラーが発生しました。',
+      '通信状態をご確認のうえ、再度お試しください。'
+    );
   });
 }
 

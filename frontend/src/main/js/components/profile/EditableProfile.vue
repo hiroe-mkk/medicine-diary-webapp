@@ -167,16 +167,16 @@ function submitUsernameChangeForm() {
             fieldErrors.set(error.body.fieldErrors);
             return;
           }
-        } else if (error.status == 409) {
-          resultMessage.value.activate(
-            'ERROR',
-            'ユーザー名の変更に失敗しました。',
-            error.getMessage()
-          );
-          return;
         } else if (error.status == 401) {
           // 認証エラーが発生した場合
           location.reload();
+          return;
+        } else if (error.status == 409) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
           return;
         } else if (error.status == 500) {
           resultMessage.value.activate(
