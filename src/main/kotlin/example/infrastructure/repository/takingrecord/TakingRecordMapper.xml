@@ -52,6 +52,11 @@
         WHERE taken_medicine = #{medicineId};
     </delete>
 
+    <delete id="deleteAllByAccountId">
+        DELETE FROM taking_records
+        WHERE recorder = #{accountId};
+    </delete>
+
 
     <sql id="AllColumns">
         taking_record_id AS taking_record_id,

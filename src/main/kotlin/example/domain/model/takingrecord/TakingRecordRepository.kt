@@ -1,5 +1,6 @@
 package example.domain.model.takingrecord
 
+import example.domain.model.account.*
 import example.domain.model.medicine.*
 
 interface TakingRecordRepository {
@@ -12,4 +13,6 @@ interface TakingRecordRepository {
     fun deleteById(takingRecordId: TakingRecordId)
 
     fun deleteAllByTakenMedicine(medicineId: MedicineId)
+
+    fun deleteByRecorder(accountId: AccountId)
 }

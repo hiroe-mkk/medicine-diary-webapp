@@ -21,4 +21,6 @@ interface TakingRecordMapper {
     fun deleteOneByTakingRecordId(takingRecordId: String)
 
     fun deleteAllByMedicineId(medicineId: String)
+
+    fun deleteAllByAccountId(accountId: String)
 }
