@@ -12,9 +12,9 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryService: UserQueryService,
-                                           @Autowired private val testAccountInserter: TestAccountInserter,
-                                           @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQueryService: JSONUserQueryService,
+                                               @Autowired private val testAccountInserter: TestAccountInserter,
+                                               @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var requesterProfile: Profile
     private lateinit var userSession: UserSession
 
@@ -28,7 +28,7 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
     @DisplayName("ユーザーを取得する")
     fun getUser() {
         //when:
-        val actual = userQueryService.findUser(userSession)
+        val actual = JSONUserQueryService.findUser(userSession)
 
         //then:
         assertThat(actual).isEqualTo(JSONUser(requesterProfile.accountId.value,
@@ -44,7 +44,7 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
         val user2AccountId = testAccountInserter.insertAccountAndProfile(username = Username("user2")).first.id
 
         //when:
-        val actual = userQueryService.findJSONUsersByKeyword("user", userSession)
+        val actual = JSONUserQueryService.findJSONUsersByKeyword("user", userSession)
 
         //when:
         assertThat(actual.users)
@@ -64,7 +64,7 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
                                        invitees = setOf(invitee1.accountId))
 
         //when:
-        val actual = userQueryService.findMemberJSONUsers(userSession)
+        val actual = JSONUserQueryService.findMemberJSONUsers(userSession)
 
         //then:
         assertThat(actual.users)

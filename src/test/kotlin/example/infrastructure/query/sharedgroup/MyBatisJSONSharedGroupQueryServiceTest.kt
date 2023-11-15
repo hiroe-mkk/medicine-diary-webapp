@@ -15,9 +15,9 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisSharedGroupQueryServiceTest(@Autowired private val sharedGroupQueryService: SharedGroupQueryService,
-                                                  @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                  @Autowired private val testAccountInserter: TestAccountInserter) {
+internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val JSONSharedGroupQueryService: JSONSharedGroupQueryService,
+                                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                      @Autowired private val testAccountInserter: TestAccountInserter) {
     @Test
     @DisplayName("共有グループを取得する")
     fun getSharedGroups() {
@@ -40,7 +40,7 @@ internal class MyBatisSharedGroupQueryServiceTest(@Autowired private val sharedG
                                                                 invitees = setOf(userSession.accountId))
 
         //when:
-        val actual = sharedGroupQueryService.findSharedGroup(userSession)
+        val actual = JSONSharedGroupQueryService.findSharedGroup(userSession)
 
         //then:
         assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id.value)

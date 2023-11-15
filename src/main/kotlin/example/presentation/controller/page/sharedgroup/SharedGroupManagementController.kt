@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/sharedgroup/management")
 @SessionAttributes(types = [LastRequestedPagePath::class])
-class SharedGroupManagementController(private val sharedGroupQueryService: SharedGroupQueryService,
+class SharedGroupManagementController(private val JSONSharedGroupQueryService: JSONSharedGroupQueryService,
                                       private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
     fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/sharedgroup/management")
@@ -21,7 +21,7 @@ class SharedGroupManagementController(private val sharedGroupQueryService: Share
     @GetMapping
     fun displaySharedGroupManagementPage(model: Model): String {
         val (participatingSharedGroup, invitedSharedGroups) =
-                sharedGroupQueryService.findSharedGroup(userSessionProvider.getUserSession())
+                JSONSharedGroupQueryService.findSharedGroup(userSessionProvider.getUserSession())
         model.addAttribute("participatingSharedGroup", participatingSharedGroup)
         model.addAttribute("invitedSharedGroups", invitedSharedGroups)
         return "sharedgroup/management"

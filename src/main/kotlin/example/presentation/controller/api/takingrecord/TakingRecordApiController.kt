@@ -12,7 +12,7 @@ import java.time.*
 
 @Controller
 @RequestMapping("/api/takingrecords")
-class TakingRecordApiController(private val takingRecordQueryService: TakingRecordQueryService,
+class TakingRecordApiController(private val JSONTakingRecordQueryService: JSONTakingRecordQueryService,
                                 private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用記録一覧を取得する
@@ -23,9 +23,9 @@ class TakingRecordApiController(private val takingRecordQueryService: TakingReco
     fun getTakingRecords(takingRecordFilter: TakingRecordFilter,
                          @PageableDefault(page = 0,
                                           size = 10) pageable: Pageable): JSONTakingRecords {
-        val page = takingRecordQueryService.findTakingRecordsPage(userSessionProvider.getUserSession(),
-                                                                  takingRecordFilter,
-                                                                  pageable)
+        val page = JSONTakingRecordQueryService.findTakingRecordsPage(userSessionProvider.getUserSession(),
+                                                                      takingRecordFilter,
+                                                                      pageable)
         return JSONTakingRecords.from(page)
     }
 }

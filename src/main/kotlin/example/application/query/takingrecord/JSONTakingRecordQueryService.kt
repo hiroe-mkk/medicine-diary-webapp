@@ -8,7 +8,7 @@ import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-abstract class TakingRecordQueryService(private val medicineQueryService: MedicineQueryService) {
+abstract class JSONTakingRecordQueryService(private val medicineQueryService: MedicineQueryService) {
     // TODO: クエリサービスにおいてドメインサービスを呼び出すべきではない？
     /**
      * 服用記録一覧ページを取得する

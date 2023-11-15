@@ -2,7 +2,7 @@ package example.infrastructure.query.takingrecord
 
 import example.application.query.shared.type.*
 import example.application.query.takingrecord.*
-import example.application.query.takingrecord.TakingRecordQueryService
+import example.application.query.takingrecord.JSONTakingRecordQueryService
 import example.application.query.user.*
 import example.application.service.takingrecord.*
 import example.application.shared.usersession.*
@@ -23,11 +23,11 @@ import java.time.*
 import java.time.format.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val takingRecordQueryService: TakingRecordQueryService,
-                                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
-                                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                   @Autowired private val testAccountInserter: TestAccountInserter,
-                                                   @Autowired private val sharedGroupInserter: TestSharedGroupInserter) {
+internal class MyBatisJSONTakingRecordQueryServiceTest(@Autowired private val JSONTakingRecordQueryService: JSONTakingRecordQueryService,
+                                                       @Autowired private val testTakingRecordInserter: TestTakingRecordInserter,
+                                                       @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                       @Autowired private val testAccountInserter: TestAccountInserter,
+                                                       @Autowired private val sharedGroupInserter: TestSharedGroupInserter) {
     @Test
     @DisplayName("服用記録一覧を取得する")
     fun getTakingRecords() {
@@ -47,12 +47,12 @@ internal class MyBatisTakingRecordQueryServiceTest(@Autowired private val taking
                                         null, null)
 
         //when:
-        val actualPage1 = takingRecordQueryService.findTakingRecordsPage(userSession,
-                                                                         filter,
-                                                                         PageRequest.of(0, 3))
-        val actualPage2 = takingRecordQueryService.findTakingRecordsPage(userSession,
-                                                                         filter,
-                                                                         PageRequest.of(1, 3))
+        val actualPage1 = JSONTakingRecordQueryService.findTakingRecordsPage(userSession,
+                                                                             filter,
+                                                                             PageRequest.of(0, 3))
+        val actualPage2 = JSONTakingRecordQueryService.findTakingRecordsPage(userSession,
+                                                                             filter,
+                                                                             PageRequest.of(1, 3))
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(1)

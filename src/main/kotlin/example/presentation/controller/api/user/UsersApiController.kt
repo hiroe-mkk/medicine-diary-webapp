@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/users")
-class UsersApiController(private val userQueryService: UserQueryService,
+class UsersApiController(private val JSONUserQueryService: JSONUserQueryService,
                          private val userSessionProvider: UserSessionProvider) {
     /**
      * ユーザーを取得する
@@ -17,7 +17,7 @@ class UsersApiController(private val userQueryService: UserQueryService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getUser(): JSONUser {
-        return userQueryService.findUser(userSessionProvider.getUserSession())
+        return JSONUserQueryService.findUser(userSessionProvider.getUserSession())
     }
 
     /**
@@ -27,7 +27,7 @@ class UsersApiController(private val userQueryService: UserQueryService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsers {
-        return userQueryService.findJSONUsersByKeyword(keyword ?: "", userSessionProvider.getUserSession())
+        return JSONUserQueryService.findJSONUsersByKeyword(keyword ?: "", userSessionProvider.getUserSession())
     }
 
     /**
@@ -37,6 +37,6 @@ class UsersApiController(private val userQueryService: UserQueryService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getMemberUsers(): JSONUsers {
-        return userQueryService.findMemberJSONUsers(userSessionProvider.getUserSession())
+        return JSONUserQueryService.findMemberJSONUsers(userSessionProvider.getUserSession())
     }
 }

@@ -2,7 +2,7 @@ package example.application.query.user
 
 import example.application.shared.usersession.*
 
-interface UserQueryService {
+interface JSONUserQueryService {
     /**
      * ユーザーを取得する
      */
