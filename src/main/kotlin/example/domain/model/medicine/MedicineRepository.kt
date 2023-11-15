@@ -18,5 +18,7 @@ interface MedicineRepository {
 
     fun deleteById(medicineId: MedicineId)
 
+    fun deleteByOwner(accountId: AccountId)
+
     fun deleteByOwner(sharedGroupId: SharedGroupId)
 }

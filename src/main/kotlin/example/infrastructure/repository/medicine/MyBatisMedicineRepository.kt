@@ -70,6 +70,13 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         medicineMapper.deleteOneMedicineByMedicineId(medicineId.value)
     }
 
+    override fun deleteByOwner(accountId: AccountId) {
+        val medicineIds = findByOwner(accountId).map { it.id.value }
+        medicineMapper.deleteAllTimingOptionsByMedicineIds(medicineIds)
+        medicineMapper.deleteAllEffectsByMedicineIds(medicineIds)
+        medicineMapper.deleteAllMedicineByAccountId(accountId.value)
+    }
+
     override fun deleteByOwner(sharedGroupId: SharedGroupId) {
         val medicineIds = findByOwner(sharedGroupId).map { it.id.value }
         medicineMapper.deleteAllTimingOptionsByMedicineIds(medicineIds)

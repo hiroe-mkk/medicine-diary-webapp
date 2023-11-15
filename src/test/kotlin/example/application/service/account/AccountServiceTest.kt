@@ -4,10 +4,13 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
+import example.domain.model.medicine.medicineImage.*
+import example.domain.model.sharedgroup.*
 import example.domain.model.takingrecord.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import io.mockk.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -17,11 +20,22 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
                                   @Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val medicineRepository: MedicineRepository,
                                   @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                  @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter,
                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val accountService: AccountService =
-            AccountService(accountRepository, profileRepository, takingRecordRepository)
+    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
+    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
+            MedicineAndTakingRecordsDeletionService(medicineRepository,
+                                                    medicineImageStorage,
+                                                    takingRecordRepository,
+                                                    medicineQueryService)
+    private val accountService: AccountService = AccountService(accountRepository,
+                                                                profileRepository,
+                                                                takingRecordRepository,
+                                                                medicineAndTakingRecordsDeletionService)
 
     @Nested
     inner class GetOrElseCreateAccountTest {
@@ -75,6 +89,8 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         assertThat(foundAccount).isNull()
         val foundProfile = profileRepository.findByAccountId(userSession.accountId)
         assertThat(foundProfile).isNull()
+        val foundMedicine = medicineRepository.findById(medicine.id)
+        assertThat(foundMedicine).isNull()
         val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
         assertThat(foundTakingRecord).isNull()
     }

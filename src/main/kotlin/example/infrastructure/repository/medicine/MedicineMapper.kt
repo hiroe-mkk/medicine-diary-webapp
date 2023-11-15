@@ -44,5 +44,7 @@ interface MedicineMapper {
 
     fun deleteAllEffectsByMedicineIds(medicineIds: List<String>)
 
+    fun deleteAllMedicineByAccountId(accountId: String)
+
     fun deleteAllMedicineBySharedGroupId(sharedGroupId: String)
 }

@@ -3,6 +3,7 @@ package example.application.service.account
 import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.medicine.*
 import example.domain.model.takingrecord.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
@@ -11,7 +12,8 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class AccountService(private val accountRepository: AccountRepository,
                      private val profileRepository: ProfileRepository,
-                     private val takingRecordRepository: TakingRecordRepository) {
+                     private val takingRecordRepository: TakingRecordRepository,
+                     private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService) {
     /**
      * アカウントを取得または作成する
      *
@@ -35,6 +37,7 @@ class AccountService(private val accountRepository: AccountRepository,
     fun deleteAccount(userSession: UserSession) {
         val account = accountRepository.findById(userSession.accountId) ?: return
         takingRecordRepository.deleteByRecorder(account.id)
+        medicineAndTakingRecordsDeletionService.deleteAllOwnedMedicines(userSession.accountId)
 
         profileRepository.deleteByAccountId(account.id)
         accountRepository.deleteById(account.id)

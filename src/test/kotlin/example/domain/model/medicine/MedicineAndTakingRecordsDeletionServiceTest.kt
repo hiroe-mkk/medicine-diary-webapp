@@ -77,4 +77,23 @@ internal class MedicineAndTakingRecordsDeletionServiceTest(@Autowired private va
         val foundTakingRecords = takingRecordIds.mapNotNull { takingRecordRepository.findById(it) }
         assertThat(foundTakingRecords).isEmpty()
     }
+
+    @Test
+    @DisplayName("所有する薬をすべて削除する")
+    fun deleteAllOwnedMedicines() {
+        //given
+        val takingRecordIds = List(3) {
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
+            testTakingRecordInserter.insert(requesterAccountId, medicine.id).id
+        }
+
+        //when:
+        medicineAndTakingRecordsDeletionService.deleteAllOwnedMedicines(requesterAccountId)
+
+        //then:
+        val foundMedicines = medicineRepository.findByOwner(requesterAccountId)
+        assertThat(foundMedicines).isEmpty()
+        val foundTakingRecords = takingRecordIds.mapNotNull { takingRecordRepository.findById(it) }
+        assertThat(foundTakingRecords).isEmpty()
+    }
 }

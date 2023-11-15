@@ -26,4 +26,13 @@ class MedicineAndTakingRecordsDeletionService(private val medicineRepository: Me
         medicineRepository.deleteByOwner(sharedGroupId)
         medicineImageStorage.deleteAll(medicines.mapNotNull { it.medicineImageURL })
     }
+
+    fun deleteAllOwnedMedicines(accountId: AccountId) {
+        val medicines = medicineQueryService.findAllOwnedMedicines(accountId)
+        if (medicines.isEmpty()) return
+
+        medicines.forEach { takingRecordRepository.deleteAllByTakenMedicine(it.id) }
+        medicineRepository.deleteByOwner(accountId)
+        medicineImageStorage.deleteAll(medicines.mapNotNull { it.medicineImageURL })
+    }
 }

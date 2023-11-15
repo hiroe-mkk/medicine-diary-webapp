@@ -110,6 +110,11 @@
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
+    <delete id="deleteAllMedicineByAccountId">
+        DELETE FROM medicines
+        WHERE account_id = #{accountId};
+    </delete>
+
     <delete id="deleteAllTimingOptionsByMedicineId">
         DELETE FROM timing_options
         WHERE medicine_id = #{medicineId};
