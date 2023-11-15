@@ -43,11 +43,13 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                                                    medicineAndTakingRecordsDeletionService)
 
     private lateinit var userSession: UserSession
+    private lateinit var user1AccountId: AccountId
 
     @BeforeEach
     internal fun setUp() {
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         userSession = UserSessionFactory.create(requesterAccountId)
+        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Nested
@@ -75,17 +77,17 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         }
 
         @Test
-        @DisplayName("薬が見つからなかった場合、薬詳細の取得に失敗する")
-        fun medicineNotFound_gettingMedicineDetailFails() {
+        @DisplayName("閲覧可能な薬が見つからなかった場合、薬詳細の取得に失敗する")
+        fun viewableMedicineNotFound_gettingMedicineDetailFails() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
 
             //when:
-            val target: () -> Unit = { medicineService.findMedicine(badMedicineId, userSession) }
+            val target: () -> Unit = { medicineService.findMedicine(medicine.id, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
 
@@ -175,12 +177,13 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
     @Nested
     inner class UpdateMedicineBasicInfoTest {
+        private val command = TestMedicineFactory.createCompletedUpdateCommand()
+
         @Test
         @DisplayName("薬基本情報を更新する")
         fun updateMedicineBasicInfo() {
             //given:
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
-            val command = TestMedicineFactory.createCompletedUpdateCommand()
 
             //when:
             medicineService.updateMedicineBasicInfo(medicine.id, command, userSession)
@@ -200,18 +203,17 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         }
 
         @Test
-        @DisplayName("薬が見つからなかった場合、薬基本情報の更新に失敗する")
-        fun medicineNotFound_updatingMedicineBasicInfoFails() {
+        @DisplayName("服用可能な薬が見つからなかった場合、薬基本情報の更新に失敗する")
+        fun availableMedicineNotFound_updatingMedicineBasicInfoFails() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
-            val command = TestMedicineFactory.createCompletedRegistrationCommand()
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
 
             //when:
-            val target: () -> Unit = { medicineService.updateMedicineBasicInfo(badMedicineId, command, userSession) }
+            val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
 }
