@@ -56,8 +56,8 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループが見つからなかった場合、NotFoundエラー画面を表示する")
-    fun sharedGroupNotFound_displayNotFoundErrorPage() {
+    @DisplayName("共有グループが見つからなかった場合、共有グループ管理画面にリダイレクトする")
+    fun sharedGroupNotFound_redirectToShredGroupManagementPage() {
         //given:
         val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -67,8 +67,8 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
                                           .param("sharedGroupId", badSharedGroupId.value)
                                           .param("accountId", user1AccountId.value))
         //then:
-        actions.andExpect(status().isNotFound)
-            .andExpect(view().name("error/notFoundError"))
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/sharedgroup/management"))
     }
 
     @Test
