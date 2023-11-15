@@ -8,14 +8,13 @@ import org.springframework.stereotype.*
 class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRepository,
                                 private val sharedGroupQueryService: SharedGroupQueryService,
                                 private val medicineDeletionService: MedicineDeletionService) {
-    fun unshare(sharedGroupId: SharedGroupId, accountId: AccountId) {
-        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(accountId)
-                              ?.let { if (it.id == sharedGroupId) it else null } ?: return
+    fun unshare(accountId: AccountId) {
+        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(accountId) ?: return
 
         sharedGroup.unshare(accountId)
         if (sharedGroup.shouldDelete()) {
             medicineDeletionService.deleteAllSharedGroupMedicines(sharedGroup.id)
-            sharedGroupRepository.deleteById(sharedGroupId)
+            sharedGroupRepository.deleteById(sharedGroup.id)
         } else {
             sharedGroupRepository.save(sharedGroup)
         }

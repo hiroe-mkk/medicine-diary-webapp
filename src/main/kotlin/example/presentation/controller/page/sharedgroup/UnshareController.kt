@@ -17,9 +17,8 @@ class UnshareController(private val sharedGroupService: SharedGroupService,
      * 共有を解除する
      */
     @PostMapping
-    fun unshare(@ModelAttribute sharedGroupId: SharedGroupId,
-                redirectAttributes: RedirectAttributes): String {
-        sharedGroupService.unshare(sharedGroupId, userSessionProvider.getUserSession())
+    fun unshare(redirectAttributes: RedirectAttributes): String {
+        sharedGroupService.unshare(userSessionProvider.getUserSession())
         val resultMessage = ResultMessage.info("共有を解除しました。")
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
         return "redirect:/sharedgroup/management"

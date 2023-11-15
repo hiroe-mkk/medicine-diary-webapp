@@ -39,7 +39,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId, user1AccountId))
 
         //when:
-        sharedGroupUnshareService.unshare(sharedGroup.id, requesterAccountId)
+        sharedGroupUnshareService.unshare(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
@@ -56,7 +56,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
         val takingRecord = testTakingRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
-        sharedGroupUnshareService.unshare(sharedGroup.id, requesterAccountId)
+        sharedGroupUnshareService.unshare(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
