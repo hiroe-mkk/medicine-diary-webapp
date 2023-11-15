@@ -49,11 +49,11 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineAndTakingRecordsDeletionService(): MedicineAndTakingRecordsDeletionService {
-            return MedicineAndTakingRecordsDeletionService(medicineRepository,
-                                                           medicineImageStorage,
-                                                           takingRecordRepository,
-                                                           medicineQueryService())
+        fun medicineAndTakingRecordsDeletionService(): MedicineDeletionService {
+            return MedicineDeletionService(medicineRepository,
+                                           medicineImageStorage,
+                                           takingRecordRepository,
+                                           medicineQueryService())
         }
 
         @Bean

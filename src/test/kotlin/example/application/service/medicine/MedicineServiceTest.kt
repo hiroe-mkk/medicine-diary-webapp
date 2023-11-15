@@ -23,7 +23,7 @@ import java.time.*
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                    @Autowired private val medicineQueryService: MedicineQueryService,
                                    @Autowired private val medicineCreationService: MedicineCreationService,
-                                   @Autowired private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService,
+                                   @Autowired private val medicineDeletionService: MedicineDeletionService,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
@@ -32,7 +32,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                                                    localDateTimeProvider,
                                                                    medicineQueryService,
                                                                    medicineCreationService,
-                                                                   medicineAndTakingRecordsDeletionService)
+                                                                   medicineDeletionService)
 
     private lateinit var userSession: UserSession
     private lateinit var user1AccountId: AccountId

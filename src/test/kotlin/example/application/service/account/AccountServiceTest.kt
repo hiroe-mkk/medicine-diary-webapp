@@ -20,14 +20,14 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
                                   @Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val medicineRepository: MedicineRepository,
                                   @Autowired private val takingRecordRepository: TakingRecordRepository,
-                                  @Autowired private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService,
+                                  @Autowired private val medicineDeletionService: MedicineDeletionService,
                                   @Autowired private val testAccountInserter: TestAccountInserter,
                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
                                   @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val accountService: AccountService = AccountService(accountRepository,
                                                                 profileRepository,
                                                                 takingRecordRepository,
-                                                                medicineAndTakingRecordsDeletionService)
+                                                                medicineDeletionService)
 
     @Nested
     inner class GetOrElseCreateAccountTest {

@@ -7,10 +7,10 @@ import example.domain.model.takingrecord.*
 import org.springframework.stereotype.*
 
 @Component
-class MedicineAndTakingRecordsDeletionService(private val medicineRepository: MedicineRepository,
-                                              private val medicineImageStorage: MedicineImageStorage,
-                                              private val takingRecordRepository: TakingRecordRepository,
-                                              private val medicineQueryService: MedicineQueryService) {
+class MedicineDeletionService(private val medicineRepository: MedicineRepository,
+                              private val medicineImageStorage: MedicineImageStorage,
+                              private val takingRecordRepository: TakingRecordRepository,
+                              private val medicineQueryService: MedicineQueryService) {
     fun delete(medicineId: MedicineId, accountId: AccountId) {
         val medicine = medicineQueryService.findAvailableMedicine(medicineId, accountId) ?: return
         takingRecordRepository.deleteAllByTakenMedicine(medicineId)

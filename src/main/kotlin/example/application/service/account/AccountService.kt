@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.*
 class AccountService(private val accountRepository: AccountRepository,
                      private val profileRepository: ProfileRepository,
                      private val takingRecordRepository: TakingRecordRepository,
-                     private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService) {
+                     private val medicineDeletionService: MedicineDeletionService) {
     /**
      * アカウントを取得または作成する
      *
@@ -37,7 +37,7 @@ class AccountService(private val accountRepository: AccountRepository,
     fun deleteAccount(userSession: UserSession) {
         val account = accountRepository.findById(userSession.accountId) ?: return
         takingRecordRepository.deleteByRecorder(account.id)
-        medicineAndTakingRecordsDeletionService.deleteAllOwnedMedicines(userSession.accountId)
+        medicineDeletionService.deleteAllOwnedMedicines(userSession.accountId)
 
         profileRepository.deleteByAccountId(account.id)
         accountRepository.deleteById(account.id)
