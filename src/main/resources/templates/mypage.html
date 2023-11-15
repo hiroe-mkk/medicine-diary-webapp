@@ -42,7 +42,7 @@
           <span
             class="icon fas fa-lg has-text-link is-clickable mx-1"
             @click="isMenuModalActive = true"
-          > 
+          >
             <i class="fa-solid fa-gear"></i>
           </span>
         </p>
@@ -75,6 +75,13 @@
             </form>
             <button
               type="button"
+              class="button is-dark is-fullwidth is-small mb-1"
+              @click="activateAccountDeletionConfirmationModal()"
+            >
+              <strong class="mx-6">アカウント削除</strong>
+            </button>
+            <button
+              type="button"
               class="button is-dark is-fullwidth is-small has-text-danger mb-1"
               @click="isMenuModalActive = false"
             >
@@ -93,6 +100,17 @@
           </p>
         </a>
       </div>
+
+      <confirmation-message
+        ref="accountDeletionConfirmationMessage"
+        message="アカウントを削除しますか？"
+        details="アカウントを削除すると、全てのデータが削除されます。 
+                  削除後、データを復元することはできません。"
+        button-label="削除する"
+        path="/accounts/delete"
+        th:attr="csrf=${_csrf.token}"
+      >
+      </confirmation-message>
     </div>
   </body>
 </html>
