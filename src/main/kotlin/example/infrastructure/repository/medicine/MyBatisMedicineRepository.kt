@@ -47,7 +47,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     private fun upsertAllTimingOptions(medicine: Medicine) {
-        medicineMapper.deleteAllTimingOptions(medicine.id.value)
+        medicineMapper.deleteAllTimingOptionsByMedicineId(medicine.id.value)
         val timingOptions = medicine.dosageAndAdministration.timingOptions
         if (timingOptions.isEmpty()) return
 
@@ -56,7 +56,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     private fun upsertAllEffects(medicine: Medicine) {
-        medicineMapper.deleteAllEffects(medicine.id.value)
+        medicineMapper.deleteAllEffectsByMedicineId(medicine.id.value)
         val effects = medicine.effects.values
         if (effects.isEmpty()) return
 
@@ -65,8 +65,15 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     override fun deleteById(medicineId: MedicineId) {
-        medicineMapper.deleteAllTimingOptions(medicineId.value)
-        medicineMapper.deleteAllEffects(medicineId.value)
-        medicineMapper.deleteOneMedicine(medicineId.value)
+        medicineMapper.deleteAllTimingOptionsByMedicineId(medicineId.value)
+        medicineMapper.deleteAllEffectsByMedicineId(medicineId.value)
+        medicineMapper.deleteOneMedicineByMedicineId(medicineId.value)
+    }
+
+    override fun deleteByOwner(sharedGroupId: SharedGroupId) {
+        val medicineIds = findByOwner(sharedGroupId).map { it.id.value }
+        medicineMapper.deleteAllTimingOptionsByMedicineIds(medicineIds)
+        medicineMapper.deleteAllEffectsByMedicineIds(medicineIds)
+        medicineMapper.deleteAllMedicineBySharedGroupId(sharedGroupId.value)
     }
 }

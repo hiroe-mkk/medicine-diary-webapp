@@ -31,16 +31,16 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     private val medicineQueryService: MedicineQueryService =
             MedicineQueryService(medicineRepository, sharedGroupRepository)
     private val medicineCreationService: MedicineCreationService = MedicineCreationService(sharedGroupRepository)
-    private val medicineDeletionService: MedicineDeletionService =
-            MedicineDeletionService(medicineRepository,
-                                    medicineImageStorage,
-                                    takingRecordRepository,
-                                    medicineQueryService)
+    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
+            MedicineAndTakingRecordsDeletionService(medicineRepository,
+                                                    medicineImageStorage,
+                                                    takingRecordRepository,
+                                                    medicineQueryService)
     private val medicineService: MedicineService = MedicineService(medicineRepository,
                                                                    localDateTimeProvider,
                                                                    medicineQueryService,
                                                                    medicineCreationService,
-                                                                   medicineDeletionService)
+                                                                   medicineAndTakingRecordsDeletionService)
 
     private lateinit var userSession: UserSession
 

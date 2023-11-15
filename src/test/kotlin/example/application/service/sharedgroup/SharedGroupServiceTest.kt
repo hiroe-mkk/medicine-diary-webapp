@@ -6,10 +6,14 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.medicine.*
+import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
+import example.domain.model.takingrecord.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import io.mockk.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -19,12 +23,26 @@ import org.springframework.context.annotation.*
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                       @Autowired private val profileRepository: ProfileRepository,
                                       @Autowired private val accountRepository: AccountRepository,
+                                      @Autowired private val medicineRepository: MedicineRepository,
+                                      @Autowired private val takingRecordRepository: TakingRecordRepository,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                      @Autowired private val testAccountInserter: TestAccountInserter) {
+                                      @Autowired private val testAccountInserter: TestAccountInserter,
+                                      @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                      @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
     private val shareRequestService: SharedGroupParticipationService =
             SharedGroupParticipationService(sharedGroupRepository, profileRepository)
-    private val sharedGroupService: SharedGroupService =
-            SharedGroupService(sharedGroupRepository, accountRepository, shareRequestService)
+    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
+    private val medicineQueryService: MedicineQueryService =
+            MedicineQueryService(medicineRepository, sharedGroupRepository)
+    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
+            MedicineAndTakingRecordsDeletionService(medicineRepository,
+                                                    medicineImageStorage,
+                                                    takingRecordRepository,
+                                                    medicineQueryService)
+    private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
+                                                                            accountRepository,
+                                                                            shareRequestService,
+                                                                            medicineAndTakingRecordsDeletionService)
 
     private lateinit var userSession: UserSession
     private lateinit var user1AccountId: AccountId
@@ -405,6 +423,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             //given:
             val members = setOf(userSession.accountId)
             val sharedGroup = testSharedGroupInserter.insert(members = members)
+            val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
+            val takingRecord = testTakingRecordInserter.insert(userSession.accountId, sharedGroupMedicine.id)
 
             //when:
             sharedGroupService.unshare(sharedGroup.id, userSession)
@@ -412,6 +432,10 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
             assertThat(foundSharedGroup).isNull()
+            val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)
+            assertThat(foundMedicines).isEmpty()
+            val foundTakingRecords = takingRecordRepository.findById(takingRecord.id)
+            assertThat(foundTakingRecords).isNull()
         }
 
         @Test
@@ -429,7 +453,6 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
             assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(badSharedGroupId)
         }
-
 
         @Test
         @DisplayName("共有グループに参加していない場合、共有解除に失敗する")

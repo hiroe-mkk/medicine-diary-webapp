@@ -17,4 +17,6 @@ interface MedicineRepository {
     fun save(medicine: Medicine)
 
     fun deleteById(medicineId: MedicineId)
+
+    fun deleteByOwner(sharedGroupId: SharedGroupId)
 }

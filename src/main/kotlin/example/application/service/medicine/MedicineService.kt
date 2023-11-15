@@ -12,7 +12,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
                       private val medicineQueryService: MedicineQueryService,
                       private val medicineCreationService: MedicineCreationService,
-                      private val medicineDeletionService: MedicineDeletionService) {
+                      private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService) {
     /**
      * 薬を取得する
      */
@@ -108,7 +108,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬を削除する
      */
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
-        medicineDeletionService.deleteOne(medicineId, userSession.accountId)
+        medicineAndTakingRecordsDeletionService.delete(medicineId, userSession.accountId)
     }
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,

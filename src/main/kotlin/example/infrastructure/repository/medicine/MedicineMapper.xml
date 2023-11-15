@@ -100,19 +100,40 @@
         ;
     </insert>
 
-    <delete id="deleteOneMedicine">
+    <delete id="deleteOneMedicineByMedicineId">
         DELETE FROM medicines
         WHERE medicine_id = #{medicineId};
     </delete>
 
-    <delete id="deleteAllTimingOptions">
+    <delete id="deleteAllMedicineBySharedGroupId">
+        DELETE FROM medicines
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
+
+    <delete id="deleteAllTimingOptionsByMedicineId">
         DELETE FROM timing_options
         WHERE medicine_id = #{medicineId};
     </delete>
 
-    <delete id="deleteAllEffects">
+    <delete id="deleteAllTimingOptionsByMedicineIds">
+        DELETE FROM timing_options
+            WHERE
+        <foreach collection="medicineIds" item="medicineId" open="medicine_id IN (" separator="," close=")">
+              #{medicineId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllEffectsByMedicineId">
         DELETE FROM effects
         WHERE medicine_id = #{medicineId};
+    </delete>
+
+    <delete id="deleteAllEffectsByMedicineIds">
+        DELETE FROM effects
+            WHERE
+        <foreach collection="medicineIds" item="medicineId" open="medicine_id IN (" separator="," close=")">
+              #{medicineId}
+        </foreach>
     </delete>
 
     <sql id="AllColumns">

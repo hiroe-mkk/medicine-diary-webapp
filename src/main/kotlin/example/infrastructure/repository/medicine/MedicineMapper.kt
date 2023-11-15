@@ -1,6 +1,5 @@
 package example.infrastructure.repository.medicine
 
-import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.infrastructure.repository.shared.*
 import org.apache.ibatis.annotations.*
@@ -35,9 +34,15 @@ interface MedicineMapper {
     fun insertAllEffects(medicineId: String,
                          effects: Collection<OrderedEntity<String>>)
 
-    fun deleteOneMedicine(medicineId: String)
+    fun deleteOneMedicineByMedicineId(medicineId: String)
 
-    fun deleteAllTimingOptions(medicineId: String)
+    fun deleteAllTimingOptionsByMedicineId(medicineId: String)
 
-    fun deleteAllEffects(medicineId: String)
+    fun deleteAllEffectsByMedicineId(medicineId: String)
+
+    fun deleteAllTimingOptionsByMedicineIds(medicineIds: List<String>)
+
+    fun deleteAllEffectsByMedicineIds(medicineIds: List<String>)
+
+    fun deleteAllMedicineBySharedGroupId(sharedGroupId: String)
 }
