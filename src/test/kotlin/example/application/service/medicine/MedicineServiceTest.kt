@@ -19,23 +19,15 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
-                                   @Autowired private val takingRecordRepository: TakingRecordRepository,
-                                   @Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                   @Autowired private val medicineQueryService: MedicineQueryService,
+                                   @Autowired private val medicineCreationService: MedicineCreationService,
+                                   @Autowired private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
-    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
     private val localDateTimeProvider: LocalDateTimeProvider = mockk()
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val medicineCreationService: MedicineCreationService = MedicineCreationService(sharedGroupRepository)
-    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
-            MedicineAndTakingRecordsDeletionService(medicineRepository,
-                                                    medicineImageStorage,
-                                                    takingRecordRepository,
-                                                    medicineQueryService)
     private val medicineService: MedicineService = MedicineService(medicineRepository,
                                                                    localDateTimeProvider,
                                                                    medicineQueryService,

@@ -19,32 +19,19 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.context.annotation.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                       @Autowired private val profileRepository: ProfileRepository,
                                       @Autowired private val accountRepository: AccountRepository,
-                                      @Autowired private val medicineRepository: MedicineRepository,
-                                      @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                      @Autowired private val sharedGroupQueryService: SharedGroupQueryService,
+                                      @Autowired private val sharedGroupParticipationService: SharedGroupParticipationService,
+                                      @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val shareRequestService: SharedGroupParticipationService =
-            SharedGroupParticipationService(sharedGroupRepository, profileRepository)
-    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val sharedGroupQueryService: SharedGroupQueryService = SharedGroupQueryService(sharedGroupRepository)
-    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
-            MedicineAndTakingRecordsDeletionService(medicineRepository,
-                                                    medicineImageStorage,
-                                                    takingRecordRepository,
-                                                    medicineQueryService)
-    private val sharedGroupUnshareService: SharedGroupUnshareService = SharedGroupUnshareService(sharedGroupRepository,
-                                                                                                 sharedGroupQueryService,
-                                                                                                 medicineAndTakingRecordsDeletionService)
     private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
                                                                             accountRepository,
                                                                             sharedGroupQueryService,
-                                                                            shareRequestService,
+                                                                            sharedGroupParticipationService,
                                                                             sharedGroupUnshareService)
 
     private lateinit var userSession: UserSession

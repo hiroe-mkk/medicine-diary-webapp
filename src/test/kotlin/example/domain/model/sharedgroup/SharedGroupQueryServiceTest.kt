@@ -8,12 +8,10 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
-internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
+@DomainLayerTest
+internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                            @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val sharedGroupQueryService: SharedGroupQueryService = SharedGroupQueryService(sharedGroupRepository)
-
     private lateinit var requesterAccountId: AccountId
     private lateinit var user1AccountId: AccountId
 

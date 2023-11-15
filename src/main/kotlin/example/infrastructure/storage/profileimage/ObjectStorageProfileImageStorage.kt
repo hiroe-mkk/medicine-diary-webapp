@@ -10,7 +10,8 @@ import java.util.*
 class ObjectStorageProfileImageStorage(private val objectStorageClient: ObjectStorageClient) : ProfileImageStorage {
     override fun createURL(): ProfileImageURL {
         val path = "/profileimage/${UUID.randomUUID()}"
-        return ProfileImageURL(objectStorageClient.getEndpoint(), path)
+        val endpoint = objectStorageClient.getEndpoint()
+        return ProfileImageURL(endpoint, path)
     }
 
     override fun upload(profileImageURL: ProfileImageURL, fileContent: FileContent) {

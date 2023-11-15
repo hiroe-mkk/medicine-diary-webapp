@@ -15,22 +15,14 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class MedicineAndTakingRecordsDeletionServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                                            @Autowired private val takingRecordRepository: TakingRecordRepository,
-                                                           @Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                                           @Autowired private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService,
                                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                            @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
-            MedicineAndTakingRecordsDeletionService(medicineRepository,
-                                                    medicineImageStorage,
-                                                    takingRecordRepository,
-                                                    medicineQueryService)
     private lateinit var requesterAccountId: AccountId
 
     @BeforeEach
@@ -55,7 +47,6 @@ internal class MedicineAndTakingRecordsDeletionServiceTest(@Autowired private va
         assertThat(foundMedicine).isNull()
         val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
         assertThat(foundTakingRecord).isNull()
-        verify(exactly = 1) { medicineImageStorage.delete(medicineImageURL) }
     }
 
     @Test

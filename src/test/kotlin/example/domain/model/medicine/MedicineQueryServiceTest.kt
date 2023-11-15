@@ -15,15 +15,11 @@ import org.junit.jupiter.params.provider.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
 
-@MyBatisRepositoryTest
-internal class MedicineQueryServiceTest(@Autowired private val medicineRepository: MedicineRepository,
-                                        @Autowired private val sharedGroupRepository: SharedGroupRepository,
+@DomainLayerTest
+internal class MedicineQueryServiceTest(@Autowired private val medicineQueryService: MedicineQueryService,
                                         @Autowired private val testMedicineInserter: TestMedicineInserter,
                                         @Autowired private val testAccountInserter: TestAccountInserter,
                                         @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-
     private lateinit var requesterAccountId: AccountId
     private lateinit var user1AccountId: AccountId
 

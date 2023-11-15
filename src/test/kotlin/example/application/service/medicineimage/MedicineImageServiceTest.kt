@@ -15,16 +15,15 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class MedicineImageServiceTest(@Autowired private val medicineRepository: MedicineRepository,
-                                        @Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                        @Autowired private val medicineImageStorage: MedicineImageStorage,
+                                        @Autowired private val medicineQueryService: MedicineQueryService,
                                         @Autowired private val testAccountInserter: TestAccountInserter,
                                         @Autowired private val testMedicineInserter: TestMedicineInserter) {
-    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val medicineImageService: MedicineImageService =
-            MedicineImageService(medicineRepository, medicineImageStorage, medicineQueryService)
+    private val medicineImageService: MedicineImageService = MedicineImageService(medicineRepository,
+                                                                                  medicineImageStorage,
+                                                                                  medicineQueryService)
 
     private lateinit var userSession: UserSession
 
@@ -34,9 +33,6 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     internal fun setUp() {
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         userSession = UserSessionFactory.create(requesterAccountId)
-        every {
-            medicineImageStorage.createURL()
-        } returns MedicineImageURL("endpoint", "/medicineimage/newMedicineImage")
     }
 
     @Test

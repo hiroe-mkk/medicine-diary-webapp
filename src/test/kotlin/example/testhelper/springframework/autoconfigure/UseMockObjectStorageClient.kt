@@ -16,10 +16,9 @@ import org.springframework.test.context.junit.jupiter.*
 @Import(UseMockObjectStorageClient.Configuration::class)
 annotation class UseMockObjectStorageClient {
     class Configuration {
-        private val mockObjectStorageClient: ObjectStorageClient = mockk(relaxed = true)
-
         @Bean
         fun objectStorageClient(): ObjectStorageClient {
+            val mockObjectStorageClient: ObjectStorageClient = mockk(relaxed = true)
             every { mockObjectStorageClient.getEndpoint() } returns "endpoint"
             return mockObjectStorageClient
         }

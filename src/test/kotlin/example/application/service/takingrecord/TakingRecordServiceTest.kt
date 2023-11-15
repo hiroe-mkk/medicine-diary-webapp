@@ -8,7 +8,6 @@ import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import example.domain.model.takingrecord.*
-import example.domain.model.takingrecord.TakingRecordQueryService
 import example.domain.shared.exception.*
 import example.domain.shared.type.*
 import example.testhelper.factory.*
@@ -21,17 +20,13 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class TakingRecordServiceTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
-                                       @Autowired private val medicineRepository: MedicineRepository,
-                                       @Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                       @Autowired private val medicineQueryService: MedicineQueryService,
+                                       @Autowired private val takingRecordQueryService: TakingRecordQueryService,
                                        @Autowired private val testAccountInserter: TestAccountInserter,
                                        @Autowired private val testMedicineInserter: TestMedicineInserter,
                                        @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val takingRecordQueryService: TakingRecordQueryService =
-            TakingRecordQueryService(takingRecordRepository)
     private val takingRecordService: TakingRecordService =
             TakingRecordService(takingRecordRepository, takingRecordQueryService, medicineQueryService)
 

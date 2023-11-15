@@ -12,13 +12,11 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
-internal class TakingRecordQueryServiceTest(@Autowired private val takingRecordRepository: TakingRecordRepository,
+@DomainLayerTest
+internal class TakingRecordQueryServiceTest(@Autowired private val takingRecordQueryService: TakingRecordQueryService,
                                             @Autowired private val testAccountInserter: TestAccountInserter,
                                             @Autowired private val testMedicineInserter: TestMedicineInserter,
                                             @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val takingRecordQueryService: TakingRecordQueryService = TakingRecordQueryService(takingRecordRepository)
-
     private lateinit var requesterAccountId: AccountId
     private lateinit var requesterMedicine: Medicine
 

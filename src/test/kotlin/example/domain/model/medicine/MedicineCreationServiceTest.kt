@@ -12,12 +12,10 @@ import org.junit.jupiter.params.provider.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
 
-@MyBatisRepositoryTest
-internal class MedicineCreationServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
+@DomainLayerTest
+internal class MedicineCreationServiceTest(@Autowired private val medicineCreationService: MedicineCreationService,
                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
-    private val medicineCreationService: MedicineCreationService = MedicineCreationService(sharedGroupRepository)
-
     private lateinit var requesterAccountId: AccountId
     private lateinit var user1AccountId: AccountId
 

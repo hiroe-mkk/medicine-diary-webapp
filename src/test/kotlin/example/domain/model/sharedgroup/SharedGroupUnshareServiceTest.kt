@@ -14,27 +14,15 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                              @Autowired private val medicineRepository: MedicineRepository,
                                              @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                             @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                              @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                              @Autowired private val testAccountInserter: TestAccountInserter,
                                              @Autowired private val testMedicineInserter: TestMedicineInserter,
                                              @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
-    private val sharedGroupQueryService: SharedGroupQueryService = SharedGroupQueryService(sharedGroupRepository)
-    private val medicineImageStorage: MedicineImageStorage = mockk(relaxed = true)
-    private val medicineQueryService: MedicineQueryService =
-            MedicineQueryService(medicineRepository, sharedGroupRepository)
-    private val medicineAndTakingRecordsDeletionService: MedicineAndTakingRecordsDeletionService =
-            MedicineAndTakingRecordsDeletionService(medicineRepository,
-                                                    medicineImageStorage,
-                                                    takingRecordRepository,
-                                                    medicineQueryService)
-    private val sharedGroupUnshareService: SharedGroupUnshareService = SharedGroupUnshareService(sharedGroupRepository,
-                                                                                                 sharedGroupQueryService,
-                                                                                                 medicineAndTakingRecordsDeletionService)
-
     private lateinit var requesterAccountId: AccountId
     private lateinit var user1AccountId: AccountId
 

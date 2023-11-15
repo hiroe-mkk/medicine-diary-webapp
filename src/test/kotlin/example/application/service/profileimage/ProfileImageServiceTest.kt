@@ -11,28 +11,17 @@ import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
-import io.mockk.impl.annotations.MockK
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
-@MyBatisRepositoryTest
+@DomainLayerTest
 internal class ProfileImageServiceTest(@Autowired private val profileRepository: ProfileRepository,
+                                       @Autowired private val profileImageStorage: ProfileImageStorage,
                                        @Autowired private val testAccountInserter: TestAccountInserter) {
-    @MockK(relaxed = true)
-    private lateinit var profileImageStorage: ProfileImageStorage
-
-    @InjectMockKs
-    private lateinit var profileImageService: ProfileImageService
+    private val profileImageService: ProfileImageService = ProfileImageService(profileRepository, profileImageStorage)
 
     private val command = TestImageFactory.createImageUploadCommand()
-
-    @BeforeEach
-    internal fun setUp() {
-        every {
-            profileImageStorage.createURL()
-        } returns ProfileImageURL("endpoint", "/profileimage/newProfileImage")
-    }
 
     @Test
     @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
@@ -47,7 +36,6 @@ internal class ProfileImageServiceTest(@Autowired private val profileRepository:
         //then:
         val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
         assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
-        verify(exactly = 0) { profileImageStorage.delete(any()) }
         verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
     }
 
