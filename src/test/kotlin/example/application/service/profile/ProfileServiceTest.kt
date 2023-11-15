@@ -73,8 +73,8 @@ internal class ProfileServiceTest(@Autowired private val profileRepository: Prof
             val target: () -> Unit = { profileService.changeUsername(command, userSession) }
 
             //then:
-            val duplicateUsernameException = assertThrows<DuplicateUsernameException>(target)
-            assertThat(duplicateUsernameException.username).isEqualTo(duplicateUsername)
+            val usernameChangeException = assertThrows<UsernameChangeException>(target)
+            assertThat(usernameChangeException.username).isEqualTo(duplicateUsername)
         }
     }
 }
