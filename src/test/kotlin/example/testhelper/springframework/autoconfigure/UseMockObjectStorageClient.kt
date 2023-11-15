@@ -13,8 +13,8 @@ import org.springframework.test.context.junit.jupiter.*
 /**
  * モックされた ObjectStorageClient の AutoConfiguration を有効にするアノテーション
  */
-@Import(EnableMockObjectStorageClient.Configuration::class)
-annotation class EnableMockObjectStorageClient {
+@Import(UseMockObjectStorageClient.Configuration::class)
+annotation class UseMockObjectStorageClient {
     class Configuration {
         private val mockObjectStorageClient: ObjectStorageClient = mockk(relaxed = true)
 
