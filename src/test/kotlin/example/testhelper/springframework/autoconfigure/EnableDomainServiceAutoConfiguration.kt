@@ -6,7 +6,7 @@ import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.medicineimage.*
 import example.infrastructure.storage.shared.objectstrage.*
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.*
 annotation class EnableDomainServiceAutoConfiguration {
     class Configuration(private val profileRepository: ProfileRepository,
                         private val medicineRepository: MedicineRepository,
-                        private val takingRecordRepository: TakingRecordRepository,
+                        private val medicationRecordRepository: MedicationRecordRepository,
                         private val sharedGroupRepository: SharedGroupRepository,
                         private val medicineImageStorage: MedicineImageStorage) {
         @Bean
@@ -35,7 +35,7 @@ annotation class EnableDomainServiceAutoConfiguration {
         fun sharedGroupUnshareService(): SharedGroupUnshareService {
             return SharedGroupUnshareService(sharedGroupRepository,
                                              sharedGroupQueryService(),
-                                             medicineAndTakingRecordsDeletionService())
+                                             medicineAndMedicationRecordsDeletionService())
         }
 
         @Bean
@@ -49,16 +49,16 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineAndTakingRecordsDeletionService(): MedicineDeletionService {
+        fun medicineAndMedicationRecordsDeletionService(): MedicineDeletionService {
             return MedicineDeletionService(medicineRepository,
                                            medicineImageStorage,
-                                           takingRecordRepository,
+                                           medicationRecordRepository,
                                            medicineQueryService())
         }
 
         @Bean
-        fun takingRecordQueryService(): TakingRecordQueryService {
-            return TakingRecordQueryService(takingRecordRepository)
+        fun medicationRecordQueryService(): MedicationRecordQueryService {
+            return MedicationRecordQueryService(medicationRecordRepository)
         }
     }
 }

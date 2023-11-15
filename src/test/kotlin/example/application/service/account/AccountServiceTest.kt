@@ -6,7 +6,7 @@ import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -20,18 +20,18 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
                                   @Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                   @Autowired private val medicineRepository: MedicineRepository,
-                                  @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                  @Autowired private val medicationRecordRepository: MedicationRecordRepository,
                                   @Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                   @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                   @Autowired private val medicineDeletionService: MedicineDeletionService,
                                   @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                   @Autowired private val testAccountInserter: TestAccountInserter,
                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                  @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
+                                  @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private val accountService: AccountService = AccountService(accountRepository,
                                                                 profileRepository,
                                                                 sharedGroupRepository,
-                                                                takingRecordRepository,
+                                                                medicationRecordRepository,
                                                                 sharedGroupQueryService,
                                                                 sharedGroupUnshareService,
                                                                 medicineDeletionService)
@@ -81,7 +81,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         testSharedGroupInserter.insert(members = setOf(testAccountInserter.insertAccountAndProfile().first.id),
                                        invitees = setOf(requesterAccountId))
         val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
-        val takingRecord = testTakingRecordInserter.insert(requesterAccountId, medicine.id)
+        val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
 
         //when:
@@ -98,7 +98,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         assertThat(foundInvitedSharedGroup).isEmpty()
         val foundMedicine = medicineRepository.findById(medicine.id)
         assertThat(foundMedicine).isNull()
-        val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
-        assertThat(foundTakingRecord).isNull()
+        val foundMedicationRecord = medicationRecordRepository.findById(medicationRecord.id)
+        assertThat(foundMedicationRecord).isNull()
     }
 }

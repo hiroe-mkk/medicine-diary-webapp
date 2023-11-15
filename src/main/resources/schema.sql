@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS effects (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 
-CREATE TABLE IF NOT EXISTS taking_records (
-  taking_record_id VARCHAR(36) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS medication_records (
+  medication_record_id VARCHAR(36) PRIMARY KEY,
   recorder VARCHAR(36),
   taken_medicine VARCHAR(36),
   quantity DOUBLE NOT NULL,

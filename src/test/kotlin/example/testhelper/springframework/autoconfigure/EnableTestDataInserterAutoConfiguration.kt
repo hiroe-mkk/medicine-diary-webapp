@@ -4,7 +4,7 @@ import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.testhelper.inserter.*
 import org.springframework.context.annotation.*
 import org.springframework.stereotype.*
@@ -17,7 +17,7 @@ annotation class EnableTestDataInserterAutoConfiguration {
     class Configuration(private val accountRepository: AccountRepository,
                         private val profileRepository: ProfileRepository,
                         private val medicineRepository: MedicineRepository,
-                        private val takingRecordRepository: TakingRecordRepository,
+                        private val medicationRecordRepository: MedicationRecordRepository,
                         private val sharedGroupRepository: SharedGroupRepository) {
         @Bean
         fun testAccountInserter(): TestAccountInserter = TestAccountInserter(accountRepository, profileRepository)
@@ -26,7 +26,9 @@ annotation class EnableTestDataInserterAutoConfiguration {
         fun testMedicineInserter(): TestMedicineInserter = TestMedicineInserter(medicineRepository)
 
         @Bean
-        fun testTakingRecordInserter(): TestTakingRecordInserter = TestTakingRecordInserter(takingRecordRepository)
+        fun testMedicationRecordInserter(): TestMedicationRecordInserter {
+            return TestMedicationRecordInserter(medicationRecordRepository)
+        }
 
         @Bean
         fun testSharedGroupInserter(): TestSharedGroupInserter = TestSharedGroupInserter(sharedGroupRepository)

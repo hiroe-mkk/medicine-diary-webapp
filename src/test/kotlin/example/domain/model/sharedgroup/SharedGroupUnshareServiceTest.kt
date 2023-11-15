@@ -5,7 +5,7 @@ import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.*
 @DomainLayerTest
 internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                              @Autowired private val medicineRepository: MedicineRepository,
-                                             @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                             @Autowired private val medicationRecordRepository: MedicationRecordRepository,
                                              @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                              @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                              @Autowired private val testAccountInserter: TestAccountInserter,
                                              @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                             @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
+                                             @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
     private lateinit var user1AccountId: AccountId
 
@@ -53,7 +53,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
         //given:
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
-        val takingRecord = testTakingRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
+        val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
         sharedGroupUnshareService.unshare(requesterAccountId)
@@ -63,7 +63,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
         assertThat(foundSharedGroup).isNull()
         val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)
         assertThat(foundMedicines).isEmpty()
-        val foundTakingRecords = takingRecordRepository.findById(takingRecord.id)
-        assertThat(foundTakingRecords).isNull()
+        val foundMedicationRecords = medicationRecordRepository.findById(medicationRecord.id)
+        assertThat(foundMedicationRecords).isNull()
     }
 }

@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import noProfileImage from '@main/images/no_profile_image.png';
-import TakingRecords from '@main/js/components/takingrecord/FilteredTakingRecordsByDate.vue';
+import MedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecordsByDate.vue';
 import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 
 createApp({
@@ -16,7 +16,7 @@ createApp({
     },
   },
   components: {
-    'taking-records': TakingRecords,
+    'medication-records': MedicationRecords,
     'confirmation-message': ConfirmationMessage,
   },
 }).mount('#mypage');

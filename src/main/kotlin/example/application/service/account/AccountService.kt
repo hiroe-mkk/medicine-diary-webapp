@@ -5,7 +5,7 @@ import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.*
 class AccountService(private val accountRepository: AccountRepository,
                      private val profileRepository: ProfileRepository,
                      private val sharedGroupRepository: SharedGroupRepository,
-                     private val takingRecordRepository: TakingRecordRepository,
+                     private val medicationRecordRepository: MedicationRecordRepository,
                      private val sharedGroupQueryService: SharedGroupQueryService,
                      private val sharedGroupUnshareService: SharedGroupUnshareService,
                      private val medicineDeletionService: MedicineDeletionService) {
@@ -40,7 +40,7 @@ class AccountService(private val accountRepository: AccountRepository,
      */
     fun deleteAccount(userSession: UserSession) {
         val account = accountRepository.findById(userSession.accountId) ?: return
-        takingRecordRepository.deleteByRecorder(account.id)
+        medicationRecordRepository.deleteByRecorder(account.id)
         medicineDeletionService.deleteAllOwnedMedicines(userSession.accountId)
         sharedGroupUnshareService.unshare(userSession.accountId)
         val invitedSharedGroups = sharedGroupQueryService.findInvitedSharedGroups(userSession.accountId)

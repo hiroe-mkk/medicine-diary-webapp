@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/medicationRecordForm.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="medicationRecordForm" layout:fragment="content">
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered">
+          <p class="icon-text is-size-4 is-flex is-justify-content-center">
+            <strong class="has-text-grey-dark" th:text="${title}"></strong>
+            <span class="icon has-text-grey-dark mx-2">
+              <i class="fa-solid fa-book-open"></i>
+            </span>
+          </p>
+        </div>
+
+        <form
+          method="post"
+          class="form"
+          th:action="@{__${executePath}__}"
+          th:object="${form}"
+          th:if="${form != null}"
+        >
+          <taken-medicine
+            th:attr="medicine-id=*{takenMedicine}, quantity=*{quantity}, medicine-id-errors=${#fields.errors('takenMedicine')}, quantity-errors=${#fields.errors('quantity')}"
+          ></taken-medicine>
+
+          <div class="field is-horizontal my-3">
+            <div class="field-label is-flex is-align-items-center">
+              <label class="label has-text-grey">
+                <span>時間</span>
+              </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control is-expanded">
+                  <input
+                    class="input is-info is-rounded"
+                    type="datetime-local"
+                    name="takenAt"
+                    th:value="*{takenAt}"
+                    th:errorclass="is-danger"
+                  />
+                  <span
+                    class="help is-danger"
+                    th:if="${#fields.hasErrors('takenAt')}"
+                    th:errors="*{takenAt}"
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal my-3">
+            <div class="field-label is-flex is-align-items-center">
+              <label class="label has-text-grey">経過</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <div class="notification has-background-white py-2 px-4">
+                    <div class="field my-3">
+                      <label class="label has-text-grey">症状</label>
+                      <div class="field-body">
+                        <div class="field">
+                          <div class="control has-icons-right">
+                            <input
+                              class="input is-info is-rounded"
+                              type="text"
+                              name="symptom"
+                              th:value="*{symptom}"
+                              th:errorclass="is-danger"
+                            />
+                            <span
+                              class="help is-danger"
+                              th:if="${#fields.hasErrors('symptom')}"
+                              th:errors="*{symptom}"
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field my-3">
+                      <div class="field-body">
+                        <div class="field">
+                          <label class="label has-text-grey">服用前</label>
+                          <div class="control mb-1">
+                            <div
+                              class="select is-rounded is-fullwidth"
+                              th:classappend="${#fields.hasErrors('beforeTaking')} ? is-danger : is-info"
+                            >
+                              <select name="beforeTaking">
+                                <option
+                                  th:each="conditionLevel:${conditionLevels}"
+                                  th:value="${conditionLevel.name}"
+                                  th:text="${conditionLevel.str}"
+                                  th:selected="(${conditionLevel} == *{beforeTaking})"
+                                ></option>
+                              </select>
+                            </div>
+                            <span
+                              class="help is-danger"
+                              th:if="${#fields.hasErrors('beforeTaking')}"
+                              th:errors="*{beforeTaking}"
+                            ></span>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label has-text-grey">服用後</label>
+                          <div class="control mb-1">
+                            <div
+                              class="select is-rounded is-fullwidth"
+                              th:classappend="${#fields.hasErrors('afterTaking')} ? is-danger : is-info"
+                            >
+                              <select name="afterTaking">
+                                <option value="">-----</option>
+                                <option
+                                  th:each="conditionLevel:${conditionLevels}"
+                                  th:value="${conditionLevel.name}"
+                                  th:text="${conditionLevel.str}"
+                                  th:selected="(${conditionLevel} == *{afterTaking})"
+                                ></option>
+                              </select>
+                            </div>
+                            <span
+                              class="help is-danger"
+                              th:if="${#fields.hasErrors('afterTaking')}"
+                              th:errors="*{afterTaking}"
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal my-3">
+            <div class="field-label is-flex is-align-items-center">
+              <label class="label has-text-grey">
+                <span>ノート</span>
+              </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control is-expanded">
+                  <textarea
+                    class="textarea is-info has-fixed-size"
+                    rows="5"
+                    name="note"
+                    placeholder="500文字以内で入力してください。"
+                    th:errorclass="is-danger"
+                  >
+[[*{note}]]</textarea
+                  >
+                  <span
+                    class="help is-danger"
+                    th:if="${#fields.hasErrors('note')}"
+                    th:errors="*{note}"
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-centered my-3">
+            <p class="control">
+              <button class="button is-small is-rounded is-link">完了</button>
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                class="button is-small is-rounded is-outlined is-danger"
+                @click="goBack()"
+              >
+                キャンセル
+              </button>
+            </p>
+          </div>
+        </form>
+
+        <div class="content has-text-centered" th:if="${form == null}">
+          <p class="has-text-weight-bold has-text-danger-dark">
+            お薬を登録してください。
+          </p>
+
+          <a class="px-0 py-4" th:href="@{/medicines/register}">
+            <p class="button is-link is-rounded is-outlined">
+              <span class="icon fas fa-lg is-flex is-align-items-center mr-0">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+              <strong> お薬を登録する </strong>
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -2,7 +2,7 @@ package example.presentation.controller.api.medicine
 
 import example.application.service.medicine.*
 import example.domain.model.medicine.*
-import example.presentation.controller.api.takingrecord.*
+import example.presentation.controller.api.medicationrecord.*
 import example.presentation.shared.usersession.*
 import org.springframework.data.domain.*
 import org.springframework.data.web.*

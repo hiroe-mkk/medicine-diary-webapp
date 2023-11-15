@@ -1,12 +1,12 @@
 package example.testhelper.springframework.autoconfigure
 
 import example.application.query.sharedgroup.*
-import example.application.query.takingrecord.*
+import example.application.query.medicationrecord.*
 import example.application.query.user.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import example.infrastructure.query.sharedgroup.*
-import example.infrastructure.query.takingrecord.*
+import example.infrastructure.query.medicationrecord.*
 import example.infrastructure.query.user.*
 import org.springframework.context.annotation.*
 
@@ -16,15 +16,15 @@ import org.springframework.context.annotation.*
 @MyBatisRepositoryTest
 @Import(MyBatisQueryServiceTest.Configuration::class)
 annotation class MyBatisQueryServiceTest {
-    class Configuration(private val JSONTakingRecordMapper: JSONTakingRecordMapper,
+    class Configuration(private val JSONMedicationRecordMapper: JSONMedicationRecordMapper,
                         private val JSONSharedGroupMapper: JSONSharedGroupMapper,
                         private val JSONUserMapper: JSONUserMapper,
                         private val medicineRepository: MedicineRepository,
                         private val sharedGroupRepository: SharedGroupRepository) {
         @Bean
-        fun takingRecordQueryService(): JSONTakingRecordQueryService {
+        fun medicationRecordQueryService(): JSONMedicationRecordQueryService {
             val medicineQueryService = MedicineQueryService(medicineRepository, sharedGroupRepository)
-            return MyBatisJSONTakingRecordQueryService(JSONTakingRecordMapper, medicineQueryService)
+            return MyBatisJSONMedicationRecordQueryService(JSONMedicationRecordMapper, medicineQueryService)
         }
 
         @Bean

@@ -5,7 +5,7 @@ import example.domain.model.account.profile.profileimage.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.infrastructure.storage.medicineimage.*
 import example.infrastructure.storage.profileimage.*
 import example.infrastructure.storage.shared.objectstrage.*

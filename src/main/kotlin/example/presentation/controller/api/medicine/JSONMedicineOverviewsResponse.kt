@@ -3,7 +3,7 @@ package example.presentation.controller.api.medicine
 import com.fasterxml.jackson.annotation.*
 import example.application.service.medicine.*
 import example.domain.model.medicine.*
-import example.presentation.controller.api.takingrecord.*
+import example.presentation.controller.api.medicationrecord.*
 
 class JSONMedicineOverviewsResponse(val medicines: List<JSONMedicineOverviews>) {
     companion object {

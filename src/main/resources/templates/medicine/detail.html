@@ -79,7 +79,7 @@
                       >
                         <span th:text=" ${timing.str}"></span>
                         <span
-                          th:if="${__*{timingOptions.size}__ != __${status.count}__}"
+                          th:if="${__${status.size}__ != __${status.count}__}"
                         >
                           /
                         </span>
@@ -110,9 +110,9 @@
         </div>
       </div>
 
-      <taking-records
+      <medication-records
         th:attr="medicine-id=*{medicineId}, ':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
-      ></taking-records>
+      ></medication-records>
 
       <div th:if="${isAvailableMedicine}" th:remove="tag">
         <div class="modal" :class="{ 'is-active': isEditModalActive }">
@@ -165,7 +165,7 @@
       <div class="bottom-right-button">
         <a
           class="button is-rounded is-link"
-          th:href="@{/takingrecords/add?medicine={medicine}(medicine=*{medicineId})}"
+          th:href="@{/medication-records/add?medicine={medicine}(medicine=*{medicineId})}"
         >
           <p
             class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"

@@ -5,7 +5,7 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.domain.shared.type.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
 internal class MedicineDeletionServiceTest(@Autowired private val medicineRepository: MedicineRepository,
-                                           @Autowired private val takingRecordRepository: TakingRecordRepository,
+                                           @Autowired private val medicationRecordRepository: MedicationRecordRepository,
                                            @Autowired private val medicineDeletionService: MedicineDeletionService,
                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                           @Autowired private val testTakingRecordInserter: TestTakingRecordInserter) {
+                                           @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
 
     @BeforeEach
@@ -37,7 +37,7 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage")
         val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId),
                                                    medicineImageURL = medicineImageURL)
-        val takingRecord = testTakingRecordInserter.insert(requesterAccountId, medicine.id)
+        val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
         //when:
         medicineDeletionService.delete(medicine.id, requesterAccountId)
@@ -45,8 +45,8 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)
         assertThat(foundMedicine).isNull()
-        val foundTakingRecord = takingRecordRepository.findById(takingRecord.id)
-        assertThat(foundTakingRecord).isNull()
+        val foundMedicationRecord = medicationRecordRepository.findById(medicationRecord.id)
+        assertThat(foundMedicationRecord).isNull()
     }
 
     @Test
@@ -54,9 +54,9 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
     fun deleteAllSharedGroupMedicines() {
         //given
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
-        val takingRecordIds = List(3) {
+        val medicationRecordIds = List(3) {
             val medicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
-            testTakingRecordInserter.insert(requesterAccountId, medicine.id).id
+            testMedicationRecordInserter.insert(requesterAccountId, medicine.id).id
         }
 
         //when:
@@ -65,17 +65,17 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         //then:
         val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)
         assertThat(foundMedicines).isEmpty()
-        val foundTakingRecords = takingRecordIds.mapNotNull { takingRecordRepository.findById(it) }
-        assertThat(foundTakingRecords).isEmpty()
+        val foundMedicationRecords = medicationRecordIds.mapNotNull { medicationRecordRepository.findById(it) }
+        assertThat(foundMedicationRecords).isEmpty()
     }
 
     @Test
     @DisplayName("所有する薬をすべて削除する")
     fun deleteAllOwnedMedicines() {
         //given
-        val takingRecordIds = List(3) {
+        val medicationRecordIds = List(3) {
             val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
-            testTakingRecordInserter.insert(requesterAccountId, medicine.id).id
+            testMedicationRecordInserter.insert(requesterAccountId, medicine.id).id
         }
 
         //when:
@@ -84,7 +84,7 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         //then:
         val foundMedicines = medicineRepository.findByOwner(requesterAccountId)
         assertThat(foundMedicines).isEmpty()
-        val foundTakingRecords = takingRecordIds.mapNotNull { takingRecordRepository.findById(it) }
-        assertThat(foundTakingRecords).isEmpty()
+        val foundMedicationRecords = medicationRecordIds.mapNotNull { medicationRecordRepository.findById(it) }
+        assertThat(foundMedicationRecords).isEmpty()
     }
 }

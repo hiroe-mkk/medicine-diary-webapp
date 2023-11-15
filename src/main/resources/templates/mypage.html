@@ -48,9 +48,9 @@
         </p>
       </div>
 
-      <taking-records
+      <medication-records
         th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
-      ></taking-records>
+      ></medication-records>
 
       <div class="modal" :class="{ 'is-active': isMenuModalActive }">
         <div class="modal-background" @click="isMenuModalActive = false"></div>
@@ -92,7 +92,10 @@
       </div>
 
       <div class="bottom-right-button">
-        <a class="button is-rounded is-link" th:href="@{/takingrecords/add}">
+        <a
+          class="button is-rounded is-link"
+          th:href="@{/medication-records/add}"
+        >
           <p
             class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"
           >
@@ -104,7 +107,7 @@
       <confirmation-message
         ref="accountDeletionConfirmationMessage"
         message="アカウントを削除しますか？"
-        details="アカウントを削除すると、全てのデータが削除されます。 
+        details="アカウントを削除すると、全てのデータが削除されます。
                   削除後、データを復元することはできません。"
         button-label="削除する"
         path="/accounts/delete"

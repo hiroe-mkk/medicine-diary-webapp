@@ -9,7 +9,7 @@ import example.domain.model.account.profile.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.takingrecord.*
+import example.domain.model.medicationrecord.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

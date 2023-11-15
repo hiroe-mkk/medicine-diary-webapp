@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import noMedicineImage from '@main/images/no_medicine_image.png';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
-import TakingRecords from '@main/js/components/takingrecord/FilteredTakingRecordsByMedicine.vue';
+import MedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecordsByMedicine.vue';
 import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 
 createApp({
@@ -25,7 +25,7 @@ createApp({
   },
   components: {
     'changeable-image': ChangeableImage,
-    'taking-records': TakingRecords,
+    'medication-records': MedicationRecords,
     'confirmation-message': ConfirmationMessage,
   },
 }).mount('#medicineDetail');

@@ -56,7 +56,7 @@
         <div class="navbar-item py-0" v-if="props.isAuthenticated">
           <a
             class="has-text-info-light is-hidden-touch mr-2"
-            href="/takingrecords"
+            href="/medication-records"
           >
             <span
               class="icon fas fa-2x is-flex is-align-items-center is-medium"
@@ -66,7 +66,7 @@
           </a>
           <a
             class="icon-text has-text-link-dark is-hidden-desktop"
-            href="/takingrecords"
+            href="/medication-records"
           >
             <span class="icon fas fa-lg is-flex is-align-items-center">
               <i class="fa-solid fa-book-open"></i>
