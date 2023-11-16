@@ -50,60 +50,94 @@
               class="column p-3 is-flex is-flex-direction-column is-justify-content-space-between"
             >
               <div class="m-2">
-                <p
-                  class="mb-1 has-text-weight-bold has-text-link has-text-centered"
-                >
-                  用法・用量
-                </p>
-                <div
-                  th:object="${medicine.dosageAndAdministration}"
-                  th:remove="tag"
-                >
-                  <p class="mb-2 is-flex is-justify-content-space-between">
-                    <strong>1回あたりの服用量</strong>
-                    <span th:text="*{dose} + *{doseUnit}"></span>
-                  </p>
-                  <p class="mb-2 is-flex is-justify-content-space-between">
-                    <strong>1日あたりの服用回数</strong>
-                    <span th:text="*{timesPerDay} + '回'"></span>
-                  </p>
+                <div class="block">
                   <p
-                    class="mb-2 is-flex is-justify-content-space-between"
-                    th:if="*{!timingOptions.isEmpty()}"
+                    class="has-text-weight-bold has-text-link has-text-centered mb-3"
                   >
-                    <strong class="mb-2"> 服用するタイミング </strong>
-                    <span>
-                      <span
-                        th:each="timing, status:*{timingOptions}"
-                        th:remove="tag"
-                      >
-                        <span th:text=" ${timing.str}"></span>
-                        <span
-                          th:if="${__${status.size}__ != __${status.count}__}"
-                        >
-                          /
+                    用法・用量
+                  </p>
+                  <div
+                    th:object="${medicine.dosageAndAdministration}"
+                    th:remove="tag"
+                  >
+                    <p class="is-flex is-justify-content-space-between mb-2">
+                      <span class="has-text-weight-semibold">
+                        1回あたりの服用量
+                      </span>
+                      <span>
+                        <strong class="is-size-5">[[*{dose}]]</strong>
+                        <span class="has-text-weight-semibold">
+                          [[*{doseUnit}]]
                         </span>
                       </span>
-                    </span>
+                    </p>
+                    <p class="is-flex is-justify-content-space-between mb-2">
+                      <span class="has-text-weight-semibold">
+                        1日あたりの服用回数
+                      </span>
+                      <span>
+                        <strong class="is-size-5">[[*{timesPerDay}]]</strong>
+                        <span class="has-text-weight-semibold">回</span>
+                      </span>
+                    </p>
+                    <p
+                      class="is-flex is-justify-content-space-between mb-3"
+                      th:if="*{!timingOptions.isEmpty()}"
+                    >
+                      <span class="has-text-weight-semibold">
+                        服用するタイミング
+                      </span>
+                      <span>
+                        <span
+                          th:each="timing, status:*{timingOptions}"
+                          th:remove="tag"
+                        >
+                          <span
+                            class="has-text-weight-semibold"
+                            th:text=" ${timing.str}"
+                          ></span>
+                          <span
+                            class="has-text-weight-semibold"
+                            th:if="${__${status.size}__ != __${status.count}__}"
+                          >
+                            /
+                          </span>
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                  <p class="tags are-medium has-text-right m-0">
+                    <span
+                      class="tag mb-0 is-warning is-rounded has-text-weight-bold"
+                      th:each="effect:*{effects.values}"
+                      th:text="${effect}"
+                    ></span>
                   </p>
                 </div>
-                <div th:if="*{!precautions.isBlank()}" th:remove="tag">
+                <div class="block" th:if="*{!precautions.isBlank()}">
                   <p
-                    class="mb-1 has-text-weight-bold has-text-danger-dark has-text-centered"
+                    class="has-text-weight-bold has-text-danger-dark has-text-centered mb-3"
                   >
                     注意事項
                   </p>
                   <div th:each="line:*{precautions.toLines()}" th:remove="tag">
-                    <p class="mb-1" th:text="${line}"></p>
+                    <p
+                      class="has-text-weight-semibold mb-1"
+                      th:text="${line}"
+                    ></p>
                   </div>
                 </div>
-              </div>
-              <div class="tags has-text-right m-0">
-                <span
-                  class="tag mb-0 is-warning is-rounded has-text-weight-bold"
-                  th:each="effect:*{effects.values}"
-                  th:text="${effect}"
-                ></span>
+                <inventory
+                  ref="inventory"
+                  th:attr="medicine-id=*{medicineId}, dose-unit=*{dosageAndAdministration.doseUnit}, ':remaining-quantity'=*{inventory.remainingQuantity}, ':quantity-per-package'=*{inventory.quantityPerPackage}, started-on=*{inventory.startedOn}, expiration-on=*{inventory.expirationOn}, ':unused-package'=*{inventory.unusedPackage}, csrf=${_csrf.token}"
+                  th:if="*{inventory != null}"
+                ></inventory>
+                <inventory
+                  ref="inventory"
+                  th:attr="medicine-id=*{medicineId}, dose-unit=*{dosageAndAdministration.doseUnit}, csrf=${_csrf.token}"
+                  th:if="*{inventory ==null}"
+                >
+                </inventory>
               </div>
             </div>
           </div>
@@ -134,6 +168,13 @@
                 @click="activateMedicineImageChangeModal()"
               >
                 <strong class="mx-6">画像を変更する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateInventoryAdjustmentModal()"
+              >
+                <strong class="mx-6">在庫を修正する</strong>
               </button>
               <button
                 type="button"

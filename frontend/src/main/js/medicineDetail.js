@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import noMedicineImage from '@main/images/no_medicine_image.png';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
+import Inventory from '@main/js/components/medicine/Inventory.vue';
 import MedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecordsByMedicine.vue';
 import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 
@@ -25,6 +26,7 @@ createApp({
   },
   components: {
     'changeable-image': ChangeableImage,
+    inventory: Inventory,
     'medication-records': MedicationRecords,
     'confirmation-message': ConfirmationMessage,
   },
