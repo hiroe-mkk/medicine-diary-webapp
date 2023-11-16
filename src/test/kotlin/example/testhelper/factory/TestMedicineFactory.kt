@@ -20,7 +20,7 @@ object TestMedicineFactory {
                        precautions: Note = Note("服用間隔は4時間以上開けること。"),
                        medicineImageURL: MedicineImageURL? = null,
                        isPublic: Boolean = true,
-                       inventory: Inventory? = null,
+                       inventory: Inventory? = Inventory(5.0, 12.0, null, null, 2),
                        registeredAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): Medicine {
         return Medicine(medicineId,
                         owner,

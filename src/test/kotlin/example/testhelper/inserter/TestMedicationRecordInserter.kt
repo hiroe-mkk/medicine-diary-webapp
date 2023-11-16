@@ -1,8 +1,8 @@
 package example.testhelper.inserter
 
 import example.domain.model.account.*
-import example.domain.model.medicine.*
 import example.domain.model.medicationrecord.*
+import example.domain.model.medicine.*
 import example.domain.shared.type.*
 import org.springframework.boot.test.context.*
 import java.time.*
@@ -21,13 +21,13 @@ class TestMedicationRecordInserter(private val medicationRecordRepository: Medic
                followUp: FollowUp = FollowUp("頭痛", ConditionLevel.A_LITTLE_BAD, null),
                note: Note = Note(""),
                takenAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): MedicationRecord {
-        val medicationRecord = MedicationRecord.reconstruct(medicationRecordId,
-                                                            accountId,
-                                                            takenMedicine,
-                                                            dose,
-                                                            followUp,
-                                                            note,
-                                                            takenAt)
+        val medicationRecord = MedicationRecord(medicationRecordId,
+                                                accountId,
+                                                takenMedicine,
+                                                dose,
+                                                followUp,
+                                                note,
+                                                takenAt)
         medicationRecordRepository.save(medicationRecord)
         return medicationRecord
     }

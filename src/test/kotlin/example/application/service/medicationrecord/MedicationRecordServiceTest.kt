@@ -5,9 +5,9 @@ import example.application.query.medicationrecord.*
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.medicationrecord.*
 import example.domain.shared.exception.*
 import example.domain.shared.type.*
 import example.testhelper.factory.*
@@ -22,13 +22,16 @@ import java.time.*
 
 @DomainLayerTest
 internal class MedicationRecordServiceTest(@Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                           @Autowired private val medicineRepository: MedicineRepository,
                                            @Autowired private val medicineQueryService: MedicineQueryService,
                                            @Autowired private val medicationRecordQueryService: MedicationRecordQueryService,
                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
                                            @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
-    private val medicationRecordService: MedicationRecordService =
-            MedicationRecordService(medicationRecordRepository, medicationRecordQueryService, medicineQueryService)
+    private val medicationRecordService: MedicationRecordService = MedicationRecordService(medicationRecordRepository,
+                                                                                           medicineRepository,
+                                                                                           medicationRecordQueryService,
+                                                                                           medicineQueryService)
 
     private lateinit var userSession: UserSession
     private lateinit var requesterMedicine: Medicine
@@ -37,7 +40,8 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
     internal fun setUp() {
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         userSession = UserSessionFactory.create(requesterAccountId)
-        requesterMedicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
+        requesterMedicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId),
+                                                        inventory = Inventory(5.0, 12.0, null, null, 2))
     }
 
     @Nested
@@ -47,21 +51,25 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
         fun addMedicationRecord() {
             //given:
             val command =
-                    TestMedicationRecordFactory.createCompletedAdditionCommand(takenMedicine = requesterMedicine.id.value)
+                    TestMedicationRecordFactory.createCompletedAdditionCommand(takenMedicine = requesterMedicine.id.value,
+                                                                               quantity = 1.0)
 
             //when:
             val newMedicationRecordId = medicationRecordService.addMedicationRecord(command, userSession)
 
             //then:
             val foundMedicationRecord = medicationRecordRepository.findById(newMedicationRecordId)
-            val expected = MedicationRecord.reconstruct(newMedicationRecordId,
-                                                        userSession.accountId,
-                                                        requesterMedicine.id,
-                                                        command.validatedDose,
-                                                        command.validFollowUp,
-                                                        command.validatedNote,
-                                                        command.validatedTakenAt)
+            val expected = MedicationRecord(newMedicationRecordId,
+                                            userSession.accountId,
+                                            requesterMedicine.id,
+                                            command.validatedDose,
+                                            command.validFollowUp,
+                                            command.validatedNote,
+                                            command.validatedTakenAt)
             assertThat(foundMedicationRecord).usingRecursiveComparison().isEqualTo(expected)
+            val foundMedicine = medicineRepository.findById(requesterMedicine.id)
+            val expectedInventory = Inventory(4.0, 12.0, null, null, 2)
+            assertThat(foundMedicine?.inventory).isEqualTo(expectedInventory)
         }
 
         @Test
@@ -101,14 +109,13 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
 
             //then:
             val foundMedicationRecord = medicationRecordRepository.findById(medicationRecord.id)
-            val expected = MedicationRecord.reconstruct(
-                    medicationRecord.id,
-                    userSession.accountId,
-                    command.validatedTakenMedicine,
-                    command.validatedDose,
-                    command.validFollowUp,
-                    command.validatedNote,
-                    command.validatedTakenAt)
+            val expected = MedicationRecord(medicationRecord.id,
+                                            userSession.accountId,
+                                            command.validatedTakenMedicine,
+                                            command.validatedDose,
+                                            command.validFollowUp,
+                                            command.validatedNote,
+                                            command.validatedTakenAt)
             assertThat(foundMedicationRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 

@@ -8,13 +8,13 @@ import java.time.*
 /**
  * 服用記録
  */
-class MedicationRecord private constructor(val id: MedicationRecordId,
-                                           val recorder: AccountId,
-                                           takenMedicine: MedicineId,
-                                           dose: Dose,
-                                           followUp: FollowUp,
-                                           note: Note,
-                                           takenAt: LocalDateTime) {
+class MedicationRecord(val id: MedicationRecordId,
+                       val recorder: AccountId,
+                       takenMedicine: MedicineId,
+                       dose: Dose,
+                       followUp: FollowUp,
+                       note: Note,
+                       takenAt: LocalDateTime) {
     var takenMedicine: MedicineId = takenMedicine
         private set
     var dose: Dose = dose
@@ -25,28 +25,6 @@ class MedicationRecord private constructor(val id: MedicationRecordId,
         private set
     var takenAt: LocalDateTime = takenAt
         private set
-
-    companion object {
-        fun create(medicationRecordId: MedicationRecordId,
-                   recorder: AccountId,
-                   takenMedicine: Medicine,
-                   dose: Dose,
-                   followUp: FollowUp,
-                   note: Note,
-                   takenAt: LocalDateTime): MedicationRecord {
-            return MedicationRecord(medicationRecordId, recorder, takenMedicine.id, dose, followUp, note, takenAt)
-        }
-
-        fun reconstruct(medicationRecordId: MedicationRecordId,
-                        recorder: AccountId,
-                        takenMedicine: MedicineId,
-                        dose: Dose,
-                        followUp: FollowUp,
-                        note: Note,
-                        takenAt: LocalDateTime): MedicationRecord {
-            return MedicationRecord(medicationRecordId, recorder, takenMedicine, dose, followUp, note, takenAt)
-        }
-    }
 
     fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
 

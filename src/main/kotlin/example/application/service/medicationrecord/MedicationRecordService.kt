@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class MedicationRecordService(private val medicationRecordRepository: MedicationRecordRepository,
+                              private val medicineRepository: MedicineRepository,
                               private val medicationRecordQueryService: MedicationRecordQueryService,
                               private val medicineQueryService: MedicineQueryService) {
     /**
@@ -33,13 +34,13 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
      */
     fun addMedicationRecord(command: MedicationRecordEditCommand, userSession: UserSession): MedicationRecordId {
         val medicine = findAvailableMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
-        val medicationRecord = MedicationRecord.create(medicationRecordRepository.createMedicationRecordId(),
-                                                       userSession.accountId,
-                                                       medicine,
-                                                       command.validatedDose,
-                                                       command.validFollowUp,
-                                                       command.validatedNote,
-                                                       command.validatedTakenAt)
+        val medicationRecord = medicine.taken(medicationRecordRepository.createMedicationRecordId(),
+                                              userSession.accountId,
+                                              command.validatedDose,
+                                              command.validFollowUp,
+                                              command.validatedNote,
+                                              command.validatedTakenAt)
+        medicineRepository.save(medicine)
         medicationRecordRepository.save(medicationRecord)
         return medicationRecord.id
     }

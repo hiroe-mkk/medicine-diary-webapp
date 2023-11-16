@@ -1,6 +1,7 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
@@ -32,6 +33,7 @@ class Medicine(val id: MedicineId,
     var isPublic: Boolean = isPublic
         private set
     var inventory: Inventory? = inventory
+        private set
 
     fun isOwnedBy(accountId: AccountId): Boolean = owner.accountId == accountId
 
@@ -59,5 +61,15 @@ class Medicine(val id: MedicineId,
 
     fun stopInventoryManagement() {
         this.inventory = null
+    }
+
+    fun taken(medicationRecordId: MedicationRecordId,
+              recorder: AccountId,
+              dose: Dose,
+              followUp: FollowUp,
+              note: Note,
+              takenAt: LocalDateTime): MedicationRecord {
+        this.inventory = this.inventory?.decrease(dose)
+        return MedicationRecord(medicationRecordId, recorder, id, dose, followUp, note, takenAt)
     }
 }
