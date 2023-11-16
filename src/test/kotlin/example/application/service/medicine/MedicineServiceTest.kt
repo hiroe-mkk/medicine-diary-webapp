@@ -211,4 +211,39 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
+
+    @Nested
+    inner class AdjustInventoryTest {
+        private val command = TestMedicineFactory.createCompletedInventoryAdjustmentCommand()
+
+        @Test
+        @DisplayName("在庫を修正する")
+        fun adjustInventory() {
+            //given:
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
+
+            //when:
+            medicineService.adjustInventory(medicine.id, command, userSession)
+
+            //then:
+            val foundMedicine = medicineRepository.findById(medicine.id)
+            assertThat(foundMedicine?.inventory).isEqualTo(command.validatedInventory)
+        }
+
+        @Test
+        @DisplayName("服用可能な薬が見つからなかった場合、在庫の修正に失敗する")
+        fun availableMedicineNotFound_AdjustingInventoryFails() {
+            //given:
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
+
+            //when:
+            val target: () -> Unit = {
+                medicineService.adjustInventory(medicine.id, command, userSession)
+            }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
+        }
+    }
 }

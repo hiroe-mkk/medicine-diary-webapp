@@ -52,4 +52,8 @@ class Medicine(val id: MedicineId,
     fun changeMedicineImage(medicineImageURL: MedicineImageURL) {
         this.medicineImageURL = medicineImageURL
     }
+
+    fun adjustInventory(inventory: Inventory) {
+        this.inventory = inventory
+    }
 }
