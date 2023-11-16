@@ -22,7 +22,7 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                    @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/sharedgroup/share"
+        private const val PATH = "/shared-group/share"
     }
 
     private lateinit var user1AccountId: AccountId

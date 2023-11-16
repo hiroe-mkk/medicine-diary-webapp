@@ -22,7 +22,7 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
                                                               @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                               @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/sharedgroup/reject"
+        private const val PATH = "/shared-group/reject"
     }
 
     private lateinit var user1AccountId: AccountId

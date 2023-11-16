@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
 @Controller
-@RequestMapping("/sharedgroup/share")
+@RequestMapping("/shared-group/share")
 class ShareController(private val sharedGroupService: SharedGroupService,
                       private val userSessionProvider: UserSessionProvider) {
     /**

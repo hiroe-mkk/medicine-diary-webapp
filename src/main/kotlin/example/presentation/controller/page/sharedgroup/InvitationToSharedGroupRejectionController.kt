@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
 @Controller
-@RequestMapping("/sharedgroup/reject")
+@RequestMapping("/shared-group/reject")
 class InvitationToSharedGroupRejectionController(private val sharedGroupService: SharedGroupService,
                                                  private val userSessionProvider: UserSessionProvider) {
     /**

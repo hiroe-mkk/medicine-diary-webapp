@@ -22,7 +22,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
                                                         @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                         @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/sharedgroup/participate"
+        private const val PATH = "/shared-group/participate"
     }
 
     private lateinit var user1AccountId: AccountId

@@ -24,7 +24,7 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
                                                                  @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                                  @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/sharedgroup/cancel"
+        private const val PATH = "/shared-group/cancel"
     }
 
     private lateinit var user1AccountId: AccountId

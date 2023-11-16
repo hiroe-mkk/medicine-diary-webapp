@@ -48,7 +48,7 @@
                   <p class="control">
                     <button
                       class="button is-small is-rounded is-outlined is-link"
-                      formaction="/sharedgroup/participate"
+                      formaction="/shared-group/participate"
                     >
                       参加する
                     </button>
@@ -56,7 +56,7 @@
                   <p class="control">
                     <button
                       class="button is-small is-rounded is-outlined is-danger"
-                      formaction="/sharedgroup/reject"
+                      formaction="/shared-group/reject"
                     >
                       拒否する
                     </button>
@@ -101,7 +101,7 @@
             ref="unshareConfirmationMessage"
             message="共有を解除しますか？"
             button-label="解除する"
-            path="/sharedgroup/unshare"
+            path="/shared-group/unshare"
             th:attr="csrf=${_csrf.token}"
           >
           </confirmation-message>

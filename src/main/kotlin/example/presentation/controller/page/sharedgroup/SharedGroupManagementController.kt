@@ -8,7 +8,7 @@ import org.springframework.ui.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/sharedgroup/management")
+@RequestMapping("/shared-group/management")
 @SessionAttributes(types = [LastRequestedPagePath::class])
 class SharedGroupManagementController(private val JSONSharedGroupQueryService: JSONSharedGroupQueryService,
                                       private val userSessionProvider: UserSessionProvider) {

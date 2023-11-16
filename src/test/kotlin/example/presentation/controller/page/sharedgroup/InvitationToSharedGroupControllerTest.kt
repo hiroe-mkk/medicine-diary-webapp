@@ -22,7 +22,7 @@ internal class InvitationToSharedGroupControllerTest(@Autowired private val mock
                                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                      @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/sharedgroup/invite"
+        private const val PATH = "/shared-group/invite"
     }
 
     private lateinit var user1AccountId: AccountId

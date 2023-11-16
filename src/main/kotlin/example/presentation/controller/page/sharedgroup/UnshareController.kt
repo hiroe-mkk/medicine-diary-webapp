@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
 @Controller
-@RequestMapping("/sharedgroup/unshare")
+@RequestMapping("/shared-group/unshare")
 class UnshareController(private val sharedGroupService: SharedGroupService,
                         private val userSessionProvider: UserSessionProvider) {
     /**

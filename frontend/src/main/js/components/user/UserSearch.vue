@@ -74,8 +74,8 @@
     :button-label="props.sharedGroupId === undefined ? '共有する' : '招待する'"
     :path="
       props.sharedGroupId === undefined
-        ? '/sharedgroup/share'
-        : '/sharedgroup/invite'
+        ? '/shared-group/share'
+        : '/shared-group/invite'
     "
     :csrf="props.csrf"
   >

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
 @Controller
-@RequestMapping("/sharedgroup/invite")
+@RequestMapping("/shared-group/invite")
 class InvitationToSharedGroupController(private val sharedGroupService: SharedGroupService,
                                         private val userSessionProvider: UserSessionProvider) {
     /**
