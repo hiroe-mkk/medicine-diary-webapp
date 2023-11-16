@@ -15,6 +15,7 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
     /**
      * 追加用の服用記録編集コマンドを取得する
      */
+    @Transactional(readOnly = true)
     fun getAdditionMedicationRecordEditCommand(medicineId: MedicineId?,
                                                userSession: UserSession): MedicationRecordEditCommand? {
         val availableMedicineIds = medicineQueryService.findAllAvailableMedicines(userSession.accountId).map { it.id }
@@ -46,6 +47,7 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
     /**
      * 修正用の服用記録編集コマンドを取得する
      */
+    @Transactional(readOnly = true)
     fun getModificationEditCommand(medicationRecordId: MedicationRecordId,
                                    userSession: UserSession): MedicationRecordEditCommand {
         val medicationRecord = findOwnedMedicationRecordOrElseThrowException(medicationRecordId, userSession)

@@ -64,6 +64,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     /**
      * 登録用の薬基本情報編集コマンドを取得する
      */
+    @Transactional(readOnly = true)
     fun getRegistrationMedicineBasicInfoEditCommand(userSession: UserSession): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand.initialize()
     }
@@ -90,6 +91,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     /**
      * 更新用の薬基本情報編集コマンドを取得する
      */
+    @Transactional(readOnly = true)
     fun getUpdateMedicineBasicInfoEditCommand(medicineId: MedicineId,
                                               userSession: UserSession): MedicineBasicInfoEditCommand {
         val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)

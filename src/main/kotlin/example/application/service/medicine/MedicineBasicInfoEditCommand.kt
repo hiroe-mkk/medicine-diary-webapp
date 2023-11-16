@@ -13,9 +13,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "※�
                                         @field:Size(max = 30, message = "※{max}文字以内で入力してください。")
                                         val medicineName: String,
                                         @field:NotNull(message = "※1回あたりの服用量を入力してください。")
-                                        @field:Digits(integer = 5, fraction = 3,
-                                                      message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
-                                        @field:DecimalMin(value = "0.001", message = "※{value}以上の数値を入力してください。")
+                                        @field:MedicineQuantity
                                         val quantity: Double?,
                                         @field:NotWhitespaceOnly(message = "※お薬の単位を入力してください。")
                                         @field:Size(max = 10, message = "※{max}文字以内で入力してください。")

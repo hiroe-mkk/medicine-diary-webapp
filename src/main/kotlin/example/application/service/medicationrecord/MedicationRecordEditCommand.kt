@@ -15,9 +15,7 @@ import java.time.temporal.*
 data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "※お薬を選択してください。")
                                        val takenMedicine: String,
                                        @field:NotNull(message = "※服用した量を入力してください。")
-                                       @field:Digits(integer = 5, fraction = 3,
-                                                     message = "※整数{integer}桁、小数点以下{fraction}桁の範囲で入力してください。")
-                                       @field:DecimalMin(value = "0.001", message = "※{value}以上の数値を入力してください。")
+                                       @field:MedicineQuantity
                                        val quantity: Double?,
                                        @field:NotWhitespaceOnly(message = "※症状を入力してください。")
                                        @field:Size(max = 30,
