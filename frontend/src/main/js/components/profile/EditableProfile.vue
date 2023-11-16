@@ -4,7 +4,7 @@
       ref="changeableImage"
       :image="props.profileImage"
       :csrf="props.csrf"
-      executePath="/api/profile/profileimage/change"
+      executePath="/api/profile/image/change"
       imageName="プロフィール画像"
       :noImage="noProfileImage"
       :isRounded="true"

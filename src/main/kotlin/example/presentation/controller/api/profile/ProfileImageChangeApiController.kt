@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/api/profile/profileimage/change")
+@RequestMapping("/api/profile/image/change")
 class ProfileImageChangeApiController(private val profileImageService: ProfileImageService,
                                       private val userSessionProvider: UserSessionProvider) {
     /**

@@ -25,7 +25,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
                                                     @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                     @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/api/medicines/{medicineId}/medicineimage/change"
+        private const val PATH = "/api/medicines/{medicineId}/image/change"
     }
 
     private val multipartFile = TestImageFactory.createMultipartFile() as MockMultipartFile

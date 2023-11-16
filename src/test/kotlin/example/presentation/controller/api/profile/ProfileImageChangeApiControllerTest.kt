@@ -21,7 +21,7 @@ internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMv
                                                    @Autowired private val accountService: AccountService,
                                                    @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/api/profile/profileimage/change"
+        private const val PATH = "/api/profile/image/change"
     }
 
     private val multipartFile = TestImageFactory.createMultipartFile() as MockMultipartFile
