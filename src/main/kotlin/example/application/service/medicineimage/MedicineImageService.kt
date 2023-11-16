@@ -4,7 +4,7 @@ import example.application.service.medicine.*
 import example.application.shared.command.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 

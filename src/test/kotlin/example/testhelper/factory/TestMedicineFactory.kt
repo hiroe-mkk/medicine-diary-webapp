@@ -4,7 +4,7 @@ import example.application.service.medicine.*
 import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.shared.type.*
 import java.time.*
 

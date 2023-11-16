@@ -1,6 +1,6 @@
 package example.infrastructure.storage.medicineimage
 
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.shared.objectstrage.*
 import org.springframework.stereotype.*

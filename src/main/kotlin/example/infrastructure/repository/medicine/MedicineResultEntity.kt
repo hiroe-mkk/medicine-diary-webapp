@@ -1,7 +1,7 @@
 package example.infrastructure.repository.medicine
 
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.shared.type.*
 import example.infrastructure.repository.shared.*
 import java.time.*

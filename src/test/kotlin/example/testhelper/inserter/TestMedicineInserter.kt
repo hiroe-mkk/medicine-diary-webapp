@@ -1,7 +1,7 @@
 package example.testhelper.inserter
 
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.shared.type.*
 import org.springframework.boot.test.context.*
 import java.time.*

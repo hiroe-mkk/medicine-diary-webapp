@@ -1,4 +1,4 @@
-package example.domain.model.medicine.medicineImage
+package example.domain.model.medicine.medicineimage
 
 import example.domain.shared.type.*
 

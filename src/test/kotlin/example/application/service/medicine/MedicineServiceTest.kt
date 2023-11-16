@@ -4,7 +4,7 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.medicineimage.*

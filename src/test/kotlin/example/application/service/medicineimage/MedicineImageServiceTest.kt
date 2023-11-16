@@ -3,7 +3,7 @@ package example.application.service.medicineimage
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import example.testhelper.factory.*

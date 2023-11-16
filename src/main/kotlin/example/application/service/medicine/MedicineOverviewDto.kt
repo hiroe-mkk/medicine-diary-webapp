@@ -1,7 +1,7 @@
 package example.application.service.medicine
 
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineImage.*
+import example.domain.model.medicine.medicineimage.*
 
 data class MedicineOverviewDto(val medicineId: MedicineId,
                                val medicineName: MedicineName,
