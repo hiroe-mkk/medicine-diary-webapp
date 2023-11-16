@@ -34,8 +34,8 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     @GetMapping
     fun displayMedicineBasicInfoUpdatePage(@PathVariable medicineId: MedicineId,
                                            model: Model): String {
-        val command = medicineService.getInitializedMedicineBasicInfoEditCommand(medicineId,
-                                                                                 userSessionProvider.getUserSession())
+        val command = medicineService.getUpdateMedicineBasicInfoEditCommand(medicineId,
+                                                                            userSessionProvider.getUserSession())
         model.addAttribute("form", command)
         return "medicine/updateForm"
     }

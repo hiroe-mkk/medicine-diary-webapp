@@ -40,8 +40,8 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
                                             lastRequestedPagePath: LastRequestedPagePath?,
                                             redirectAttributes: RedirectAttributes,
                                             model: Model): String {
-        val command = medicationRecordService.getRegistrationMedicationRecordEditCommand(medicineId,
-                                                                                         userSessionProvider.getUserSession())
+        val command = medicationRecordService.getAdditionMedicationRecordEditCommand(medicineId,
+                                                                                     userSessionProvider.getUserSession())
         model.addAttribute("form", command)
         return "medicationrecord/form"
     }

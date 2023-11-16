@@ -4,7 +4,7 @@ import example.application.service.medicationrecord.*
 import example.domain.model.medicationrecord.*
 import java.time.*
 
-object TestMedicationRecordEditCommandFactory {
+object TestMedicationRecordFactory {
     fun createCompletedAdditionCommand(takenMedicine: String = "testMedicineId",
                                        quantity: Double? = 1.0,
                                        symptom: String = "頭痛",

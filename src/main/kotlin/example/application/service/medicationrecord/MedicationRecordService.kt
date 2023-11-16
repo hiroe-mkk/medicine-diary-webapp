@@ -2,8 +2,8 @@ package example.application.service.medicationrecord
 
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
-import example.domain.model.medicine.*
 import example.domain.model.medicationrecord.*
+import example.domain.model.medicine.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
@@ -13,10 +13,10 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                               private val medicationRecordQueryService: MedicationRecordQueryService,
                               private val medicineQueryService: MedicineQueryService) {
     /**
-     * 修正用の服用記録編集コマンドを取得する
+     * 追加用の服用記録編集コマンドを取得する
      */
-    fun getRegistrationMedicationRecordEditCommand(medicineId: MedicineId?,
-                                                   userSession: UserSession): MedicationRecordEditCommand? {
+    fun getAdditionMedicationRecordEditCommand(medicineId: MedicineId?,
+                                               userSession: UserSession): MedicationRecordEditCommand? {
         val availableMedicineIds = medicineQueryService.findAllAvailableMedicines(userSession.accountId).map { it.id }
         if (availableMedicineIds.isEmpty()) return null
 

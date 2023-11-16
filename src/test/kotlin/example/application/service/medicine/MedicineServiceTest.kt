@@ -146,7 +146,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         @DisplayName("薬を登録する")
         fun registerMedicine() {
             //given:
-            val command = TestMedicineFactory.createCompletedRegistrationCommand()
+            val command = TestMedicineFactory.createCompletedRegistrationMedicineBasicInfoEditCommand()
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
             every { localDateTimeProvider.now() } returns localDateTime
 
@@ -171,7 +171,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
     @Nested
     inner class UpdateMedicineBasicInfoTest {
-        private val command = TestMedicineFactory.createCompletedUpdateCommand()
+        private val command = TestMedicineFactory.createCompletedUpdateMedicineBasicInfoEditCommand()
 
         @Test
         @DisplayName("薬基本情報を更新する")

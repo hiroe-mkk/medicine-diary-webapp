@@ -47,7 +47,7 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
         fun addMedicationRecord() {
             //given:
             val command =
-                    TestMedicationRecordEditCommandFactory.createCompletedAdditionCommand(takenMedicine = requesterMedicine.id.value)
+                    TestMedicationRecordFactory.createCompletedAdditionCommand(takenMedicine = requesterMedicine.id.value)
 
             //when:
             val newMedicationRecordId = medicationRecordService.addMedicationRecord(command, userSession)
@@ -70,7 +70,7 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
             //given:
             val badMedicineId = MedicineId("NonexistentId")
             val command =
-                    TestMedicationRecordEditCommandFactory.createCompletedAdditionCommand(takenMedicine = badMedicineId.value)
+                    TestMedicationRecordFactory.createCompletedAdditionCommand(takenMedicine = badMedicineId.value)
 
             //when:
             val target: () -> Unit = { medicationRecordService.addMedicationRecord(command, userSession) }
@@ -90,7 +90,7 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
         internal fun setUp() {
             medicationRecord = testMedicationRecordInserter.insert(userSession.accountId, requesterMedicine.id)
             val newTakenMedicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId)).id.value
-            command = TestMedicationRecordEditCommandFactory.createCompletedModificationCommand(newTakenMedicine)
+            command = TestMedicationRecordFactory.createCompletedModificationCommand(newTakenMedicine)
         }
 
         @Test
@@ -133,7 +133,7 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
             //given:
             val badMedicineId = MedicineId("NonexistentId")
             val command =
-                    TestMedicationRecordEditCommandFactory.createCompletedModificationCommand(takenMedicine = badMedicineId.value)
+                    TestMedicationRecordFactory.createCompletedModificationCommand(takenMedicine = badMedicineId.value)
 
             //when:
             val target: () -> Unit =
