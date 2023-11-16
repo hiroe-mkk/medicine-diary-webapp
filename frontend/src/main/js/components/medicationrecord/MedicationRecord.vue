@@ -86,7 +86,7 @@
           </p>
           <p
             class="has-text-right mb-2"
-            v-if="props.isParticipatingInSharedGroup"
+            v-if="props.hasMembers"
           >
             <strong>recorded by  </strong>
             <span>{{ medicationRecord.value.recorder.username }}</span>
@@ -136,7 +136,7 @@ import { MedicationRecordUtils } from '@main/js/composables/model/MedicationReco
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  hasMembers: Boolean,
   csrf: String,
 });
 const emits = defineEmits(['deleted']);

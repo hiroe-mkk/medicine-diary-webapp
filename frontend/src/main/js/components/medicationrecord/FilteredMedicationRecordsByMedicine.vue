@@ -13,10 +13,12 @@
       <div class="content m-2" v-if="medicationRecords.size !== 0">
         <div
           class="media is-flex is-align-items-center is-clickable p-3 m-0"
-          v-for="(medicationRecord, medicationRecordId) in medicationRecords.values"
+          v-for="(
+            medicationRecord, medicationRecordId
+          ) in medicationRecords.values"
           @click="activateMedicationRecordModal(medicationRecordId)"
         >
-          <div class="media-left" v-if="props.isParticipatingInSharedGroup">
+          <div class="media-left" v-if="members.size === 0">
             <figure class="image is-64x64 m-0">
               <img
                 :src="medicationRecord.recorder.profileImageURL"
@@ -68,7 +70,10 @@
           </div>
         </div>
         <!-- TODO: 自動的に読み込まれるように変更する -->
-        <div class="has-text-centered mt-2" v-if="medicationRecords.canLoadMore">
+        <div
+          class="has-text-centered mt-2"
+          v-if="medicationRecords.canLoadMore"
+        >
           <button
             class="button is-small is-ghost"
             type="button"
@@ -83,7 +88,7 @@
 
   <MedicationRecord
     ref="medicationRecord"
-    :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+    :hasMembers="members.size === 0"
     :csrf="props.csrf"
     @deleted="medicationRecordDeleted"
   ></MedicationRecord>
@@ -108,7 +113,8 @@ const props = defineProps({
   csrf: String,
 });
 
-const users = reactive([]);
+const self = reactive({ value: undefined });
+const members = reactive([]);
 const filter = reactive(new Filter());
 const medicationRecords = reactive(new MedicationRecords());
 const medicationRecord = ref(null);
@@ -118,8 +124,8 @@ const resultMessage = ref(null);
 onMounted(async () => {
   await HttpRequestClient.submitGetRequest('/api/users?own')
     .then((data) => {
-      users.push(data);
-      filter.addAccountId(users.map((user) => user.accountId));
+      self.value = data;
+      filter.addAccountId(data.accountId);
     })
     .catch(() => {
       resultMessage.value.activate(
@@ -132,8 +138,8 @@ onMounted(async () => {
   if (props.isParticipatingInSharedGroup) {
     await HttpRequestClient.submitGetRequest('/api/users?members')
       .then((data) => {
-        users.push(...data.users);
-        filter.addAllAccountIds(users.map((user) => user.accountId));
+        members.push(...data.users);
+        filter.addAllAccountIds(members.map((member) => member.accountId));
       })
       .catch(() => {
         resultMessage.value.activate(
