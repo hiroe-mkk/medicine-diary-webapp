@@ -94,21 +94,21 @@
                           <div class="control mb-1">
                             <div
                               class="select is-rounded is-fullwidth"
-                              th:classappend="${#fields.hasErrors('beforeTaking')} ? is-danger : is-info"
+                              th:classappend="${#fields.hasErrors('beforeMedication')} ? is-danger : is-info"
                             >
-                              <select name="beforeTaking">
+                              <select name="beforeMedication">
                                 <option
                                   th:each="conditionLevel:${conditionLevels}"
                                   th:value="${conditionLevel.name}"
                                   th:text="${conditionLevel.str}"
-                                  th:selected="(${conditionLevel} == *{beforeTaking})"
+                                  th:selected="(${conditionLevel} == *{beforeMedication})"
                                 ></option>
                               </select>
                             </div>
                             <span
                               class="help is-danger"
-                              th:if="${#fields.hasErrors('beforeTaking')}"
-                              th:errors="*{beforeTaking}"
+                              th:if="${#fields.hasErrors('beforeMedication')}"
+                              th:errors="*{beforeMedication}"
                             ></span>
                           </div>
                         </div>
@@ -117,22 +117,22 @@
                           <div class="control mb-1">
                             <div
                               class="select is-rounded is-fullwidth"
-                              th:classappend="${#fields.hasErrors('afterTaking')} ? is-danger : is-info"
+                              th:classappend="${#fields.hasErrors('afterMedication')} ? is-danger : is-info"
                             >
-                              <select name="afterTaking">
+                              <select name="afterMedication">
                                 <option value="">-----</option>
                                 <option
                                   th:each="conditionLevel:${conditionLevels}"
                                   th:value="${conditionLevel.name}"
                                   th:text="${conditionLevel.str}"
-                                  th:selected="(${conditionLevel} == *{afterTaking})"
+                                  th:selected="(${conditionLevel} == *{afterMedication})"
                                 ></option>
                               </select>
                             </div>
                             <span
                               class="help is-danger"
-                              th:if="${#fields.hasErrors('afterTaking')}"
-                              th:errors="*{afterTaking}"
+                              th:if="${#fields.hasErrors('afterMedication')}"
+                              th:errors="*{afterMedication}"
                             ></span>
                           </div>
                         </div>

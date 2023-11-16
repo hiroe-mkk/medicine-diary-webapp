@@ -30,10 +30,10 @@
         medication_records.medication_record_id AS medication_record_id,
         medication_records.recorder AS recorder,
         medication_records.symptom AS symptom,
-        medication_records.before_taking AS before_taking,
-        medication_records.after_taking AS after_taking,
+        medication_records.before_medication AS before_medication,
+        medication_records.after_medication AS after_medication,
         medication_records.note AS note,
-         DATE_FORMAT(medication_records.taken_at, '%Y/%m/%d %H:%i') AS taken_at,
+        DATE_FORMAT(medication_records.taken_at, '%Y/%m/%d %H:%i') AS taken_at,
         medicines.medicine_id AS medicine_id,
         medicines.medicine_name AS medicine_name,
         CONCAT(medication_records.quantity, medicines.dose_unit) AS dose,
@@ -78,7 +78,7 @@
             <idArg column="medication_record_id" javaType="String"/>
             <arg column="{medicine_id, medicine_name, dose}"
                  javaType="example.application.query.medicationrecord.JSONTakenMedicine" resultMap="JSONTakenMedicineResultMap"/>
-            <arg column="{symptom, before_taking, after_taking}"
+            <arg column="{symptom, before_medication, after_medication}"
                  javaType="example.application.query.medicationrecord.JSONFollowUp" resultMap="JSONFollowUpResultMap"/>
             <arg column="note" javaType="String"/>
             <arg column="taken_at" javaType="String"/>
@@ -98,8 +98,8 @@
     <resultMap id="JSONFollowUpResultMap" type="example.application.query.medicationrecord.JSONFollowUp">
         <constructor>
             <arg column="symptom" javaType="String"/>
-            <arg column="before_taking" javaType="String"/>
-            <arg column="after_taking" javaType="String"/>
+            <arg column="before_medication" javaType="String"/>
+            <arg column="after_medication" javaType="String"/>
         </constructor>
     </resultMap>
     <resultMap id="JSONUserResultMap" type="example.application.query.user.JSONUser">

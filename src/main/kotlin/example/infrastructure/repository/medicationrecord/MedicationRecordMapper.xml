@@ -18,8 +18,8 @@
             taken_medicine,
             quantity,
             symptom,
-            before_taking,
-            after_taking,
+            before_medication,
+            after_medication,
             note,
             taken_at
         )VALUES(
@@ -28,16 +28,16 @@
             #{takenMedicine},
             #{quantity},
             #{symptom},
-            #{beforeTaking},
-            #{afterTaking, jdbcType=VARCHAR},
+            #{beforeMedication},
+            #{afterMedication, jdbcType=VARCHAR},
             #{note},
             #{takenAt}
         )ON DUPLICATE KEY UPDATE
             taken_medicine = #{takenMedicine},
             quantity = #{quantity},
             symptom = #{symptom},
-            before_taking = #{beforeTaking},
-            after_taking = #{afterTaking, jdbcType=VARCHAR},
+            before_medication = #{beforeMedication},
+            after_medication = #{afterMedication, jdbcType=VARCHAR},
             note = #{note},
             taken_at = #{takenAt};
     </insert>
@@ -64,8 +64,8 @@
         taken_medicine AS taken_medicine,
         quantity AS quantity,
         symptom AS symptom,
-        before_taking AS before_taking,
-        after_taking AS after_taking,
+        before_medication AS before_medication,
+        after_medication AS after_medication,
         note AS note,
         taken_at AS taken_at
     </sql>
@@ -76,7 +76,7 @@
             <arg column="recorder" javaType="AccountId" resultMap="AccountIdResultMap"/>
             <arg column="taken_medicine" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
-            <arg column="{symptom, before_taking, after_taking}" javaType="FollowUp" resultMap="FollowUpResultMap"/>
+            <arg column="{symptom, before_medication, after_medication}" javaType="FollowUp" resultMap="FollowUpResultMap"/>
             <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="taken_at" javaType="java.time.LocalDateTime"/>
         </constructor>
@@ -104,8 +104,8 @@
     <resultMap id="FollowUpResultMap" type="FollowUp">
         <constructor>
             <arg column="symptom" javaType="String"/>
-            <arg column="before_taking" javaType="ConditionLevel"/>
-            <arg column="after_taking" javaType="ConditionLevel"/>
+            <arg column="before_medication" javaType="ConditionLevel"/>
+            <arg column="after_medication" javaType="ConditionLevel"/>
         </constructor>
     </resultMap>
     <resultMap id="NoteResultMap" type="Note">

@@ -22,6 +22,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
     }
 
     override fun findByOwners(accountIds: Collection<AccountId>): Set<Medicine> {
+        if (accountIds.isEmpty()) return emptySet()
         return medicineMapper.findAllByAccountIds(accountIds.map { it.value }).map { it.toMedicine() }.toSet()
     }
 

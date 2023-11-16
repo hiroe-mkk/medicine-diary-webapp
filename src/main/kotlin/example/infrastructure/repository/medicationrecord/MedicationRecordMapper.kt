@@ -13,8 +13,8 @@ interface MedicationRecordMapper {
                takenMedicine: String,
                quantity: Double,
                symptom: String,
-               beforeTaking: ConditionLevel,
-               afterTaking: ConditionLevel?,
+               beforeMedication: ConditionLevel,
+               afterMedication: ConditionLevel?,
                note: String,
                takenAt: LocalDateTime)
 

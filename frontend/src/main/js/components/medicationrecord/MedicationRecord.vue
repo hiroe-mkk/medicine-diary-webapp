@@ -47,32 +47,32 @@
             <span>
               <span>{{ medicationRecord.value.followUp.symptom }}</span>
               (
-              <small>{{ MedicationRecordUtils.convertConditionLevelToString(medicationRecord.value.followUp.beforeTaking) }}</small>
+              <small>{{ MedicationRecordUtils.convertConditionLevelToString(medicationRecord.value.followUp.beforeMedication) }}</small>
               <span
                 v-html="
                   MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.value.followUp.beforeTaking
+                    medicationRecord.value.followUp.beforeMedication
                   )
                 "
               ></span>
               <span
                 class="icon is-small mx-2"
-                v-if="medicationRecord.value.followUp.afterTaking !== undefined"
+                v-if="medicationRecord.value.followUp.afterMedication !== undefined"
               >
                 <i class="fa-solid fa-angles-right"></i>
               </span>
               <small
-                v-if="medicationRecord.value.followUp.afterTaking !== undefined"
+                v-if="medicationRecord.value.followUp.afterMedication !== undefined"
               >
-                {{ MedicationRecordUtils.convertConditionLevelToString(medicationRecord.value.followUp.afterTaking) }}
+                {{ MedicationRecordUtils.convertConditionLevelToString(medicationRecord.value.followUp.afterMedication) }}
               </small>
               <span
                 v-html="
                   MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.value.followUp.afterTaking
+                    medicationRecord.value.followUp.afterMedication
                   )
                 "
-                v-if="medicationRecord.value.followUp.afterTaking !== undefined"
+                v-if="medicationRecord.value.followUp.afterMedication !== undefined"
               >
               </span>
               )

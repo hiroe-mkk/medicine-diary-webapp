@@ -38,21 +38,21 @@
               <span
                 v-html="
                   MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.beforeTaking
+                    medicationRecord.followUp.beforeMedication
                   )
                 "
               ></span>
               <span
                 class="icon is-small"
-                v-if="medicationRecord.followUp.afterTaking !== undefined"
+                v-if="medicationRecord.followUp.afterMedication !== undefined"
               >
                 <i class="fa-solid fa-angles-right"></i>
               </span>
               <span
-                v-if="medicationRecord.followUp.afterTaking !== undefined"
+                v-if="medicationRecord.followUp.afterMedication !== undefined"
                 v-html="
                   MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.afterTaking
+                    medicationRecord.followUp.afterMedication
                   )
                 "
               ></span>

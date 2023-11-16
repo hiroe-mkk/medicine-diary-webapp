@@ -41,8 +41,8 @@ function createTestMedicationRecordOverviews(size) {
 function createTestMedicationRecordOverview(index) {
   return {
     medicationRecordId: `medicationRecordId${index}`,
-    beforeTaking: `beforeTaking${index}`,
-    afterTaking: `afterTaking${index}`,
+    beforeMedication: `beforeMedication${index}`,
+    afterMedication: `afterMedication${index}`,
     takenAt: `takenAt${index}`,
     medicineId: `medicineId${index}`,
     medicineName: `medicineName${index}`,
