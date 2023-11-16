@@ -232,13 +232,46 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
 
         @Test
         @DisplayName("服用可能な薬が見つからなかった場合、在庫の修正に失敗する")
-        fun availableMedicineNotFound_AdjustingInventoryFails() {
+        fun availableMedicineNotFound_adjustingInventoryFails() {
             //given:
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
 
             //when:
             val target: () -> Unit = {
                 medicineService.adjustInventory(medicine.id, command, userSession)
+            }
+
+            //then:
+            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
+        }
+    }
+
+    @Nested
+    inner class StopInventoryManagementTest {
+        @Test
+        @DisplayName("在庫管理を終了する")
+        fun stopInventoryManagement() {
+            //given:
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
+
+            //when:
+            medicineService.stopInventoryManagement(medicine.id, userSession)
+
+            //then:
+            val foundMedicine = medicineRepository.findById(medicine.id)
+            assertThat(foundMedicine?.inventory).isNull()
+        }
+
+        @Test
+        @DisplayName("服用可能な薬が見つからなかった場合、在庫管理の終了に失敗する")
+        fun availableMedicineNotFound_stoppingInventoryManagementFails() {
+            //given:
+            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
+
+            //when:
+            val target: () -> Unit = {
+                medicineService.stopInventoryManagement(medicine.id, userSession)
             }
 
             //then:

@@ -122,6 +122,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         return InventoryAdjustmentCommand.initialize(medicine.inventory)
     }
 
+
     /**
      * 在庫を修正する
      */
@@ -130,6 +131,15 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                         userSession: UserSession) {
         val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
         medicine.adjustInventory(command.validatedInventory)
+        medicineRepository.save(medicine)
+    }
+
+    /**
+     * 在庫管理をやめる
+     */
+    fun stopInventoryManagement(medicineId: MedicineId, userSession: UserSession) {
+        val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
+        medicine.stopInventoryManagement()
         medicineRepository.save(medicine)
     }
 

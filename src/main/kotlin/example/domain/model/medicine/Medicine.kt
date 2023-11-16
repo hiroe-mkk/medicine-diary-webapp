@@ -56,4 +56,8 @@ class Medicine(val id: MedicineId,
     fun adjustInventory(inventory: Inventory) {
         this.inventory = inventory
     }
+
+    fun stopInventoryManagement() {
+        this.inventory = null
+    }
 }
