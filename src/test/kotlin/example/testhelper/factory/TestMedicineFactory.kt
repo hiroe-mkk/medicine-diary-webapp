@@ -76,9 +76,9 @@ object TestMedicineFactory {
 
     fun createCompletedInventoryAdjustmentCommand(remainingQuantity: Double? = 0.0,
                                                   quantityPerPackage: Double? = 0.0,
-                                                  startOn: LocalDate? = null,
+                                                  startedOn: LocalDate? = null,
                                                   expirationOn: LocalDate? = null,
                                                   unusedPackage: Int? = 0): InventoryAdjustmentCommand {
-        return InventoryAdjustmentCommand(remainingQuantity, quantityPerPackage, startOn, expirationOn, unusedPackage)
+        return InventoryAdjustmentCommand(remainingQuantity, quantityPerPackage, startedOn, expirationOn, unusedPackage)
     }
 }

@@ -8,7 +8,7 @@ import java.time.*
  */
 data class Inventory(val remainingQuantity: Double,
                      val quantityPerPackage: Double,
-                     val startOn: LocalDate?,
+                     val startedOn: LocalDate?,
                      val expirationOn: LocalDate?,
                      val unusedPackage: Int) {
     fun decrease(dose: Dose): Inventory {
@@ -20,7 +20,7 @@ data class Inventory(val remainingQuantity: Double,
 
         return Inventory(newRemainingQuantity,
                          quantityPerPackage,
-                         startOn,
+                         startedOn,
                          expirationOn,
                          unusedPackage)
     }

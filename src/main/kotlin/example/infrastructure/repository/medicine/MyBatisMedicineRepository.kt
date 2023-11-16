@@ -55,7 +55,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         medicineMapper.insertOneInventory(medicine.id.value,
                                           inventory.remainingQuantity,
                                           inventory.quantityPerPackage,
-                                          inventory.startOn,
+                                          inventory.startedOn,
                                           inventory.expirationOn,
                                           inventory.unusedPackage)
     }

@@ -83,14 +83,14 @@
             medicine_id,
             remaining_quantity,
             quantity_per_package,
-            start_on,
+            started_on,
             expiration_on,
             unused_package
         )VALUES(
             #{medicineId},
             #{remainingQuantity},
             #{quantityPerPackage},
-            #{startOn, jdbcType=DATE},
+            #{startedOn, jdbcType=DATE},
             #{expirationOn, jdbcType=DATE},
             #{unusedPackage}
         );
@@ -191,7 +191,7 @@
         inventories.medicine_id AS medicine_id,
         inventories.remaining_quantity AS remaining_quantity,
         inventories.quantity_per_package AS quantity_per_package,
-        inventories.start_on AS start_on,
+        inventories.started_on AS started_on,
         inventories.expiration_on AS expiration_on,
         inventories.unused_package AS unused_package,
         effects.ordering AS effect_ordering,
@@ -218,7 +218,7 @@
             <arg column="precautions" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="{medicine_image_url_endpoint, medicine_image_url_path}" javaType="MedicineImageURL" resultMap="MedicineImageURLResultMap"/>
             <arg column="is_public" javaType="_boolean"/>
-            <arg column="{medicine_id, remaining_quantity, quantity_per_package, start_on, expiration_on, unused_package}"
+            <arg column="{medicine_id, remaining_quantity, quantity_per_package, started_on, expiration_on, unused_package}"
                  javaType="Inventory" resultMap="InventoryResultMap"/>
             <arg column="registered_at" javaType="java.time.LocalDateTime"/>
         </constructor>
@@ -274,7 +274,7 @@
         <constructor>
             <idArg column="remaining_quantity" javaType="_double"/>
             <idArg column="quantity_per_package" javaType="_double"/>
-            <idArg column="start_on" javaType="java.time.LocalDate"/>
+            <idArg column="started_on" javaType="java.time.LocalDate"/>
             <idArg column="expiration_on" javaType="java.time.LocalDate"/>
             <idArg column="unused_package" javaType="_int"/>
         </constructor>

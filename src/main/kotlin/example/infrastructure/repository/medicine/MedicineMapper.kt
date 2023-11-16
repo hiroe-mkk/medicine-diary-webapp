@@ -31,7 +31,7 @@ interface MedicineMapper {
     fun insertOneInventory(medicineId: String,
                            remainingQuantity: Double,
                            quantityPerPackage: Double,
-                           startOn: LocalDate?,
+                           startedOn: LocalDate?,
                            expirationOn: LocalDate?,
                            unusedPackage: Int)
 

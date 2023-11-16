@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS inventories (
   medicine_id VARCHAR(36) PRIMARY KEY,
   remaining_quantity DOUBLE NOT NULL,
   quantity_per_package DOUBLE NOT NULL,
-  start_on DATE,
+  started_on DATE,
   expiration_on DATE,
   unused_package INT,
   FOREIGN KEY(medicine_id) REFERENCES medicines(medicine_id)

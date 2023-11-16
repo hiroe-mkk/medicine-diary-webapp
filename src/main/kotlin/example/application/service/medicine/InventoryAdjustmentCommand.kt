@@ -16,7 +16,7 @@ class InventoryAdjustmentCommand(@field:NotNull(message = "※使用中パッケ
                                  @field:MedicineQuantity
                                  val quantityPerPackage: Double?,
                                  @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                 val startOn: LocalDate?,
+                                 val startedOn: LocalDate?,
                                  @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                  val expirationOn: LocalDate?,
                                  @field:NotNull(message = "未使用パッケージの個数を入力してください。")
@@ -25,7 +25,7 @@ class InventoryAdjustmentCommand(@field:NotNull(message = "※使用中パッケ
                                  val unusedPackage: Int?) {
     val validatedInventory: Inventory = Inventory(remainingQuantity ?: 0.0,
                                                   quantityPerPackage ?: 0.0,
-                                                  startOn,
+                                                  startedOn,
                                                   expirationOn,
                                                   unusedPackage ?: 0)
 
@@ -33,7 +33,7 @@ class InventoryAdjustmentCommand(@field:NotNull(message = "※使用中パッケ
         fun initialize(inventory: Inventory?): InventoryAdjustmentCommand {
             return InventoryAdjustmentCommand(inventory?.remainingQuantity ?: 0.0,
                                               inventory?.quantityPerPackage ?: 0.0,
-                                              inventory?.startOn ?: null,
+                                              inventory?.startedOn ?: null,
                                               inventory?.expirationOn ?: null,
                                               inventory?.unusedPackage ?: 0)
         }
