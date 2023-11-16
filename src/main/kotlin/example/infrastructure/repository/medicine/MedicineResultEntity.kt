@@ -15,6 +15,7 @@ class MedicineResultEntity(val medicineId: MedicineId,
                            val precautions: Note,
                            val medicineImageURL: MedicineImageURL?,
                            val isPublic: Boolean,
+                           val inventory: Inventory?,
                            val registeredAt: LocalDateTime) {
     // MyBatis ではコレクションをコンストラクタに渡すことができない
     val timingOptions: List<OrderedEntity<Timing>> = mutableListOf()
@@ -32,6 +33,7 @@ class MedicineResultEntity(val medicineId: MedicineId,
                         precautions,
                         medicineImageURL,
                         isPublic,
+                        inventory,
                         registeredAt)
     }
 }

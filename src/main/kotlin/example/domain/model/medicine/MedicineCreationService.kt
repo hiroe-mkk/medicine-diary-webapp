@@ -33,6 +33,7 @@ class MedicineCreationService(private val sharedGroupRepository: SharedGroupRepo
                         precautions,
                         null,
                         if (owner.isSharedGroup) true else isPublic,
+                        null,
                         registeredAt)
     }
 

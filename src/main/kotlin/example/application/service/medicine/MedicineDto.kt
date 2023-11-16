@@ -13,6 +13,7 @@ data class MedicineDto(val medicineId: MedicineId,
                        val precautions: Note,
                        val medicineImageURL: MedicineImageURL?,
                        val isPublic: Boolean,
+                       val inventory: Inventory?,
                        val registeredAt: LocalDateTime) {
     companion object {
         fun from(medicine: Medicine): MedicineDto {
@@ -24,6 +25,7 @@ data class MedicineDto(val medicineId: MedicineId,
                                medicine.precautions,
                                medicine.medicineImageURL,
                                medicine.isPublic,
+                               medicine.inventory,
                                medicine.registeredAt)
         }
     }

@@ -17,6 +17,7 @@ class Medicine(val id: MedicineId,
                precautions: Note,
                medicineImageURL: MedicineImageURL?,
                isPublic: Boolean,
+               inventory: Inventory?,
                val registeredAt: LocalDateTime) {
     var medicineName: MedicineName = medicineName
         private set
@@ -30,6 +31,7 @@ class Medicine(val id: MedicineId,
         private set
     var isPublic: Boolean = isPublic
         private set
+    var inventory: Inventory? = inventory
 
     fun isOwnedBy(accountId: AccountId): Boolean = owner.accountId == accountId
 

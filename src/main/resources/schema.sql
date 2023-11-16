@@ -32,7 +32,17 @@ CREATE TABLE IF NOT EXISTS medicines (
   medicine_image_url_endpoint VARCHAR(50),
   medicine_image_url_path VARCHAR(100),
   is_public BOOLEAN NOT NULL,
-  registered_at TIMESTAMP NOT NULL
+  registered_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS inventories (
+  medicine_id VARCHAR(36) PRIMARY KEY,
+  remaining_quantity DOUBLE NOT NULL,
+  quantity_per_package DOUBLE NOT NULL,
+  start_on DATE,
+  expiration_on DATE,
+  unused_package INT,
+  FOREIGN KEY(medicine_id) REFERENCES medicines(medicine_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE IF NOT EXISTS timing_options (
@@ -61,7 +71,7 @@ CREATE TABLE IF NOT EXISTS medication_records (
   before_medication VARCHAR(15) NOT NULL,
   after_medication VARCHAR(15),
   note VARCHAR(500) NOT NULL,
-  taken_at TIMESTAMP NOT NULL,
+  taken_at DATETIME NOT NULL,
   FOREIGN KEY(recorder) REFERENCES accounts(account_id),
   FOREIGN KEY(taken_medicine) REFERENCES medicines(medicine_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

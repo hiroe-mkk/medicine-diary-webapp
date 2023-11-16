@@ -2,10 +2,10 @@ package example.application.service.medicine
 
 import example.application.shared.usersession.*
 import example.domain.model.account.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineImage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.medicationrecord.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.medicineimage.*
 import example.testhelper.factory.*
@@ -64,6 +64,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                        medicine.precautions,
                                        medicine.medicineImageURL,
                                        medicine.isPublic,
+                                       medicine.inventory,
                                        medicine.registeredAt)
             assertThat(actual).isEqualTo(expected)
         }
@@ -162,6 +163,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedPrecautions,
                                     null,
                                     command.isPublic,
+                                    null,
                                     localDateTime)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }
@@ -190,6 +192,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     command.validatedPrecautions,
                                     medicine.medicineImageURL,
                                     command.isPublic,
+                                    medicine.inventory,
                                     medicine.registeredAt)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }

@@ -28,6 +28,13 @@ interface MedicineMapper {
                           isPublic: Boolean,
                           registeredAt: LocalDateTime)
 
+    fun insertOneInventory(medicineId: String,
+                           remainingQuantity: Double,
+                           quantityPerPackage: Double,
+                           startOn: LocalDate?,
+                           expirationOn: LocalDate?,
+                           unusedPackage: Int)
+
     fun insertAllTimingOptions(medicineId: String,
                                timingOptions: Collection<OrderedEntity<Timing>>)
 
@@ -36,15 +43,19 @@ interface MedicineMapper {
 
     fun deleteOneMedicineByMedicineId(medicineId: String)
 
-    fun deleteAllTimingOptionsByMedicineId(medicineId: String)
+    fun deleteAllMedicineByAccountId(accountId: String)
+
+    fun deleteAllMedicinesBySharedGroupId(sharedGroupId: String)
+
+    fun deleteOneInventoryByMedicineId(medicineId: String)
+
+    fun deleteAllInventoriesByMedicineIds(medicineIds: Collection<String>)
 
     fun deleteAllEffectsByMedicineId(medicineId: String)
 
-    fun deleteAllTimingOptionsByMedicineIds(medicineIds: List<String>)
+    fun deleteAllEffectsByMedicineIds(medicineIds: Collection<String>)
 
-    fun deleteAllEffectsByMedicineIds(medicineIds: List<String>)
+    fun deleteAllTimingOptionsByMedicineId(medicineId: String)
 
-    fun deleteAllMedicineByAccountId(accountId: String)
-
-    fun deleteAllMedicineBySharedGroupId(sharedGroupId: String)
+    fun deleteAllTimingOptionsByMedicineIds(medicineIds: Collection<String>)
 }
