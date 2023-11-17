@@ -39,7 +39,7 @@
         追加する
       </button>
     </div>
-    <span class="help is-danger" v-for="error in errors">{{ error }}</span>
+    <p class="help is-danger" v-for="error in errors">{{ error }}</p>
   </div>
 
   <div class="modal" :class="{ 'is-active': isEditModalActive }">

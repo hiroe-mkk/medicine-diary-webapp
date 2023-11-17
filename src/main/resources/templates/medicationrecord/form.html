@@ -34,9 +34,7 @@
 
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">
-                <span>時間</span>
-              </label>
+              <label class="label has-text-grey">日時</label>
             </div>
             <div class="field-body">
               <div class="field">
@@ -48,11 +46,11 @@
                     th:value="*{takenAt}"
                     th:errorclass="is-danger"
                   />
-                  <span
+                  <p
                     class="help is-danger"
                     th:if="${#fields.hasErrors('takenAt')}"
                     th:errors="*{takenAt}"
-                  ></span>
+                  ></p>
                 </div>
               </div>
             </div>
@@ -70,7 +68,7 @@
                       <label class="label has-text-grey">症状</label>
                       <div class="field-body">
                         <div class="field">
-                          <div class="control has-icons-right">
+                          <div class="control">
                             <input
                               class="input is-info is-rounded"
                               type="text"
@@ -78,11 +76,11 @@
                               th:value="*{symptom}"
                               th:errorclass="is-danger"
                             />
-                            <span
+                            <p
                               class="help is-danger"
                               th:if="${#fields.hasErrors('symptom')}"
                               th:errors="*{symptom}"
-                            ></span>
+                            ></p>
                           </div>
                         </div>
                       </div>
@@ -105,11 +103,11 @@
                                 ></option>
                               </select>
                             </div>
-                            <span
+                            <p
                               class="help is-danger"
                               th:if="${#fields.hasErrors('beforeMedication')}"
                               th:errors="*{beforeMedication}"
-                            ></span>
+                            ></p>
                           </div>
                         </div>
                         <div class="field">
@@ -129,11 +127,11 @@
                                 ></option>
                               </select>
                             </div>
-                            <span
+                            <p
                               class="help is-danger"
                               th:if="${#fields.hasErrors('afterMedication')}"
                               th:errors="*{afterMedication}"
-                            ></span>
+                            ></p>
                           </div>
                         </div>
                       </div>
@@ -146,9 +144,7 @@
 
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">
-                <span>ノート</span>
-              </label>
+              <label class="label has-text-grey">ノート</label>
             </div>
             <div class="field-body">
               <div class="field">
@@ -159,14 +155,12 @@
                     name="note"
                     placeholder="500文字以内で入力してください。"
                     th:errorclass="is-danger"
-                  >
-[[*{note}]]</textarea
-                  >
-                  <span
+                  >[[*{note}]]</textarea>
+                  <p
                     class="help is-danger"
                     th:if="${#fields.hasErrors('note')}"
                     th:errors="*{note}"
-                  ></span>
+                  ></p>
                 </div>
               </div>
             </div>

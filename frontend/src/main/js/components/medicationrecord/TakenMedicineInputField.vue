@@ -34,12 +34,12 @@
                       "
                       hidden
                     />
-                    <span
+                    <p
                       class="help is-danger"
                       v-for="error in medicineIdErrors"
                     >
                       {{ error }}
-                    </span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -66,9 +66,9 @@
                       takenMedicine.medicine.dosageAndAdministration.doseUnit
                     }}
                   </span>
-                  <span class="help is-danger" v-for="error in quantityErrors">
+                  <p class="help is-danger" v-for="error in quantityErrors">
                     {{ error }}
-                  </span>
+                  </p>
                 </div>
               </div>
             </div>

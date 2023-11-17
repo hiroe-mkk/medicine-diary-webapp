@@ -19,11 +19,11 @@
                 th:value="*{medicineName}"
                 th:errorclass="is-danger"
               />
-              <span
+              <p
                 class="help is-danger"
                 th:if="${#fields.hasErrors('medicineName')}"
                 th:errors="*{medicineName}"
-              ></span>
+              ></p>
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="control">
               <div class="notification has-background-white py-3 px-5">
                 <div class="field my-3">
-                  <label class="label has-text-grey"> 1回当たりの服用量 </label>
+                  <label class="label has-text-grey">1回当たりの服用量</label>
                   <div class="field-body">
                     <div class="field">
                       <div class="control mb-1">
@@ -52,11 +52,11 @@
                           max="10000"
                           th:errorclass="is-danger"
                         />
-                        <span
+                        <p
                           class="help is-danger"
                           th:if="${#fields.hasErrors('quantity')}"
                           th:errors="*{quantity}"
-                        ></span>
+                        ></p>
                       </div>
                     </div>
                     <div class="field">
@@ -69,11 +69,11 @@
                           placeholder="単位"
                           th:errorclass="is-danger"
                         />
-                        <span
+                        <p
                           class="help is-danger"
                           th:if="${#fields.hasErrors('doseUnit')}"
                           th:errors="*{doseUnit}"
-                        ></span>
+                        ></p>
                       </div>
                     </div>
                   </div>
@@ -84,9 +84,7 @@
                   </div>
                 </div>
                 <div class="field my-3">
-                  <label class="label has-text-grey">
-                    1日当たりの服用回数
-                  </label>
+                  <label class="label has-text-grey">1日当たりの服用回数</label>
                   <div class="field-body">
                     <div class="field">
                       <div class="control has-icons-right">
@@ -99,20 +97,22 @@
                           step="1"
                           th:errorclass="is-danger"
                         />
-                        <span class="icon is-small is-right">回</span>
                         <span
+                          class="icon is-small is-right has-text-grey has-text-weight-bold"
+                        >
+                          回
+                        </span>
+                        <p
                           class="help is-danger"
                           th:if="${#fields.hasErrors('timesPerDay')}"
                           th:errors="*{timesPerDay}"
-                        ></span>
+                        ></p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="field my-3">
-                  <label class="label has-text-grey">
-                    服用するタイミング
-                  </label>
+                  <label class="label has-text-grey">服用するタイミング</label>
                   <div class="field-body">
                     <field class="field">
                       <div class="control">
@@ -130,11 +130,11 @@
                             th:text="${timing.str}"
                           ></label>
                         </div>
-                        <span
+                        <p
                           class="help is-danger"
                           th:if="${#fields.hasErrors('timingOptions')}"
                           th:errors="*{timingOptions}"
-                        ></span>
+                        ></p>
                       </div>
                     </field>
                   </div>
@@ -176,11 +176,11 @@
               >
 [[*{precautions}]]</textarea
               >
-              <span
+              <p
                 class="help is-danger"
                 th:if="${#fields.hasErrors('precautions')}"
                 th:errors="*{precautions}"
-              ></span>
+              ></p>
             </div>
           </div>
         </div>
