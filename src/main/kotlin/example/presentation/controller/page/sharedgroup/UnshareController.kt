@@ -14,12 +14,12 @@ import org.springframework.web.servlet.mvc.support.*
 class UnshareController(private val sharedGroupService: SharedGroupService,
                         private val userSessionProvider: UserSessionProvider) {
     /**
-     * 共有を解除する
+     * 共有を停止する
      */
     @PostMapping
     fun unshare(redirectAttributes: RedirectAttributes): String {
         sharedGroupService.unshare(userSessionProvider.getUserSession())
-        val resultMessage = ResultMessage.info("共有を解除しました。")
+        val resultMessage = ResultMessage.info("共有を停止しました。")
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
         return "redirect:/sharedgroup/management"
     }

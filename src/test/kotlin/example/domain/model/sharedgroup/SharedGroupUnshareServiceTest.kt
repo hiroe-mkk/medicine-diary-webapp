@@ -33,7 +33,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
     }
 
     @Test
-    @DisplayName("共有を解除する")
+    @DisplayName("共有を停止する")
     fun unshareSharedGroup() {
         //given:
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId, user1AccountId))

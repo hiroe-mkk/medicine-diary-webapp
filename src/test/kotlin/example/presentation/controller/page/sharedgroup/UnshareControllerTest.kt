@@ -34,7 +34,7 @@ internal class UnshareControllerTest(@Autowired private val mockMvc: MockMvc,
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有解除に成功した場合、共有グループ管理画面にリダイレクトする")
+    @DisplayName("共有停止に成功した場合、共有グループ管理画面にリダイレクトする")
     fun unshareSucceeds_redirectToShredGroupManagementPage() {
         //given:
         val userSession = userSessionProvider.getUserSession()

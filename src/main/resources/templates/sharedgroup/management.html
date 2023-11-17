@@ -85,7 +85,7 @@
                       class="button is-link is-rounded is-outlined"
                       th:attr="'@click'=|activateUnshareConfirmationModal('${participatingSharedGroup.sharedGroupId}')|"
                     >
-                      <strong>共有を解除する</strong>
+                      <strong>共有を停止する</strong>
                       <span
                         class="icon fas fa-lg is-flex is-align-items-center mr-0"
                       >
@@ -99,8 +99,8 @@
           </div>
           <confirmation-message
             ref="unshareConfirmationMessage"
-            message="共有を解除しますか？"
-            button-label="解除する"
+            message="共有を停止しますか？"
+            button-label="停止する"
             path="/shared-group/unshare"
             th:attr="csrf=${_csrf.token}"
           >

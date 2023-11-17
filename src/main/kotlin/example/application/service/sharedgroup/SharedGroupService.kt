@@ -77,7 +77,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 共有を解除する
+     * 共有を停止する
      */
     fun unshare(userSession: UserSession) {
         return sharedGroupUnshareService.unshare(userSession.accountId)
