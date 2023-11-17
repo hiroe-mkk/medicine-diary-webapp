@@ -32,7 +32,13 @@
             </button>
           </p>
         </div>
-        <div class="content m-3" v-if="searchResults.length !== 0">
+        <div class="content m-3" v-if="isSearchSucceeds">
+          <p
+            class="has-text-weight-bold has-text-danger-dark"
+            v-if="searchResults.length === 0"
+          >
+            ユーザーが見つかりませんでした。
+          </p>
           <template v-for="user in searchResults">
             <div
               class="media px-3 is-flex is-align-items-center is-clickable p-3 m-0"
@@ -101,6 +107,7 @@ defineExpose({ activateSearchModal });
 const isSearchModalActive = ref(false);
 const keyword = ref('');
 const searchResults = reactive([]);
+const isSearchSucceeds = ref(false);
 
 const resultMessage = ref(null);
 const confirmationMessage = ref(null);
@@ -112,6 +119,7 @@ function activateSearchModal() {
 }
 
 function search() {
+  isSearchSucceeds.value = false;
   searchResults.splice(0, searchResults.length);
   const params = new URLSearchParams();
   params.set('keyword', keyword.value);
@@ -119,6 +127,7 @@ function search() {
   return HttpRequestClient.submitGetRequest('/api/users?' + params.toString())
     .then((data) => {
       searchResults.push(...data.users);
+      isSearchSucceeds.value = true;
     })
     .catch(() => {
       resultMessage.value.activate(
