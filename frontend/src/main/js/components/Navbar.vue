@@ -16,7 +16,7 @@
     </div>
 
     <div class="navbar-menu" :class="{ 'is-active': isMenuOpened }">
-      <div class="navbar-end p-2">
+      <div class="navbar-end">
         <div class="navbar-item py-0" v-if="props.isAuthenticated">
           <a class="has-text-info-light is-hidden-touch mr-2" href="/mypage">
             <span
@@ -84,7 +84,7 @@
               <strong>ログイン</strong>
             </span>
             <span
-              class="button is-small is-rounded has-text-info-light has-background-link-dark py-0 px-3 mx-1"
+              class="button is-small is-rounded has-text-info-light has-background-link py-0 px-3 mx-1"
               @click="isAccountRegistrationModalActive = true"
             >
               <strong>新規登録</strong>
@@ -98,18 +98,24 @@
             ></div>
             <div class="modal-content">
               <div
-                class="notification has-background-white has-text-centered py-3 px-5"
+                class="notification has-background-white has-text-centered px-3 pt-3 pb-5"
               >
-                <div class="block mt-2 mb-1">
-                  <img :src="logo_dark" alt="Logo" />
-                  <p class="has-text-weight-bold has-text-link is-size-5 p-0">
+                <div class="has-text-right">
+                  <button
+                    class="delete"
+                    type="button"
+                    @click="isLoginModalActive = false"
+                  ></button>
+                </div>
+                <div class="block m-0">
+                  <p class="has-text-weight-bold has-text-link is-size-5 py-0">
                     ログイン
                   </p>
                 </div>
-                <div class="block is-inline-block mt-3 mb-4">
+                <div class="block is-inline-block m-3">
                   <p class="my-1">
                     <a
-                      class="yahoo-color has-text-white button is-fullwidth is-small px-5"
+                      class="yahoo-color button is-danger has-text-white is-fullwidth is-small px-5"
                       href="/oauth2/authorization/yahoo"
                     >
                       <span
@@ -122,7 +128,7 @@
                   </p>
                   <p class="my-1">
                     <a
-                      class="line-color has-text-white button is-fullwidth is-small px-5"
+                      class="line-color button is-success has-text-white is-fullwidth is-small px-5"
                       href="/oauth2/authorization/github"
                     >
                       <span
@@ -135,7 +141,7 @@
                   </p>
                   <p class="my-1">
                     <a
-                      class="github-color has-text-white button is-fullwidth is-small px-5"
+                      class="github-color button is-black has-text-white is-fullwidth is-small px-5"
                       href="/oauth2/authorization/github"
                     >
                       <span
@@ -172,10 +178,16 @@
             ></div>
             <div class="modal-content">
               <div
-                class="notification has-background-white has-text-centered py-3 px-5"
+                class="notification has-background-white has-text-centered px-3 pt-3 pb-5"
               >
-                <div class="block m-2">
-                  <img :src="logo_dark" alt="Logo" />
+                <div class="has-text-right">
+                  <button
+                    class="delete"
+                    type="button"
+                    @click="isAccountRegistrationModalActive = false"
+                  ></button>
+                </div>
+                <div class="block m-0 py-0">
                   <p class="is-size-5 has-text-weight-bold has-text-link p-1">
                     お薬日記へようこそ！
                   </p>
@@ -183,10 +195,10 @@
                     新規登録(無料)して利用を開始しましょう。
                   </p>
                 </div>
-                <div class="block is-inline-block mt-3 mb-4">
+                <div class="block is-inline-block m-3">
                   <p class="my-1">
                     <a
-                      class="yahoo-color has-text-white button is-fullwidth is-small px-5"
+                      class="yahoo-color button is-danger has-text-white is-fullwidth is-small px-5"
                       href="/oauth2/authorization/yahoo"
                     >
                       <span
@@ -199,7 +211,7 @@
                   </p>
                   <p class="my-1">
                     <a
-                      class="line-color has-text-white button is-fullwidth is-small px-5"
+                      class="line-color button is-success has-text-white is-fullwidth is-small px-5"
                       href="/oauth2/authorization/line"
                     >
                       <span
@@ -212,7 +224,7 @@
                   </p>
                   <p class="my-1">
                     <a
-                      class="github-color has-text-white button is-fullwidth is-small px-5"
+                      class="github-color button is-black has-text-white is-fullwidth is-small px-5"
                       href="/oauth2/authorization/github"
                     >
                       <span
@@ -255,7 +267,6 @@
 <script setup>
 import { ref } from 'vue';
 import logo from '@main/images/logo_header.png';
-import logo_dark from '@main/images/logo_header_dark.png';
 import yahoo_icon from '@main/images/yahoo_icon.png';
 import line_icon from '@main/images/line_icon.png';
 import github_icon from '@main/images/github_icon.png';
