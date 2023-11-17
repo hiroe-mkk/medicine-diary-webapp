@@ -51,7 +51,7 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
 
         //then:
         actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/sharedgroup/management"))
+            .andExpect(redirectedUrl("/shared-group/management"))
     }
 
     @Test
@@ -68,7 +68,7 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
                                           .param("accountId", user1AccountId.value))
         //then:
         actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/sharedgroup/management"))
+            .andExpect(redirectedUrl("/shared-group/management"))
     }
 
     @Test

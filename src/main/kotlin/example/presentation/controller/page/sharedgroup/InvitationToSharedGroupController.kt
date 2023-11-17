@@ -27,6 +27,6 @@ class InvitationToSharedGroupController(private val sharedGroupService: SharedGr
             ex.resultMessage
         }
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
-        return "redirect:/sharedgroup/management"
+        return "redirect:/shared-group/management"
     }
 }

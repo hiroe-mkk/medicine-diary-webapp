@@ -48,7 +48,7 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
 
         //then:
         actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/sharedgroup/management"))
+            .andExpect(redirectedUrl("/shared-group/management"))
     }
 
     @Test
@@ -65,7 +65,7 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
 
         //then:
         actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/sharedgroup/management"))
+            .andExpect(redirectedUrl("/shared-group/management"))
     }
 
     @Test

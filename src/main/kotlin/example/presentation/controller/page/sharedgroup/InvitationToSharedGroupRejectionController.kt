@@ -21,6 +21,6 @@ class InvitationToSharedGroupRejectionController(private val sharedGroupService:
         sharedGroupService.rejectInvitationToSharedGroup(sharedGroupId, userSessionProvider.getUserSession())
         val resultMessage = ResultMessage.info("共有グループへの招待を拒否しました。")
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
-        return "redirect:/sharedgroup/management"
+        return "redirect:/shared-group/management"
     }
 }

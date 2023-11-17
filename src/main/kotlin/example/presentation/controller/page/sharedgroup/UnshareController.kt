@@ -21,6 +21,6 @@ class UnshareController(private val sharedGroupService: SharedGroupService,
         sharedGroupService.unshare(userSessionProvider.getUserSession())
         val resultMessage = ResultMessage.info("共有を停止しました。")
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
-        return "redirect:/sharedgroup/management"
+        return "redirect:/shared-group/management"
     }
 }
