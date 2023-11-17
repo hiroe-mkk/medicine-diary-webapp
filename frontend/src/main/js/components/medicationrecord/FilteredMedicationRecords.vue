@@ -102,35 +102,35 @@
           </div>
           <div class="media-content has-text-grey-dark">
             <p class="m-0 has-text-left">
-              <span class="has-text-weight-bold">
+              <strong>
                 {{ medicationRecord.takenMedicine.medicineName }}
-              </span>
+              </strong>
               (
-              <span>
+              <span class="has-text-weight-semibold">
                 {{ medicationRecord.followUp.symptom }}
+                <span
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.followUp.beforeMedication
+                    )
+                  "
+                ></span>
+                <span
+                  class="icon is-small"
+                  v-if="medicationRecord.followUp.afterMedication !== undefined"
+                >
+                  <i class="fa-solid fa-angles-right"></i>
+                </span>
+                <span
+                  v-if="medicationRecord.followUp.afterMedication !== undefined"
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.followUp.afterMedication
+                    )
+                  "
+                ></span>
+                )
               </span>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.beforeMedication
-                  )
-                "
-              ></span>
-              <span
-                class="icon is-small"
-                v-if="medicationRecord.followUp.afterMedication !== undefined"
-              >
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-              <span
-                v-if="medicationRecord.followUp.afterMedication !== undefined"
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.afterMedication
-                  )
-                "
-              ></span>
-              )
             </p>
             <p class="has-text-right m-0">
               <strong>

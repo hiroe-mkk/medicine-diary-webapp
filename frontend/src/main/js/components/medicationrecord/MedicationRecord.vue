@@ -25,7 +25,7 @@
         </p>
         <div class="block m-3">
           <p class="is-flex is-justify-content-space-between mb-2">
-            <strong>服用したお薬</strong>
+            <span class="has-text-weight-semibold">服用したお薬</span>
             <span>
               <a
                 class="is-underlined has-text-info has-text-weight-semibold"
@@ -33,63 +33,81 @@
               >
                 {{ medicationRecord.value.takenMedicine.medicineName }}
               </a>
-              <span class="ml-2">{{
-                medicationRecord.value.takenMedicine.dose
-              }}</span>
+              <strong class="ml-2">
+                {{ medicationRecord.value.takenMedicine.dose }}
+              </strong>
             </span>
           </p>
           <p class="is-flex is-justify-content-space-between mb-2">
-            <strong>服用した日時</strong>
-            <span>{{ medicationRecord.value.takenAt }}</span>
+            <span class="has-text-weight-semibold">服用した日時</span>
+            <strong>{{ medicationRecord.value.takenAt }}</strong>
           </p>
           <p class="is-flex is-justify-content-space-between mb-2">
-            <strong>症状</strong>
+            <span class="has-text-weight-semibold">症状</span>
             <span>
-              <span>{{ medicationRecord.value.followUp.symptom }}</span>
-              (
-              <small>{{ MedicationRecordUtils.convertConditionLevelToString(medicationRecord.value.followUp.beforeMedication) }}</small>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
+              <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
+              <span class="has-text-weight-semibold">
+                (
+                <small>{{
+                  MedicationRecordUtils.convertConditionLevelToString(
                     medicationRecord.value.followUp.beforeMedication
                   )
-                "
-              ></span>
-              <span
-                class="icon is-small mx-2"
-                v-if="medicationRecord.value.followUp.afterMedication !== undefined"
-              >
-                <i class="fa-solid fa-angles-right"></i>
+                }}</small>
+                <span
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.value.followUp.beforeMedication
+                    )
+                  "
+                ></span>
+                <span
+                  class="icon is-small mx-2"
+                  v-if="
+                    medicationRecord.value.followUp.afterMedication !==
+                    undefined
+                  "
+                >
+                  <i class="fa-solid fa-angles-right"></i>
+                </span>
+                <small
+                  v-if="
+                    medicationRecord.value.followUp.afterMedication !==
+                    undefined
+                  "
+                >
+                  {{
+                    MedicationRecordUtils.convertConditionLevelToString(
+                      medicationRecord.value.followUp.afterMedication
+                    )
+                  }}
+                </small>
+                <span
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.value.followUp.afterMedication
+                    )
+                  "
+                  v-if="
+                    medicationRecord.value.followUp.afterMedication !==
+                    undefined
+                  "
+                >
+                </span>
+                )
               </span>
-              <small
-                v-if="medicationRecord.value.followUp.afterMedication !== undefined"
-              >
-                {{ MedicationRecordUtils.convertConditionLevelToString(medicationRecord.value.followUp.afterMedication) }}
-              </small>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.value.followUp.afterMedication
-                  )
-                "
-                v-if="medicationRecord.value.followUp.afterMedication !== undefined"
-              >
-              </span>
-              )
             </span>
           </p>
           <p class="has-text-left" v-if="medicationRecord.value.note !== ''">
-            <strong>ノート</strong>
-            <p class="notification has-background-white-bis has-text-left py-2 px-3 my-2 mx-0">
+            <span class="has-text-weight-semibold">ノート</span>
+            <span
+              class="notification has-text-weight-semibold has-background-white-bis has-text-left py-2 px-3 my-2 mx-0"
+            >
               {{ medicationRecord.value.note }}
-            </p>
+            </span>
           </p>
-          <p
-            class="has-text-right mb-2"
-            v-if="props.hasMembers"
-          >
-            <strong>recorded by  </strong>
-            <span>{{ medicationRecord.value.recorder.username }}</span>
+          <p class="has-text-right mb-2" v-if="props.hasMembers">
+            <span class="has-text-weight-semibold">recorded by </span>
+            <strong>{{ medicationRecord.value.recorder.username }}</strong>
           </p>
         </div>
         <div class="block" v-if="medicationRecord.value.isRecordedBySelf">
@@ -109,7 +127,11 @@
               <button
                 type="button"
                 class="button is-small is-rounded is-outlined is-danger"
-                @click="deleteMedicationRecord(medicationRecord.value.medicationRecordId)"
+                @click="
+                  deleteMedicationRecord(
+                    medicationRecord.value.medicationRecordId
+                  )
+                "
               >
                 <span class="icon is-flex is-align-items-center mr-0">
                   <i class="fa-solid fa-trash-can"></i>
@@ -127,7 +149,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineEmits } from 'vue';
+import {
+  ref,
+  reactive,
+  defineExpose,
+  defineEmits,
+  callWithAsyncErrorHandling,
+} from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,

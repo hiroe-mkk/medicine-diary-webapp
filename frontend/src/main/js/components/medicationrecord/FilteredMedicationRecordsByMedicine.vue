@@ -37,27 +37,29 @@
               <strong>
                 {{ medicationRecord.followUp.symptom }}
               </strong>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.beforeMedication
-                  )
-                "
-              ></span>
-              <span
-                class="icon is-small"
-                v-if="medicationRecord.followUp.afterMedication !== undefined"
-              >
-                <i class="fa-solid fa-angles-right"></i>
+              <span class="has-text-weight-semibold">
+                <span
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.followUp.beforeMedication
+                    )
+                  "
+                ></span>
+                <span
+                  class="icon is-small"
+                  v-if="medicationRecord.followUp.afterMedication !== undefined"
+                >
+                  <i class="fa-solid fa-angles-right"></i>
+                </span>
+                <span
+                  v-if="medicationRecord.followUp.afterMedication !== undefined"
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.followUp.afterMedication
+                    )
+                  "
+                ></span>
               </span>
-              <span
-                v-if="medicationRecord.followUp.afterMedication !== undefined"
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.afterMedication
-                  )
-                "
-              ></span>
             </p>
             <p class="has-text-right m-0">
               <strong> {{ medicationRecord.takenAt }} </strong>

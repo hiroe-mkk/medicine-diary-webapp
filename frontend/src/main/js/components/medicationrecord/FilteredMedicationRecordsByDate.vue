@@ -110,32 +110,34 @@
               <strong>
                 {{ medicationRecord.takenMedicine.medicineName }}
               </strong>
-              (
-              <span>
-                {{ medicationRecord.followUp.symptom }}
+              <span class="has-text-weight-semibold">
+                (
+                <span>
+                  {{ medicationRecord.followUp.symptom }}
+                </span>
+                <span
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.followUp.beforeMedication
+                    )
+                  "
+                ></span>
+                <span
+                  class="icon is-small"
+                  v-if="medicationRecord.followUp.afterMedication !== undefined"
+                >
+                  <i class="fa-solid fa-angles-right"></i>
+                </span>
+                <span
+                  v-if="medicationRecord.followUp.afterMedication !== undefined"
+                  v-html="
+                    MedicationRecordUtils.convertConditionLevelToIcon(
+                      medicationRecord.followUp.afterMedication
+                    )
+                  "
+                ></span>
+                )
               </span>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.beforeMedication
-                  )
-                "
-              ></span>
-              <span
-                class="icon is-small"
-                v-if="medicationRecord.followUp.afterMedication !== undefined"
-              >
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-              <span
-                v-if="medicationRecord.followUp.afterMedication !== undefined"
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.followUp.afterMedication
-                  )
-                "
-              ></span>
-              )
             </p>
             <p class="has-text-right m-0">
               <strong>
