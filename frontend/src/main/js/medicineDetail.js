@@ -8,21 +8,21 @@ import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 createApp({
   data() {
     return {
-      isEditModalActive: false,
+      isMenuModalActive: false,
       noMedicineImage: noMedicineImage,
     };
   },
   methods: {
     activateMedicineImageChangeModal() {
-      this.isEditModalActive = false;
+      this.isMenuModalActive = false;
       this.$refs.changeableImage.activateChangeModal();
     },
     activateDeletionConfirmationModal() {
-      this.isEditModalActive = false;
+      this.isMenuModalActive = false;
       this.$refs.confirmationMessage.activate();
     },
     activateInventoryAdjustmentModal() {
-      this.isEditModalActive = false;
+      this.isMenuModalActive = false;
       this.$refs.inventory.activateInventoryAdjustmentModal();
     },
   },

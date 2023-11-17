@@ -53,40 +53,64 @@
       ></medication-records>
 
       <div class="modal" :class="{ 'is-active': isMenuModalActive }">
-        <div class="modal-background" @click="isMenuModalActive = false"></div>
+        <div class="modal-background"></div>
         <div class="modal-content is-flex is-justify-content-center">
-          <div class="content">
-            <a
-              class="button is-dark is-fullwidth is-small mb-1"
-              th:href="@{/profile/edit}"
-            >
-              <strong class="mx-6">プロフィール編集</strong>
-            </a>
-            <a
-              class="button is-dark is-fullwidth is-small mb-1"
-              th:href="@{/shared-group/management}"
-            >
-              <strong class="mx-6">共有グループ管理</strong>
-            </a>
-            <form method="post" th:action="@{/logout}">
-              <button class="button is-dark is-fullwidth is-small mb-1">
-                <strong class="mx-6">ログアウト</strong>
+          <div class="panel is-link is-inline-block">
+            <p class="panel-heading has-text-right pt-2 pb-1 px-2">
+              <button
+                class="delete"
+                type="button"
+                @click="isMenuModalActive = false"
+              ></button>
+            </p>
+
+            <span class="panel-block has-background-white p-0">
+              <a
+                class="button is-ghost is-fullwidth pr-6 pl-5"
+                th:href="@{/profile/edit}"
+              >
+                <span class="panel-icon has-text-link">
+                  <i class="fa-solid fa-address-card"></i>
+                </span>
+                <strong class="is-size-7 has-text-grey-dark">プロフィール編集</strong>
+              </a>
+            </span>
+            <span class="panel-block has-background-white p-0">
+              <a
+                class="button is-ghost is-fullwidth pr-6 pl-5"
+                th:href="@{/shared-group/management}"
+              >
+                <span class="panel-icon has-text-link">
+                  <i class="fa-solid fa-user-group"></i>
+                </span>
+                <strong class="is-size-7 has-text-grey-dark">共有グループ管理</strong>
+              </a>
+            </span>
+            <span class="panel-block has-background-white p-0">
+              <form
+                class="form is-flex is-align-items-center"
+                method="post"
+                th:action="@{/logout}"
+              >
+                <button class="button is-ghost is-fullwidth pr-6 pl-5">
+                  <span class="panel-icon has-text-link">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                  </span>
+                  <strong class="is-size-7 has-text-grey-dark">ログアウト</strong>
+                </button>
+              </form>
+            </span>
+            <span class="panel-block has-background-white p-0">
+              <button
+                class="button is-ghost is-fullwidth pr-6 pl-4"
+                @click="activateAccountDeletionConfirmationModal()"
+              >
+                <span class="panel-icon has-text-danger mr-4">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </span>
+                <strong class="is-size-7 has-text-danger-dark">アカウント削除</strong>
               </button>
-            </form>
-            <button
-              type="button"
-              class="button is-dark is-fullwidth is-small mb-1"
-              @click="activateAccountDeletionConfirmationModal()"
-            >
-              <strong class="mx-6">アカウント削除</strong>
-            </button>
-            <button
-              type="button"
-              class="button is-dark is-fullwidth is-small has-text-danger mb-1"
-              @click="isMenuModalActive = false"
-            >
-              <strong class="mx-6">キャンセル</strong>
-            </button>
+            </span>
           </div>
         </div>
       </div>
