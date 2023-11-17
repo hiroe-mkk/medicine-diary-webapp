@@ -1,5 +1,5 @@
 <template>
-  <nav id="navbar" class="navbar is-fixed-top has-background-info-dark">
+  <nav id="navbar" class="navbar is-fixed-top has-background-link-dark">
     <div class="navbar-brand is-flex is-justify-content-space-between">
       <a class="navbar-item" href="/">
         <img :src="logo" alt="Logo" />
