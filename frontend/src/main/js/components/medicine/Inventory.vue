@@ -291,6 +291,7 @@ function submitForm() {
         unusedPackage: editingInventory.value.unusedPackage,
       };
       isInventoryAdjustmentModalActive.value = false;
+      resultMessage.value.activate('INFO', '在庫の修正が完了しました。');
       return;
     })
     .catch((error) => {
@@ -299,7 +300,6 @@ function submitForm() {
           // バインドエラーが発生した場合
           if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
             fieldErrors.set(error.body.fieldErrors);
-            resultMessage.value.activate('INFO', '在庫の修正が完了しました。');
             return;
           }
         } else if (error.status == 401) {
