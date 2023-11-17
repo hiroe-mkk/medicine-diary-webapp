@@ -11,9 +11,20 @@
 
   <body>
     <div id="profileEdit" layout:fragment="content">
-      <editable-profile
-        th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
-      ></editable-profile>
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered">
+          <p class="icon-text is-size-4 is-flex is-justify-content-center">
+            <strong class="has-text-grey-dark">プロフィール編集</strong>
+            <span class="icon has-text-grey-dark mx-2">
+              <i class="fa-solid fa-address-card"></i>
+            </span>
+          </p>
+        </div>
+
+        <editable-profile
+          th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
+        ></editable-profile>
+      </div>
     </div>
   </body>
 </html>

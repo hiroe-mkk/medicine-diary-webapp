@@ -17,7 +17,7 @@
       {{ username }}
     </p>
     <p
-      class="is-size-5 has-text-weight-bold has-text-grey-dark m-0"
+      class="is-size-5 has-text-weight-bold has-text-grey m-0"
       v-if="username === undefined"
     >
       ( unknown )
@@ -31,7 +31,7 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateUsernameChangeModal()"
       >
-        <strong class="has-text-grey">ユーザー名</strong>
+        <strong class="has-text-grey-dark">ユーザー名</strong>
         <span class="icon fas fa-lg has-text-link">
           <i class="fa-solid fa-angle-right"></i>
         </span>
@@ -40,7 +40,7 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateProfileImageChangeModal()"
       >
-        <strong class="has-text-grey">プロフィール画像</strong>
+        <strong class="has-text-grey-dark">プロフィール画像</strong>
         <span class="icon fas fa-lg has-text-link">
           <i class="fa-solid fa-angle-right"></i>
         </span>
