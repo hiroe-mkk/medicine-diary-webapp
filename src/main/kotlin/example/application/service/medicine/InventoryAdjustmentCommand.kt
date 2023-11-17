@@ -27,14 +27,4 @@ data class InventoryAdjustmentCommand(@field:NotNull(message = "※使用中パ�
                                                   startedOn,
                                                   expirationOn,
                                                   unusedPackage ?: 0)
-
-    companion object {
-        fun initialize(inventory: Inventory?): InventoryAdjustmentCommand {
-            return InventoryAdjustmentCommand(inventory?.remainingQuantity ?: 0.0,
-                                              inventory?.quantityPerPackage ?: 0.0,
-                                              inventory?.startedOn ?: null,
-                                              inventory?.expirationOn ?: null,
-                                              inventory?.unusedPackage ?: 0)
-        }
-    }
 }

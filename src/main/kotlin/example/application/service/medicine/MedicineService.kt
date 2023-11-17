@@ -114,16 +114,6 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 在庫修正コマンドを取得する
-     */
-    @Transactional(readOnly = true)
-    fun getInventoryAdjustCommand(medicineId: MedicineId, userSession: UserSession): InventoryAdjustmentCommand {
-        val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
-        return InventoryAdjustmentCommand.initialize(medicine.inventory)
-    }
-
-
-    /**
      * 在庫を修正する
      */
     fun adjustInventory(medicineId: MedicineId,
