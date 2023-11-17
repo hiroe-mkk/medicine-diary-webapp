@@ -13,15 +13,17 @@ createApp({
     };
   },
   methods: {
-    goBack() {
-      window.history.back();
-    },
     activateMedicineImageChangeModal() {
       this.isEditModalActive = false;
       this.$refs.changeableImage.activateChangeModal();
     },
     activateDeletionConfirmationModal() {
+      this.isEditModalActive = false;
       this.$refs.confirmationMessage.activate();
+    },
+    activateInventoryAdjustmentModal() {
+      this.isEditModalActive = false;
+      this.$refs.inventory.activateInventoryAdjustmentModal();
     },
   },
   components: {

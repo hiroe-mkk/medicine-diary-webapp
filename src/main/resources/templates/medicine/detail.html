@@ -174,7 +174,12 @@
                 class="button is-dark is-fullwidth is-small mb-1"
                 @click="activateInventoryAdjustmentModal()"
               >
-                <strong class="mx-6">在庫を修正する</strong>
+                <strong class="mx-6" th:if="*{inventory != null}">
+                  在庫を修正する
+                </strong>
+                <strong class="mx-6" th:if="*{inventory == null}">
+                  在庫管理を開始する
+                </strong>
               </button>
               <button
                 type="button"
