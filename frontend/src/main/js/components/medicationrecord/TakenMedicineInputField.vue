@@ -1,7 +1,10 @@
 <template>
   <div class="field is-horizontal my-3">
     <div class="field-label is-flex is-align-items-center">
-      <label class="label has-text-grey">お薬</label>
+      <label class="label has-text-grey">
+        お薬
+        <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+      </label>
     </div>
     <div class="field-body">
       <div class="field">
@@ -34,10 +37,7 @@
                       "
                       hidden
                     />
-                    <p
-                      class="help is-danger"
-                      v-for="error in medicineIdErrors"
-                    >
+                    <p class="help is-danger" v-for="error in medicineIdErrors">
                       {{ error }}
                     </p>
                   </div>

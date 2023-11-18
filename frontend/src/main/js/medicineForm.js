@@ -3,6 +3,21 @@ import EffectsInputField from '@main/js/components/medicine/EffectsInputField.vu
 import MedicineOwnerInputField from '@main/js/components/medicine/MedicineOwnerInputField.vue';
 
 createApp({
+  data() {
+    return {
+      doseUnitOptions: [
+        'カプセル',
+        '錠',
+        '包',
+        'mg',
+        'μg',
+        'mL',
+        'g',
+        '%',
+        'mL/h',
+      ],
+    };
+  },
   methods: {
     goBack() {
       window.history.back();

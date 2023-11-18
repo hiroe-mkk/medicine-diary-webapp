@@ -7,7 +7,10 @@
     <div th:fragment="macro(form)" th:object="${form}" th:remove="tag">
       <div class="field is-horizontal my-3">
         <div class="field-label is-flex is-align-items-center">
-          <label class="label has-text-grey">お薬の名前</label>
+          <label class="label has-text-grey">
+            お薬の名前
+            <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+          </label>
         </div>
         <div class="field-body">
           <div class="field">
@@ -38,7 +41,10 @@
             <div class="control">
               <div class="notification has-background-white py-3 px-5">
                 <div class="field my-3">
-                  <label class="label has-text-grey">1回当たりの服用量</label>
+                  <label class="label has-text-grey">
+                    1回当たりの服用量
+                    <span class="tag is-rounded is-danger is-light">必須</span>
+                  </label>
                   <div class="field-body">
                     <div class="field">
                       <div class="control mb-1">
@@ -64,11 +70,17 @@
                         <input
                           class="input is-info is-rounded"
                           type="text"
+                          list="doseUnitOptions"
                           name="doseUnit"
                           th:value="*{doseUnit}"
                           placeholder="単位"
                           th:errorclass="is-danger"
                         />
+                        <datalist id="doseUnitOptions">
+                          <option v-for="doseUnitOption in doseUnitOptions">
+                            {{doseUnitOption}}
+                          </option>
+                        </datalist>
                         <p
                           class="help is-danger"
                           th:if="${#fields.hasErrors('doseUnit')}"
@@ -84,7 +96,12 @@
                   </div>
                 </div>
                 <div class="field my-3">
-                  <label class="label has-text-grey">1日当たりの服用回数</label>
+                  <label class="label has-text-grey">
+                    1日当たりの服用回数
+                    <span class="tag is-rounded is-danger is-light ml-2"
+                      >必須</span
+                    >
+                  </label>
                   <div class="field-body">
                     <div class="field">
                       <div class="control has-icons-right">
@@ -173,8 +190,7 @@
                 name="precautions"
                 placeholder="500文字以内で入力してください。"
                 th:errorclass="is-danger"
-              >
-[[*{precautions}]]</textarea
+              >[[*{precautions}]]</textarea
               >
               <p
                 class="help is-danger"

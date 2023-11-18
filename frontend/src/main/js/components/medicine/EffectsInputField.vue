@@ -10,8 +10,8 @@
       <ul class="m-0">
         <li v-for="(effect, index) in effects">
           <div class="is-flex is-justify-content-space-between mb-1">
-            <p>{{ effect }}</p>
-            <p>
+            <span>{{ effect }}</span>
+            <span>
               <span
                 class="icon fas is-clickable m-1 is-small"
                 @click="editEffect(index)"
@@ -24,7 +24,7 @@
               >
                 <i class="fa-solid fa-circle-minus"></i>
               </span>
-            </p>
+            </span>
           </div>
           <input type="text" name="effects" :value="effect" hidden />
         </li>
@@ -63,9 +63,16 @@
             <input
               class="input is-info"
               type="text"
+              list="effectOptions"
+              placeholder="その他"
               v-model="editingEffect.value"
               maxlength="30"
             />
+            <datalist id="effectOptions">
+              <option v-for="effectOption in effectOptions">
+                {{ effectOption }}
+              </option>
+            </datalist>
           </div>
         </div>
         <div class="field is-grouped is-grouped-centered p-2">
@@ -103,6 +110,28 @@ const props = defineProps({
   errors: { type: String, default: '[]' },
 });
 
+const effectOptions = [
+  '頭痛',
+  '発熱',
+  'のどの痛み',
+  '鼻づまり',
+  '咳',
+  '嘔吐',
+  '下痢',
+  '腹痛',
+  '便秘',
+  '食欲不振',
+  '疲労感',
+  '関節痛',
+  '筋肉痛',
+  '動悸',
+  '呼吸困難',
+  '皮膚の発疹',
+  '目のかゆみ',
+  '耳の痛み',
+  '頻尿',
+  '眠れない',
+];
 const effects = reactive([]);
 const errors = reactive([]);
 

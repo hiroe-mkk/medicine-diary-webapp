@@ -34,7 +34,10 @@
 
           <div class="field is-horizontal my-3">
             <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">日時</label>
+              <label class="label has-text-grey">
+                日時
+                <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+              </label>
             </div>
             <div class="field-body">
               <div class="field">
@@ -65,17 +68,28 @@
                 <div class="control">
                   <div class="notification has-background-white py-2 px-4">
                     <div class="field my-3">
-                      <label class="label has-text-grey">症状</label>
+                      <label class="label has-text-grey">
+                        症状
+                        <span class="tag is-rounded is-danger is-light ml-2">
+                          必須
+                        </span>
+                      </label>
                       <div class="field-body">
                         <div class="field">
                           <div class="control">
                             <input
                               class="input is-info is-rounded"
                               type="text"
+                              list="effectOptions"
                               name="symptom"
                               th:value="*{symptom}"
                               th:errorclass="is-danger"
                             />
+                            <datalist id="effectOptions">
+                              <option v-for="effectOption in effectOptions">
+                                {{ effectOption }}
+                              </option>
+                            </datalist>
                             <p
                               class="help is-danger"
                               th:if="${#fields.hasErrors('symptom')}"
@@ -88,7 +102,14 @@
                     <div class="field my-3">
                       <div class="field-body">
                         <div class="field">
-                          <label class="label has-text-grey">服用前</label>
+                          <label class="label has-text-grey">
+                            服用前
+                            <span
+                              class="tag is-rounded is-danger is-light ml-2"
+                            >
+                              必須
+                            </span>
+                          </label>
                           <div class="control mb-1">
                             <div
                               class="select is-rounded is-fullwidth"
@@ -118,7 +139,7 @@
                               th:classappend="${#fields.hasErrors('afterMedication')} ? is-danger : is-info"
                             >
                               <select name="afterMedication">
-                                <option value="">-----</option>
+                                <option value=""></option>
                                 <option
                                   th:each="conditionLevel:${conditionLevels}"
                                   th:value="${conditionLevel.name}"
