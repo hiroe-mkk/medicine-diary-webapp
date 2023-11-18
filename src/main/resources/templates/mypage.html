@@ -11,98 +11,78 @@
 
   <body>
     <div id="mypage" layout:fragment="content">
-      <div class="container is-max-desktop p-3 mb-3">
-        <div class="is-flex is-justify-content-center">
-          <figure class="image is-128x128 m-2">
-            <img
-              th:src="${profile.profileImageURL}"
-              class="is-rounded"
-              th:if="${profile.profileImageURL != null}"
-            />
-            <img
-              :src="noProfileImage"
-              class="is-rounded"
-              th:if="${profile.profileImageURL == null}"
-            />
-          </figure>
+      <div class="container is-max-desktop">
+        <div class="content has-text-centered">
+          <div class="is-flex is-justify-content-center">
+            <figure class="image is-128x128 m-1">
+              <img
+                th:src="${profile.profileImageURL}"
+                class="is-rounded"
+                th:if="${profile.profileImageURL != null}"
+              />
+              <img
+                :src="noProfileImage"
+                class="is-rounded"
+                th:if="${profile.profileImageURL == null}"
+              />
+            </figure>
+          </div>
+          <p class="icon-text">
+            <strong
+              class="is-size-4 has-text-grey-dark"
+              th:text="${profile.username}"
+              th:if="${!profile.username.isDefaultValue()}"
+            >
+            </strong>
+            <strong
+              class="is-size-5 has-text-grey"
+              th:if="${profile.username.isDefaultValue()}"
+            >
+              ( unknown )
+            </strong>
+          </p>
         </div>
-        <p class="icon-text is-flex is-justify-content-center">
-          <strong
-            class="is-size-4 has-text-grey-dark"
-            th:text="${profile.username}"
-            th:if="${!profile.username.isDefaultValue()}"
-          >
-          </strong>
-          <strong
-            class="is-size-5 has-text-grey"
-            th:if="${profile.username.isDefaultValue()}"
-          >
-            ( unknown )
-          </strong>
-          <span
-            class="icon fas fa-lg has-text-link is-clickable mx-1"
-            @click="isMenuModalActive = true"
-          >
-            <i class="fa-solid fa-gear"></i>
-          </span>
-        </p>
-      </div>
 
-      <medication-records
-        th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
-      ></medication-records>
-
-      <div class="modal" :class="{ 'is-active': isMenuModalActive }">
-        <div class="modal-background"></div>
-        <div class="modal-content is-flex is-justify-content-center">
-          <div class="panel is-link is-inline-block">
-            <p class="panel-heading has-text-right pt-2 pb-1 px-2">
-              <button
-                class="delete"
-                type="button"
-                @click="isMenuModalActive = false"
-              ></button>
-            </p>
-
-            <span class="panel-block has-background-white p-0">
-              <a
-                class="button is-ghost is-fullwidth pr-6 pl-5"
-                th:href="@{/setting}"
-              >
-                <span class="panel-icon has-text-link">
-                  <i class="fa-solid fa-address-card"></i>
-                </span>
-                <strong class="is-size-7 has-text-grey-dark">設定</strong>
-              </a>
-            </span>
-            <span class="panel-block has-background-white p-0">
-              <a
-                class="button is-ghost is-fullwidth pr-6 pl-5"
-                th:href="@{/shared-group/management}"
-              >
-                <span class="panel-icon has-text-link">
-                  <i class="fa-solid fa-user-group"></i>
-                </span>
-                <strong class="is-size-7 has-text-grey-dark"
-                  >共有グループ管理</strong
-                >
-              </a>
-            </span>
+        <div class="content has-text-centered mb-2">
+          <div class="columns is-mobile">
+            <a
+              class="column notification is-clickable has-text-centered has-background-link has-text-white pb-3 pt-5 m-3"
+              th:href="@{/medicines}"
+            >
+              <span class="icon is-large fas fa-2x">
+                <i class="fa-solid fa-capsules"></i>
+              </span>
+            </a>
+            <a
+              class="column notification is-clickable has-text-centered has-background-link has-text-white pb-3 pt-5 m-3"
+              th:href="@{/medication-records}"
+            >
+              <span class="icon is-large fas fa-2x">
+                <i class="fa-solid fa-book-open"></i>
+              </span>
+            </a>
+            <a
+              class="column notification is-clickable has-text-centered has-background-link has-text-white pb-3 pt-5 m-3"
+              th:href="@{/shared-group/management}"
+            >
+              <span class="icon is-large fas fa-2x">
+                <i class="fa-solid fa-user-group"></i>
+              </span>
+            </a>
+            <a
+              class="column notification is-clickable has-text-centered has-background-link has-text-white pb-3 pt-5 m-3"
+              th:href="@{/setting}"
+            >
+              <span class="icon is-large fas fa-2x">
+                <i class="fa-solid fa-gear"></i>
+              </span>
+            </a>
           </div>
         </div>
-      </div>
 
-      <div class="bottom-right-button">
-        <a
-          class="button is-rounded is-link"
-          th:href="@{/medication-records/add}"
-        >
-          <p
-            class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"
-          >
-            <i class="fa-solid fa-file-pen"></i>
-          </p>
-        </a>
+        <medication-records
+          th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+        ></medication-records>
       </div>
     </div>
   </body>
