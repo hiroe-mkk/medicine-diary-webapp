@@ -18,3 +18,9 @@
 .opacity {
   opacity: 0.3;
 }
+
+.underline-marker {
+  background: linear-gradient(transparent 75%, #ffea99 0%);
+  display: inline;
+  padding: 2px 5px;
+}
