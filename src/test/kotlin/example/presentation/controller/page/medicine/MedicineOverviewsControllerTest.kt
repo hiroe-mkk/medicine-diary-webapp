@@ -1,6 +1,5 @@
 package example.presentation.controller.page.medicine
 
-import example.presentation.controller.page.profile.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

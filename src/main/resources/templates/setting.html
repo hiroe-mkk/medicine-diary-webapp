@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layoutWithFooter}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/setting.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="setting" layout:fragment="content">
+      <div class="container is-max-desktop p-3">
+        <setting
+          th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"
+        ></setting>
+      </div>
+    </div>
+  </body>
+</html>

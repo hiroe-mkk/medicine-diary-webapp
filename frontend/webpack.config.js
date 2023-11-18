@@ -11,7 +11,7 @@ module.exports = {
     style: './src/main/css/style.css',
     siteHeader: './src/main/js/siteHeader.js',
     mypage: './src/main/js/mypage.js',
-    profileEdit: './src/main/js/profileEdit.js',
+    setting: './src/main/js/setting.js',
     sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
     medicineForm: './src/main/js/medicineForm.js',
     medicationRecords: './src/main/js/medicationRecords.js',

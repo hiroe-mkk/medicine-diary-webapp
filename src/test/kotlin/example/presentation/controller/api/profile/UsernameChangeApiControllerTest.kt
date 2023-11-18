@@ -2,7 +2,6 @@ package example.presentation.controller.api.profile
 
 import example.application.service.account.*
 import example.domain.model.account.*
-import example.presentation.controller.page.profile.*
 import example.presentation.shared.usersession.*
 import example.testhelper.factory.*
 import example.testhelper.springframework.*

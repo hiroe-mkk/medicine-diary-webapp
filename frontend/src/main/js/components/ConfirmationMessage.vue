@@ -5,15 +5,17 @@
       <div class="message is-inline-block is-info">
         <div class="message-body">
           <div class="content">
-            <div class="has-text-centered mb-2">
+            <p class="has-text-centered mb-2">
               <strong class="is-size-5 mb-1">
                 {{ notificationMessage.message }}
               </strong>
               <br />
-              <small>
+            </p>
+            <p class="has-text-left mb-2">
+              <small class="has-text-weight-semibold">
                 {{ notificationMessage.details }}
               </small>
-            </div>
+            </p>
             <form class="form" method="post" :action="props.path">
               <input name="_csrf" :value="props.csrf" hidden />
               <template v-for="(value, name) in params.values">

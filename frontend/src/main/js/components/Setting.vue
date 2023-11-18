@@ -31,7 +31,12 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateUsernameChangeModal()"
       >
-        <strong class="has-text-grey-dark">ユーザー名</strong>
+        <span class="icon-text has-text-link">
+          <span class="icon ml-3">
+            <i class="fa-solid fa-pen"></i>
+          </span>
+          <strong>ユーザー名変更</strong>
+        </span>
         <span class="icon fas fa-lg has-text-link">
           <i class="fa-solid fa-angle-right"></i>
         </span>
@@ -40,7 +45,40 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateProfileImageChangeModal()"
       >
-        <strong class="has-text-grey-dark">プロフィール画像</strong>
+        <span class="icon-text has-text-link">
+          <span class="icon ml-3">
+            <i class="fa-solid fa-image"></i>
+          </span>
+          <strong>プロフィール画像変更</strong>
+        </span>
+        <span class="icon fas fa-lg has-text-link">
+          <i class="fa-solid fa-angle-right"></i>
+        </span>
+      </div>
+      <div
+        class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
+        @click="activateLogoutConfirmationModal()"
+      >
+        <span class="icon-text has-text-link">
+          <span class="icon ml-3">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </span>
+          <strong>ログアウト</strong>
+        </span>
+        <span class="icon fas fa-lg has-text-link">
+          <i class="fa-solid fa-angle-right"></i>
+        </span>
+      </div>
+      <div
+        class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
+        @click="activateAccountDeletionConfirmationModal()"
+      >
+        <span class="icon-text has-text-danger">
+          <span class="icon ml-3">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </span>
+          <strong>アカウント削除</strong>
+        </span>
         <span class="icon fas fa-lg has-text-link">
           <i class="fa-solid fa-angle-right"></i>
         </span>
@@ -115,6 +153,25 @@
     </div>
   </div>
 
+  <ConfirmationMessage
+    ref="accountDeletionConfirmationModal"
+    message="アカウントを削除しますか？"
+    details="アカウントを削除すると、全てのデータが削除されます。
+                  削除後、データを復元することはできません。"
+    button-label="削除する"
+    path="/accounts/delete"
+    th:attr="csrf=${_csrf.token}"
+  >
+  </ConfirmationMessage>
+  <ConfirmationMessage
+    ref="logoutConfirmationModal"
+    message="ログアウトしますか？"
+    button-label="はい"
+    path="/logout"
+    th:attr="csrf=${_csrf.token}"
+  >
+  </ConfirmationMessage>
+
   <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 <script setup>
@@ -124,9 +181,10 @@ import {
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
+import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
+import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   username: String,
@@ -138,10 +196,12 @@ const username = ref(props.username);
 const isUsernameChangeModalActive = ref(false);
 const editingUsername = ref('');
 
+const changeableImage = ref(null);
+
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
-
-const changeableImage = ref(null);
+const accountDeletionConfirmationModal = ref(null);
+const logoutConfirmationModal = ref(null);
 
 function activateUsernameChangeModal() {
   fieldErrors.clear();
@@ -211,5 +271,13 @@ function changeUsernameCompleted() {
 
 function activateProfileImageChangeModal() {
   changeableImage.value.activateChangeModal();
+}
+
+function activateAccountDeletionConfirmationModal() {
+  accountDeletionConfirmationModal.value.activate();
+}
+
+function activateLogoutConfirmationModal() {
+  logoutConfirmationModal.value.activate();
 }
 </script>

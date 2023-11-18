@@ -1,4 +1,4 @@
-package example.presentation.controller.page.profile
+package example.presentation.controller.page
 
 import example.application.service.profile.*
 import example.presentation.shared.*
@@ -9,21 +9,21 @@ import org.springframework.ui.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/profile/edit")
+@RequestMapping("/setting")
 @SessionAttributes(types = [LastRequestedPagePath::class])
-class ProfileEditController(private val profileService: ProfileService,
-                            private val userSessionProvider: UserSessionProvider) {
+class SettingController(private val profileService: ProfileService,
+                        private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/profile/edit")
+    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/setting")
 
     /**
-     * プロフィール編集画面を表示する
+     * 設定画面を表示する
      */
     @GetMapping
-    fun displayProfileEditPage(model: Model): String {
+    fun displaySettingPage(model: Model): String {
         val userSession = userSessionProvider.getUserSession()
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
-        return "profile/edit"
+        return "setting"
     }
 }
