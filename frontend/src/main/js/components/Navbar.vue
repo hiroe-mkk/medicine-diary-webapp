@@ -1,8 +1,8 @@
 <template>
   <nav id="navbar" class="navbar is-fixed-top has-background-link-dark">
     <div class="navbar-brand is-flex is-justify-content-space-between">
-      <a class="navbar-item" href="/">
-        <img :src="logo" alt="Logo" />
+      <a class="navbar-item" :href="props.isAuthenticated ? '/mypage' : '/'">
+        <strong class="is-size-4 has-text-white">お薬日記</strong>
       </a>
       <p
         class="navbar-burger has-text-info-light"
@@ -129,7 +129,7 @@
                   <p class="my-1">
                     <a
                       class="line-color button is-success has-text-white is-fullwidth is-small px-5"
-                      href="/oauth2/authorization/github"
+                      href="/oauth2/authorization/line"
                     >
                       <span
                         class="icon fas fa-lg is-flex is-align-items-center mr-2"
@@ -266,7 +266,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import logo from '@main/images/logo_header.png';
 import yahoo_icon from '@main/images/yahoo_icon.png';
 import line_icon from '@main/images/line_icon.png';
 import github_icon from '@main/images/github_icon.png';
