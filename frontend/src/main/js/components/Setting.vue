@@ -31,56 +31,48 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateUsernameChangeModal()"
       >
-        <span class="icon-text has-text-link">
-          <span class="icon ml-3">
+        <span class="icon-text">
+          <span class="icon has-text-link ml-3">
             <i class="fa-solid fa-pen"></i>
           </span>
           <strong>ユーザー名変更</strong>
-        </span>
-        <span class="icon fas fa-lg has-text-link">
-          <i class="fa-solid fa-angle-right"></i>
         </span>
       </div>
       <div
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateProfileImageChangeModal()"
       >
-        <span class="icon-text has-text-link">
-          <span class="icon ml-3">
+        <span class="icon-text">
+          <span class="icon has-text-link ml-3">
             <i class="fa-solid fa-image"></i>
           </span>
           <strong>プロフィール画像変更</strong>
         </span>
-        <span class="icon fas fa-lg has-text-link">
-          <i class="fa-solid fa-angle-right"></i>
-        </span>
       </div>
-      <div
+      <form
+        method="post"
+        action="/logout"
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
-        @click="activateLogoutConfirmationModal()"
       >
-        <span class="icon-text has-text-link">
-          <span class="icon ml-3">
-            <i class="fa-solid fa-right-from-bracket"></i>
+        <input name="_csrf" :value="props.csrf" hidden />
+        <button class="has-background-white is-size-6 p-0 is-clickable" style="border: none">
+          <span class="icon-text">
+            <span class="icon has-text-link ml-3">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </span>
+            <strong class="has-text-grey-dark">ログアウト</strong>
           </span>
-          <strong>ログアウト</strong>
-        </span>
-        <span class="icon fas fa-lg has-text-link">
-          <i class="fa-solid fa-angle-right"></i>
-        </span>
-      </div>
+        </button>
+      </form>
       <div
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
         @click="activateAccountDeletionConfirmationModal()"
       >
-        <span class="icon-text has-text-danger">
-          <span class="icon ml-3">
+        <span class="icon-text">
+          <span class="icon has-text-danger ml-3">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </span>
           <strong>アカウント削除</strong>
-        </span>
-        <span class="icon fas fa-lg has-text-link">
-          <i class="fa-solid fa-angle-right"></i>
         </span>
       </div>
     </div>
@@ -163,15 +155,6 @@
     th:attr="csrf=${_csrf.token}"
   >
   </ConfirmationMessage>
-  <ConfirmationMessage
-    ref="logoutConfirmationModal"
-    message="ログアウトしますか？"
-    button-label="はい"
-    path="/logout"
-    th:attr="csrf=${_csrf.token}"
-  >
-  </ConfirmationMessage>
-
   <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 <script setup>
@@ -201,7 +184,6 @@ const changeableImage = ref(null);
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
 const accountDeletionConfirmationModal = ref(null);
-const logoutConfirmationModal = ref(null);
 
 function activateUsernameChangeModal() {
   fieldErrors.clear();
@@ -275,9 +257,5 @@ function activateProfileImageChangeModal() {
 
 function activateAccountDeletionConfirmationModal() {
   accountDeletionConfirmationModal.value.activate();
-}
-
-function activateLogoutConfirmationModal() {
-  logoutConfirmationModal.value.activate();
 }
 </script>
