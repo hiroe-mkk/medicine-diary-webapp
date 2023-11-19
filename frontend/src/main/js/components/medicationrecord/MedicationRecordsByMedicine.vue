@@ -1,12 +1,7 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="content has-text-centered mb-3">
-      <p class="icon-text is-size-4 is-flex is-justify-content-center">
-        <strong class="has-text-grey-dark">服用記録</strong>
-        <span class="icon has-text-grey-dark mx-2">
-          <i class="fa-solid fa-book-open"></i>
-        </span>
-      </p>
+      <p class="is-size-4 has-text-weight-bold has-text-grey-dark m-3">服用記録</p>
     </div>
 
     <div class="notification has-background-white p-3">

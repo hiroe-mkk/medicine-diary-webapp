@@ -2,14 +2,11 @@
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="notification has-background-white p-3">
       <div class="content mb-3">
-        <p class="icon-text is-size-4 is-flex is-justify-content-center m-3">
+        <p class="is-size-4 m-3">
           <strong class="has-text-grey-dark">
             {{ todayWithoutYear() }}
           </strong>
           <strong class="has-text-grey-dark mx-2">の服用記録</strong>
-          <span class="icon has-text-grey-dark mx-1">
-            <i class="fa-solid fa-book-open"></i>
-          </span>
         </p>
       </div>
 
