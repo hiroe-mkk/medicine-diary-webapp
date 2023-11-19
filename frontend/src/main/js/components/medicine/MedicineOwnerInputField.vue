@@ -11,7 +11,7 @@
               <div class="field-body">
                 <div class="field is-narrow">
                   <div class="control">
-                    <label class="radio">
+                    <label class="radio ml-0 mr-2">
                       <input
                         type="radio"
                         name="isWantToOwn"
@@ -23,7 +23,7 @@
                         >あなたのお薬として登録する</strong
                       >
                     </label>
-                    <label class="radio">
+                    <label class="radio mx-0">
                       <input
                         type="radio"
                         name="isWantToOwn"
