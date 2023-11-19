@@ -10,6 +10,7 @@ module.exports = {
     vendor: ['vue'],
     style: './src/main/css/style.css',
     siteHeader: './src/main/js/siteHeader.js',
+    toppage: './src/main/js/toppage.js',
     mypage: './src/main/js/mypage.js',
     setting: './src/main/js/setting.js',
     sharedGroupManagement: './src/main/js/sharedGroupManagement.js',

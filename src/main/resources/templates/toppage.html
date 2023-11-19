@@ -6,9 +6,108 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/toppage.bundle.js}" defer></script>
   </head>
 
   <body>
-    <div layout:fragment="content" th:remove="tag"></div>
+    <div id="toppage" layout:fragment="content">
+      <div class="container has-text-centered is-max-desktop p-3">
+        <div class="content p-3">
+          <div class="block">
+            <strong class="is-size-5 has-text-link">
+              お薬の種類や服用タイミング、適切な量を見つけるサポートをします！
+            </strong>
+          </div>
+          <div class="block">
+            <p>
+              <strong class="is-size-4 has-text-link">
+                お薬日記でなにができるの？
+              </strong>
+            </p>
+            <p class="has-text-weight-semibold py-3 px-0">
+              お薬日記では、服用したお薬とその効果を手軽に記録することで、症状や変化を客観的に把握できます。<br />
+              また、日々の体調や症状の記録は、特定のパターンとそれを引き起こす要因の発見にも役立ちます。<br />
+              些細な変化も記録しておくと、後々の参考になるかもしれません。ぜひ、お薬日記で記録してみてください！
+            </p>
+            <div class="columns is-vcentered is-variable is-3">
+              <div class="column">
+                <div class="notification has-background-white p-5">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-128x128 m-0">
+                      <img :src="medicine" />
+                    </figure>
+                  </div>
+                  <strong class="underline-marker has-text-link">
+                    お薬を管理
+                  </strong>
+                  <p
+                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
+                  >
+                    お薬の名前、用法容量や注意事項など、お薬に関する情報を一元管理できます。
+                    また、お薬の写真を保存することで、必要なときにすばやくお薬の種類や形状を確認できます。
+                  </p>
+                </div>
+              </div>
+              <div class="column">
+                <div class="notification has-background-white p-5">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-128x128 m-0">
+                      <img :src="smartphone" />
+                    </figure>
+                  </div>
+                  <strong class="underline-marker has-text-link">
+                    服用したお薬を記録
+                  </strong>
+                  <p
+                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
+                  >
+                    服用したお薬の記録を残すことができます。
+                    服用したお薬の種類、服用量、時間、そしてその効果などを記録し、健康状態や薬の効果を記録します。
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="notification has-background-white p-5">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-128x128 m-0">
+                      <img :src="shopping" />
+                    </figure>
+                  </div>
+                  <strong class="underline-marker has-text-link">
+                    在庫を管理
+                  </strong>
+                  <p
+                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
+                  >
+                    所有しているお薬の在庫状況を追跡できます。
+                    お薬の残量や有効期限などを記録することで、期限切れを避け、必要な時にお薬が足りなくなることを防ぎます。
+                  </p>
+                </div>
+              </div>
+              <div class="column">
+                <div class="notification has-background-white p-5">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-128x128 m-0">
+                      <img :src="share" />
+                    </figure>
+                  </div>
+                  <strong class="underline-marker has-text-link">
+                    家族やパートナーと共有
+                  </strong>
+                  <p
+                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
+                  >
+                    お薬の情報や服用記録を家族やパートナーと共有できます。
+                    また、共有するお薬を設定できるため、プライバシーを守りながら必要な情報を共有できます。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
