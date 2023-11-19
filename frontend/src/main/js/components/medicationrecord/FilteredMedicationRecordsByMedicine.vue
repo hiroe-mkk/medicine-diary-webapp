@@ -18,7 +18,7 @@
           ) in medicationRecords.values"
           @click="activateMedicationRecordModal(medicationRecordId)"
         >
-          <div class="media-left" v-if="members.size === 0">
+          <div class="media-left" v-if="members.size !== 0">
             <figure class="image is-64x64 m-0">
               <img
                 :src="medicationRecord.recorder.profileImageURL"
@@ -90,7 +90,7 @@
 
   <MedicationRecord
     ref="medicationRecord"
-    :hasMembers="members.size === 0"
+    :hasMembers="members.size !== 0"
     :csrf="props.csrf"
     @deleted="medicationRecordDeleted"
   ></MedicationRecord>

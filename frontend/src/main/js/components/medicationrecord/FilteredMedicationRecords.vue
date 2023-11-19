@@ -10,12 +10,13 @@
     </div>
 
     <div class="notification has-background-white p-3">
-      <div class="content is-inline-block pt-2 m-0" v-if="members.size === 0">
+      <div class="content is-inline-block pt-2 m-0" v-if="members.size !== 0">
         <div class="is-flex is-align-items-center">
           <div
             class="is-clickable mx-2"
             :class="{ opacity: !filter.isUserActive(self.value.accountId) }"
             @click="toggleUserActive(self.value.accountId)"
+            v-if="self.value !== undefined"
           >
             <div class="is-flex is-justify-content-center">
               <figure class="image is-48x48 m-0">
@@ -86,7 +87,7 @@
           ) in medicationRecords.values"
           @click="activateMedicationRecordModal(medicationRecordId)"
         >
-          <div class="media-left" v-if="members.size === 0">
+          <div class="media-left" v-if="members.size !== 0">
             <figure class="image is-48x48 m-0">
               <img
                 :src="medicationRecord.recorder.profileImageURL"
@@ -163,7 +164,7 @@
 
   <MedicationRecord
     ref="medicationRecord"
-    :hasMembers="members.size === 0"
+    :hasMembers="members.size !== 0"
     :csrf="props.csrf"
     @deleted="medicationRecordDeleted"
   ></MedicationRecord>
