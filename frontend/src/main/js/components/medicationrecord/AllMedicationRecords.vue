@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div class="content is-inline-block m-2" v-if="members.size !== 0">
+    <div class="content is-inline-block m-2" v-if="members.length !== 0">
       <div class="is-flex is-align-items-center">
         <div
           class="is-clickable mx-2"
@@ -65,7 +65,7 @@
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
         ref="filteredDedicationRecords"
-        :hasMembers="members.size !== 0"
+        :hasMembers="members.length !== 0"
       ></FilteredMedicationRecords>
     </div>
   </div>

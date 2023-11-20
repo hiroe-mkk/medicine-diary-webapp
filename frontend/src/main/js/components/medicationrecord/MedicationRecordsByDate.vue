@@ -12,7 +12,7 @@
 
       <FilteredMedicationRecords
         ref="filteredDedicationRecords"
-        :hasMembers="members.size !== 0"
+        :hasMembers="members.length !== 0"
       ></FilteredMedicationRecords>
     </div>
   </div>

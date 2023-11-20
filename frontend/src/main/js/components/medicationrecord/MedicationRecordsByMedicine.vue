@@ -7,7 +7,7 @@
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
         ref="filteredDedicationRecords"
-        :hasMembers="members.size !== 0"
+        :hasMembers="members.length !== 0"
       ></FilteredMedicationRecords>
     </div>
   </div>

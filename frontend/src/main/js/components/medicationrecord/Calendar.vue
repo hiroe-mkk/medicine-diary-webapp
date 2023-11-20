@@ -1,6 +1,6 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
-    <div class="content is-inline-block pt-2 m-0" v-if="members.size !== 0">
+    <div class="content is-inline-block pt-2 m-0" v-if="members.length !== 0">
       <div class="is-flex is-align-items-center">
         <div
           class="is-clickable mx-2"
@@ -79,7 +79,7 @@
         </div>
         <FilteredMedicationRecords
           ref="filteredDedicationRecords"
-          :hasMembers="members.size !== 0"
+          :hasMembers="members.length !== 0"
         ></FilteredMedicationRecords>
       </div>
     </div>
