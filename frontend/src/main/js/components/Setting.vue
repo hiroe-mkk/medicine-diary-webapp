@@ -49,6 +49,17 @@
           <strong>プロフィール画像変更</strong>
         </span>
       </div>
+      <a
+        class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
+        href="/shared-group/management"
+      >
+        <span class="icon-text">
+          <span class="icon has-text-link ml-3">
+            <i class="fa-solid fa-user-group"></i>
+          </span>
+          <strong>共有グループ管理</strong>
+        </span>
+      </a>
       <form
         method="post"
         action="/logout"
