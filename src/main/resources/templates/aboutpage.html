@@ -18,10 +18,11 @@
               <strong class="is-size-4 has-text-link">お薬日記とは？</strong>
             </p>
             <p class="has-text-weight-semibold py-3 px-0">
-              お薬の服用記録や体調の変化を記録してみたことはありますか？<br/>
-              記録をつけることは、服用したお薬の効果や健康状態を客観的に把握するのに役立ちます。
-              また、特定のパターンやその原因を発見する手助けにもなります。<br />
-              ぜひ、お薬日記で記録を始めてみてください！
+              お薬を服用した際、体調の変化や副作用を記録したことはありますか？<br />
+              服用後の体の変化や感じたことを記録することで、薬の効果や健康状態について新たな気づきを得ることができます。<br />
+              しかし、紙や手帳に記録するのは手間がかかりますし、管理も面倒ですよね。<br />
+              お薬日記は、データを手軽に入力でき、いつでも簡単にアクセスできるため、継続的に記録するのに最適です。<br />
+              ぜひ、お薬日記で記録を始めてみてください。
             </p>
           </div>
           <div class="block">
@@ -30,46 +31,26 @@
                 お薬日記でなにができるの？
               </strong>
             </p>
-            <div class="columns is-vcentered is-variable is-3">
-              <div class="column">
+            <div class="tile is-ancestor">
+              <div class="tile is-parent">
                 <div class="notification has-background-white p-5">
                   <div class="is-flex is-justify-content-center">
                     <figure class="image is-128x128 m-0">
-                      <img :src="medicine" />
+                      <img :src="medicines" />
                     </figure>
                   </div>
                   <strong class="underline-marker has-text-link">
-                    お薬を管理
+                    お薬情報を簡単登録
                   </strong>
                   <p
                     class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
                   >
-                    お薬の名前、用法容量や注意事項など、お薬に関する情報を一元管理できます。
-                    また、お薬の写真を保存することで、必要なときにすばやくお薬の種類や形状を確認できます。
+                    お薬の名前や使い方など、詳細な情報を簡単に登録して管理できます。
+                    写真も追加できるので、お薬の見た目も視覚的に確認できます。
                   </p>
                 </div>
               </div>
-              <div class="column">
-                <div class="notification has-background-white p-5">
-                  <div class="is-flex is-justify-content-center">
-                    <figure class="image is-128x128 m-0">
-                      <img :src="smartphone" />
-                    </figure>
-                  </div>
-                  <strong class="underline-marker has-text-link">
-                    服用したお薬を記録
-                  </strong>
-                  <p
-                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
-                  >
-                    服用したお薬の記録を残すことができます。
-                    服用したお薬の種類、服用量、時間、そしてその効果などを記録し、健康状態や薬の効果を記録します。
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="columns">
-              <div class="column">
+              <div class="tile is-parent">
                 <div class="notification has-background-white p-5">
                   <div class="is-flex is-justify-content-center">
                     <figure class="image is-128x128 m-0">
@@ -77,31 +58,71 @@
                     </figure>
                   </div>
                   <strong class="underline-marker has-text-link">
-                    在庫を管理
+                    在庫を管理して購入のタイミングを把握
                   </strong>
                   <p
                     class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
                   >
-                    所有しているお薬の在庫状況を追跡できます。
-                    お薬の残量や有効期限などを記録することで、期限切れを避け、必要な時にお薬が足りなくなることを防ぎます。
+                    お薬には、必要に応じて在庫情報を設定することができます。
+                    在庫状況がいつでも確認できるので、必要な時に不足してしまったり、余分に買ってしまったりするのを防ぐことができます。
                   </p>
                 </div>
               </div>
-              <div class="column">
+            </div>
+            <div class="tile is-ancestor">
+              <div class="tile is-parent">
                 <div class="notification has-background-white p-5">
                   <div class="is-flex is-justify-content-center">
                     <figure class="image is-128x128 m-0">
-                      <img :src="share" />
+                      <img :src="writing" />
                     </figure>
                   </div>
                   <strong class="underline-marker has-text-link">
-                    家族やパートナーと共有
+                    お薬の効果や変化を記録して体調管理
                   </strong>
                   <p
                     class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
                   >
-                    お薬の情報や服用記録を家族やパートナーと共有できます。
-                    また、共有するお薬を設定できるため、プライバシーを守りながら必要な情報を共有できます。
+                    服用したお薬に関する詳細な情報を記録ができます。
+                    お薬の効果や気になる副作用を記録することで、体の変化が把握しやすくなります。
+                  </p>
+                </div>
+              </div>
+              <div class="tile is-parent">
+                <div class="notification has-background-white p-5">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-128x128 m-0">
+                      <img :src="calendar" />
+                    </figure>
+                  </div>
+                  <strong class="underline-marker has-text-link">
+                    カレンダーでお薬を服用した日を確認
+                  </strong>
+                  <p
+                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
+                  >
+                    お薬を服用した日をカレンダーでチェックできます。
+                    日付ごとに服用した記録が表示されるので、服用パターンが一目でわかります。
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="tile is-ancestor">
+              <div class="tile is-parent">
+                <div class="notification has-background-white p-5">
+                  <div class="is-flex is-justify-content-center">
+                    <figure class="image is-128x128 m-0">
+                      <img :src="womans" />
+                    </figure>
+                  </div>
+                  <strong class="underline-marker has-text-link">
+                    家族やパートナーと情報を共有する
+                  </strong>
+                  <p
+                    class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
+                  >
+                    お薬や服用記録を家族やパートナーと共有できます。
+                    健康状態を共有し、お互いに理解し合うことで、安心感や絆が生まれ、ストレスや不安を軽減する手助けになります。
                   </p>
                 </div>
               </div>

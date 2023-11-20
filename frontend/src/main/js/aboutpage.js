@@ -1,16 +1,18 @@
 import { createApp } from 'vue';
-import smartphone_illustration from '@main/images/smartphone_illustration.png';
-import medicine_illustration from '@main/images/medicine_illustration.png';
-import share_illustration from '@main/images/share_illustration.png';
-import shopping_illustration from '@main/images/shopping_illustration.png';
+import medicines from '@main/images/medicines.png';
+import writing from '@main/images/writing.png';
+import womans from '@main/images/womans.png';
+import calendar from '@main/images/calendar.png';
+import shopping from '@main/images/shopping.png';
 
 createApp({
   data() {
     return {
-      smartphone: smartphone_illustration,
-      medicine: medicine_illustration,
-      share: share_illustration,
-      shopping: shopping_illustration,
+      medicines: medicines,
+      shopping: shopping,
+      writing: writing,
+      calendar: calendar,
+      womans: womans,
     };
   },
 }).mount('#aboutpage');
