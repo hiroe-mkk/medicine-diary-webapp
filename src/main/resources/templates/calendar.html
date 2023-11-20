@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layoutWithFooter}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/calendar.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="calendar" layout:fragment="content">
+      <calendar
+        th:attr="account-id=${accountId}, csrf=${_csrf.token}"
+      ></calendar>
+    </div>
+  </body>
+</html>

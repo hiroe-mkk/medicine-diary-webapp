@@ -12,13 +12,14 @@ module.exports = {
     siteHeader: './src/main/js/siteHeader.js',
     aboutpage: './src/main/js/aboutpage.js',
     mypage: './src/main/js/mypage.js',
+    calendar: './src/main/js/calendar.js',
     setting: './src/main/js/setting.js',
     sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
+    medicineDetail: './src/main/js/medicineDetail.js',
+    medicineOverviews: './src/main/js/medicineOverviews.js',
     medicineForm: './src/main/js/medicineForm.js',
     medicationRecords: './src/main/js/medicationRecords.js',
     medicationRecordForm: './src/main/js/medicationRecordForm.js',
-    medicineDetail: './src/main/js/medicineDetail.js',
-    medicineOverviews: './src/main/js/medicineOverviews.js',
   },
   output: {
     // ビルド成果物はルートプロジェクトの src/main/resources/static/dist に出力する

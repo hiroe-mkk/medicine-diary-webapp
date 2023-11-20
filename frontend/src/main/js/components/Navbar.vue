@@ -54,6 +54,24 @@
           </a>
         </div>
         <div class="navbar-item py-0" v-if="props.isAuthenticated">
+          <a class="has-text-info-light is-hidden-touch mr-2" href="/calendar">
+            <span
+              class="icon fas fa-2x is-flex is-align-items-center is-medium"
+            >
+              <i class="fa-solid fa-calendar-days"></i>
+            </span>
+          </a>
+          <a
+            class="icon-text has-text-link-dark is-hidden-desktop mb-2"
+            href="/calendar"
+          >
+            <span class="icon fas fa-lg is-flex is-align-items-center">
+              <i class="fa-solid fa-calendar-days"></i>
+            </span>
+            <strong>カレンダー</strong>
+          </a>
+        </div>
+        <div class="navbar-item py-0" v-if="props.isAuthenticated">
           <a
             class="has-text-info-light is-hidden-touch mr-2"
             href="/medication-records"
