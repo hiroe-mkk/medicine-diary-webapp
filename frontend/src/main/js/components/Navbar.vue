@@ -65,13 +65,31 @@
             </span>
           </a>
           <a
-            class="icon-text has-text-link-dark is-hidden-desktop"
+            class="icon-text has-text-link-dark is-hidden-desktop mb-2"
             href="/medication-records"
           >
             <span class="icon fas fa-lg is-flex is-align-items-center">
               <i class="fa-solid fa-book-open"></i>
             </span>
             <strong>服用記録一覧</strong>
+          </a>
+        </div>
+        <div class="navbar-item py-0" v-if="props.isAuthenticated">
+          <a class="has-text-info-light is-hidden-touch mr-2" href="/about">
+            <span
+              class="icon fas fa-2x is-flex is-align-items-center is-medium"
+            >
+              <i class="fa-regular fa-circle-question"></i>
+            </span>
+          </a>
+          <a
+            class="icon-text has-text-link-dark is-hidden-desktop"
+            href="/about"
+          >
+            <span class="icon fas fa-lg is-flex is-align-items-center">
+              <i class="fa-regular fa-circle-question"></i>
+            </span>
+            <strong>お薬日記とは？</strong>
           </a>
         </div>
 

@@ -13,4 +13,4 @@ createApp({
       shopping: shopping_illustration,
     };
   },
-}).mount('#toppage');
+}).mount('#aboutpage');
