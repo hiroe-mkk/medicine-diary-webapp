@@ -1,5 +1,5 @@
 <template>
-  <nav id="navbar" class="navbar is-fixed-top has-background-link-dark">
+  <nav id="navbar" class="navbar is-fixed-top has-background-info-dark">
     <div class="navbar-brand is-flex is-justify-content-space-between">
       <a class="navbar-item" :href="props.isAuthenticated ? '/mypage' : '/'">
         <strong class="is-size-4 has-text-white">お薬日記</strong>
@@ -84,7 +84,7 @@
               <strong>ログイン</strong>
             </span>
             <span
-              class="button is-small is-rounded has-text-info-light has-background-link py-0 px-3 mx-1"
+              class="button is-small is-rounded has-text-info-light has-background-info-dark py-0 px-3 mx-1"
               @click="isAccountRegistrationModalActive = true"
             >
               <strong>新規登録</strong>

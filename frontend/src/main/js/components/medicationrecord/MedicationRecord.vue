@@ -9,7 +9,7 @@
       @click="isSelectedMedicationRecordModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification has-background-link-light py-3 px-5">
+      <div class="notification has-background-info-light py-3 px-5">
         <div class="has-text-right">
           <button
             class="delete"
@@ -28,7 +28,7 @@
             <span class="has-text-weight-semibold">服用したお薬</span>
             <span>
               <a
-                class="is-underlined has-text-info has-text-weight-semibold"
+                class="is-underlined has-text-link has-text-weight-semibold"
                 :href="`/medicines/${medicationRecord.value.takenMedicine.medicineId}`"
               >
                 {{ medicationRecord.value.takenMedicine.medicineName }}

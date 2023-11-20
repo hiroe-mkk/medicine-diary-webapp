@@ -55,7 +55,10 @@
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
       >
         <input name="_csrf" :value="props.csrf" hidden />
-        <button class="has-background-white is-size-6 p-0 is-clickable" style="border: none">
+        <button
+          class="has-background-white is-size-6 p-0 is-clickable"
+          style="border: none"
+        >
           <span class="icon-text">
             <span class="icon has-text-link ml-3">
               <i class="fa-solid fa-right-from-bracket"></i>
