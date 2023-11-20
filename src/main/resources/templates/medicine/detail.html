@@ -155,58 +155,54 @@
               </p>
               <span class="panel-block has-background-white p-0">
                 <a
-                  class="button is-white is-fullwidth pr-6 pl-5"
+                  class="button is-white is-fullwidth px-6"
                   th:href="@{/medication-records/add?medicine={medicine}(medicine=*{medicineId})}"
                 >
                   <span class="panel-icon has-text-link">
                     <i class="fa-solid fa-file-pen"></i>
                   </span>
-                  <strong class="is-size-7 has-text-grey-dark"
-                    >服用記録を追加する</strong
-                  >
+                  <strong class="has-text-grey-dark">服用記録を追加する</strong>
                 </a>
               </span>
               <span class="panel-block has-background-white p-0">
                 <a
-                  class="button is-white is-fullwidth pr-6 pl-5"
+                  class="button is-white is-fullwidth px-6"
                   th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
                 >
                   <span class="panel-icon has-text-link">
                     <i class="fa-solid fa-pen-to-square"></i>
                   </span>
-                  <strong class="is-size-7 has-text-grey-dark"
-                    >基本情報を更新する</strong
-                  >
+                  <strong class="has-text-grey-dark">基本情報を更新する</strong>
                 </a>
               </span>
               <span class="panel-block has-background-white p-0">
                 <button
-                  class="button is-white is-fullwidth pr-6 pl-2"
+                  class="button is-white is-fullwidth px-6"
                   @click="activateMedicineImageChangeModal()"
+                  style="border: none"
                 >
-                  <span class="panel-icon has-text-link mr-4">
+                  <span class="panel-icon has-text-link">
                     <i class="fa-solid fa-image"></i>
                   </span>
-                  <strong class="is-size-7 has-text-grey-dark"
-                    >画像を変更する</strong
-                  >
+                  <strong class="has-text-grey-dark">画像を変更する</strong>
                 </button>
               </span>
               <span class="panel-block has-background-white p-0">
                 <button
-                  class="button is-white is-fullwidth pr-6 pl-2"
+                  class="button is-white is-fullwidth px-6"
                   @click="activateInventoryAdjustmentModal()"
+                  style="border: none"
                 >
-                  <span class="panel-icon has-text-link mr-4">
+                  <span class="panel-icon has-text-link">
                     <i class="fa-solid fa-cubes-stacked"></i>
                   </span>
                   <strong
-                    class="is-size-7 has-text-grey-dark"
+                    class="has-text-grey-dark"
                     th:if="*{inventory != null}"
                     >在庫を修正する</strong
                   >
                   <strong
-                    class="is-size-7 has-text-grey-dark"
+                    class="has-text-grey-dark"
                     th:if="*{inventory == null}"
                   >
                     在庫管理を開始する
@@ -215,15 +211,14 @@
               </span>
               <span class="panel-block has-background-white p-0">
                 <button
-                  class="button is-white is-fullwidth pr-6 pl-2"
+                  class="button is-white is-fullwidth px-6"
                   @click="activateDeletionConfirmationModal()"
+                  style="border: none"
                 >
-                  <span class="panel-icon has-text-danger mr-4">
+                  <span class="panel-icon has-text-danger">
                     <i class="fa-solid fa-trash-can"></i>
                   </span>
-                  <strong class="is-size-7 has-text-danger-dark"
-                    >お薬を削除する</strong
-                  >
+                  <strong class="has-text-danger-dark">お薬を削除する</strong>
                 </button>
               </span>
             </div>
@@ -239,7 +234,7 @@
         ></confirmation-message>
         <div class="bottom-right-button">
           <p
-            class="button is-rounded is-link"
+            class="button is-rounded has-background-info-dark"
             @click="isMenuModalActive = true"
           >
             <span
