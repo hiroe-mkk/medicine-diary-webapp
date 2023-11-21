@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/about")
-class AboutpageController {
+class AboutController {
     /**
-     * アバウトページ画面を表示する
+     * アバウト画面を表示する
      */
     @GetMapping
-    fun displayAboutpagePage(): String {
-        return "aboutpage"
+    fun displayAboutPage(): String {
+        return "about"
     }
 }

@@ -10,19 +10,19 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class AboutpageControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class AboutControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
         private const val PATH = "/about"
     }
 
     @Test
-    @DisplayName("アバウトページ画面を表示する")
-    fun displayAboutpagePage() {
+    @DisplayName("アバウト画面を表示する")
+    fun displayAboutPage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
 
         //then:
         actions.andExpect(status().isOk)
-            .andExpect(view().name("aboutpage"))
+            .andExpect(view().name("about"))
     }
 }

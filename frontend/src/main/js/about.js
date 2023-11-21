@@ -15,4 +15,4 @@ createApp({
       womans: womans,
     };
   },
-}).mount('#aboutpage');
+}).mount('#about');
