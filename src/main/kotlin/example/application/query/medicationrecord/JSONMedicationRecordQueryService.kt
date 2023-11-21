@@ -13,9 +13,9 @@ abstract class JSONMedicationRecordQueryService(private val medicineQueryService
     /**
      * 服用記録一覧ページを取得する
      */
-    fun findMedicationRecordsPage(userSession: UserSession,
-                                  filter: MedicationRecordFilter,
-                                  pageable: Pageable): Page<JSONMedicationRecord> {
+    fun findJSONMedicationRecordsPage(userSession: UserSession,
+                                      filter: MedicationRecordFilter,
+                                      pageable: Pageable): Page<JSONMedicationRecord> {
         if (filter.accountids.isEmpty()) return Page.empty()
 
         val viewableMedicineIds = requireViewableMedicineIds(filter, userSession)

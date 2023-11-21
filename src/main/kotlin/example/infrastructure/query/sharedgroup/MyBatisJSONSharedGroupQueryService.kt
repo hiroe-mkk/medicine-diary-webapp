@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class MyBatisJSONSharedGroupQueryService(private val jsonSharedGroupMapper: JSONSharedGroupMapper)
     : JSONSharedGroupQueryService {
-    override fun findSharedGroup(userSession: UserSession): JSONSharedGroups {
+    override fun findJSONSharedGroup(userSession: UserSession): JSONSharedGroups {
         val sharedGroups = jsonSharedGroupMapper.findAllByAccountId(userSession.accountId.value)
         val participatingSharedGroup = extractingParticipatingSharedGroup(sharedGroups, userSession)
         val invitedSharedGroup = invitedSharedGroups(participatingSharedGroup, sharedGroups)

@@ -6,12 +6,12 @@ interface JSONUserQueryService {
     /**
      * ユーザーを取得する
      */
-    fun findUser(userSession: UserSession): JSONUser
+    fun findJSONUser(userSession: UserSession): JSONUser
 
     /**
      * メンバーユーザー一覧を取得する
      */
-    fun findMemberJSONUsers(userSession: UserSession): JSONUsers
+    fun findJSONMemberUsers(userSession: UserSession): JSONUsers
 
     /**
      * キーワードでユーザー一覧を取得する

@@ -40,7 +40,7 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val JSO
                                                                 invitees = setOf(userSession.accountId))
 
         //when:
-        val actual = JSONSharedGroupQueryService.findSharedGroup(userSession)
+        val actual = JSONSharedGroupQueryService.findJSONSharedGroup(userSession)
 
         //then:
         assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id.value)

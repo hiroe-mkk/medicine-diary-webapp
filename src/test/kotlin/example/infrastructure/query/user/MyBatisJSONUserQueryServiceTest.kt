@@ -28,7 +28,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQu
     @DisplayName("ユーザーを取得する")
     fun getUser() {
         //when:
-        val actual = JSONUserQueryService.findUser(userSession)
+        val actual = JSONUserQueryService.findJSONUser(userSession)
 
         //then:
         assertThat(actual).isEqualTo(JSONUser(requesterProfile.accountId.value,
@@ -64,7 +64,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQu
                                        invitees = setOf(invitee1.accountId))
 
         //when:
-        val actual = JSONUserQueryService.findMemberJSONUsers(userSession)
+        val actual = JSONUserQueryService.findJSONMemberUsers(userSession)
 
         //then:
         assertThat(actual.users)
