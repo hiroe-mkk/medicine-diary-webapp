@@ -16,6 +16,6 @@ class AuthenticationSuccessHandlerImpl : AuthenticationSuccessHandler {
         val redirectResolver = RedirectResolver(request, response)
         redirectResolver.addFlashAttribute("resultMessage",
                                            ResultMessage.info("ログインに成功しました。"))
-        redirectResolver.sendRedirect("/mypage")
+        redirectResolver.sendRedirect("/")
     }
 }

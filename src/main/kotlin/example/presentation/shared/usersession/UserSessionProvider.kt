@@ -13,5 +13,10 @@ class UserSessionProvider(private val authenticatedAccountProvider: Authenticate
         return SpringSecurityUserSession(authenticatedAccount.id)
     }
 
+    fun getUserSession(): UserSession? {
+        val authenticatedAccount = authenticatedAccountProvider.getAuthenticatedAccount() ?: return null
+        return SpringSecurityUserSession(authenticatedAccount.id)
+    }
+
     private data class SpringSecurityUserSession(override val accountId: AccountId) : UserSession
 }

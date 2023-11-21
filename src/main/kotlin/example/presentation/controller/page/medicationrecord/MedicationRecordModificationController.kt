@@ -1,7 +1,7 @@
 package example.presentation.controller.page.medicationrecord
 
-import example.application.service.medicine.*
 import example.application.service.medicationrecord.*
+import example.application.service.medicine.*
 import example.domain.model.medicationrecord.*
 import example.domain.shared.message.*
 import example.presentation.shared.*
@@ -63,7 +63,7 @@ class MedicationRecordModificationController(private val medicationRecordService
                                                  ResultMessage.error("服用記録の修正に失敗しました。"))
         }
 
-        val redirectPath = lastRequestedPagePath?.value ?: "/mypage"
+        val redirectPath = lastRequestedPagePath?.value ?: "/"
         return "redirect:${redirectPath}"
     }
 }

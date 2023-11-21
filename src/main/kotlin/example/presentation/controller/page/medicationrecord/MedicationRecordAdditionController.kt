@@ -66,7 +66,7 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
                                                  ResultMessage.error("服用記録の追加に失敗しました。"))
         }
 
-        val redirectPath = lastRequestedPagePath?.value ?: "/mypage"
+        val redirectPath = lastRequestedPagePath?.value ?: "/"
         return "redirect:$redirectPath"
     }
 }

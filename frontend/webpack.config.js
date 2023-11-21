@@ -12,7 +12,6 @@ module.exports = {
     siteHeader: './src/main/js/siteHeader.js',
     about: './src/main/js/about.js',
     home: './src/main/js/home.js',
-    mypage: './src/main/js/mypage.js',
     calendar: './src/main/js/calendar.js',
     setting: './src/main/js/setting.js',
     sharedGroupManagement: './src/main/js/sharedGroupManagement.js',

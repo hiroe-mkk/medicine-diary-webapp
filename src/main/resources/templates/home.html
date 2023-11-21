@@ -42,7 +42,170 @@
         <main
           class="hero-body has-background-info-light is-flex is-align-items-flex-start py-5"
         >
-          <div class="container is-widescreen"></div>
+          <div class="container is-widescreen">
+            <div class="container is-max-desktop">
+              <div class="tile is-ancestor px-3">
+                <div class="tile is-5 is-parent">
+                  <div
+                    class="tile is-child notification is-white has-text-centered p-5"
+                  >
+                    <div class="content">
+                      <div class="is-flex is-justify-content-center">
+                        <figure class="image is-128x128 m-2">
+                          <img
+                            th:src="${profile.profileImageURL}"
+                            class="is-rounded"
+                            th:if="${profile.profileImageURL != null}"
+                          />
+                          <img
+                            :src="noProfileImage"
+                            class="is-rounded"
+                            th:if="${profile.profileImageURL == null}"
+                          />
+                        </figure>
+                      </div>
+                      <div class="icon-text is-flex is-justify-content-center">
+                        <strong
+                          class="is-size-4 has-text-grey-dark"
+                          th:text="${profile.username}"
+                          th:if="${!profile.username.isDefaultValue()}"
+                        >
+                        </strong>
+                        <strong
+                          class="is-size-5 has-text-grey"
+                          th:if="${profile.username.isDefaultValue()}"
+                        >
+                          ( unknown )
+                        </strong>
+                        <a
+                          class="icon fas fa-lg has-text-link is-clickable mx-1"
+                          th:href="@{/setting}"
+                        >
+                          <i class="fa-solid fa-gear"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="has-text-left">
+                      <a
+                        class="has-text-weight-bold has-text-link"
+                        href="/shared-group/management"
+                      >
+                        共有グループメンバー
+                      </a>
+                      <members></members>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tile is-vertical is-parent px-3">
+                  <a
+                    class="tile is-child notification is-info p-3"
+                    th:href="@{/medicines}"
+                  >
+                    <div
+                      class="columns is-flex is-align-items-center is-mobile px-2"
+                    >
+                      <div
+                        class="column is-3 is-flex is-justify-content-center is-align-content-center"
+                      >
+                        <figure
+                          class="image is-96x96 is-flex is-align-items-center"
+                        >
+                          <img
+                            class="is-rounded has-background-white"
+                            :src="medicines"
+                          />
+                        </figure>
+                      </div>
+                      <div class="column">
+                        <p class="is-size-5 has-text-weight-bold">お薬一覧</p>
+                      </div>
+                      <div
+                        class="column is-1 is-flex is-justify-content-flex-end is-align-content-center"
+                      >
+                        <span
+                          class="icon is-large fas fa-2x fas fa-lg is-flex is-align-items-center"
+                        >
+                          <i class="fa-solid fa-angle-right"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    class="tile is-child notification is-info p-3"
+                    th:href="@{/calendar}"
+                  >
+                    <div
+                      class="columns is-flex is-align-items-center is-mobile px-2"
+                    >
+                      <div
+                        class="column is-3 is-flex is-justify-content-center is-align-content-center"
+                      >
+                        <figure
+                          class="image is-96x96 is-flex is-align-items-center"
+                        >
+                          <img
+                            class="is-rounded has-background-white"
+                            :src="calendar"
+                          />
+                        </figure>
+                      </div>
+                      <div class="column">
+                        <p class="is-size-5 has-text-weight-bold">カレンダー</p>
+                      </div>
+                      <div
+                        class="column is-1 is-flex is-justify-content-flex-end is-align-content-center"
+                      >
+                        <span
+                          class="icon is-large fas fa-2x fas fa-lg is-flex is-align-items-center"
+                        >
+                          <i class="fa-solid fa-angle-right"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    class="tile is-child notification is-info p-3"
+                    th:href="@{/medication-records/add}"
+                  >
+                    <div
+                      class="columns is-flex is-align-items-center is-mobile px-2"
+                    >
+                      <div
+                        class="column is-3 is-flex is-justify-content-center is-align-content-center"
+                      >
+                        <figure
+                          class="image is-96x96 is-flex is-align-items-center"
+                        >
+                          <img
+                            class="is-rounded has-background-white"
+                            :src="writing"
+                          />
+                        </figure>
+                      </div>
+                      <div class="column">
+                        <p class="is-size-5 has-text-weight-bold">
+                          服用記録を追加する
+                        </p>
+                      </div>
+                      <div
+                        class="column is-1 is-flex is-justify-content-flex-end is-align-content-center"
+                      >
+                        <span
+                          class="icon is-large fas fa-2x fas fa-lg is-flex is-align-items-center"
+                        >
+                          <i class="fa-solid fa-angle-right"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <medication-records
+                th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+              ></medication-records>
+            </div>
+          </div>
         </main>
       </div>
     </div>
