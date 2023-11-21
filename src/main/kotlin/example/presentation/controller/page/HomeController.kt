@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/")
 @SessionAttributes(types = [LastRequestedPagePath::class])
 class HomeController(private val profileService: ProfileService,
-                     private val sharedGroupService: SharedGroupService,
                      private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
     fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/")
@@ -24,11 +23,7 @@ class HomeController(private val profileService: ProfileService,
     @GetMapping
     fun displayHomePage(model: Model): String {
         val userSession = userSessionProvider.getUserSession()
-        if (userSession != null) {
-            model.addAttribute("profile", profileService.findProfile(userSession))
-            model.addAttribute("isParticipatingInSharedGroup",
-                               sharedGroupService.isParticipatingInSharedGroup(userSession))
-        }
+        if (userSession != null) model.addAttribute("profile", profileService.findProfile(userSession))
         return "home"
     }
 }

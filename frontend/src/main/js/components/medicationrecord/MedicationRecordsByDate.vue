@@ -26,10 +26,7 @@ import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
-const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
-  csrf: String,
-});
+const props = defineProps({ csrf: String });
 
 const self = reactive({ value: undefined });
 const members = reactive([]);
@@ -51,20 +48,19 @@ onMounted(async () => {
       );
     });
 
-  if (props.isParticipatingInSharedGroup) {
-    await HttpRequestClient.submitGetRequest('/api/users?members')
-      .then((data) => {
-        members.push(...data.users);
-        filter.addAllAccountIds(members.map((member) => member.accountId));
-      })
-      .catch(() => {
-        resultMessage.value.activate(
-          'ERROR',
-          'エラーが発生しました。',
-          '通信状態をご確認のうえ、再度お試しください。'
-        );
-      });
-  }
+  await HttpRequestClient.submitGetRequest('/api/users?members')
+    .then((data) => {
+      members.push(...data.users);
+      filter.addAllAccountIds(members.map((member) => member.accountId));
+    })
+    .catch(() => {
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
+
   const date = new Date().toLocaleDateString().slice(0, 10);
   filter.start = date;
   filter.end = date;
