@@ -17,39 +17,47 @@
             <div
               class="tile is-child notification is-white has-text-centered p-5"
             >
-              <div class="is-flex is-justify-content-center">
-                <figure class="image is-128x128 m-2">
-                  <img
-                    th:src="${profile.profileImageURL}"
-                    class="is-rounded"
-                    th:if="${profile.profileImageURL != null}"
-                  />
-                  <img
-                    :src="noProfileImage"
-                    class="is-rounded"
-                    th:if="${profile.profileImageURL == null}"
-                  />
-                </figure>
+              <div class="content">
+                <div class="is-flex is-justify-content-center">
+                  <figure class="image is-128x128 m-2">
+                    <img
+                      th:src="${profile.profileImageURL}"
+                      class="is-rounded"
+                      th:if="${profile.profileImageURL != null}"
+                    />
+                    <img
+                      :src="noProfileImage"
+                      class="is-rounded"
+                      th:if="${profile.profileImageURL == null}"
+                    />
+                  </figure>
+                </div>
+                <div class="icon-text is-flex is-justify-content-center">
+                  <strong
+                    class="is-size-4 has-text-grey-dark"
+                    th:text="${profile.username}"
+                    th:if="${!profile.username.isDefaultValue()}"
+                  >
+                  </strong>
+                  <strong
+                    class="is-size-5 has-text-grey"
+                    th:if="${profile.username.isDefaultValue()}"
+                  >
+                    ( unknown )
+                  </strong>
+                  <a
+                    class="icon fas fa-lg has-text-link is-clickable mx-1"
+                    th:href="@{/setting}"
+                  >
+                    <i class="fa-solid fa-gear"></i>
+                  </a>
+                </div>
               </div>
-              <div class="icon-text is-flex is-justify-content-center">
-                <strong
-                  class="is-size-4 has-text-grey-dark"
-                  th:text="${profile.username}"
-                  th:if="${!profile.username.isDefaultValue()}"
-                >
-                </strong>
-                <strong
-                  class="is-size-5 has-text-grey"
-                  th:if="${profile.username.isDefaultValue()}"
-                >
-                  ( unknown )
-                </strong>
-                <a
-                  class="icon fas fa-lg has-text-link is-clickable mx-1"
-                  th:href="@{/setting}"
-                >
-                  <i class="fa-solid fa-gear"></i>
+              <div class="has-text-left">
+                <a class="has-text-weight-bold has-text-link" href="/shared-group/management">
+                  共有グループメンバー
                 </a>
+                <members></members>
               </div>
             </div>
           </div>
@@ -71,7 +79,7 @@
                   </figure>
                 </div>
                 <div class="column">
-                  <p class="is-size-4 has-text-weight-bold">お薬一覧</p>
+                  <p class="is-size-5 has-text-weight-bold">お薬一覧</p>
                 </div>
                 <div
                   class="column is-1 is-flex is-justify-content-flex-end is-align-content-center"
@@ -100,7 +108,7 @@
                   </figure>
                 </div>
                 <div class="column">
-                  <p class="is-size-4 has-text-weight-bold">カレンダー</p>
+                  <p class="is-size-5 has-text-weight-bold">カレンダー</p>
                 </div>
                 <div
                   class="column is-1 is-flex is-justify-content-flex-end is-align-content-center"
@@ -129,7 +137,7 @@
                   </figure>
                 </div>
                 <div class="column">
-                  <p class="is-size-4 has-text-weight-bold">
+                  <p class="is-size-5 has-text-weight-bold">
                     服用記録を追加する
                   </p>
                 </div>
