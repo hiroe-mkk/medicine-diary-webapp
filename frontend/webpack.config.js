@@ -18,7 +18,6 @@ module.exports = {
     medicineDetail: './src/main/js/medicineDetail.js',
     medicineOverviews: './src/main/js/medicineOverviews.js',
     medicineForm: './src/main/js/medicineForm.js',
-    medicationRecords: './src/main/js/medicationRecords.js',
     medicationRecordForm: './src/main/js/medicationRecordForm.js',
   },
   output: {
