@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/")
 @SessionAttributes(types = [LastRequestedPagePath::class])
-class ToppageController {
+class HomeController {
     @ModelAttribute("lastRequestedPagePath")
     fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/")
 
     /**
-     * トップページ画面を表示する
+     * ホーム画面を表示する
      */
     @GetMapping
-    fun displayToppagePage(): String {
-        return "toppage"
+    fun displayHomePage(): String {
+        return "home"
     }
 }

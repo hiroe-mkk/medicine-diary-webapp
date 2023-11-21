@@ -109,8 +109,8 @@ internal class InvitationToSharedGroupControllerTest(@Autowired private val mock
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //given:
         val sharedGroupId = SharedGroupId("sharedGroupId")
 

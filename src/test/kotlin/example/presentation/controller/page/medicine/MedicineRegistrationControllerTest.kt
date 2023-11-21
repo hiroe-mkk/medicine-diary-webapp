@@ -34,8 +34,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
         }
 
         @Test
-        @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
-        fun requestedByUnauthenticatedUser_redirectsToToppagePage() {
+        @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
+        fun requestedByUnauthenticatedUser_redirectsToHomePage() {
             //when:
             val actions = mockMvc.perform(get(PATH))
 
@@ -104,8 +104,8 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
         }
 
         @Test
-        @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
-        fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+        @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+        fun requestedByUnauthenticatedUser_redirectToHomePage() {
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())

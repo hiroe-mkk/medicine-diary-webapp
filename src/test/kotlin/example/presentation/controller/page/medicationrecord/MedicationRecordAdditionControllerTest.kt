@@ -49,8 +49,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         }
 
         @Test
-        @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
-        fun requestedByUnauthenticatedUser_redirectsToToppagePage() {
+        @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
+        fun requestedByUnauthenticatedUser_redirectsToHomePage() {
             //when:
             val actions = mockMvc.perform(get(PATH))
 
@@ -138,8 +138,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         }
 
         @Test
-        @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
-        fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+        @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+        fun requestedByUnauthenticatedUser_redirectToHomePage() {
             //given:
             val medicineId = "medicineId"
 

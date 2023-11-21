@@ -29,8 +29,8 @@ internal class SharedGroupManagementControllerTest(@Autowired private val mockMv
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
 

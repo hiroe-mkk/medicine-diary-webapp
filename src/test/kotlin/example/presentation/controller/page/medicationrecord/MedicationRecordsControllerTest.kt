@@ -29,8 +29,8 @@ internal class MedicationRecordsControllerTest(@Autowired private val mockMvc: M
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectsToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectsToHomePage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
 

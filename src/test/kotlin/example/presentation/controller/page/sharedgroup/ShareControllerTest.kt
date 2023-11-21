@@ -82,8 +82,8 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())

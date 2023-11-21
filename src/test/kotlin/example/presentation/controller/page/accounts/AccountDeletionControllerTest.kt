@@ -23,8 +23,8 @@ internal class AccountDeletionControllerTest(@Autowired private val mockMvc: Moc
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("アカウントの削除に成功した場合、トップページ画面にリダイレクトする")
-    fun accountDeletionSucceeds_redirectToToppagePage() {
+    @DisplayName("アカウントの削除に成功した場合、ホーム画面にリダイレクトする")
+    fun accountDeletionSucceeds_redirectToHomePage() {
         //when:
         val actions = mockMvc.perform(post(PATH).with(csrf()))
 
@@ -34,8 +34,8 @@ internal class AccountDeletionControllerTest(@Autowired private val mockMvc: Moc
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //when:
         val actions = mockMvc.perform(post(PATH).with(csrf()))
 

@@ -54,8 +54,8 @@ internal class MedicineDetailControllerTest(@Autowired private val mockMvc: Mock
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面へリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectsToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectsToHomePage() {
         //given:
         val medicineId = MedicineId("medicineId")
 

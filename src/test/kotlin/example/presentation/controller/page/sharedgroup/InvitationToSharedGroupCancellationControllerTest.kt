@@ -72,8 +72,8 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、トップページ画面にリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToToppagePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //given:
         val sharedGroupId = SharedGroupId("sharedGroupId")
 
