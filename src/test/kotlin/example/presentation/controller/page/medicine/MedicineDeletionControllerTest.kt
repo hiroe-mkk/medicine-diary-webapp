@@ -30,7 +30,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     @DisplayName("薬の削除に成功した場合、薬概要一覧画面にリダイレクトする")
     fun medicineUpdateSucceeds_redirectToMedicineDetailPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:

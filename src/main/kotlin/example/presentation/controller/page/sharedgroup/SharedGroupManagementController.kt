@@ -21,7 +21,7 @@ class SharedGroupManagementController(private val JSONSharedGroupQueryService: J
     @GetMapping
     fun displaySharedGroupManagementPage(model: Model): String {
         val (participatingSharedGroup, invitedSharedGroups) =
-                JSONSharedGroupQueryService.findSharedGroup(userSessionProvider.getUserSession())
+                JSONSharedGroupQueryService.findSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("participatingSharedGroup", participatingSharedGroup)
         model.addAttribute("invitedSharedGroups", invitedSharedGroups)
         return "sharedgroup/management"

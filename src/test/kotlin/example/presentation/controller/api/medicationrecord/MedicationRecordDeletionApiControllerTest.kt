@@ -30,7 +30,7 @@ internal class MedicationRecordDeletionApiControllerTest(@Autowired private val 
     @DisplayName("服用記録を削除する")
     fun deleteMedicationRecord() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
         val medicationRecord = testMedicationRecordInserter.insert(userSession.accountId, medicine.id)
 

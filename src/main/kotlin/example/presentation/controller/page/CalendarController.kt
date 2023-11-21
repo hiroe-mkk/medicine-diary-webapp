@@ -20,7 +20,7 @@ class CalendarController(private val userSessionProvider: UserSessionProvider) {
      */
     @GetMapping
     fun displayCalendarPage(model: Model): String {
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("accountId", userSession.accountId)
         return "calendar"
     }

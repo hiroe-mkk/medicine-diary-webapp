@@ -30,7 +30,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         @DisplayName("薬基本情報更新画面を表示する")
         fun displayMedicineBasicInfoUpdatePage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
@@ -86,7 +86,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         @DisplayName("薬基本情報の更新に成功した場合、薬詳細画面にリダイレクトする")
         fun medicineBasicInfoUpdateSucceeds_redirectToMedicineDetailPage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
@@ -112,7 +112,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         @DisplayName("バリデーションエラーが発生した場合、薬基本情報更新画面を再表示する")
         fun validationErrorOccurs_redisplayMedicineBasicInfoUpdatePage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val invalidMedicineName = ""
 

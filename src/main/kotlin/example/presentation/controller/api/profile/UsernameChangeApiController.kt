@@ -22,6 +22,6 @@ class UsernameChangeApiController(private val profileService: ProfileService,
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeUsername(@Validated usernameEditCommand: UsernameEditCommand) {
         profileService.changeUsername(usernameEditCommand,
-                                      userSessionProvider.getUserSession())
+                                      userSessionProvider.getUserSessionOrElseThrow())
     }
 }

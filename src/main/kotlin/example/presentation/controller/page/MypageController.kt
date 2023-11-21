@@ -25,7 +25,7 @@ class MypageController(private val profileService: ProfileService,
      */
     @GetMapping
     fun displayMypagePage(model: Model): String {
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))

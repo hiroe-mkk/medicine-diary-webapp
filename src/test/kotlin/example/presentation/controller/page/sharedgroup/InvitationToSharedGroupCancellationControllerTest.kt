@@ -39,7 +39,7 @@ internal class InvitationToSharedGroupCancellationControllerTest(@Autowired priv
     @DisplayName("共有グループへの招待の取り消しに成功した場合、共有グループ管理画面にリダイレクトする")
     fun cancelInvitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
                                                          invitees = setOf(user1AccountId))
 

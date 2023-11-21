@@ -7,7 +7,7 @@ import org.springframework.stereotype.*
 
 @Component
 class UserSessionProvider(private val authenticatedAccountProvider: AuthenticatedAccountProvider) {
-    fun getUserSession(): UserSession {
+    fun getUserSessionOrElseThrow(): UserSession {
         val authenticatedAccount = authenticatedAccountProvider.getAuthenticatedAccount()
                                    ?: throw UserSessionNotFoundException()
         return SpringSecurityUserSession(authenticatedAccount.id)

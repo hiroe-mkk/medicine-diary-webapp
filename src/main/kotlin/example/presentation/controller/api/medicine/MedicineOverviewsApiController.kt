@@ -21,7 +21,7 @@ class MedicineOverviewsApiController(private val medicineService: MedicineServic
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getAvailableMedicineOverviews(): JSONMedicineOverviewsResponse {
-        val medicines = medicineService.findAvailableMedicineOverviews(userSessionProvider.getUserSession())
+        val medicines = medicineService.findAvailableMedicineOverviews(userSessionProvider.getUserSessionOrElseThrow())
         return JSONMedicineOverviewsResponse.from(medicines)
     }
 }

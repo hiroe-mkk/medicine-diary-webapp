@@ -20,7 +20,7 @@ class MedicationRecordsController(private val sharedGroupService: SharedGroupSer
      */
     @GetMapping
     fun displayMedicationRecordsPage(model: Model): String {
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
         return "medicationrecord/list"
     }

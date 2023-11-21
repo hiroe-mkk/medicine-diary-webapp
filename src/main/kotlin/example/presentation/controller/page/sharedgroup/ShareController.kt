@@ -22,7 +22,7 @@ class ShareController(private val sharedGroupService: SharedGroupService,
     fun share(@ModelAttribute accountId: AccountId,
               redirectAttributes: RedirectAttributes): String {
         val resultMessage = try {
-            sharedGroupService.share(accountId, userSessionProvider.getUserSession())
+            sharedGroupService.share(accountId, userSessionProvider.getUserSessionOrElseThrow())
             ResultMessage.info("共有リクエストを送信しました。")
         } catch (ex: ShareException) {
             ex.resultMessage

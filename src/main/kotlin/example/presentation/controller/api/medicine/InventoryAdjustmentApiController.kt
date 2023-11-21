@@ -22,6 +22,6 @@ class InventoryAdjustmentApiController(private val medicineService: MedicineServ
                         @Validated inventoryAdjustmentCommand: InventoryAdjustmentCommand) {
         medicineService.adjustInventory(medicineId,
                                         inventoryAdjustmentCommand,
-                                        userSessionProvider.getUserSession())
+                                        userSessionProvider.getUserSessionOrElseThrow())
     }
 }

@@ -37,7 +37,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         @DisplayName("服用記録追加画面を表示する")
         fun displayMedicationRecordAdditionPage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
@@ -73,7 +73,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         @DisplayName("服用記録の追加に成功した場合、最後にリクエストされた画面にリダイレクトする")
         fun medicationRecordAdditionSucceeds_redirectToLastRequestedPage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:

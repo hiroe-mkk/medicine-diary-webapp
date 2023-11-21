@@ -25,7 +25,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
 
     @ModelAttribute("isOwned")
     fun isOwned(@PathVariable medicineId: MedicineId): Boolean {
-        return medicineService.isOwnedMedicine(medicineId, userSessionProvider.getUserSession())
+        return medicineService.isOwnedMedicine(medicineId, userSessionProvider.getUserSessionOrElseThrow())
     }
 
     /**
@@ -35,7 +35,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     fun displayMedicineBasicInfoUpdatePage(@PathVariable medicineId: MedicineId,
                                            model: Model): String {
         val command = medicineService.getUpdateMedicineBasicInfoEditCommand(medicineId,
-                                                                            userSessionProvider.getUserSession())
+                                                                            userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicine/updateForm"
     }
@@ -52,7 +52,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
 
         medicineService.updateMedicineBasicInfo(medicineId,
                                                 medicineBasicInfoEditCommand,
-                                                userSessionProvider.getUserSession())
+                                                userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬基本情報の更新が完了しました。"))
         redirectAttributes.addAttribute("medicineId", medicineId)

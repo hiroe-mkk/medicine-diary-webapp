@@ -18,6 +18,6 @@ class MedicationRecordDeletionApiController(private val medicationRecordService:
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteMedicationRecord(@PathVariable medicationRecordId: MedicationRecordId) {
         medicationRecordService.deleteMedicationRecord(medicationRecordId,
-                                                       userSessionProvider.getUserSession())
+                                                       userSessionProvider.getUserSessionOrElseThrow())
     }
 }

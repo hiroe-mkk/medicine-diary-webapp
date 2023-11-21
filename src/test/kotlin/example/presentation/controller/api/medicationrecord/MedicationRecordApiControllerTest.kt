@@ -32,7 +32,7 @@ internal class MedicationRecordApiControllerTest(@Autowired private val mockMvc:
     @DisplayName("服用記録一覧を取得する")
     fun getMedicationRecords() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val member = testAccountInserter.insertAccountAndProfile().second
         sharedGroupInserter.insert(members = setOf(userSession.accountId, member.accountId))
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))

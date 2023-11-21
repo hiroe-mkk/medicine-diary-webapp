@@ -34,7 +34,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("服用記録修正画面を表示する")
         fun displayMedicationRecordModificationPage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val medicationRecord = testMedicationRecordInserter.insert(userSession.accountId, medicine.id)
 
@@ -89,7 +89,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("服用記録の修正に成功した場合、最後にリクエストされた画面にリダイレクトする")
         fun medicationRecordModificationSucceeds_redirectToLastRequestedPage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val medicationRecord = testMedicationRecordInserter.insert(userSession.accountId, medicine.id)
 
@@ -139,7 +139,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("服用記録が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicationRecordNotFound_displayNotFoundErrorPage() {
             //given:
-            val userSession = userSessionProvider.getUserSession()
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
             val badMedicationRecordId = MedicationRecordId("NonexistentId")
 

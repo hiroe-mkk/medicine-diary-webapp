@@ -37,7 +37,7 @@ internal class InvitationToSharedGroupControllerTest(@Autowired private val mock
     @DisplayName("共有グループへの招待に成功した場合、共有グループ管理画面にリダイレクトする")
     fun invitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
         //when:
@@ -56,7 +56,7 @@ internal class InvitationToSharedGroupControllerTest(@Autowired private val mock
     @DisplayName("共有グループへの招待に失敗した場合、共有グループ管理画面にリダイレクトする")
     fun invitationToSharedGroupFails_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId, user1AccountId))
 
         //when:
@@ -93,7 +93,7 @@ internal class InvitationToSharedGroupControllerTest(@Autowired private val mock
     @DisplayName("アカウントが見つからなかった場合、NotFoundエラー画面を表示する")
     fun accountNotFound_displayNotFoundErrorPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId, user1AccountId))
         val badAccountId = AccountId("NonexistentId")
 

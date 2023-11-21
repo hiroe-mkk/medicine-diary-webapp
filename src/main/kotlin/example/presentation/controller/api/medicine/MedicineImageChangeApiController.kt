@@ -23,6 +23,6 @@ class MedicineImageChangeApiController(private val medicineImageService: Medicin
                             @Validated imageUploadCommand: ImageUploadCommand) {
         medicineImageService.changeMedicineImage(medicineId,
                                                  imageUploadCommand,
-                                                 userSessionProvider.getUserSession())
+                                                 userSessionProvider.getUserSessionOrElseThrow())
     }
 }

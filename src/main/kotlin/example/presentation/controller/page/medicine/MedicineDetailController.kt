@@ -26,7 +26,7 @@ class MedicineDetailController(private val medicineService: MedicineService,
      */
     @GetMapping
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId, model: Model): String {
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
         model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))

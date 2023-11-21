@@ -21,7 +21,7 @@ class SettingController(private val profileService: ProfileService,
      */
     @GetMapping
     fun displaySettingPage(model: Model): String {
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
         return "setting"

@@ -36,7 +36,7 @@ class MedicationRecordModificationController(private val medicationRecordService
     fun displayMedicationRecordModificationPage(@PathVariable medicationRecordId: MedicationRecordId,
                                                 model: Model): String {
         val command = medicationRecordService.getModificationEditCommand(medicationRecordId,
-                                                                         userSessionProvider.getUserSession())
+                                                                         userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"
     }
@@ -55,7 +55,7 @@ class MedicationRecordModificationController(private val medicationRecordService
         try {
             medicationRecordService.modifyMedicationRecord(medicationRecordId,
                                                            medicationRecordEditCommand,
-                                                           userSessionProvider.getUserSession())
+                                                           userSessionProvider.getUserSessionOrElseThrow())
             redirectAttributes.addFlashAttribute("resultMessage",
                                                  ResultMessage.info("服用記録の修正が完了しました。"))
         } catch (ex: MedicineNotFoundException) {

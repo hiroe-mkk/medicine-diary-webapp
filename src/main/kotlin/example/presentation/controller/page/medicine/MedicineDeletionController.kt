@@ -19,7 +19,7 @@ class MedicineDeletionController(private val medicineService: MedicineService,
     fun deleteMedicine(@PathVariable medicineId: MedicineId,
                        redirectAttributes: RedirectAttributes): String {
         medicineService.deleteMedicine(medicineId,
-                                       userSessionProvider.getUserSession())
+                                       userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の削除が完了しました。"))
         return "redirect:/medicines"

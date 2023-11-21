@@ -22,7 +22,7 @@ class AccountDeletionController(private val accountService: AccountService,
     fun deleteAccount(httpServletRequest: HttpServletRequest,
                       httpServletResponse: HttpServletResponse,
                       redirectAttributes: RedirectAttributes): String {
-        accountService.deleteAccount(userSessionProvider.getUserSession())
+        accountService.deleteAccount(userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("アカウントの削除が完了しました。",
                                                                 "ご利用ありがとうございました。"))

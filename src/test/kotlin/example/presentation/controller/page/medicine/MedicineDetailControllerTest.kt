@@ -27,7 +27,7 @@ internal class MedicineDetailControllerTest(@Autowired private val mockMvc: Mock
     @DisplayName("薬詳細画面を表示する")
     fun displayMedicineDetailPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:

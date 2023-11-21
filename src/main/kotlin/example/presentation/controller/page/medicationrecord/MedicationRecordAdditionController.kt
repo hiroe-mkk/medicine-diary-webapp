@@ -41,7 +41,7 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
                                             redirectAttributes: RedirectAttributes,
                                             model: Model): String {
         val command = medicationRecordService.getAdditionMedicationRecordEditCommand(medicineId,
-                                                                                     userSessionProvider.getUserSession())
+                                                                                     userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"
     }
@@ -58,7 +58,7 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
 
         try {
             medicationRecordService.addMedicationRecord(medicationRecordEditCommand,
-                                                        userSessionProvider.getUserSession())
+                                                        userSessionProvider.getUserSessionOrElseThrow())
             redirectAttributes.addFlashAttribute("resultMessage",
                                                  ResultMessage.info("服用記録の追加が完了しました。"))
         } catch (ex: MedicineNotFoundException) {

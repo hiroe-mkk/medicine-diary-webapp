@@ -68,7 +68,7 @@ internal class UsernameChangeApiControllerTest(@Autowired private val mockMvc: M
     @DisplayName("アカウントが削除済みの場合、ステータスコード404のレスポンスを返す")
     fun accountHasBeenDeleted_returnsResponseWithStatus404() {
         //then:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         accountService.deleteAccount(userSession)
 
         //when:

@@ -23,7 +23,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
 
     @ModelAttribute("isParticipatingInSharedGroup")
     fun isParticipatingInSharedGroup(): Boolean {
-        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSession())
+        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 
     /**
@@ -32,7 +32,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
     @GetMapping
     fun displayMedicineRegistrationPage(model: Model): String {
         val form =
-                medicineService.getRegistrationMedicineBasicInfoEditCommand(userSessionProvider.getUserSession())
+                medicineService.getRegistrationMedicineBasicInfoEditCommand(userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", form)
         model.addAttribute("isWantToOwn", true)
         return "medicine/registrationForm"
@@ -54,7 +54,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
 
         medicineService.registerMedicine(medicineBasicInfoEditCommand,
                                          isWantToOwn,
-                                         userSessionProvider.getUserSession())
+                                         userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の登録が完了しました。"))
         return "redirect:/medicines"

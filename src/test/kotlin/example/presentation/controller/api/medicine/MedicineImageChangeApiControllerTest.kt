@@ -35,7 +35,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
     @DisplayName("薬画像の変更に成功した場合、ステータスコード204のレスポンスを返す")
     fun medicineImageChangeSucceeds_returnsResponseWithStatus204() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:

@@ -51,7 +51,7 @@ internal class ShareControllerTest(@Autowired private val mockMvc: MockMvc,
     @DisplayName("共有に失敗した場合、共有グループ管理画面にリダイレクトする")
     fun shareFails_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
         //when:

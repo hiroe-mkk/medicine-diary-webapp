@@ -37,7 +37,7 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
     @DisplayName("共有グループへの招待の拒否に成功した場合、共有グループ管理画面にリダイレクトする")
     fun rejectInvitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
                                                          invitees = setOf(userSession.accountId))
 

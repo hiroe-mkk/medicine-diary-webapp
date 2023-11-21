@@ -38,7 +38,7 @@ internal class InventoryAdjustmentApiControllerTest(@Autowired private val mockM
     @DisplayName("在庫の修正に成功した場合、ステータスコード204のレスポンスを返す")
     fun inventoryAdjustmentSucceeds_returnsResponseWithStatus204() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
         //when:

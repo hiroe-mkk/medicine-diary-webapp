@@ -20,7 +20,7 @@ class ParticipationInSharedGroupController(private val sharedGroupService: Share
     fun participateInSharedGroup(@ModelAttribute sharedGroupId: SharedGroupId,
                                  redirectAttributes: RedirectAttributes): String {
         val resultMessage = try {
-            sharedGroupService.participateInSharedGroup(sharedGroupId, userSessionProvider.getUserSession())
+            sharedGroupService.participateInSharedGroup(sharedGroupId, userSessionProvider.getUserSessionOrElseThrow())
             ResultMessage.info("共有グループに参加しました。")
         } catch (ex: ParticipationInSharedGroupException) {
             ex.resultMessage

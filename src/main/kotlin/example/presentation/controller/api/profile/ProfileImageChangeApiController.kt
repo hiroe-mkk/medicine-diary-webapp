@@ -19,6 +19,6 @@ class ProfileImageChangeApiController(private val profileImageService: ProfileIm
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeProfileImage(@Validated imageUploadCommand: ImageUploadCommand) {
         profileImageService.changeProfileImage(imageUploadCommand,
-                                               userSessionProvider.getUserSession())
+                                               userSessionProvider.getUserSessionOrElseThrow())
     }
 }

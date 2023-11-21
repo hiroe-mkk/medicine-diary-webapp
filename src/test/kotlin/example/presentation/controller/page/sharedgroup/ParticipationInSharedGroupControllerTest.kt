@@ -37,7 +37,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
     @DisplayName("共有グループへの参加に成功した場合、共有グループ管理画面にリダイレクトする")
     fun participateInSharedGroupSucceeds_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
                                                          invitees = setOf(userSession.accountId))
 
@@ -56,7 +56,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
     @DisplayName("共有グループへの参加に失敗した場合、共有グループ管理画面にリダイレクトする")
     fun participationInSharedGroupFails_redirectToShredGroupManagementPage() {
         //given:
-        val userSession = userSessionProvider.getUserSession()
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId),
                                                          invitees = setOf(userSession.accountId))
 
