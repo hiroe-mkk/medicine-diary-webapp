@@ -15,7 +15,7 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
         http.authorizeHttpRequests {
             it.requestMatchers(toStaticResources().atCommonLocations()).permitAll() // 静的リソース
                 .requestMatchers("/dist/**").permitAll() // frontend サブプロジェクトのビルド成果物が格納されているディレクトリ
-                .requestMatchers("/", "/about/**", "/service/**").permitAll()
+                .requestMatchers("/", "/about", "/agreement").permitAll()
                 .anyRequest().authenticated()
         }.oauth2Login {
             it.userInfoEndpoint { oidcUserAccountService }

@@ -1,4 +1,4 @@
-package example.presentation.controller.page.service
+package example.presentation.controller.page
 
 import example.testhelper.springframework.autoconfigure.*
 import org.junit.jupiter.api.*
@@ -10,19 +10,19 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class ServiceControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class AgreementControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
-        private const val PATH = "/service"
+        private const val PATH = "/agreement"
     }
 
     @Test
     @DisplayName("利用規約画面を表示する")
     fun displayAgreementPage() {
         //when:
-        val actions = mockMvc.perform(get("${PATH}/agreement"))
+        val actions = mockMvc.perform(get(PATH))
 
         //then:
         actions.andExpect(status().isOk)
-            .andExpect(view().name("service/agreement"))
+            .andExpect(view().name("agreement"))
     }
 }

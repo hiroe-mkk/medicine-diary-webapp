@@ -144,7 +144,7 @@
         <div class="block">
           <a
             class="has-text-weight-bold has-text-info"
-            href="/service/agreement"
+            href="/agreement"
             >利用規約
           </a>
           <span class="is-size-7 has-text-grey-dark"
