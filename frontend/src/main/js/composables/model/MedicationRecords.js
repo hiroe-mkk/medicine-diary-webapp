@@ -114,7 +114,7 @@ export class Filter {
     this.accountIds = {};
     this.start = undefined;
     this.end = undefined;
-    this.sizePerPage = 100;
+    this.sizePerPage = 20;
   }
 
   addAccountId(accountId) {

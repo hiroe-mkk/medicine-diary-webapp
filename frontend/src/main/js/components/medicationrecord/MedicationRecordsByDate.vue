@@ -10,6 +10,7 @@
       <FilteredMedicationRecords
         ref="filteredDedicationRecords"
         :hasMembers="members.length !== 0"
+        :allowLoadMore="false"
       ></FilteredMedicationRecords>
     </div>
   </div>

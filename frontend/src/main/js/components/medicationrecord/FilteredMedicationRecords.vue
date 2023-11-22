@@ -78,14 +78,16 @@
       </div>
     </div>
     <!-- TODO: 自動的に読み込まれるように変更する -->
-    <div class="has-text-centered mt-2" v-if="medicationRecords.canLoadMore">
-      <button
-        class="button is-small is-ghost"
-        type="button"
+    <div
+      class="has-text-centered mt-2"
+      v-if="props.allowLoadMore && medicationRecords.canLoadMore"
+    >
+      <p
+        class="is-size-7 has-text-link is-clickable"
         @click="loadMoreMedicationRecords()"
       >
         さらに表示する
-      </button>
+      </p>
     </div>
   </div>
 
@@ -111,6 +113,7 @@ import noProfileImage from '@main/images/no_profile_image.png';
 const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   hasMembers: Boolean,
+  allowLoadMore: Boolean,
   csrf: String,
 });
 defineExpose({ loadMedicationRecords });

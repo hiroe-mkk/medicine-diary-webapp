@@ -28,6 +28,7 @@
         <FilteredMedicationRecords
           ref="filteredMedicationRecords"
           :hasMembers="false"
+          :allowLoadMore="false"
         ></FilteredMedicationRecords>
       </div>
     </div>
@@ -37,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -70,6 +71,7 @@ const calendarOptions = {
     filter.addAccountId(props.accountId);
     filter.start = info.startStr.slice(0, 10);
     filter.end = info.endStr.slice(0, 10);
+    filter.sizePerPage = 100; // TODO: サーバーから薬IDのみを件数上限なしで取得できるように変更する
     const params = filter.createParams();
     try {
       const result = await HttpRequestClient.submitGetRequest(
