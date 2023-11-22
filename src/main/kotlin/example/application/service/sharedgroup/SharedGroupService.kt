@@ -84,10 +84,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 参加している共有グループか
+     * 共有グループに参加しているか
      */
     fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
-        return sharedGroupParticipationService.isParticipatingInSharedGroup(userSession.accountId)
+        return sharedGroupQueryService.isParticipatingInSharedGroup(userSession.accountId)
     }
 
     private fun requireAccountExists(target: AccountId) {

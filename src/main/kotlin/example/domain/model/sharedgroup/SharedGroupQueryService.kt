@@ -12,4 +12,8 @@ class SharedGroupQueryService(private val sharedGroupRepository: SharedGroupRepo
     fun findInvitedSharedGroups(accountId: AccountId): Set<SharedGroup> {
         return sharedGroupRepository.findByInvitee(accountId)
     }
+
+    fun isParticipatingInSharedGroup(accountId: AccountId): Boolean {
+        return findParticipatingSharedGroup(accountId) != null
+    }
 }

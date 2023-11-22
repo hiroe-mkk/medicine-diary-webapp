@@ -3,10 +3,10 @@ package example.testhelper.springframework.autoconfigure
 import example.application.service.sharedgroup.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.medicationrecord.*
 import example.domain.shared.type.*
 import example.infrastructure.storage.medicineimage.*
 import example.infrastructure.storage.shared.objectstrage.*
@@ -28,7 +28,7 @@ annotation class EnableDomainServiceAutoConfiguration {
 
         @Bean
         fun sharedGroupParticipationService(): SharedGroupParticipationService {
-            return SharedGroupParticipationService(sharedGroupRepository, profileRepository)
+            return SharedGroupParticipationService(sharedGroupQueryService(), profileRepository)
         }
 
         @Bean
