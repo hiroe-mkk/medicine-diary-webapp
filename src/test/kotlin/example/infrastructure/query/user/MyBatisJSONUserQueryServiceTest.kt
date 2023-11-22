@@ -11,7 +11,7 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQueryService: JSONUserQueryService,
+internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQueryService: JSONUserQueryService,
                                                @Autowired private val testAccountInserter: TestAccountInserter,
                                                @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var requesterProfile: Profile
@@ -27,7 +27,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQu
     @DisplayName("ユーザーを取得する")
     fun getUser() {
         //when:
-        val actual = JSONUserQueryService.findJSONUser(userSession.accountId)
+        val actual = jsonUserQueryService.findJSONUser(userSession.accountId)
 
         //then:
         assertThat(actual).isEqualTo(JSONUser(requesterProfile.accountId.value,
@@ -43,7 +43,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQu
         val user2AccountId = testAccountInserter.insertAccountAndProfile(username = Username("user2")).first.id
 
         //when:
-        val actual = JSONUserQueryService.findJSONUsersByKeyword("user", userSession)
+        val actual = jsonUserQueryService.findJSONUsersByKeyword("user", userSession)
 
         //when:
         assertThat(actual.users)
@@ -63,7 +63,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQu
                                        invitees = setOf(invitee1.accountId))
 
         //when:
-        val actual = JSONUserQueryService.findJSONMemberUsers(userSession)
+        val actual = jsonUserQueryService.findJSONMemberUsers(userSession)
 
         //then:
         assertThat(actual.users)

@@ -62,7 +62,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
 
     @Nested
     inner class AddMedicationRecordTest {
-        private val quantity: Double? = 1.0
+        private val quantity: Double = 1.0
         private val symptom: String = "頭痛"
         private val beforeMedication: ConditionLevel = ConditionLevel.A_LITTLE_BAD
         private val note: String = ""
@@ -83,7 +83,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("takenMedicine", medicine.id.value)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -105,7 +105,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("takenMedicine", invalidMedicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -128,7 +128,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("takenMedicine", badMedicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -149,7 +149,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("takenMedicine", medicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 

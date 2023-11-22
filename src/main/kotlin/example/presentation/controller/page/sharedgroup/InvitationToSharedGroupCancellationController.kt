@@ -20,7 +20,9 @@ class InvitationToSharedGroupCancellationController(private val sharedGroupServi
     fun cancelInvitationToSharedGroup(@ModelAttribute sharedGroupId: SharedGroupId,
                                       @ModelAttribute accountId: AccountId,
                                       redirectAttributes: RedirectAttributes): String {
-        sharedGroupService.cancelInvitationToSharedGroup(sharedGroupId, accountId, userSessionProvider.getUserSessionOrElseThrow())
+        sharedGroupService.cancelInvitationToSharedGroup(sharedGroupId,
+                                                         accountId,
+                                                         userSessionProvider.getUserSessionOrElseThrow())
         val resultMessage = ResultMessage.info("共有グループへの招待を取り消しました。")
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage)
         return "redirect:/shared-group/management"

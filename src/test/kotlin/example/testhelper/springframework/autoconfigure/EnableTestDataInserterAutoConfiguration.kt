@@ -2,9 +2,9 @@ package example.testhelper.springframework.autoconfigure
 
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.domain.model.medicationrecord.*
 import example.testhelper.inserter.*
 import org.springframework.context.annotation.*
 import org.springframework.stereotype.*

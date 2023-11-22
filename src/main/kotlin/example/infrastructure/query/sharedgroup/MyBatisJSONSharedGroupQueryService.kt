@@ -7,7 +7,7 @@ import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
 @Component
-@Transactional
+@Transactional(readOnly = true)
 class MyBatisJSONSharedGroupQueryService(private val jsonSharedGroupMapper: JSONSharedGroupMapper)
     : JSONSharedGroupQueryService {
     override fun findJSONSharedGroup(userSession: UserSession): JSONSharedGroups {

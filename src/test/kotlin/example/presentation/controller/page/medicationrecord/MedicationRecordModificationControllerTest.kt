@@ -1,7 +1,7 @@
 package example.presentation.controller.page.medicationrecord
 
-import example.domain.model.medicine.*
 import example.domain.model.medicationrecord.*
+import example.domain.model.medicine.*
 import example.presentation.controller.api.medicationrecord.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
@@ -77,7 +77,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
 
     @Nested
     inner class ModifyMedicationRecordTest {
-        private val quantity: Double? = 2.0
+        private val quantity: Double = 2.0
         private val symptom: String = "頭痛"
         private val beforeMedication: ConditionLevel = ConditionLevel.A_LITTLE_BAD
         private val afterMedication: ConditionLevel = ConditionLevel.GOOD
@@ -100,8 +100,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("takenMedicine", medicine.id.value)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
-                                              .param("afterMedication", afterMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
+                                              .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -124,8 +124,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("takenMedicine", invalidMedicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
-                                              .param("afterMedication", afterMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
+                                              .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -149,8 +149,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("takenMedicine", medicine.id.value)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
-                                              .param("afterMedication", afterMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
+                                              .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -173,8 +173,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("takenMedicine", badMedicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
-                                              .param("afterMedication", afterMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
+                                              .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 
@@ -195,8 +195,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("takenMedicine", "medicineId")
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
-                                              .param("beforeMedication", beforeMedication?.name)
-                                              .param("afterMedication", afterMedication?.name)
+                                              .param("beforeMedication", beforeMedication.name)
+                                              .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenAt", takenAt))
 

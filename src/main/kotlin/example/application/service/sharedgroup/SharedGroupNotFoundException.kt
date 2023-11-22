@@ -1,4 +1,3 @@
-
 import example.domain.model.sharedgroup.*
 import example.domain.shared.exception.*
 

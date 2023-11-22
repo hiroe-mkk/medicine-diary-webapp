@@ -21,7 +21,9 @@ class InvitationToSharedGroupController(private val sharedGroupService: SharedGr
                             @ModelAttribute accountId: AccountId,
                             redirectAttributes: RedirectAttributes): String {
         val resultMessage = try {
-            sharedGroupService.inviteToSharedGroup(sharedGroupId, accountId, userSessionProvider.getUserSessionOrElseThrow())
+            sharedGroupService.inviteToSharedGroup(sharedGroupId,
+                                                   accountId,
+                                                   userSessionProvider.getUserSessionOrElseThrow())
             ResultMessage.info("共有グループに招待しました。")
         } catch (ex: InvitationToSharedGroupException) {
             ex.resultMessage

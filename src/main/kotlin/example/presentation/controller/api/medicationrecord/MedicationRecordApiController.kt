@@ -12,7 +12,7 @@ import java.time.*
 
 @Controller
 @RequestMapping("/api/medication-records")
-class MedicationRecordApiController(private val JSONMedicationRecordQueryService: JSONMedicationRecordQueryService,
+class MedicationRecordApiController(private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
                                     private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用記録一覧を取得する
@@ -24,7 +24,7 @@ class MedicationRecordApiController(private val JSONMedicationRecordQueryService
                              @PageableDefault(page = 0,
                                               size = 10) pageable: Pageable): JSONMedicationRecords {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val page = JSONMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
+        val page = jsonMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
                                                                                   medicationRecordFilter,
                                                                                   pageable)
         return JSONMedicationRecords.from(page)

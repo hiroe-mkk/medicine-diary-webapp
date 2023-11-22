@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/users")
-class UsersApiController(private val JSONUserQueryService: JSONUserQueryService,
+class UsersApiController(private val jsonUserQueryService: JSONUserQueryService,
                          private val userSessionProvider: UserSessionProvider) {
     /**
      * ユーザーを取得する
@@ -18,7 +18,7 @@ class UsersApiController(private val JSONUserQueryService: JSONUserQueryService,
     @ResponseBody
     fun getUser(): JSONUser {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        return JSONUserQueryService.findJSONUser(userSession.accountId)
+        return jsonUserQueryService.findJSONUser(userSession.accountId)
     }
 
     /**
@@ -28,7 +28,7 @@ class UsersApiController(private val JSONUserQueryService: JSONUserQueryService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsers {
-        return JSONUserQueryService.findJSONUsersByKeyword(keyword ?: "",
+        return jsonUserQueryService.findJSONUsersByKeyword(keyword ?: "",
                                                            userSessionProvider.getUserSessionOrElseThrow())
     }
 
@@ -39,6 +39,6 @@ class UsersApiController(private val JSONUserQueryService: JSONUserQueryService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getMemberUsers(): JSONUsers {
-        return JSONUserQueryService.findJSONMemberUsers(userSessionProvider.getUserSessionOrElseThrow())
+        return jsonUserQueryService.findJSONMemberUsers(userSessionProvider.getUserSessionOrElseThrow())
     }
 }

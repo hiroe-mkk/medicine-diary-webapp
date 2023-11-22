@@ -1,6 +1,5 @@
 package example.infrastructure.query.medicationrecord
 
-import example.application.query.shared.type.*
 import example.application.query.medicationrecord.*
 import example.application.query.user.*
 import example.application.service.medicationrecord.*
@@ -8,9 +7,9 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.domain.model.medicationrecord.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -22,7 +21,7 @@ import java.time.*
 import java.time.format.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private val JSONMedicationRecordQueryService: JSONMedicationRecordQueryService,
+internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
                                                            @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
                                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                            @Autowired private val testAccountInserter: TestAccountInserter,
@@ -47,10 +46,10 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
                                             null, null)
 
         //when:
-        val actualPage1 = JSONMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
+        val actualPage1 = jsonMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
                                                                                          filter,
                                                                                          PageRequest.of(0, 3))
-        val actualPage2 = JSONMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
+        val actualPage2 = jsonMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
                                                                                          filter,
                                                                                          PageRequest.of(1, 3))
 

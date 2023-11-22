@@ -21,7 +21,8 @@ import java.util.*
 @MyBatisRepositoryTest
 internal class ProfileServiceTest(@Autowired private val profileRepository: ProfileRepository,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
-    private val usernameChangeValidationService: UsernameChangeValidationService = UsernameChangeValidationService(profileRepository)
+    private val usernameChangeValidationService: UsernameChangeValidationService =
+            UsernameChangeValidationService(profileRepository)
     private val profileService: ProfileService = ProfileService(profileRepository, usernameChangeValidationService)
 
     private lateinit var userSession: UserSession

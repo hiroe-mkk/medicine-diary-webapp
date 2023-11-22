@@ -15,6 +15,6 @@ class ImageUploadCommand(@field:FileNotEmpty
     fun validatedFileContent(): FileContent {
         return FileContent(MediaType.parseMediaType(checkNotNull(image?.contentType)),
                            checkNotNull(image?.size!!.toInt()),
-                           checkNotNull(image?.inputStream))
+                           checkNotNull(image.inputStream))
     }
 }

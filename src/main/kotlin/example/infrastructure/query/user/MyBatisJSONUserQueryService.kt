@@ -8,7 +8,7 @@ import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
 @Component
-@Transactional
+@Transactional(readOnly = true)
 class MyBatisJSONUserQueryService(private val jsonUserMapper: JSONUserMapper) : JSONUserQueryService {
     override fun findJSONUser(accountId: AccountId): JSONUser {
         return jsonUserMapper.findOneByAccountId(accountId.value) ?: throw AccountNotFoundException(accountId)

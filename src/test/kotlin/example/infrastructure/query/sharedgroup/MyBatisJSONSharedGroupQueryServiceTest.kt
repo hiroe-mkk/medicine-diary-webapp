@@ -1,6 +1,5 @@
 package example.infrastructure.query.sharedgroup
 
-import example.application.query.shared.type.*
 import example.application.query.sharedgroup.*
 import example.application.query.user.*
 import example.application.shared.usersession.*
@@ -15,7 +14,7 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val JSONSharedGroupQueryService: JSONSharedGroupQueryService,
+internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val jsonSharedGroupQueryService: JSONSharedGroupQueryService,
                                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                       @Autowired private val testAccountInserter: TestAccountInserter) {
     @Test
@@ -40,7 +39,7 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val JSO
                                                                 invitees = setOf(userSession.accountId))
 
         //when:
-        val actual = JSONSharedGroupQueryService.findJSONSharedGroup(userSession)
+        val actual = jsonSharedGroupQueryService.findJSONSharedGroup(userSession)
 
         //then:
         assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id.value)

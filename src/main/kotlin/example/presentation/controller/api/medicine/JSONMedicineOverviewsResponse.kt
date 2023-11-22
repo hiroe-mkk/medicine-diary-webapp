@@ -24,8 +24,7 @@ class JSONMedicineOverviewsResponse(val medicines: List<JSONMedicineOverviews>) 
                                 val dosageAndAdministration: JSONDosageAndAdministration,
                                 @JsonInclude(JsonInclude.Include.NON_NULL)
                                 val medicineImageURL: String?,
-                                val effects: List<String>) {
-    }
+                                val effects: List<String>)
 
     class JSONDosageAndAdministration(val quantity: String,
                                       val doseUnit: String,
