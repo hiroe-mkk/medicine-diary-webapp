@@ -61,7 +61,7 @@
           class="navbar-item is-hidden-desktop py-1 px-5 mt-2"
           v-if="props.isAuthenticated"
         >
-          <a class="has-text-link-dark" href="/home">
+          <a class="has-text-link-dark" href="/">
             <i class="fa-solid fa-house-chimney"></i>
             <strong class="px-2">ホーム</strong>
           </a>
