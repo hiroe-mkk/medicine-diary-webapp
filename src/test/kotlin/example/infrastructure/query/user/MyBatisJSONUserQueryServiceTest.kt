@@ -1,6 +1,5 @@
 package example.infrastructure.query.user
 
-import example.application.query.shared.type.*
 import example.application.query.user.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
@@ -28,7 +27,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val JSONUserQu
     @DisplayName("ユーザーを取得する")
     fun getUser() {
         //when:
-        val actual = JSONUserQueryService.findJSONUser(userSession)
+        val actual = JSONUserQueryService.findJSONUser(userSession.accountId)
 
         //then:
         assertThat(actual).isEqualTo(JSONUser(requesterProfile.accountId.value,

@@ -13,11 +13,12 @@ class UsersApiController(private val JSONUserQueryService: JSONUserQueryService,
     /**
      * ユーザーを取得する
      */
-    @GetMapping(params = ["own"])
+    @GetMapping(params = ["self"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getUser(): JSONUser {
-        return JSONUserQueryService.findJSONUser(userSessionProvider.getUserSessionOrElseThrow())
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
+        return JSONUserQueryService.findJSONUser(userSession.accountId)
     }
 
     /**

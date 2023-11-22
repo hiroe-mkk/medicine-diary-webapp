@@ -27,7 +27,7 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
         @DisplayName("ユーザーを取得する")
         fun getUser() {
             //when:
-            val actions = mockMvc.perform(get("${PATH}?own"))
+            val actions = mockMvc.perform(get("${PATH}?self"))
 
             //then:
             actions.andExpect(status().isOk)

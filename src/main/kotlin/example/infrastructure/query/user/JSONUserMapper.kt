@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*
 
 @Mapper
 interface JSONUserMapper {
-    fun findOneByAccountId(accountId: String): JSONUser
+    fun findOneByAccountId(accountId: String): JSONUser?
 
     fun findManyByKeyword(keyword: String, accountId: String): List<JSONUser>
 

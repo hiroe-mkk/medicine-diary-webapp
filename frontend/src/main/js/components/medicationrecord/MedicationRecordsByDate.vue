@@ -34,7 +34,7 @@ const filteredDedicationRecords = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?own')
+  await HttpRequestClient.submitGetRequest('/api/users?self')
     .then((data) => {
       self.value = data;
       filter.addAccountId(data.accountId);

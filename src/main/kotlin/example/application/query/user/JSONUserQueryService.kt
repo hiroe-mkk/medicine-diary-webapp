@@ -1,12 +1,13 @@
 package example.application.query.user
 
 import example.application.shared.usersession.*
+import example.domain.model.account.*
 
 interface JSONUserQueryService {
     /**
      * ユーザーを取得する
      */
-    fun findJSONUser(userSession: UserSession): JSONUser
+    fun findJSONUser(accountId: AccountId): JSONUser
 
     /**
      * メンバーユーザー一覧を取得する
