@@ -6,8 +6,8 @@ export class MedicationRecords {
     this._isLoaded = false;
     this._filter = undefined;
 
-    this._page = 0;
-    this._sizePerPage = 100;
+    this.__currentPage = 0;
+    this._sizePerPage = 10;
     this._totalPages = 0;
   }
 
@@ -24,7 +24,7 @@ export class MedicationRecords {
   }
 
   get canLoadMore() {
-    return this._page < this._totalPages;
+    return this.__currentPage < this._totalPages;
   }
 
   getMedicationRecord(medicationRecordId) {
@@ -36,8 +36,7 @@ export class MedicationRecords {
     this._filter = filter.copy();
     this._idToMedicationRecord = {};
 
-    this._page = 0;
-    this._sizePerPage = 10;
+    this.__currentPage = 0;
     this._totalPages = 0;
 
     await this.loadMore();
@@ -45,8 +44,7 @@ export class MedicationRecords {
 
   async loadMore() {
     const params = this._filter.createParams();
-    params.append('page', this._page);
-    params.append('size', this._sizePerPage);
+    params.append('page', this.__currentPage);
 
     await HttpRequestClient.submitGetRequest(
       '/api/medication-records?' + params.toString()
@@ -56,7 +54,7 @@ export class MedicationRecords {
           medicationRecord;
       });
 
-      this._page++;
+      this.__currentPage++;
       this._totalPages = data.totalPages;
       this._isLoaded = true;
     });
@@ -116,6 +114,7 @@ export class Filter {
     this.accountIds = {};
     this.start = undefined;
     this.end = undefined;
+    this.sizePerPage = 100;
   }
 
   addAccountId(accountId) {
@@ -147,6 +146,7 @@ export class Filter {
     copiedFilter.accountIds = this.accountIds;
     copiedFilter.start = this.start;
     copiedFilter.end = this.end;
+    copiedFilter.sizePerPage = this.sizePerPage;
     return copiedFilter;
   }
 
@@ -162,6 +162,7 @@ export class Filter {
       params.append('start', this.start.replace(/-/g, '/'));
     if (this.end !== undefined)
       params.append('end', this.end.replace(/-/g, '/'));
+    params.append('size', this.sizePerPage);
 
     return params;
   }

@@ -2,11 +2,8 @@
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="notification has-background-white p-3">
       <div class="content mb-3">
-        <p class="is-size-4 m-3">
-          <strong class="has-text-grey-dark">
-            {{ todayWithoutYear() }}
-          </strong>
-          <strong class="has-text-grey-dark mx-2">の服用記録</strong>
+        <p class="is-size-5 has-text-weight-bold has-text-grey-dark">
+          最近の服用記録
         </p>
       </div>
 
@@ -61,14 +58,7 @@ onMounted(async () => {
       );
     });
 
-  const date = new Date().toLocaleDateString().slice(0, 10);
-  filter.start = date;
-  filter.end = date;
+  filter.sizePerPage = 10;
   filteredDedicationRecords.value.loadMedicationRecords(filter);
 });
-
-function todayWithoutYear() {
-  const today = new Date();
-  return `${today.getMonth() + 1}月${today.getDate()}日`;
-}
 </script>
