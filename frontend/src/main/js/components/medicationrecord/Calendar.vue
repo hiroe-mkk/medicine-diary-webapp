@@ -10,25 +10,22 @@
     ></div>
     <div class="modal-content">
       <div class="notification has-text-centered has-background-white p-3">
-        <div class="has-text-right">
+        <p class="is-flex is-justify-content-space-between">
+          <span>　</span>
+          <strong class="is-size-5 has-text-grey-dark">
+            {{ selectedDate }}
+          </strong>
           <button
             class="delete"
             type="button"
             @click="isMedicationRecordsModalActive = false"
           ></button>
-        </div>
-        <div class="content mb-3">
-          <p class="is-size-4 m-3">
-            <strong class="has-text-grey-dark">
-              {{ selectedDate }}
-            </strong>
-            <strong class="has-text-grey-dark mx-2">の服用記録</strong>
-          </p>
-        </div>
+        </p>
         <FilteredMedicationRecords
           ref="filteredMedicationRecords"
           :hasMembers="false"
           :allowLoadMore="false"
+          :elements="['medicine', 'time']"
         ></FilteredMedicationRecords>
       </div>
     </div>
@@ -100,7 +97,7 @@ const calendarOptions = {
     };
   },
   dateClick: (info) => {
-    dateSelected(info.dateStr);
+    dateSelected(info.dateStr.replace(/-/g, '/'));
   },
   eventClick: (info) => {
     dateSelected(info.event.start.toLocaleDateString().slice(0, 10));
@@ -113,7 +110,8 @@ function dateSelected(date) {
   filter.start = date;
   filter.end = date;
   filteredMedicationRecords.value.loadMedicationRecords(filter);
-  selectedDate.value = date.replace(/-/g, '/');
+  const [year, month, day] = date.split('/');
+  selectedDate.value = `${year}年${month}月${day}日`;
   isMedicationRecordsModalActive.value = true;
 }
 </script>

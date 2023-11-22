@@ -66,10 +66,6 @@ export class MedicationRecords {
 }
 
 export class MedicationRecordUtils {
-  static toTime(dateTime) {
-    return dateTime.slice(11, 19);
-  }
-
   static convertConditionLevelToIcon(conditionLevel) {
     let icon;
     switch (conditionLevel) {
@@ -159,9 +155,9 @@ export class Filter {
       if (this.accountIds[accountId]) params.append('accountids', accountId);
     });
     if (this.start !== undefined)
-      params.append('start', this.start.replace(/-/g, '/'));
+      params.append('start', this.start);
     if (this.end !== undefined)
-      params.append('end', this.end.replace(/-/g, '/'));
+      params.append('end', this.end);
     params.append('size', this.sizePerPage);
 
     return params;

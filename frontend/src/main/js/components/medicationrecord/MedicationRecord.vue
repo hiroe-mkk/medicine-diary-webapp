@@ -8,138 +8,155 @@
       class="modal-background"
       @click="isSelectedMedicationRecordModalActive = false"
     ></div>
-    <div class="modal-content">
-      <div class="notification has-background-info-light py-3 px-5">
-        <div class="has-text-right">
-          <button
-            class="delete"
-            type="button"
-            @click="isSelectedMedicationRecordModalActive = false"
-          ></button>
-        </div>
-        <p class="icon-text is-size-5 is-flex is-justify-content-center">
-          <strong class="has-text-grey-dark">服用記録</strong>
-          <span class="icon has-text-grey-dark mx-2">
-            <i class="fa-solid fa-book-open"></i>
+    <div class="modal-card">
+      <div
+        class="modal-card-head has-background-white p-3"
+        :class="{
+          'is-flex is-justify-content-space-between': props.hasMembers,
+          'is-flex is-justify-content-flex-end': !props.hasMembers,
+        }"
+      >
+        <span class="is-flex is-align-items-center" v-if="props.hasMembers">
+          <figure class="image is-32x32 is-inline-block m-0">
+            <img
+              :src="medicationRecord.value.recorder.profileImageURL"
+              class="is-rounded"
+              v-if="
+                medicationRecord.value.recorder.profileImageURL !== undefined
+              "
+            />
+            <img
+              :src="noProfileImage"
+              class="is-rounded"
+              v-if="
+                medicationRecord.value.recorder.profileImageURL === undefined
+              "
+            />
+          </figure>
+          <span class="is-size-7 has-text-weight-bold ml-2">
+            {{ medicationRecord.value.recorder.username }}
+          </span>
+        </span>
+        <button
+          class="delete"
+          type="button"
+          @click="isSelectedMedicationRecordModalActive = false"
+        ></button>
+      </div>
+      <div class="modal-card-body px-5">
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-weight-semibold">服用したお薬</span>
+          <span>
+            <a
+              class="is-underlined has-text-link has-text-weight-semibold"
+              :href="`/medicines/${medicationRecord.value.takenMedicine.medicineId}`"
+            >
+              {{ medicationRecord.value.takenMedicine.medicineName }}
+            </a>
+            <strong class="ml-2">
+              {{ medicationRecord.value.takenMedicine.dose }}
+            </strong>
           </span>
         </p>
-        <div class="block m-3">
-          <p class="is-flex is-justify-content-space-between mb-2">
-            <span class="has-text-weight-semibold">服用したお薬</span>
-            <span>
-              <a
-                class="is-underlined has-text-link has-text-weight-semibold"
-                :href="`/medicines/${medicationRecord.value.takenMedicine.medicineId}`"
-              >
-                {{ medicationRecord.value.takenMedicine.medicineName }}
-              </a>
-              <strong class="ml-2">
-                {{ medicationRecord.value.takenMedicine.dose }}
-              </strong>
-            </span>
-          </p>
-          <p class="is-flex is-justify-content-space-between mb-2">
-            <span class="has-text-weight-semibold">服用した日時</span>
-            <strong>{{ medicationRecord.value.takenAt }}</strong>
-          </p>
-          <p class="is-flex is-justify-content-space-between mb-2">
-            <span class="has-text-weight-semibold">症状</span>
-            <span>
-              <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
-              <span class="has-text-weight-semibold">
-                (
-                <small>{{
-                  MedicationRecordUtils.convertConditionLevelToString(
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-weight-semibold">服用した日時</span>
+          <strong>{{ medicationRecord.value.takenAt }}</strong>
+        </p>
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-weight-semibold">症状</span>
+          <span>
+            <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
+            <span class="has-text-weight-semibold">
+              (
+              <small>{{
+                MedicationRecordUtils.convertConditionLevelToString(
+                  medicationRecord.value.followUp.beforeMedication
+                )
+              }}</small>
+              <span
+                v-html="
+                  MedicationRecordUtils.convertConditionLevelToIcon(
                     medicationRecord.value.followUp.beforeMedication
                   )
-                }}</small>
-                <span
-                  v-html="
-                    MedicationRecordUtils.convertConditionLevelToIcon(
-                      medicationRecord.value.followUp.beforeMedication
-                    )
-                  "
-                ></span>
-                <span
-                  class="icon is-small mx-2"
-                  v-if="
-                    medicationRecord.value.followUp.afterMedication !==
-                    undefined
-                  "
-                >
-                  <i class="fa-solid fa-angles-right"></i>
-                </span>
-                <small
-                  v-if="
-                    medicationRecord.value.followUp.afterMedication !==
-                    undefined
-                  "
-                >
-                  {{
-                    MedicationRecordUtils.convertConditionLevelToString(
-                      medicationRecord.value.followUp.afterMedication
-                    )
-                  }}
-                </small>
-                <span
-                  v-html="
-                    MedicationRecordUtils.convertConditionLevelToIcon(
-                      medicationRecord.value.followUp.afterMedication
-                    )
-                  "
-                  v-if="
-                    medicationRecord.value.followUp.afterMedication !==
-                    undefined
-                  "
-                >
-                </span>
-                )
-              </span>
-            </span>
-          </p>
-          <p class="has-text-left" v-if="medicationRecord.value.note !== ''">
-            <span class="has-text-weight-semibold">ノート</span>
-            <span
-              class="notification has-text-weight-semibold has-background-white-bis has-text-left py-2 px-3 my-2 mx-0"
-            >
-              {{ medicationRecord.value.note }}
-            </span>
-          </p>
-          <p class="has-text-right mb-2" v-if="props.hasMembers">
-            <span class="has-text-weight-semibold">recorded by </span>
-            <strong>{{ medicationRecord.value.recorder.username }}</strong>
-          </p>
-        </div>
-        <div class="block" v-if="medicationRecord.value.isRecordedBySelf">
-          <div class="field is-grouped is-grouped-centered pb-2">
-            <p class="control">
-              <a
-                class="button is-small is-rounded is-outlined is-link"
-                :href="`/medication-records/${medicationRecord.value.medicationRecordId}/modify`"
-              >
-                <span class="icon is-flex is-align-items-center mr-0">
-                  <i class="fa-regular fa-pen-to-square"></i>
-                </span>
-                <span class="is-size-7 has-text-weight-bold">修正する</span>
-              </a>
-            </p>
-            <p class="control">
-              <button
-                type="button"
-                class="button is-small is-rounded is-outlined is-danger"
-                @click="
-                  deleteMedicationRecord(
-                    medicationRecord.value.medicationRecordId
-                  )
+                "
+              ></span>
+              <span
+                class="icon is-small mx-2"
+                v-if="
+                  medicationRecord.value.followUp.afterMedication !== undefined
                 "
               >
-                <span class="icon is-flex is-align-items-center mr-0">
-                  <i class="fa-solid fa-trash-can"></i>
-                </span>
-                <span class="is-size-7 has-text-weight-bold">削除する</span>
-              </button>
-            </p>
-          </div>
+                <i class="fa-solid fa-angles-right"></i>
+              </span>
+              <small
+                v-if="
+                  medicationRecord.value.followUp.afterMedication !== undefined
+                "
+              >
+                {{
+                  MedicationRecordUtils.convertConditionLevelToString(
+                    medicationRecord.value.followUp.afterMedication
+                  )
+                }}
+              </small>
+              <span
+                v-html="
+                  MedicationRecordUtils.convertConditionLevelToIcon(
+                    medicationRecord.value.followUp.afterMedication
+                  )
+                "
+                v-if="
+                  medicationRecord.value.followUp.afterMedication !== undefined
+                "
+              >
+              </span>
+              )
+            </span>
+          </span>
+        </p>
+        <p class="has-text-left" v-if="medicationRecord.value.note !== ''">
+          <span class="has-text-weight-semibold">ノート</span>
+          <span
+            class="notification has-text-weight-semibold has-background-white-bis has-text-left py-2 px-3 my-2 mx-0"
+          >
+            {{ medicationRecord.value.note }}
+          </span>
+        </p>
+      </div>
+      <div
+        class="modal-card-foot has-background-white is-flex is-justify-content-center p-2"
+      >
+        <div
+          class="field is-grouped is-grouped-centered p-2"
+          v-if="medicationRecord.value.isRecordedBySelf"
+        >
+          <p class="control">
+            <a
+              class="button is-small is-rounded is-outlined is-link"
+              :href="`/medication-records/${medicationRecord.value.medicationRecordId}/modify`"
+            >
+              <span class="icon is-flex is-align-items-center mr-0">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </span>
+              <span class="is-size-7 has-text-weight-bold">修正する</span>
+            </a>
+          </p>
+          <p class="control">
+            <button
+              type="button"
+              class="button is-small is-rounded is-outlined is-danger"
+              @click="
+                deleteMedicationRecord(
+                  medicationRecord.value.medicationRecordId
+                )
+              "
+            >
+              <span class="icon is-flex is-align-items-center mr-0">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+              <span class="is-size-7 has-text-weight-bold">削除する</span>
+            </button>
+          </p>
         </div>
       </div>
     </div>
@@ -149,18 +166,13 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  defineExpose,
-  defineEmits,
-  callWithAsyncErrorHandling,
-} from 'vue';
+import { ref, reactive, defineExpose, defineEmits } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { MedicationRecordUtils } from '@main/js/composables/model/MedicationRecords.js';
+import noProfileImage from '@main/images/no_profile_image.png';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({

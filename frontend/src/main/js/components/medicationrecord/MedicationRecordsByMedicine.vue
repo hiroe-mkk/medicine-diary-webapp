@@ -11,6 +11,7 @@
         ref="filteredDedicationRecords"
         :hasMembers="members.length !== 0"
         :allowLoadMore="true"
+        :elements="['symptom', 'dateTime']"
       ></FilteredMedicationRecords>
     </div>
   </div>

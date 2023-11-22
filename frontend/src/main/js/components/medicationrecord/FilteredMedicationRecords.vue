@@ -1,6 +1,6 @@
 <template>
   <div
-    class="content p-5"
+    class="content p-5 m-0"
     v-if="medicationRecords.isLoaded && medicationRecords.size === 0"
     v-clock
   >
@@ -8,7 +8,7 @@
   </div>
 
   <div
-    class="content p-2"
+    class="content p-2 m-0"
     v-if="medicationRecords.isLoaded && medicationRecords.size !== 0"
     v-clock
   >
@@ -18,7 +18,7 @@
       @click="activateMedicationRecordModal(medicationRecordId)"
     >
       <div class="media-left" v-if="props.hasMembers">
-        <figure class="image is-64x64 m-0">
+        <figure class="image is-48x48 m-0">
           <img
             :src="medicationRecord.recorder.profileImageURL"
             class="is-rounded"
@@ -32,43 +32,53 @@
         </figure>
       </div>
       <div class="media-content has-text-grey-dark">
-        <p class="m-0 has-text-left">
+        <p class="has-text-left m-0" v-if="props.elements.includes('medicine')">
           <strong>
             {{ medicationRecord.takenMedicine.medicineName }}
           </strong>
-          <span class="has-text-weight-semibold">
-            (
-            <span>
-              {{ medicationRecord.followUp.symptom }}
-            </span>
-            <span
-              v-html="
-                MedicationRecordUtils.convertConditionLevelToIcon(
-                  medicationRecord.followUp.beforeMedication
-                )
-              "
-            ></span>
-            <span
-              class="icon is-small"
-              v-if="medicationRecord.followUp.afterMedication !== undefined"
-            >
-              <i class="fa-solid fa-angles-right"></i>
-            </span>
-            <span
-              v-if="medicationRecord.followUp.afterMedication !== undefined"
-              v-html="
-                MedicationRecordUtils.convertConditionLevelToIcon(
-                  medicationRecord.followUp.afterMedication
-                )
-              "
-            ></span>
-            )
-          </span>
+          <strong class="pl-2">
+            {{ medicationRecord.takenMedicine.dose }}
+          </strong>
+        </p>
+        <p class="has-text-left m-0" v-if="props.elements.includes('symptom')">
+          <strong>
+            {{ medicationRecord.followUp.symptom }}
+          </strong>
+          <span
+            v-html="
+              MedicationRecordUtils.convertConditionLevelToIcon(
+                medicationRecord.followUp.beforeMedication
+              )
+            "
+          ></span>
+          <strong
+            class="icon is-small"
+            v-if="medicationRecord.followUp.afterMedication !== undefined"
+          >
+            <i class="fa-solid fa-angles-right"></i>
+          </strong>
+          <span
+            v-if="medicationRecord.followUp.afterMedication !== undefined"
+            v-html="
+              MedicationRecordUtils.convertConditionLevelToIcon(
+                medicationRecord.followUp.afterMedication
+              )
+            "
+          ></span>
         </p>
         <p class="has-text-right m-0">
-          <strong>
-            {{ MedicationRecordUtils.toTime(medicationRecord.takenAt) }}
-          </strong>
+          <span
+            class="has-text-weight-semibold"
+            v-if="props.elements.includes('dateTime')"
+          >
+            {{ medicationRecord.takenAt }}
+          </span>
+          <span
+            class="has-text-weight-semibold"
+            v-if="props.elements.includes('time')"
+          >
+            {{ medicationRecord.takenAt.slice(11, 19) }}
+          </span>
         </p>
       </div>
       <div class="media-right">
@@ -114,6 +124,7 @@ const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   hasMembers: Boolean,
   allowLoadMore: Boolean,
+  elements: Array,
   csrf: String,
 });
 defineExpose({ loadMedicationRecords });
