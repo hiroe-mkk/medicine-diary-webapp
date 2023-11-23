@@ -121,7 +121,7 @@ onMounted(async () => {
 });
 
 function loadMedicines() {
-  return HttpRequestClient.submitGetRequest('/api/medicines?user')
+  return HttpRequestClient.submitGetRequest('/api/medicines?available')
     .then((data) => {
       medicines.push(...data.medicines);
     })

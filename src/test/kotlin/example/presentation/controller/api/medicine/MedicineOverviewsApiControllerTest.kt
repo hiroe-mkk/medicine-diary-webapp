@@ -24,7 +24,7 @@ internal class MedicineOverviewsApiControllerTest(@Autowired private val mockMvc
     @DisplayName("服用可能な薬概要一覧を取得する")
     fun getAvailableMedicineOverviews() {
         //when:
-        val actions = mockMvc.perform(get("${PATH}?user"))
+        val actions = mockMvc.perform(get("${PATH}?available"))
 
         //then:
         actions.andExpect(status().isOk)

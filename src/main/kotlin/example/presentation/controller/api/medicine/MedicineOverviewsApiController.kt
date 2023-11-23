@@ -17,7 +17,7 @@ class MedicineOverviewsApiController(private val medicineService: MedicineServic
     /**
      * 服用可能な薬概要一覧を取得する
      */
-    @GetMapping(params = ["user"])
+    @GetMapping(params = ["available"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getAvailableMedicineOverviews(): JSONMedicineOverviewsResponse {
