@@ -30,17 +30,24 @@
   text-decoration: none;
   background: #3273dc;
   color: #fff;
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
   border-radius: 50%;
   text-align: center;
   overflow: hidden;
   transition: 0.4s;
+  font-size: 10px;
 }
 
 .circle-button:hover {
   background: #215fc4;
+}
+
+.circle-button .blinking-text {
+  position: absolute;
+  top: 0rem;
+  right: 0em;
 }
 
 @keyframes blink {

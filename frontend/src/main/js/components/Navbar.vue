@@ -112,7 +112,7 @@
             <strong>ログイン</strong>
           </p>
           <p
-            class="button is-small is-rounded has-text-info-light has-background-info-dark py-0 px-3 mx-1"
+            class="button is-small is-rounded has-text-info-light has-background-link-dark py-0 px-3 mx-1"
             @click="activateAccountRegistrationModal()"
           >
             <strong>新規登録</strong>

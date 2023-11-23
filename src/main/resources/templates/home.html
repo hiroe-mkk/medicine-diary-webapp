@@ -23,6 +23,7 @@
     />
     <script th:src="@{/dist/js/vendor.bundle.js}" defer></script>
     <script th:src="@{/dist/js/home.bundle.js}" defer></script>
+    <script th:src="@{/dist/js/about.bundle.js}" defer></script>
 
     <link rel="stylesheet" th:href="@{/dist/css/style.bundle.css}" />
   </head>
@@ -116,7 +117,7 @@
                         >
                           <img
                             class="is-rounded has-background-white"
-                            :src="medicines"
+                            :src="medicines_small"
                           />
                         </figure>
                       </div>
@@ -149,7 +150,7 @@
                         >
                           <img
                             class="is-rounded has-background-white"
-                            :src="calendar"
+                            :src="calendar_small"
                           />
                         </figure>
                       </div>
@@ -182,7 +183,7 @@
                         >
                           <img
                             class="is-rounded has-background-white"
-                            :src="writing"
+                            :src="writing_small"
                           />
                         </figure>
                       </div>
@@ -210,39 +211,45 @@
             </div>
           </div>
         </main>
+        <footer class="hero-footer has-text-centered pb-3">
+          <a
+            class="button is-size-7 has-text-info-light is-ghost"
+            th:href="@{/agreement}"
+          >
+            利用規約
+          </a>
+        </footer>
       </div>
     </div>
 
-    <div
-      id="home"
-      class="hero is-fullheight-with-navbar"
-      sec:authorize="!isAuthenticated()"
-    >
-      <header class="hero-head">
-        <div class="navbar is-fixed-top has-background-info-dark"></div>
-        <resultmessage
-          th:attr="type=${resultMessage.type}, message=${resultMessage.message}, details=${resultMessage.details}?:''"
-          th:if="${resultMessage!=null}"
-        ></resultmessage>
-      </header>
-      <div
-        class="hero-body has-background-info-dark is-flex is-flex-direction-column p-0"
-      >
-        <div class="container has-text-centered py-5">
-          <div class="is-flex is-justify-content-center pb-6 mb-6">
-            <figure class="image">
-              <img :src="logo" alt="logo" style="max-width: 350px" />
-            </figure>
+    <div id="home" sec:authorize="!isAuthenticated()">
+      <div class="hero is-large">
+        <header id="header" class="hero-head">
+          <navbar
+            th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
+          ></navbar>
+          <resultmessage
+            th:attr="type=${resultMessage.type}, message=${resultMessage.message}, details=${resultMessage.details}?:''"
+            th:if="${resultMessage!=null}"
+          ></resultmessage>
+        </header>
+        <main
+          class="hero-body has-background-info-dark is-flex is-flex-direction-column p-5"
+        >
+          <div class="container has-text-centered py-5">
+            <div class="is-flex is-justify-content-center pb-6">
+              <figure class="image">
+                <img :src="logo" alt="logo" style="max-width: 350px" />
+              </figure>
+            </div>
           </div>
-        </div>
-        <div class="container has-text-centered">
-          <div class="content">
+          <div class="container has-text-centered py-5">
             <div
-              class="button is-info is-light is-rounded"
+              class="button is-medium is-info is-light is-rounded"
               @click="isAccountRegistrationModalActive = true"
             >
               <strong
-                class="px-5 has-text-link"
+                class="has-text-link-dark px-5"
                 @click="activateAccountRegistrationModal()"
               >
                 お薬日記をはじめる
@@ -250,47 +257,31 @@
               <authentication ref="authentication"></authentication>
             </div>
           </div>
-          <div class="notification has-background-info-light is-flex p-5">
-            <div class="has-text-left">
-              <p>
-                <strong class="underline-marker is-size-4 has-text-link">
-                  続けやすい健康の習慣、お薬日記で。
-                </strong>
-              </p>
-              <p
-                class="has-text-grey-dark has-text-weight-semibold pt-4 pb-0 px-2"
-              >
-                日々のお薬を記録して、体調の変化や気になることを簡単にメモできます。<br />
-                お薬の情報管理や、在庫管理、家族との情報共有もラクラク。<br />
-                健康な毎日を心地よく送るための一歩を、お薬日記がサポートします。
-              </p>
-            </div>
-            <div class="has-text-centered">
-              <a
-                class="circle-button is-size-7 has-text-weight-bold has-text-white"
-                href="/about"
-              >
-                お薬日記とは？
-              </a>
-              <p
-                class="blinking-text has-text-danger-dark has-text-weight-bold"
-              >
-                CHECK!!
-              </p>
-            </div>
+        </main>
+      </div>
+
+      <div class="container has-text-centered is-max-desktop p-5 my-5">
+        <div th:replace="~{fragments/about::macro}"></div>
+        <div class="block mt-3">
+          <div
+            class="button is-medium is-link is-rounded"
+            @click="isAccountRegistrationModalActive = true"
+          >
+            <strong class="px-5" @click="activateAccountRegistrationModal()">
+              お薬日記をはじめる
+            </strong>
+            <authentication ref="authentication"></authentication>
           </div>
         </div>
+        <div class="block m-0">
+          <a
+            class="button is-size-7 has-text-link is-ghost"
+            th:href="@{/agreement}"
+          >
+            利用規約
+          </a>
+        </div>
       </div>
-      <footer
-        class="hero-footer has-text-centered has-background-info-dark pb-5"
-      >
-        <a
-          class="button is-size-7 has-text-info-light is-ghost"
-          th:href="@{/agreement}"
-        >
-          利用規約
-        </a>
-      </footer>
     </div>
   </body>
 </html>
