@@ -51,5 +51,5 @@ resource "aws_route53_record" "s3_cname" {
   zone_id = data.aws_route53_zone.this.zone_id
   ttl     = 60
 
-  records = [aws_cloudfront_distribution.customer_data.domain_name]
+  records = [aws_cloudfront_distribution.s3_bucket.domain_name]
 }

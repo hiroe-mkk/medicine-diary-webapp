@@ -18,10 +18,10 @@ variable "subnet_public_ids" {
   type = list(string)
 }
 
-variable "s3_bucket_customer_data_id" {
+variable "s3_bucket_this_id" {
   type = string
 }
 
-variable "s3_bucket_customer_data_bucket_regional_domain_name" {
+variable "s3_bucket_this_bucket_regional_domain_name" {
   type = string
 }

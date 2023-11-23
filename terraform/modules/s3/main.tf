@@ -1,15 +1,15 @@
-resource "aws_s3_bucket" "customer_data" {
-  bucket = "${var.prefix}-customer-data"
+resource "aws_s3_bucket" "this" {
+  bucket = "${var.prefix}"
 
   force_destroy = false // TODO: trueに変更する
 
   tags = {
-    Name = "${var.prefix}-s3-bucket-customer-data"
+    Name = "${var.prefix}-s3-bucket"
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "customer_data" {
-  bucket                  = aws_s3_bucket.customer_data.id
+resource "aws_s3_bucket_public_access_block" "this" {
+  bucket                  = aws_s3_bucket.this.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -17,7 +17,7 @@ resource "aws_s3_bucket_public_access_block" "customer_data" {
 }
 
 
-data "aws_iam_policy_document" "customer_data" {
+data "aws_iam_policy_document" "s3_bucket" {
   statement {
     effect = "Allow"
     principals {
@@ -25,11 +25,11 @@ data "aws_iam_policy_document" "customer_data" {
       identifiers = ["cloudfront.amazonaws.com"]
     }
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.customer_data.arn}/*"]
+    resources = ["${aws_s3_bucket.this.arn}/*"]
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = [var.cloudfront_distribution_customer_data_arn]
+      values   = [var.cloudfront_distribution_s3_bucket_arn]
     }
   }
 
@@ -44,11 +44,11 @@ data "aws_iam_policy_document" "customer_data" {
       "s3:GetObject",
       "s3:DeleteObject"
     ]
-    resources = ["${aws_s3_bucket.customer_data.arn}/*"]
+    resources = ["${aws_s3_bucket.this.arn}/*"]
   }
 }
 
 resource "aws_s3_bucket_policy" "bucket" {
-  bucket = aws_s3_bucket.customer_data.id
-  policy = data.aws_iam_policy_document.customer_data.json
+  bucket = aws_s3_bucket.this.id
+  policy = data.aws_iam_policy_document.s3_bucket.json
 }

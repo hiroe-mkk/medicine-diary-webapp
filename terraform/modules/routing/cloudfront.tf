@@ -1,8 +1,8 @@
-resource "aws_cloudfront_distribution" "customer_data" {
+resource "aws_cloudfront_distribution" "s3_bucket" {
   origin {
-    origin_id                = var.s3_bucket_customer_data_id
-    domain_name              = var.s3_bucket_customer_data_bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.customer_data.id
+    origin_id                = var.s3_bucket_this_id
+    domain_name              = var.s3_bucket_this_bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3_bucket.id
   }
 
   enabled = true
@@ -19,7 +19,7 @@ resource "aws_cloudfront_distribution" "customer_data" {
     allowed_methods = ["GET", "HEAD"]
     cached_methods  = ["GET", "HEAD"]
 
-    target_origin_id = var.s3_bucket_customer_data_id
+    target_origin_id = var.s3_bucket_this_id
 
     forwarded_values {
       query_string = false
@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "customer_data" {
   }
 }
 
-resource "aws_cloudfront_origin_access_control" "customer_data" {
+resource "aws_cloudfront_origin_access_control" "s3_bucket" {
   name = "${var.prefix}-cloudfront-oac"
 
   origin_access_control_origin_type = "s3"

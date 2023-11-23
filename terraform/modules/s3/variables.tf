@@ -2,7 +2,7 @@ variable "prefix" {
   type = string
 }
 
-variable "cloudfront_distribution_customer_data_arn" {
+variable "cloudfront_distribution_s3_bucket_arn" {
   type = string
 }
 

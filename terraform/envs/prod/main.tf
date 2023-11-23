@@ -14,8 +14,8 @@ module "security_group" {
 module "iam" {
   source = "../../modules/iam"
 
-  prefix                      = local.prefix
-  s3_bucket_customer_data_arn = module.s3.s3_bucket_customer_data_arn
+  prefix             = local.prefix
+  s3_bucket_this_arn = module.s3.s3_bucket_this_arn
 }
 
 module "ecs" {
@@ -42,13 +42,13 @@ module "routing" {
     aws.virginia = aws.virginia
   }
 
-  prefix                                              = local.prefix
-  root_domain                                         = local.root_domain
-  security_group_alb_id                               = module.security_group.security_group_alb_id
-  vpc_this_id                                         = module.network.vpc_this_id
-  subnet_public_ids                                   = module.network.subnet_public_ids
-  s3_bucket_customer_data_id                          = module.s3.s3_bucket_customer_data_id
-  s3_bucket_customer_data_bucket_regional_domain_name = module.s3.s3_bucket_customer_data_bucket_regional_domain_name
+  prefix                                     = local.prefix
+  root_domain                                = local.root_domain
+  security_group_alb_id                      = module.security_group.security_group_alb_id
+  vpc_this_id                                = module.network.vpc_this_id
+  subnet_public_ids                          = module.network.subnet_public_ids
+  s3_bucket_this_id                          = module.s3.s3_bucket_this_id
+  s3_bucket_this_bucket_regional_domain_name = module.s3.s3_bucket_this_bucket_regional_domain_name
 }
 
 module "db" {
@@ -64,7 +64,7 @@ module "db" {
 module "s3" {
   source = "../../modules/s3"
 
-  prefix                                    = local.prefix
-  cloudfront_distribution_customer_data_arn = module.routing.cloudfront_distribution_customer_data_arn
-  iam_role_ecs_task_arn                     = module.iam.iam_role_ecs_task_arn
+  prefix                                = local.prefix
+  cloudfront_distribution_s3_bucket_arn = module.routing.cloudfront_distribution_s3_bucket_arn
+  iam_role_ecs_task_arn                 = module.iam.iam_role_ecs_task_arn
 }
