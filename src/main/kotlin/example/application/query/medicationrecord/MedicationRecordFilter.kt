@@ -5,6 +5,6 @@ import example.domain.model.medicine.*
 import java.time.*
 
 data class MedicationRecordFilter(val medicineid: MedicineId?,
-                                  val accountids: Set<AccountId> = emptySet(),
+                                  val accountid: AccountId?,
                                   val start: LocalDate?,
                                   val end: LocalDate?)

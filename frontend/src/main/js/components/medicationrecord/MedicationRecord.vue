@@ -12,11 +12,11 @@
       <div
         class="modal-card-head has-background-white p-3"
         :class="{
-          'is-flex is-justify-content-space-between': props.hasMembers,
-          'is-flex is-justify-content-flex-end': !props.hasMembers,
+          'is-flex is-justify-content-space-between': props.displayRecorder,
+          'is-flex is-justify-content-flex-end': !props.displayRecorder,
         }"
       >
-        <span class="is-flex is-align-items-center" v-if="props.hasMembers">
+        <span class="is-flex is-align-items-center" v-if="props.displayRecorder">
           <figure class="image is-32x32 is-inline-block m-0">
             <img
               :src="medicationRecord.value.recorder.profileImageURL"
@@ -176,7 +176,7 @@ import noProfileImage from '@main/images/no_profile_image.png';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
-  hasMembers: Boolean,
+  displayRecorder: Boolean,
   csrf: String,
 });
 const emits = defineEmits(['deleted']);

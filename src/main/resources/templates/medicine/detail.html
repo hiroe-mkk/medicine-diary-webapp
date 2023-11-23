@@ -138,7 +138,7 @@
       </div>
 
       <medication-records
-        th:attr="medicine-id=*{medicineId}, csrf=${_csrf.token}"
+        th:attr="medicine-id=*{medicineId}, ':display-recorder'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
       ></medication-records>
 
       <div th:if="${isAvailableMedicine}" th:remove="tag">

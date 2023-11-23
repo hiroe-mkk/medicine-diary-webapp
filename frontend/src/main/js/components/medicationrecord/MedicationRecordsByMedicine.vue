@@ -9,7 +9,7 @@
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
         ref="filteredDedicationRecords"
-        :hasMembers="members.length !== 0"
+        :displayRecorder="props.displayRecorder"
         :allowLoadMore="true"
         :elements="['symptom', 'dateTime']"
       ></FilteredMedicationRecords>
@@ -22,46 +22,21 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { Filter } from '@main/js/composables/model/MedicationRecords.js';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
-const props = defineProps({ medicineId: String, csrf: String });
+const props = defineProps({
+  medicineId: String,
+  displayRecorder: Boolean,
+  csrf: String,
+});
 
-const self = reactive({ value: undefined });
-const members = reactive([]);
 const filter = reactive(new Filter());
 const filteredDedicationRecords = ref(null);
 
 const resultMessage = ref(null);
 
 onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?self')
-    .then((data) => {
-      self.value = data;
-      filter.addAccountId(data.accountId);
-    })
-    .catch(() => {
-      resultMessage.value.activate(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
-
-  await HttpRequestClient.submitGetRequest('/api/users?members')
-    .then((data) => {
-      members.push(...data.users);
-      filter.addAllAccountIds(members.map((member) => member.accountId));
-    })
-    .catch(() => {
-      resultMessage.value.activate(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
-
   filter.medicineId = props.medicineId;
   filteredDedicationRecords.value.loadMedicationRecords(filter);
 });

@@ -65,6 +65,38 @@ export class MedicationRecords {
   }
 }
 
+export class Filter {
+  constructor() {
+    this.medicineId = undefined;
+    this.accountId = undefined;
+    this.start = undefined;
+    this.end = undefined;
+    this.sizePerPage = 20;
+  }
+
+  copy() {
+    const copiedFilter = new Filter();
+    copiedFilter.medicineId = this.medicineId;
+    copiedFilter.accountId = this.accountId;
+    copiedFilter.start = this.start;
+    copiedFilter.end = this.end;
+    copiedFilter.sizePerPage = this.sizePerPage;
+    return copiedFilter;
+  }
+
+  createParams() {
+    const params = new URLSearchParams();
+    if (this.medicineId !== undefined)
+      params.append('medicineid', this.medicineId);
+    if (this.accountId !== undefined) params.append('accountid', this.accountId);
+    if (this.start !== undefined) params.append('start', this.start);
+    if (this.end !== undefined) params.append('end', this.end);
+    params.append('size', this.sizePerPage);
+
+    return params;
+  }
+}
+
 export class MedicationRecordUtils {
   static convertConditionLevelToIcon(conditionLevel) {
     let icon;
@@ -101,65 +133,5 @@ export class MedicationRecordUtils {
       case 'VERY_BAD':
         return 'とても悪い';
     }
-  }
-}
-
-export class Filter {
-  constructor() {
-    this.medicineId = undefined;
-    this.accountIds = {};
-    this.start = undefined;
-    this.end = undefined;
-    this.sizePerPage = 20;
-  }
-
-  addAccountId(accountId) {
-    this.accountIds[accountId] = true;
-  }
-
-  addAllAccountIds(accountIds) {
-    accountIds.forEach((accountId) => (this.accountIds[accountId] = true));
-  }
-
-  isUserActive(accountId) {
-    return this.accountIds[accountId];
-  }
-
-  toggleUserActive(accountId) {
-    this.accountIds[accountId] = !this.accountIds[accountId];
-  }
-
-  activeUserOnly(accountId) {
-    Object.keys(this.accountIds).forEach((key) => {
-      this.accountIds[key] = false;
-    });
-    this.accountIds[accountId] = true;
-  }
-
-  copy() {
-    const copiedFilter = new Filter();
-    copiedFilter.medicineId = this.medicineId;
-    copiedFilter.accountIds = this.accountIds;
-    copiedFilter.start = this.start;
-    copiedFilter.end = this.end;
-    copiedFilter.sizePerPage = this.sizePerPage;
-    return copiedFilter;
-  }
-
-  createParams() {
-    const params = new URLSearchParams();
-    if (this.medicineId !== undefined) {
-      params.append('medicineid', this.medicineId);
-    }
-    Object.keys(this.accountIds).forEach((accountId) => {
-      if (this.accountIds[accountId]) params.append('accountids', accountId);
-    });
-    if (this.start !== undefined)
-      params.append('start', this.start);
-    if (this.end !== undefined)
-      params.append('end', this.end);
-    params.append('size', this.sizePerPage);
-
-    return params;
   }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/medicines/{medicineId}")
 @SessionAttributes(types = [LastRequestedPagePath::class])
 class MedicineDetailController(private val medicineService: MedicineService,
+                               private val sharedGroupService: SharedGroupService,
                                private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("lastRequestedPagePath")
     fun lastRequestedPagePath(@PathVariable medicineId: MedicineId): LastRequestedPagePath {
@@ -27,6 +28,8 @@ class MedicineDetailController(private val medicineService: MedicineService,
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId, model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
+        model.addAttribute("isParticipatingInSharedGroup",
+                           sharedGroupService.isParticipatingInSharedGroup(userSession))
         model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
         return "medicine/detail"
     }

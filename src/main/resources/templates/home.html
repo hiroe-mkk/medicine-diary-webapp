@@ -85,7 +85,10 @@
                         </a>
                       </div>
                     </div>
-                    <div class="has-text-left">
+                    <div
+                      class="has-text-left"
+                      th:if="${isParticipatingInSharedGroup}"
+                    >
                       <a
                         class="has-text-weight-bold has-text-link"
                         href="/shared-group/management"
@@ -202,7 +205,7 @@
                 </div>
               </div>
               <medication-records
-                th:attr="csrf=${_csrf.token}"
+                th:attr="':display-recorder'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
               ></medication-records>
             </div>
           </div>

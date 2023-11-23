@@ -23,7 +23,7 @@
         </p>
         <FilteredMedicationRecords
           ref="filteredMedicationRecords"
-          :hasMembers="false"
+          :displayRecorder="false"
           :allowLoadMore="false"
           :elements="['medicine', 'time']"
         ></FilteredMedicationRecords>
@@ -65,7 +65,7 @@ const calendarOptions = {
   },
   events: async (info, successCallback, failureCallback) => {
     const filter = new Filter();
-    filter.addAccountId(props.accountId);
+    filter.accountId = props.accountId;
     filter.start = info.startStr.slice(0, 10);
     filter.end = info.endStr.slice(0, 10);
     filter.sizePerPage = 100; // TODO: サーバーから薬IDのみを件数上限なしで取得できるように変更する
@@ -106,7 +106,7 @@ const calendarOptions = {
 
 function dateSelected(date) {
   const filter = new Filter();
-  filter.addAccountId(props.accountId);
+  filter.accountId = props.accountId;
   filter.start = date;
   filter.end = date;
   filteredMedicationRecords.value.loadMedicationRecords(filter);

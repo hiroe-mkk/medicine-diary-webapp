@@ -3,41 +3,49 @@ package example.application.query.medicationrecord
 import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
+import example.domain.model.sharedgroup.*
 import org.springframework.data.domain.*
 import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-abstract class JSONMedicationRecordQueryService(private val medicineQueryService: MedicineQueryService) {
-    // TODO: クエリサービスにおいてドメインサービスを呼び出すべきではない？
+abstract class JSONMedicationRecordQueryService(private val medicineQueryService: MedicineQueryService,
+                                                private val sharedGroupQueryService: SharedGroupQueryService) {
+    // TODO: ドメインサービスを呼び出さないように変更する
+
     /**
      * 服用記録一覧ページを取得する
      */
     fun findJSONMedicationRecordsPage(userSession: UserSession,
                                       filter: MedicationRecordFilter,
                                       pageable: Pageable): Page<JSONMedicationRecord> {
-        if (filter.accountids.isEmpty()) return Page.empty()
+        val filteredAccountIds = filteredAccountIds(filter, userSession)
+        val filteredMedicineIds = filteredMedicineIds(filter, userSession)
+        if (filteredMedicineIds.isEmpty()) return Page.empty()
 
-        val viewableMedicineIds = requireViewableMedicineIds(filter, userSession)
-        if (viewableMedicineIds.isEmpty()) return Page.empty()
-
-        return findFilteredMedicationRecordsPage(filter.accountids,
-                                                 viewableMedicineIds,
+        return findFilteredMedicationRecordsPage(filteredAccountIds,
+                                                 filteredMedicineIds,
                                                  filter.start,
                                                  filter.end,
                                                  pageable,
                                                  userSession.accountId)
     }
 
-    private fun requireViewableMedicineIds(filter: MedicationRecordFilter,
-                                           userSession: UserSession): Collection<MedicineId> {
-        return if (filter.medicineid == null) {
-            medicineQueryService.findAllViewableMedicines(userSession.accountId).map { it.id }
-        } else {
-            val viewableMedicine = medicineQueryService.findViewableMedicine(filter.medicineid,
-                                                                             userSession.accountId)
-            if (viewableMedicine != null) listOf(viewableMedicine.id) else listOf()
-        }
+    private fun filteredMedicineIds(filter: MedicationRecordFilter,
+                                    userSession: UserSession): Collection<MedicineId> {
+        val medicineIds = medicineQueryService.findAllViewableMedicines(userSession.accountId).map { it.id }
+        if (filter.medicineid == null) return medicineIds
+
+        return if (medicineIds.contains(filter.medicineid)) listOf(filter.medicineid) else emptyList()
+    }
+
+    private fun filteredAccountIds(filter: MedicationRecordFilter,
+                                   userSession: UserSession): Collection<AccountId> {
+        val accountIds = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)?.members
+                         ?: listOf(userSession.accountId)
+        if (filter.accountid == null) return accountIds
+
+        return if (accountIds.contains(filter.accountid)) listOf(filter.accountid) else emptyList()
     }
 
     abstract fun findFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,

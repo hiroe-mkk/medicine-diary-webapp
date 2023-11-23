@@ -17,7 +17,7 @@
       v-for="(medicationRecord, medicationRecordId) in medicationRecords.values"
       @click="activateMedicationRecordModal(medicationRecordId)"
     >
-      <div class="media-left" v-if="props.hasMembers">
+      <div class="media-left" v-if="props.displayRecorder">
         <figure class="image is-48x48 m-0">
           <img
             :src="medicationRecord.recorder.profileImageURL"
@@ -103,7 +103,7 @@
 
   <MedicationRecord
     ref="medicationRecord"
-    :hasMembers="props.hasMembers"
+    :displayRecorder="props.displayRecorder"
     :csrf="props.csrf"
     @deleted="medicationRecordDeleted"
   ></MedicationRecord>
@@ -122,7 +122,7 @@ import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
-  hasMembers: Boolean,
+  displayRecorder: Boolean,
   allowLoadMore: Boolean,
   elements: Array,
   csrf: String,

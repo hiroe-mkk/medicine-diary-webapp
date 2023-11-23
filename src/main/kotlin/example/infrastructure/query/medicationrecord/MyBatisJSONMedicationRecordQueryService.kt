@@ -3,6 +3,7 @@ package example.infrastructure.query.medicationrecord
 import example.application.query.medicationrecord.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
+import example.domain.model.sharedgroup.*
 import org.springframework.data.domain.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
@@ -11,8 +12,9 @@ import java.time.*
 @Component
 @Transactional(readOnly = true)
 class MyBatisJSONMedicationRecordQueryService(private val jsonMedicationRecordMapper: JSONMedicationRecordMapper,
-                                              medicineQueryService: MedicineQueryService)
-    : JSONMedicationRecordQueryService(medicineQueryService) {
+                                              medicineQueryService: MedicineQueryService,
+                                              sharedGroupQueryService: SharedGroupQueryService)
+    : JSONMedicationRecordQueryService(medicineQueryService, sharedGroupQueryService) {
     override fun findFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,
                                                    medicineIds: Collection<MedicineId>,
                                                    startedDate: LocalDate?,
