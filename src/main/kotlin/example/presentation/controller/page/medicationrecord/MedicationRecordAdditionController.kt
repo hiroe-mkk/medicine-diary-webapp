@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.support.*
 import org.springframework.web.servlet.mvc.support.*
 import java.net.*
+import java.time.*
 
 @Controller
 @RequestMapping("/medication-records/add")
@@ -37,10 +38,12 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
      */
     @GetMapping
     fun displayMedicationRecordAdditionPage(@RequestParam(name = "medicine", required = false) medicineId: MedicineId?,
+                                            @RequestParam(name = "date", required = false) date: LocalDate?,
                                             lastRequestedPagePath: LastRequestedPagePath?,
                                             redirectAttributes: RedirectAttributes,
                                             model: Model): String {
         val command = medicationRecordService.getAdditionMedicationRecordEditCommand(medicineId,
+                                                                                     date,
                                                                                      userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"

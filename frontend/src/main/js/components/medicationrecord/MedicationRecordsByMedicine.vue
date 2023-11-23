@@ -11,6 +11,7 @@
         ref="filteredDedicationRecords"
         :displayRecorder="props.displayRecorder"
         :allowLoadMore="true"
+        :can-append="false"
         :elements="['symptom', 'dateTime']"
       ></FilteredMedicationRecords>
     </div>

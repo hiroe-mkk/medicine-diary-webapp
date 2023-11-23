@@ -6,6 +6,7 @@ import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
+import java.time.*
 
 @Service
 @Transactional
@@ -18,14 +19,15 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
      */
     @Transactional(readOnly = true)
     fun getAdditionMedicationRecordEditCommand(medicineId: MedicineId?,
+                                               date: LocalDate?,
                                                userSession: UserSession): MedicationRecordEditCommand? {
         val availableMedicineIds = medicineQueryService.findAllAvailableMedicines(userSession.accountId).map { it.id }
         if (availableMedicineIds.isEmpty()) return null
 
         return if (medicineId != null && availableMedicineIds.contains(medicineId)) {
-            MedicationRecordEditCommand.initialize(medicineId)
+            MedicationRecordEditCommand.initialize(medicineId, date)
         } else {
-            MedicationRecordEditCommand.initialize()
+            MedicationRecordEditCommand.initialize(date = date)
         }
     }
 

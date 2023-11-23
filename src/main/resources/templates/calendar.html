@@ -13,6 +13,7 @@
     <div id="calendar" layout:fragment="content">
       <calendar
         th:attr="account-id=${accountId}, csrf=${_csrf.token}"
+        :can-append="true"
       ></calendar>
     </div>
   </body>

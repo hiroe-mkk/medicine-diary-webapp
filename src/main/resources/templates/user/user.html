@@ -44,6 +44,7 @@
 
       <calendar
         th:attr="account-id=${user.accountId}, csrf=${_csrf.token}"
+        :can-append="false"
       ></calendar>
     </div>
   </body>

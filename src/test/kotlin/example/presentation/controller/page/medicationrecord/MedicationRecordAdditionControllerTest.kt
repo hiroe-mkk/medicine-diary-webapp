@@ -41,7 +41,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
             testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
-            val actions = mockMvc.perform(get(PATH))
+            val actions = mockMvc.perform(get(PATH).param("date", "2020-01-01"))
 
             //then:
             actions.andExpect(status().isOk)

@@ -37,14 +37,16 @@ data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "‚Äª„Å
                                           ?: LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
 
     companion object {
-        fun initialize(medicineId: MedicineId? = null): MedicationRecordEditCommand {
+        fun initialize(medicineId: MedicineId? = null,
+                       date: LocalDate? = null): MedicationRecordEditCommand {
+            val dateTime = date?.atTime(0, 0) ?: LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
             return MedicationRecordEditCommand(medicineId?.value ?: "",
                                                0.0,
                                                "",
                                                ConditionLevel.A_LITTLE_BAD,
                                                null,
                                                "",
-                                               LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
+                                               dateTime)
         }
 
         fun initialize(medicationRecord: MedicationRecord): MedicationRecordEditCommand {

@@ -101,6 +101,10 @@
     </div>
   </div>
 
+  <div class="content has-text-centered p-2 m-0" v-if="props.canAppend">
+    <slot></slot>
+  </div>
+
   <MedicationRecord
     ref="medicationRecord"
     :displayRecorder="props.displayRecorder"
@@ -124,6 +128,7 @@ const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   displayRecorder: Boolean,
   allowLoadMore: Boolean,
+  canAppend: Boolean,
   elements: Array,
   csrf: String,
 });

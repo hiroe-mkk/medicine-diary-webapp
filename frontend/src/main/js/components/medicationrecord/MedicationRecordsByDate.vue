@@ -2,7 +2,7 @@
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="notification has-background-white p-3">
       <div class="content mb-3">
-        <p class="is-size-5 has-text-weight-bold has-text-grey-dark">
+        <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
           最近の服用記録
         </p>
       </div>
@@ -11,6 +11,7 @@
         ref="filteredDedicationRecords"
         :displayRecorder="props.displayRecorder"
         :allowLoadMore="false"
+        :can-append="false"
         :elements="['medicine', 'dateTime']"
       ></FilteredMedicationRecords>
     </div>
