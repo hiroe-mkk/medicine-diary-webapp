@@ -4,8 +4,39 @@ spring:
     url: 'jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE_NAME}'
     username: '${MYSQL_USERNAME}'
     password: '${MYSQL_PASSWORD}'
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: '${GITHUB_CLIENT_ID}'
+            clientSecret: '${GITHUB_CLIENT_SECRET}'
+          line:
+            clientId: '${LINE_CLIENT_ID}'
+            clientSecret: '${LINE_CLIENT_SECRET}'
+            provider: 'line'
+            scope: 'profile'
+            authorizationGrantType: 'authorization_code'
+            redirectUri: 'https://okusuri-nikki-kk.link/login/oauth2/code/line'
+          yahoo:
+            clientId: '${YAHOO_CLIENT_ID}'
+            clientSecret: '${YAHOO_CLIENT_SECRET}'
+            provider: 'yahoo'
+            scope: 'openid'
+            authorizationGrantType: 'authorization_code'
+            redirectUri: 'https://okusuri-nikki-kk.link/login/oauth2/code/yahoo'
+        provider:
+          line:
+            authorizationUri: 'https://access.line.me/oauth2/v2.1/authorize'
+            tokenUri: 'https://api.line.me/oauth2/v2.1/token'
+            userInfoUri: 'https://api.line.me/v2/profile'
+            userNameAttribute: 'userId'
+          yahoo:
+            authorizationUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/authorization'
+            tokenUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/token'
+            jwkSetUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/jwks'
 
 aws:
   s3:
-    endpoint: '${AWS_S3_ROOT_PATH}'
-    bucketName: '${AWS_S3_BUCKET}'
+    endpoint: '${S3_ENDPOINT}'
+    bucketName: '${S3_BUCKET}'

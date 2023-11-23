@@ -32,40 +32,56 @@ resource "aws_ecs_task_definition" "this" {
 
         "secrets" = [
           {
-            "name"      = "PROFILES"
-            "valueFrom" = "/${var.prefix}/springboot/profiles"
+            "name"      = "S3_BUCKET"
+            "valueFrom" = "/${var.prefix}/aws/s3_bucket"
           },
           {
-            "name"      = "GOOGLE_OAUTH2_CLIENT_ID"
-            "valueFrom" = "/${var.prefix}/springboot/google_oauth2_client_id"
-          },
-          {
-            "name"      = "GOOGLE_OAUTH2_CLIENT_SECRET"
-            "valueFrom" = "/${var.prefix}/springboot/google_oauth2_client_secret"
-          },
-          {
-            "name"      = "MYSQL_HOST"
-            "valueFrom" = "/${var.prefix}/springboot/mysql_host"
+            "name"      = "S3_ENDPOINT"
+            "valueFrom" = "/${var.prefix}/aws/s3_endpoint"
           },
           {
             "name"      = "MYSQL_DATABASE_NAME"
-            "valueFrom" = "/${var.prefix}/springboot/mysql_database_name"
+            "valueFrom" = "/${var.prefix}/spring/datasource/mysql_database_name"
           },
           {
-            "name"      = "MYSQL_USERNAME"
-            "valueFrom" = "/${var.prefix}/springboot/mysql_username"
+            "name"      = "MYSQL_HOST"
+            "valueFrom" = "/${var.prefix}/spring/datasource/mysql_host"
           },
           {
             "name"      = "MYSQL_PASSWORD"
-            "valueFrom" = "/${var.prefix}/springboot/mysql_password"
+            "valueFrom" = "/${var.prefix}/spring/datasource/mysql_password"
           },
           {
-            "name"      = "AWS_S3_BUCKET"
-            "valueFrom" = "/${var.prefix}/springboot/aws_s3_bucket"
+            "name"      = "MYSQL_USERNAME"
+            "valueFrom" = "/${var.prefix}/spring/datasource/mysql_username"
           },
           {
-            "name"      = "AWS_S3_ENDPOINT"
-            "valueFrom" = "/${var.prefix}/springboot/aws_s3_endpoint"
+            "name"      = "PROFILES"
+            "valueFrom" = "/${var.prefix}/spring/profiles"
+          },
+          {
+            "name"      = "GITHUB_CLIENT_ID"
+            "valueFrom" = "/${var.prefix}/spring/security/oauth2/github_client_id"
+          },
+          {
+            "name"      = "GITHUB_CLIENT_SECRET"
+            "valueFrom" = "/${var.prefix}/spring/security/oauth2/github_client_secret"
+          },
+          {
+            "name"      = "LINE_CLIENT_ID"
+            "valueFrom" = "/${var.prefix}/spring/security/oauth2/line_client_id"
+          },
+          {
+            "name"      = "LINE_CLIENT_SECRET"
+            "valueFrom" = "/${var.prefix}/spring/security/oauth2/line_client_secret"
+          },
+          {
+            "name"      = "YAHOO_CLIENT_ID"
+            "valueFrom" = "/${var.prefix}/spring/security/oauth2/yahoo_client_id"
+          },
+          {
+            "name"      = "YAHOO_CLIENT_SECRET"
+            "valueFrom" = "/${var.prefix}/spring/security/oauth2/yahoo_client_secret"
           }
         ]
 

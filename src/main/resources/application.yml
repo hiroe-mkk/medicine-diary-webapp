@@ -6,37 +6,6 @@ spring:
       maxFileSize: 512000 # アップロードを許可する1ファイルの最大バイト数 500KB
       maxRequestSize: 614400 # multipart/form-data リクエストの Content-Length の最大値 600KB
       fileSizeThreshold: 0 # アップロードされたファイルの中身を、一時ファイルとして保存するかの閾値
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: '${GITHUB_CLIENT_ID}'
-            clientSecret: '${GITHUB_CLIENT_SECRET}'
-          line:
-            clientId: '${LINE_CLIENT_ID}'
-            clientSecret: '${LINE_CLIENT_SECRET}'
-            provider: 'line'
-            scope: 'profile'
-            authorizationGrantType: 'authorization_code'
-            redirectUri: 'http://localhost:8080/login/oauth2/code/line'
-          yahoo:
-            clientId: '${YAHOO_CLIENT_ID}'
-            clientSecret: '${YAHOO_CLIENT_SECRET}'
-            provider: 'yahoo'
-            scope: 'openid'
-            authorizationGrantType: 'authorization_code'
-            redirectUri: 'http://localhost:8080/login/oauth2/code/yahoo'
-        provider:
-          line:
-            authorizationUri: 'https://access.line.me/oauth2/v2.1/authorize'
-            tokenUri: 'https://api.line.me/oauth2/v2.1/token'
-            userInfoUri: 'https://api.line.me/v2/profile'
-            userNameAttribute: 'userId'
-          yahoo:
-            authorizationUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/authorization'
-            tokenUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/token'
-            jwkSetUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/jwks'
   sql:
     init:
       mode: always
