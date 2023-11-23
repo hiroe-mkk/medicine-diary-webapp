@@ -16,7 +16,23 @@
           　
         </p>
         <div class="is-flex is-justify-content-center">
-          <figure class="image is-64x64 m-0">
+          <a
+            class="image is-64x64 m-0"
+            th:href="@{/users/{accountId}(accountId=${member.accountId})}"
+            th:if="${isParticipating}"
+          >
+            <img
+              class="is-rounded"
+              th:src="${member.profileImageURL}"
+              th:if="*{member.profileImageURL != null}"
+            />
+            <img
+              class="is-rounded"
+              :src="noProfileImage"
+              th:if="*{member.profileImageURL == null}"
+            />
+          </a>
+          <figure class="image is-64x64 m-0" th:if="${!isParticipating}">
             <img
               class="is-rounded"
               th:src="${member.profileImageURL}"

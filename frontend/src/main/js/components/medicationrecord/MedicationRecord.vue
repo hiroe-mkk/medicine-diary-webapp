@@ -17,7 +17,7 @@
         }"
       >
         <span class="is-flex is-align-items-center" v-if="props.displayRecorder">
-          <figure class="image is-32x32 is-inline-block m-0">
+          <a class="image is-32x32 is-inline-block m-0" :href="`/users/${medicationRecord.value.recorder.accountId}`">
             <img
               :src="medicationRecord.value.recorder.profileImageURL"
               class="is-rounded"
@@ -32,7 +32,7 @@
                 medicationRecord.value.recorder.profileImageURL === undefined
               "
             />
-          </figure>
+          </a>
           <span class="is-size-7 has-text-weight-bold ml-2">
             {{ medicationRecord.value.recorder.username }}
           </span>

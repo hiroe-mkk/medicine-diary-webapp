@@ -3,7 +3,7 @@
     <div class="is-flex is-align-items-center">
       <div class="has-text-centered mx-2" v-for="member in members">
         <div class="is-flex is-justify-content-center">
-          <figure class="image is-64x64 m-0">
+          <a class="image is-64x64 m-0" :href="`/users/${member.accountId}`">
             <img
               class="is-rounded"
               :src="member.profileImageURL"
@@ -14,7 +14,7 @@
               :src="noProfileImage"
               v-if="member.profileImageURL === undefined"
             />
-          </figure>
+          </a>
         </div>
         <p class="is-size-7 has-text-weight-bold has-text-grey-dark m-0 p-0">
           {{ member.username }}
