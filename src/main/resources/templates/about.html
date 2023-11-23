@@ -6,11 +6,10 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
-    <script th:src="@{/dist/js/about.bundle.js}" defer></script>
   </head>
 
   <body>
-    <div id="about" layout:fragment="content">
+    <div layout:fragment="content" th:remove="tag">
       <div class="container has-text-centered is-max-desktop p-3">
         <div th:replace="~{fragments/about::macro}"></div>
       </div>

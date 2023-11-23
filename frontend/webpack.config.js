@@ -10,7 +10,6 @@ module.exports = {
     vendor: ['vue'],
     style: './src/main/css/style.css',
     siteHeader: './src/main/js/siteHeader.js',
-    about: './src/main/js/about.js',
     home: './src/main/js/home.js',
     calendar: './src/main/js/calendar.js',
     setting: './src/main/js/setting.js',

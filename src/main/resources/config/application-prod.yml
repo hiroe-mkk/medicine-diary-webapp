@@ -40,3 +40,7 @@ aws:
   s3:
     endpoint: '${S3_ENDPOINT}'
     bucketName: '${S3_BUCKET}'
+
+endpoint:
+  image:
+    illustration: '${S3_ENDPOINT}/illustrations'

@@ -31,7 +31,10 @@
             <div class="notification has-background-white p-5">
               <div class="is-flex is-justify-content-center">
                 <figure class="image is-128x128 m-0">
-                  <img :src="medicines" />
+                  <img
+                    th:src="${@environment.getProperty('endpoint.image.illustration')} + '/medicines.png'"
+                    alt="medicines"
+                  />
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
@@ -49,7 +52,10 @@
             <div class="notification has-background-white p-5">
               <div class="is-flex is-justify-content-center">
                 <figure class="image is-128x128 m-0">
-                  <img :src="shopping" />
+                  <img
+                    th:src="${@environment.getProperty('endpoint.image.illustration')} + '/shopping.png'"
+                    alt="shopping"
+                  />
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
@@ -69,7 +75,10 @@
             <div class="notification has-background-white p-5">
               <div class="is-flex is-justify-content-center">
                 <figure class="image is-128x128 m-0">
-                  <img :src="writing" />
+                  <img
+                    th:src="${@environment.getProperty('endpoint.image.illustration')} + '/writing.png'"
+                    alt="writing"
+                  />
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
@@ -87,7 +96,10 @@
             <div class="notification has-background-white p-5">
               <div class="is-flex is-justify-content-center">
                 <figure class="image is-128x128 m-0">
-                  <img :src="calendar" />
+                  <img
+                    th:src="${@environment.getProperty('endpoint.image.illustration')} + '/calendar.png'"
+                    alt="calendar"
+                  />
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
@@ -107,7 +119,10 @@
             <div class="notification has-background-white p-5">
               <div class="is-flex is-justify-content-center">
                 <figure class="image is-128x128 m-0">
-                  <img :src="womans" />
+                  <img
+                    th:src="${@environment.getProperty('endpoint.image.illustration')} + '/share.png'"
+                    alt="share"
+                  />
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">

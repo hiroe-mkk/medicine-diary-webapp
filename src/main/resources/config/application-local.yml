@@ -41,3 +41,8 @@ minio:
   password: 'root-password'
   endpoint: 'http://host.docker.internal:19000'
   bucketName: 'medicine-diary'
+
+
+endpoint:
+  image:
+    illustration: 'http://host.docker.internal:19000/medicine-diary/illustrations'
