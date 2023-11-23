@@ -18,6 +18,7 @@ import org.springframework.context.annotation.*
 annotation class MyBatisQueryServiceTest {
     class Configuration(private val jsonMedicationRecordMapper: JSONMedicationRecordMapper,
                         private val jsonSharedGroupMapper: JSONSharedGroupMapper,
+                        private val userMapper: UserMapper,
                         private val jsonUserMapper: JSONUserMapper,
                         private val medicineRepository: MedicineRepository,
                         private val sharedGroupRepository: SharedGroupRepository) {
@@ -33,6 +34,9 @@ annotation class MyBatisQueryServiceTest {
         @Bean
         fun sharedGroupQueryService(): JSONSharedGroupQueryService =
                 MyBatisJSONSharedGroupQueryService(jsonSharedGroupMapper)
+
+        @Bean
+        fun userQueryService(): UserQueryService = MyBatisUserQueryService(userMapper)
 
         @Bean
         fun jsonUserQueryService(): JSONUserQueryService = MyBatisJSONUserQueryService(jsonUserMapper)

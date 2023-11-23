@@ -54,6 +54,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQu
     @Test
     @DisplayName("メンバーユーザー一覧を取得する")
     fun getMemberUsers() {
+        //given:
         val (_, member1) = testAccountInserter.insertAccountAndProfile()
         val (_, member2) = testAccountInserter.insertAccountAndProfile()
         val (_, invitee1) = testAccountInserter.insertAccountAndProfile()
