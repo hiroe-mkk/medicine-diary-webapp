@@ -12,22 +12,18 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/users/{accountId}")
-@SessionAttributes(types = [LastRequestedPagePath::class])
+@SessionAttributes(value = ["lastRequestedPagePath"])
 class UserController(private val userQueryService: UserQueryService,
                      private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(@PathVariable accountId: AccountId): LastRequestedPagePath {
-        return LastRequestedPagePath("/users/${accountId}")
-    }
-
     /**
      * ユーザー画面を表示する
      */
     @GetMapping
-    fun displayUserPage(@PathVariable accountId: AccountId,
-                        model: Model): String {
+    fun displayUserPage(@PathVariable accountId: AccountId, model: Model): String {
         model.addAttribute("user", userQueryService.findMemberUser(accountId,
                                                                    userSessionProvider.getUserSessionOrElseThrow()))
+
+        model.addAttribute("lastRequestedPagePath", "/users/${accountId}");
         return "user/user"
     }
 }

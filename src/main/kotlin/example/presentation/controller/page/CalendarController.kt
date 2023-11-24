@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/calendar")
-@SessionAttributes(types = [LastRequestedPagePath::class])
+@SessionAttributes(value = ["lastRequestedPagePath"])
 class CalendarController(private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/calendar")
-
     /**
      * カレンダー画面を表示する
      */
@@ -22,6 +19,8 @@ class CalendarController(private val userSessionProvider: UserSessionProvider) {
     fun displayCalendarPage(model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("accountId", userSession.accountId)
+
+        model.addAttribute("lastRequestedPagePath", "/calendar")
         return "calendar"
     }
 }

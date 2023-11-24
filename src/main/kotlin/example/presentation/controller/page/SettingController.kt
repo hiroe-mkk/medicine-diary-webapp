@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/setting")
-@SessionAttributes(types = [LastRequestedPagePath::class])
+@SessionAttributes(value = ["lastRequestedPagePath"])
 class SettingController(private val profileService: ProfileService,
                         private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/setting")
-
     /**
      * 設定画面を表示する
      */
@@ -24,6 +21,8 @@ class SettingController(private val profileService: ProfileService,
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val profile = profileService.findProfile(userSession)
         model.addAttribute("profile", profile)
+
+        model.addAttribute("lastRequestedPagePath", "/setting")
         return "setting"
     }
 }

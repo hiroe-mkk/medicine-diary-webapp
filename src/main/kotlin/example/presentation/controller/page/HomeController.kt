@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(types = [LastRequestedPagePath::class])
+@SessionAttributes(value = ["lastRequestedPagePath"])
 class HomeController(private val profileService: ProfileService,
                      private val sharedGroupService: SharedGroupService,
                      private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/")
-
     /**
      * ホーム画面を表示する
      */
@@ -29,6 +26,8 @@ class HomeController(private val profileService: ProfileService,
             model.addAttribute("isParticipatingInSharedGroup",
                                sharedGroupService.isParticipatingInSharedGroup(userSession))
         }
+
+        model.addAttribute("lastRequestedPagePath", "/")
         return "home"
     }
 }

@@ -7,19 +7,17 @@ import example.domain.model.sharedgroup.*
 import example.presentation.shared.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
+import jakarta.servlet.http.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/medicines")
-@SessionAttributes(types = [LastRequestedPagePath::class])
+@SessionAttributes(value = ["lastRequestedPagePath"])
 class MedicineOverviewsController(private val medicineService: MedicineService,
                                   private val sharedGroupService: SharedGroupService,
                                   private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("lastRequestedPagePath")
-    fun lastRequestedPagePath(): LastRequestedPagePath = LastRequestedPagePath("/medicines")
-
     /**
      * 薬概要一覧画面を表示する
      */
@@ -29,6 +27,8 @@ class MedicineOverviewsController(private val medicineService: MedicineService,
         val medicineOverviews = medicineService.findMedicineOverviews(userSession)
         model.addAttribute("medicineOverviews", medicineOverviews)
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
+
+        model.addAttribute("lastRequestedPagePath", "/medicines")
         return "medicine/overviews"
     }
 }
