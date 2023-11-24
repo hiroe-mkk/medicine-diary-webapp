@@ -275,8 +275,10 @@ function submitForm() {
   const form = new URLSearchParams();
   form.set('remainingQuantity', editingInventory.value.remainingQuantity);
   form.set('quantityPerPackage', editingInventory.value.quantityPerPackage);
-  form.set('startedOn', editingInventory.value.startedOn);
-  form.set('expirationOn', editingInventory.value.expirationOn);
+  if (editingInventory.value.startedOn !== undefined)
+    form.set('startedOn', editingInventory.value.startedOn);
+  if (editingInventory.value.expirationOn !== undefined)
+    form.set('expirationOn', editingInventory.value.expirationOn);
   form.set('unusedPackage', editingInventory.value.unusedPackage);
   form.set('_csrf', props.csrf);
 
@@ -358,6 +360,7 @@ function activateInventoryAdjustmentModal() {
       unusedPackage: 0,
     };
   }
+  fieldErrors.clear();
   isInventoryAdjustmentModalActive.value = true;
 }
 </script>

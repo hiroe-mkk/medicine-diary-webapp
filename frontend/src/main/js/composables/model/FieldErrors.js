@@ -3,13 +3,7 @@ export class FieldErrors {
     this._fieldNameToMessages = {};
   }
 
-  isEmpty() {
-    return this._fieldNameToMessages === {};
-  }
-
   contains(fieldName) {
-    if (this.isEmpty()) return false;
-
     return this._fieldNameToMessages[fieldName] !== undefined;
   }
 
