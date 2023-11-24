@@ -2,7 +2,7 @@
 <html
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout/layoutWithFooter}"
+  layout:decorate="~{layout/layout}"
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
@@ -15,7 +15,10 @@
         <div class="content has-text-centered mb-3">
           <p class="icon-text has-text-grey-dark is-size-4">
             <strong th:text="*{medicineName}"></strong>
-            <span class="icon mx-1" th:if="${isParticipatingInSharedGroup} and *{!isPublic}">
+            <span
+              class="icon mx-1"
+              th:if="${isParticipatingInSharedGroup} and *{!isPublic}"
+            >
               <i class="fa-solid fa-lock"></i>
             </span>
           </p>
@@ -135,92 +138,102 @@
             </div>
           </div>
         </div>
+
+        <div class="content pb-6">
+          <medication-records
+            th:attr="medicine-id=*{medicineId}, ':display-recorder'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+          ></medication-records>
+        </div>
       </div>
 
-      <medication-records
-        th:attr="medicine-id=*{medicineId}, ':display-recorder'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
-      ></medication-records>
-
       <div th:if="${isAvailableMedicine}" th:remove="tag">
-        <div class="modal" :class="{ 'is-active': isMenuModalActive }">
-          <div class="modal-background"></div>
-          <div class="modal-content is-flex is-justify-content-center">
-            <div class="panel is-info is-inline-block">
-              <p class="panel-heading has-text-right pt-2 pb-1 px-2">
-                <button
-                  class="delete"
-                  type="button"
-                  @click="isMenuModalActive = false"
-                ></button>
-              </p>
-              <span class="panel-block has-background-white p-0">
+        <div
+          class="bottom-fullwidth has-text-centered has-background-info-light py-4 m-0"
+        >
+          <div class="tabs is-fullwidth has-background-info-light p-0">
+            <ul>
+              <li>
                 <a
-                  class="button is-white is-fullwidth px-6"
+                  class="is-small has-text-link"
+                  th:href="@{__${lastRequestedPagePath}__}"
+                >
+                  <span
+                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
+                  >
+                    <i class="fa-solid fa-reply"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="is-small has-text-link"
                   th:href="@{/medication-records/add?medicine={medicine}(medicine=*{medicineId})}"
                 >
-                  <span class="panel-icon has-text-link">
+                  <span class="icon fas fa-2x is-flex is-align-items-center">
                     <i class="fa-solid fa-file-pen"></i>
                   </span>
-                  <strong class="has-text-grey-dark">服用記録を追加する</strong>
                 </a>
-              </span>
-              <span class="panel-block has-background-white p-0">
+              </li>
+              <li>
                 <a
-                  class="button is-white is-fullwidth px-6"
-                  th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
+                  class="is-small has-text-link"
+                  @click="isMenuModalActive = true"
                 >
-                  <span class="panel-icon has-text-link">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                  <span class="icon fas fa-2x is-flex is-align-items-center">
+                    <i class="fa-solid fa-ellipsis"></i>
                   </span>
-                  <strong class="has-text-grey-dark">基本情報を更新する</strong>
                 </a>
-              </span>
-              <span class="panel-block has-background-white p-0">
-                <button
-                  class="button is-white is-fullwidth px-6"
-                  @click="activateMedicineImageChangeModal()"
-                  style="border: none"
-                >
-                  <span class="panel-icon has-text-link">
-                    <i class="fa-solid fa-image"></i>
-                  </span>
-                  <strong class="has-text-grey-dark">画像を変更する</strong>
-                </button>
-              </span>
-              <span class="panel-block has-background-white p-0">
-                <button
-                  class="button is-white is-fullwidth px-6"
-                  @click="activateInventoryAdjustmentModal()"
-                  style="border: none"
-                >
-                  <span class="panel-icon has-text-link">
-                    <i class="fa-solid fa-cubes-stacked"></i>
-                  </span>
-                  <strong
-                    class="has-text-grey-dark"
-                    th:if="*{inventory != null}"
-                    >在庫を修正する</strong
-                  >
-                  <strong
-                    class="has-text-grey-dark"
-                    th:if="*{inventory == null}"
-                  >
-                    在庫管理を開始する
-                  </strong>
-                </button>
-              </span>
-              <span class="panel-block has-background-white p-0">
-                <button
-                  class="button is-white is-fullwidth px-6"
-                  @click="activateDeletionConfirmationModal()"
-                  style="border: none"
-                >
-                  <span class="panel-icon has-text-danger">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </span>
-                  <strong class="has-text-danger-dark">お薬を削除する</strong>
-                </button>
-              </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="modal" :class="{ 'is-active': isMenuModalActive }">
+          <div
+            class="modal-background"
+            @click="isMenuModalActive = false"
+          ></div>
+          <div class="modal-content is-flex is-justify-content-center">
+            <div class="content">
+              <a
+                class="button is-dark is-fullwidth is-small mb-1"
+                th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
+              >
+                <strong class="mx-6">基本情報を更新する</strong>
+              </a>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateMedicineImageChangeModal()"
+              >
+                <strong class="mx-6">画像を変更する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateInventoryAdjustmentModal()"
+              >
+                <strong class="mx-6" th:if="*{inventory != null}">
+                  在庫を修正する
+                </strong>
+                <strong class="mx-6" th:if="*{inventory == null}">
+                  在庫管理を開始する
+                </strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateDeletionConfirmationModal()"
+              >
+                <strong>お薬を削除する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small has-text-danger-dark mb-1"
+                @click="isMenuModalActive = false"
+              >
+                <strong class="mx-6">キャンセル</strong>
+              </button>
             </div>
           </div>
         </div>
@@ -232,18 +245,6 @@
           button-label="削除"
           th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
         ></confirmation-message>
-        <div class="bottom-right-button">
-          <p
-            class="button is-rounded has-background-info-dark"
-            @click="isMenuModalActive = true"
-          >
-            <span
-              class="icon fas fa-lg has-text-white is-flex is-align-items-center is-medium"
-            >
-              <i class="fa-solid fa-ellipsis"></i>
-            </span>
-          </p>
-        </div>
       </div>
     </div>
   </body>

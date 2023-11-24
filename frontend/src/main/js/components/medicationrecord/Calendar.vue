@@ -1,5 +1,5 @@
 <template>
-  <div class="container has-text-centered is-max-desktop pt-0 pb-2 px-2">
+  <div class="container has-text-centered is-max-desktop pt-0 pb-6 px-2">
     <FullCalendar :options="calendarOptions" :key="calendarKey" />
   </div>
 
@@ -141,7 +141,10 @@ function toDateJpnStr(date) {
 
 <style>
 .fc-toolbar-title {
-  /* ヘッダーの年月日を太字にする */
-  font-weight: bold;
+  font-weight: bold; /* ヘッダーの年月を太字にする */
+}
+
+.fc {
+  z-index: 1; /* 他の要素よりも背面に配置 */
 }
 </style>
