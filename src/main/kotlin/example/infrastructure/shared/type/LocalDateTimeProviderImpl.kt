@@ -8,6 +8,6 @@ import java.time.temporal.*
 @Component
 class LocalDateTimeProviderImpl : LocalDateTimeProvider {
     override fun now(): LocalDateTime {
-        return LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+        return LocalDateTime.now(ZoneId.of("Asia/Tokyo")).truncatedTo(ChronoUnit.MINUTES)
     }
 }
