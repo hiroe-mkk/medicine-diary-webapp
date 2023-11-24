@@ -103,9 +103,10 @@ const calendarOptions = {
       );
     }
   },
+  eventColor: 'transparent',
   eventContent: function (arg) {
     return {
-      html: `<i class="fa-solid fa-capsules p-1"></i>`,
+      html: `<span class="icon is-medium fas fa-2x has-text-link-dark"><i class="fa-solid fa-capsules p-1"></i></span>`,
     };
   },
   dateClick: (info) => {
