@@ -1,7 +1,7 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
-    <div class="content has-text-centered mb-3">
-      <p class="is-size-4 has-text-weight-bold has-text-grey-dark m-3">
+    <div class="content mb-3">
+      <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
         服用記録
       </p>
     </div>

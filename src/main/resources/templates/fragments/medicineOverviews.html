@@ -5,7 +5,7 @@
   </head>
 
   <body>
-    <div th:fragment="macro(medicineOverviews)" th:remove="tag">
+    <div th:fragment="macro(medicineOverviews, isParticipatingInSharedGroup)" th:remove="tag">
       <div th:if="${!medicineOverviews.isEmpty()}">
         <div
           class="media is-flex is-align-items-center p-3 m-0"
@@ -30,7 +30,7 @@
               th:href="@{/medicines/{medicineId}(medicineId=*{medicineId})}"
               th:text="*{medicineName}"
             ></a>
-            <span class="icon mx-1" th:if="*{!isPublic}">
+            <span class="icon mx-1" th:if="${isParticipatingInSharedGroup} and *{!isPublic}">
               <i class="fa-solid fa-lock"></i>
             </span>
             <p class="tags has-text-right m-1">

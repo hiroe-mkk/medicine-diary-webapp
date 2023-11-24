@@ -68,144 +68,146 @@
           在庫
         </p>
         <form class="form" method="post" @submit.prevent="submitForm()">
-          <p class="has-text-weight-bold has-text-grey-dark">
-            使用中のパッケージ
-          </p>
-          <div class="notification has-background-white-bis pt-3 pb-4 px-5">
-            <div class="field">
-              <label class="label has-text-grey">残量</label>
-              <div class="control has-icons-right mb-1">
-                <input
-                  class="input is-info is-rounded"
-                  type="number"
-                  name="remainingQuantity"
-                  v-model="editingInventory.value.remainingQuantity"
-                  min="0"
-                  step="0.001"
-                  max="10000"
-                  :class="{
-                    'is-danger': fieldErrors.contains('remainingQuantity'),
-                  }"
-                />
-                <span
-                  class="icon is-small is-right has-text-grey has-text-weight-bold"
-                >
-                  {{ props.doseUnit }}
-                </span>
-                <p
-                  class="help is-danger"
-                  v-for="error in fieldErrors.get('remainingQuantity')"
-                >
-                  {{ error }}
-                </p>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label has-text-grey">内容量</label>
-              <div class="control has-icons-right mb-1">
-                <input
-                  class="input is-info is-rounded"
-                  type="number"
-                  name="quantityPerPackage"
-                  v-model="editingInventory.value.quantityPerPackage"
-                  min="0"
-                  step="0.001"
-                  max="10000"
-                  :class="{
-                    'is-danger': fieldErrors.contains('quantityPerPackage'),
-                  }"
-                />
-                <span
-                  class="icon is-small is-right has-text-grey has-text-weight-bold"
-                >
-                  {{ props.doseUnit }}
-                </span>
-                <p
-                  class="help is-danger"
-                  v-for="error in fieldErrors.get('quantityPerPackage')"
-                >
-                  {{ error }}
-                </p>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label has-text-grey">使用開始日</label>
-              <div class="control is-expanded">
-                <input
-                  class="input is-info is-rounded"
-                  type="date"
-                  name="startedOn"
-                  v-model="editingInventory.value.startedOn"
-                  :class="{
-                    'is-danger': fieldErrors.contains('startedOn'),
-                  }"
-                />
-                <p
-                  class="help is-danger"
-                  v-for="error in fieldErrors.get('startedOn')"
-                >
-                  {{ error }}
-                </p>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label has-text-grey">有効期限</label>
-              <div class="control is-expanded">
-                <input
-                  class="input is-info is-rounded"
-                  type="date"
-                  name="expirationOn"
-                  v-model="editingInventory.value.expirationOn"
-                  :class="{
-                    'is-danger': fieldErrors.contains('expirationOn'),
-                  }"
-                />
-                <p
-                  class="help is-danger"
-                  v-for="error in fieldErrors.get('expirationOn')"
-                >
-                  {{ error }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <p class="has-text-weight-bold has-text-grey-dark pb-2">
-            未使用のパッケージ
-          </p>
-          <div class="notification has-background-white-bis pt-3 pb-4 px-5">
-            <div class="field">
-              <div class="control has-icons-right">
-                <input
-                  class="input is-info is-rounded"
-                  type="number"
-                  name="unusedPackage"
-                  v-model="editingInventory.value.unusedPackage"
-                  min="0"
-                  step="1"
-                  :class="{
-                    'is-danger': fieldErrors.contains('unusedPackage'),
-                  }"
-                />
-                <span
-                  class="icon is-small is-right has-text-grey has-text-weight-bold"
-                >
-                  個
-                </span>
-                <p
-                  class="help is-danger"
-                  v-for="error in fieldErrors.get('unusedPackage')"
-                >
-                  {{ error }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <p class="help">
-              ※服用記録を追加すると、服用した量に応じて使用中のパッケージの残量が更新されます。<br />
-              　服用記録を修正および削除をするときは、入力フォームからご自身で修正を行ってください。
+          <div class="content my-3">
+            <p class="has-text-weight-bold has-text-grey-dark">
+              使用中のパッケージ
             </p>
+            <div class="notification has-background-white-bis pt-3 pb-4 px-5">
+              <div class="field">
+                <label class="label has-text-grey">残量</label>
+                <div class="control has-icons-right mb-1">
+                  <input
+                    class="input is-info is-rounded"
+                    type="number"
+                    name="remainingQuantity"
+                    v-model="editingInventory.value.remainingQuantity"
+                    min="0"
+                    step="0.001"
+                    max="10000"
+                    :class="{
+                      'is-danger': fieldErrors.contains('remainingQuantity'),
+                    }"
+                  />
+                  <span
+                    class="icon is-small is-right has-text-grey has-text-weight-bold"
+                  >
+                    {{ props.doseUnit }}
+                  </span>
+                  <p
+                    class="help is-danger"
+                    v-for="error in fieldErrors.get('remainingQuantity')"
+                  >
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label has-text-grey">内容量</label>
+                <div class="control has-icons-right mb-1">
+                  <input
+                    class="input is-info is-rounded"
+                    type="number"
+                    name="quantityPerPackage"
+                    v-model="editingInventory.value.quantityPerPackage"
+                    min="0"
+                    step="0.001"
+                    max="10000"
+                    :class="{
+                      'is-danger': fieldErrors.contains('quantityPerPackage'),
+                    }"
+                  />
+                  <span
+                    class="icon is-small is-right has-text-grey has-text-weight-bold"
+                  >
+                    {{ props.doseUnit }}
+                  </span>
+                  <p
+                    class="help is-danger"
+                    v-for="error in fieldErrors.get('quantityPerPackage')"
+                  >
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label has-text-grey">使用開始日</label>
+                <div class="control is-expanded">
+                  <input
+                    class="input is-info is-rounded"
+                    type="date"
+                    name="startedOn"
+                    v-model="editingInventory.value.startedOn"
+                    :class="{
+                      'is-danger': fieldErrors.contains('startedOn'),
+                    }"
+                  />
+                  <p
+                    class="help is-danger"
+                    v-for="error in fieldErrors.get('startedOn')"
+                  >
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label has-text-grey">有効期限</label>
+                <div class="control is-expanded">
+                  <input
+                    class="input is-info is-rounded"
+                    type="date"
+                    name="expirationOn"
+                    v-model="editingInventory.value.expirationOn"
+                    :class="{
+                      'is-danger': fieldErrors.contains('expirationOn'),
+                    }"
+                  />
+                  <p
+                    class="help is-danger"
+                    v-for="error in fieldErrors.get('expirationOn')"
+                  >
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p class="has-text-weight-bold has-text-grey-dark pb-2">
+              未使用のパッケージ
+            </p>
+            <div class="notification has-background-white-bis pt-3 pb-4 px-5">
+              <div class="field">
+                <div class="control has-icons-right">
+                  <input
+                    class="input is-info is-rounded"
+                    type="number"
+                    name="unusedPackage"
+                    v-model="editingInventory.value.unusedPackage"
+                    min="0"
+                    step="1"
+                    :class="{
+                      'is-danger': fieldErrors.contains('unusedPackage'),
+                    }"
+                  />
+                  <span
+                    class="icon is-small is-right has-text-grey has-text-weight-bold"
+                  >
+                    個
+                  </span>
+                  <p
+                    class="help is-danger"
+                    v-for="error in fieldErrors.get('unusedPackage')"
+                  >
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="help">
+                ※服用記録を追加すると、服用した量に応じて使用中のパッケージの残量が更新されます。<br />
+                　服用記録を修正および削除をするときは、入力フォームからご自身で修正を行ってください。
+              </p>
+            </div>
           </div>
           <div class="field is-grouped is-grouped-centered p-2">
             <p class="control">

@@ -15,7 +15,7 @@
         <div class="content has-text-centered mb-3">
           <p class="icon-text has-text-grey-dark is-size-4">
             <strong th:text="*{medicineName}"></strong>
-            <span class="icon mx-1" th:if="*{!isPublic}">
+            <span class="icon mx-1" th:if="${isParticipatingInSharedGroup} and *{!isPublic}">
               <i class="fa-solid fa-lock"></i>
             </span>
           </p>

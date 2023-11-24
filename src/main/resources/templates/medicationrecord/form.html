@@ -12,15 +12,12 @@
   <body>
     <div id="medicationRecordForm" layout:fragment="content">
       <div class="container is-max-desktop p-3">
-        <div class="content has-text-centered">
-          <p class="icon-text is-size-4 is-flex is-justify-content-center">
-            <strong class="has-text-grey-dark" th:text="${title}"></strong>
-            <span class="icon has-text-grey-dark mx-2">
-              <i class="fa-solid fa-book-open"></i>
-            </span>
-          </p>
+        <div class="has-text-centered">
+          <p
+            class="is-size-4 has-text-weight-bold has-text-grey-dark"
+            th:text="${title}"
+          ></p>
         </div>
-
         <form
           method="post"
           class="form"
@@ -28,131 +25,135 @@
           th:object="${form}"
           th:if="${form != null}"
         >
-          <taken-medicine
-            th:attr="medicine-id=*{takenMedicine}, quantity=*{quantity}, medicine-id-errors=${#fields.errors('takenMedicine')}, quantity-errors=${#fields.errors('quantity')}"
-          ></taken-medicine>
+          <div class="content my-4">
+            <taken-medicine
+              th:attr="medicine-id=*{takenMedicine}, quantity=*{quantity}, medicine-id-errors=${#fields.errors('takenMedicine')}, quantity-errors=${#fields.errors('quantity')}"
+            ></taken-medicine>
 
-          <div class="field is-horizontal my-3">
-            <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">
-                日時
-                <span class="tag is-rounded is-danger is-light ml-2">必須</span>
-              </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control is-expanded">
-                  <input
-                    class="input is-info is-rounded"
-                    type="datetime-local"
-                    name="takenAt"
-                    th:value="*{takenAt}"
-                    th:errorclass="is-danger"
-                  />
-                  <p
-                    class="help is-danger"
-                    th:if="${#fields.hasErrors('takenAt')}"
-                    th:errors="*{takenAt}"
-                  ></p>
+            <div class="field is-horizontal my-3">
+              <div class="field-label is-flex is-align-items-center">
+                <label class="label has-text-grey">
+                  日時
+                  <span class="tag is-rounded is-danger is-light ml-2"
+                    >必須</span
+                  >
+                </label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded">
+                    <input
+                      class="input is-info is-rounded"
+                      type="datetime-local"
+                      name="takenAt"
+                      th:value="*{takenAt}"
+                      th:errorclass="is-danger"
+                    />
+                    <p
+                      class="help is-danger"
+                      th:if="${#fields.hasErrors('takenAt')}"
+                      th:errors="*{takenAt}"
+                    ></p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="field is-horizontal my-3">
-            <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">経過</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <div class="notification has-background-white py-2 px-4">
-                    <div class="field my-3">
-                      <label class="label has-text-grey">
-                        症状
-                        <span class="tag is-rounded is-danger is-light ml-2">
-                          必須
-                        </span>
-                      </label>
-                      <div class="field-body">
-                        <div class="field">
-                          <div class="control">
-                            <input
-                              class="input is-info is-rounded"
-                              type="text"
-                              list="effectOptions"
-                              name="symptom"
-                              th:value="*{symptom}"
-                              th:errorclass="is-danger"
-                            />
-                            <datalist id="effectOptions">
-                              <option v-for="effectOption in effectOptions">
-                                {{ effectOption }}
-                              </option>
-                            </datalist>
-                            <p
-                              class="help is-danger"
-                              th:if="${#fields.hasErrors('symptom')}"
-                              th:errors="*{symptom}"
-                            ></p>
+            <div class="field is-horizontal my-3">
+              <div class="field-label is-flex is-align-items-center">
+                <label class="label has-text-grey">経過</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div class="notification has-background-white py-2 px-4">
+                      <div class="field my-3">
+                        <label class="label has-text-grey">
+                          症状
+                          <span class="tag is-rounded is-danger is-light ml-2">
+                            必須
+                          </span>
+                        </label>
+                        <div class="field-body">
+                          <div class="field">
+                            <div class="control">
+                              <input
+                                class="input is-info is-rounded"
+                                type="text"
+                                list="effectOptions"
+                                name="symptom"
+                                th:value="*{symptom}"
+                                th:errorclass="is-danger"
+                              />
+                              <datalist id="effectOptions">
+                                <option v-for="effectOption in effectOptions">
+                                  {{ effectOption }}
+                                </option>
+                              </datalist>
+                              <p
+                                class="help is-danger"
+                                th:if="${#fields.hasErrors('symptom')}"
+                                th:errors="*{symptom}"
+                              ></p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="field my-3">
-                      <div class="field-body">
-                        <div class="field">
-                          <label class="label has-text-grey">
-                            服用前
-                            <span
-                              class="tag is-rounded is-danger is-light ml-2"
-                            >
-                              必須
-                            </span>
-                          </label>
-                          <div class="control mb-1">
-                            <div
-                              class="select is-rounded is-fullwidth"
-                              th:classappend="${#fields.hasErrors('beforeMedication')} ? is-danger : is-info"
-                            >
-                              <select name="beforeMedication">
-                                <option
-                                  th:each="conditionLevel:${conditionLevels}"
-                                  th:value="${conditionLevel.name}"
-                                  th:text="${conditionLevel.str}"
-                                  th:selected="(${conditionLevel} == *{beforeMedication})"
-                                ></option>
-                              </select>
+                      <div class="field my-3">
+                        <div class="field-body">
+                          <div class="field">
+                            <label class="label has-text-grey">
+                              服用前
+                              <span
+                                class="tag is-rounded is-danger is-light ml-2"
+                              >
+                                必須
+                              </span>
+                            </label>
+                            <div class="control mb-1">
+                              <div
+                                class="select is-rounded is-fullwidth"
+                                th:classappend="${#fields.hasErrors('beforeMedication')} ? is-danger : is-info"
+                              >
+                                <select name="beforeMedication">
+                                  <option
+                                    th:each="conditionLevel:${conditionLevels}"
+                                    th:value="${conditionLevel.name}"
+                                    th:text="${conditionLevel.str}"
+                                    th:selected="(${conditionLevel} == *{beforeMedication})"
+                                  ></option>
+                                </select>
+                              </div>
+                              <p
+                                class="help is-danger"
+                                th:if="${#fields.hasErrors('beforeMedication')}"
+                                th:errors="*{beforeMedication}"
+                              ></p>
                             </div>
-                            <p
-                              class="help is-danger"
-                              th:if="${#fields.hasErrors('beforeMedication')}"
-                              th:errors="*{beforeMedication}"
-                            ></p>
                           </div>
-                        </div>
-                        <div class="field">
-                          <label class="label has-text-grey">服用後</label>
-                          <div class="control mb-1">
-                            <div
-                              class="select is-rounded is-fullwidth"
-                              th:classappend="${#fields.hasErrors('afterMedication')} ? is-danger : is-info"
-                            >
-                              <select name="afterMedication">
-                                <option value=""></option>
-                                <option
-                                  th:each="conditionLevel:${conditionLevels}"
-                                  th:value="${conditionLevel.name}"
-                                  th:text="${conditionLevel.str}"
-                                  th:selected="(${conditionLevel} == *{afterMedication})"
-                                ></option>
-                              </select>
+                          <div class="field">
+                            <label class="label has-text-grey">服用後</label>
+                            <div class="control mb-1">
+                              <div
+                                class="select is-rounded is-fullwidth"
+                                th:classappend="${#fields.hasErrors('afterMedication')} ? is-danger : is-info"
+                              >
+                                <select name="afterMedication">
+                                  <option value=""></option>
+                                  <option
+                                    th:each="conditionLevel:${conditionLevels}"
+                                    th:value="${conditionLevel.name}"
+                                    th:text="${conditionLevel.str}"
+                                    th:selected="(${conditionLevel} == *{afterMedication})"
+                                  ></option>
+                                </select>
+                              </div>
+                              <p
+                                class="help is-danger"
+                                th:if="${#fields.hasErrors('afterMedication')}"
+                                th:errors="*{afterMedication}"
+                              ></p>
                             </div>
-                            <p
-                              class="help is-danger"
-                              th:if="${#fields.hasErrors('afterMedication')}"
-                              th:errors="*{afterMedication}"
-                            ></p>
                           </div>
                         </div>
                       </div>
@@ -161,27 +162,29 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="field is-horizontal my-3">
-            <div class="field-label is-flex is-align-items-center">
-              <label class="label has-text-grey">ノート</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control is-expanded">
-                  <textarea
-                    class="textarea is-info has-fixed-size"
-                    rows="5"
-                    name="note"
-                    placeholder="500文字以内で入力してください。"
-                    th:errorclass="is-danger"
-                  >[[*{note}]]</textarea>
-                  <p
-                    class="help is-danger"
-                    th:if="${#fields.hasErrors('note')}"
-                    th:errors="*{note}"
-                  ></p>
+            <div class="field is-horizontal my-3">
+              <div class="field-label is-flex is-align-items-center">
+                <label class="label has-text-grey">ノート</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded">
+                    <textarea
+                      class="textarea is-info has-fixed-size"
+                      rows="5"
+                      name="note"
+                      placeholder="500文字以内で入力してください。"
+                      th:errorclass="is-danger"
+                    >
+[[*{note}]]</textarea
+                    >
+                    <p
+                      class="help is-danger"
+                      th:if="${#fields.hasErrors('note')}"
+                      th:errors="*{note}"
+                    ></p>
+                  </div>
                 </div>
               </div>
             </div>

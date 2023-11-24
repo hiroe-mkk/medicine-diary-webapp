@@ -11,25 +11,22 @@
 
   <body>
     <div id="medicineForm" layout:fragment="content">
-      <div class="content has-text-centered">
-        <p class="icon-text is-size-4 is-flex is-justify-content-center">
-          <strong class="has-text-grey-dark">お薬登録</strong>
-          <span class="icon has-text-grey-dark mx-2">
-            <i class="fa-solid fa-capsules"></i>
-          </span>
-        </p>
-      </div>
       <div class="container is-max-desktop p-3">
+        <div class="has-text-centered">
+          <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
+            お薬登録
+          </p>
+        </div>
         <form method="post" class="form" th:action="@{/medicines/register}">
-          <div
-            th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
-          ></div>
-
-          <medicine-owner
-            th:attr="':is-want-to-own'=${isWantToOwn}, ':is-public'=${form.isPublic}"
-            th:if="${isParticipatingInSharedGroup}"
-          ></medicine-owner>
-
+          <div class="content my-4">
+            <div
+              th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
+            ></div>
+            <medicine-owner
+              th:attr="':is-want-to-own'=${isWantToOwn}, ':is-public'=${form.isPublic}"
+              th:if="${isParticipatingInSharedGroup}"
+            ></medicine-owner>
+          </div>
           <div class="field is-grouped is-grouped-centered my-3">
             <p class="control">
               <button class="button is-small is-rounded is-link">完了</button>
