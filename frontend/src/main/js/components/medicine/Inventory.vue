@@ -1,14 +1,14 @@
 <template>
   <div class="block" v-if="inventory.value !== undefined">
     <p
-      class="has-text-weight-bold has-text-success-dark has-text-centered mb-3"
+      class="is-size-5 has-text-weight-bold has-text-success-dark has-text-centered mb-3"
     >
       在庫
     </p>
-    <div class="columns is-mobile has-text-grey-dark">
-      <div class="column is-fullheight is-three-fifths p-2">
+    <div class="tile is-ancestor has-text-grey-dark">
+      <div class="tile is-parent is-8 p-2">
         <div
-          class="notification has-background-white-bis has-text-right py-2 px-4"
+          class="tile is-child notification has-background-white-bis has-text-right py-2 px-4"
         >
           <p class="has-text-weight-bold has-text-centered mb-2">使用中</p>
           <p>
@@ -26,19 +26,23 @@
           </p>
           <p
             class="has-text-weight-semibold"
-            v-if="inventory.value.expirationOn !== undefined"
+            v-if="
+              inventory.value.expirationOn !== undefined &&
+              inventory.value.expirationOn !== ''
+            "
           >
             有効期限 ( {{ inventory.value.expirationOn.replace(/-/g, '/') }} )
           </p>
         </div>
       </div>
-      <div class="column is-fullheight p-2">
+      <div class="tile is-parent p-2">
         <div
-          class="notification has-background-white-bis has-text-right py-2 px-4"
+          class="tile is-child notification has-background-white-bis is-flex is-flex-direction-column is-justify-content-space-between has-text-right py-2 px-4"
         >
           <p class="has-text-weight-bold has-text-centered mb-2">未使用</p>
-          <strong class="is-size-5">{{ inventory.value.unusedPackage }}</strong>
-          <strong>個</strong>
+          <strong class="is-size-5"
+            >{{ inventory.value.unusedPackage }}個</strong
+          >
         </div>
       </div>
     </div>
