@@ -165,7 +165,7 @@
     details="アカウントを削除すると、全てのデータが削除されます。
                   削除後、データを復元することはできません。"
     button-label="削除する"
-    path="/accounts/delete"
+    path="/account/delete"
     th:attr="csrf=${_csrf.token}"
   >
   </ConfirmationMessage>

@@ -1,4 +1,4 @@
-package example.presentation.controller.page.accounts
+package example.presentation.controller.page.account
 
 import example.application.service.account.*
 import example.domain.model.medicine.*
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
 @Controller
-@RequestMapping("/accounts/delete")
+@RequestMapping("/account/delete")
 class AccountDeletionController(private val accountService: AccountService,
                                 private val userSessionProvider: UserSessionProvider) {
     /**

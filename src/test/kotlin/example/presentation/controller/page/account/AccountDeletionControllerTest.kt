@@ -1,4 +1,4 @@
-package example.presentation.controller.page.accounts
+package example.presentation.controller.page.account
 
 import example.domain.model.medicine.*
 import example.presentation.shared.usersession.*
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @ControllerTest
 internal class AccountDeletionControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
-        private const val PATH = "/accounts/delete"
+        private const val PATH = "/account/delete"
     }
 
     @Test
