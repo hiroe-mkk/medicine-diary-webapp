@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/setting")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class SettingController(private val profileService: ProfileService,
-                        private val userSessionProvider: UserSessionProvider) {
+class SettingPageController(private val profileService: ProfileService,
+                            private val userSessionProvider: UserSessionProvider) {
     /**
      * 設定画面を表示する
      */

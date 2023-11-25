@@ -1,5 +1,7 @@
-package example.presentation.controller.page.sharedgroup
+package example.presentation.controller.page.medicine
 
+import example.presentation.shared.usersession.*
+import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
 import org.junit.jupiter.api.*
@@ -11,26 +13,26 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class SharedGroupManagementControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class MedicineOverviewsPageControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
-        private const val PATH = "/shared-group/management"
+        private const val PATH = "/medicines"
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループ管理画面を表示する")
-    fun displaySharedGroupManagementPage() {
+    @DisplayName("薬概要一覧画面を表示する")
+    fun displayMedicineOverviewsPage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
 
         //then:
         actions.andExpect(status().isOk)
-            .andExpect(view().name("sharedgroup/management"))
+            .andExpect(view().name("medicine/overviews"))
     }
 
     @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToHomePage() {
+    fun requestedByUnauthenticatedUser_redirectsToHomePage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
 

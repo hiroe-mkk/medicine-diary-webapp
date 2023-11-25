@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class HomeController(private val profileService: ProfileService,
-                     private val sharedGroupService: SharedGroupService,
-                     private val userSessionProvider: UserSessionProvider) {
+class HomePageController(private val profileService: ProfileService,
+                         private val sharedGroupService: SharedGroupService,
+                         private val userSessionProvider: UserSessionProvider) {
     /**
      * ホーム画面を表示する
      */

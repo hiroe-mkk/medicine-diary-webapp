@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/medicines/{medicineId}")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class MedicineDetailController(private val medicineService: MedicineService,
-                               private val sharedGroupService: SharedGroupService,
-                               private val userSessionProvider: UserSessionProvider) {
+class MedicineDetailPageController(private val medicineService: MedicineService,
+                                   private val sharedGroupService: SharedGroupService,
+                                   private val userSessionProvider: UserSessionProvider) {
     /**
      * 薬詳細画面を表示する
      */

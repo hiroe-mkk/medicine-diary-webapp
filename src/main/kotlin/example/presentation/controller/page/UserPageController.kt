@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/users/{accountId}")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class UserController(private val userQueryService: UserQueryService,
-                     private val userSessionProvider: UserSessionProvider) {
+class UserPageController(private val userQueryService: UserQueryService,
+                         private val userSessionProvider: UserSessionProvider) {
     /**
      * ユーザー画面を表示する
      */

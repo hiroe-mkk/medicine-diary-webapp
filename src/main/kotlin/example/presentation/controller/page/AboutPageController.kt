@@ -5,13 +5,13 @@ import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/agreement")
-class AgreementController {
+@RequestMapping("/about")
+class AboutPageController {
     /**
-     * 利用規約画面を表示する
+     * アバウト画面を表示する
      */
-    @GetMapping()
-    fun displayAgreementPage(): String {
-        return "agreement"
+    @GetMapping
+    fun displayAboutPage(): String {
+        return "about"
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class AgreementControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class AgreementPageControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
         private const val PATH = "/agreement"
     }
