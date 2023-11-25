@@ -26,7 +26,8 @@
               "
             />
             <img
-              :src="noProfileImage"
+              src="@main/images/no_profile_image.png"
+              alt="noImage"
               class="is-rounded"
               v-if="
                 medicationRecord.value.recorder.profileImageURL === undefined
@@ -172,7 +173,6 @@ import {
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { MedicationRecordUtils } from '@main/js/composables/model/MedicationRecords.js';
-import noProfileImage from '@main/images/no_profile_image.png';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({

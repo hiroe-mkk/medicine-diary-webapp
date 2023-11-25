@@ -25,7 +25,8 @@
             v-if="medicationRecord.recorder.profileImageURL !== undefined"
           />
           <img
-            :src="noProfileImage"
+            src="@main/images/no_profile_image.png"
+            alt="noImage"
             class="is-rounded"
             v-if="medicationRecord.recorder.profileImageURL === undefined"
           />
@@ -122,7 +123,6 @@ import {
 } from '@main/js/composables/model/MedicationRecords.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
-import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
   isParticipatingInSharedGroup: Boolean,

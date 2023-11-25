@@ -56,6 +56,7 @@ const props = defineProps({
   buttonLabel: String,
   csrf: String,
 });
+defineExpose({ activate });
 
 const isModalActive = ref('');
 const notificationMessage = reactive(new NotificationMessage());
@@ -68,6 +69,4 @@ function activate(values) {
 
   isModalActive.value = true;
 }
-
-defineExpose({ activate });
 </script>

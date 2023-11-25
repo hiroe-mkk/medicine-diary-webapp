@@ -10,8 +10,9 @@
               v-if="member.profileImageURL !== undefined"
             />
             <img
+              src="@main/images/no_profile_image.png"
+              alt="noImage"
               class="is-rounded"
-              :src="noProfileImage"
               v-if="member.profileImageURL === undefined"
             />
           </a>
@@ -27,7 +28,6 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
-import noProfileImage from '@main/images/no_profile_image.png';
 
 const members = reactive([]);
 const resultMessage = ref(null);

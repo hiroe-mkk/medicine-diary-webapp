@@ -119,7 +119,6 @@ const props = defineProps({
   isRounded: { type: Boolean, default: false },
   isFixedSize: { type: Boolean, default: false },
 });
-
 defineExpose({ activateChangeModal });
 
 const image = ref(props.image);

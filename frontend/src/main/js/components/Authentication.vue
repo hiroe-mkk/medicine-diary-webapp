@@ -26,7 +26,7 @@
               <span
                 class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-2"
               >
-                <img :src="yahoo_icon" alr="YahooIcon" />
+                <img src="@main/images/yahoo_icon.png" alr="YahooIcon" />
               </span>
               <strong>Yahoo! JAPANでログイン</strong>
             </a>
@@ -37,7 +37,7 @@
               href="/oauth2/authorization/line"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img :src="line_icon" alr="LineIcon" />
+                <img src="@main/images/line_icon.png" alr="LineIcon" />
               </span>
               <strong>LINEでログイン</strong>
             </a>
@@ -48,7 +48,7 @@
               href="/oauth2/authorization/github"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img :src="github_icon" alr="GitHubIcon" />
+                <img src="@main/images/github_icon.png" alr="GitHubIcon" />
               </span>
               <strong>GitHubでログイン</strong>
             </a>
@@ -102,7 +102,7 @@
               <span
                 class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-2"
               >
-                <img :src="yahoo_icon" alr="YahooIcon" />
+                <img src="@main/images/yahoo_icon.png" alr="YahooIcon" />
               </span>
               <strong>Yahoo! JAPANでログイン</strong>
             </a>
@@ -113,7 +113,7 @@
               href="/oauth2/authorization/line"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img :src="line_icon" alr="LineIcon" />
+                <img src="@main/images/line_icon.png" alr="LineIcon" />
               </span>
               <strong>LINEでログイン</strong>
             </a>
@@ -124,7 +124,7 @@
               href="/oauth2/authorization/github"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img :src="github_icon" alr="GitHubIcon" />
+                <img src="@main/images/github_icon.png" alr="GitHubIcon" />
               </span>
               <strong>GitHubでログイン</strong>
             </a>
@@ -157,9 +157,6 @@
 </template>
 <script setup>
 import { ref, defineExpose } from 'vue';
-import yahoo_icon from '@main/images/yahoo_icon.png';
-import line_icon from '@main/images/line_icon.png';
-import github_icon from '@main/images/github_icon.png';
 
 defineExpose({ activateLoginModal, activateAccountRegistrationModal });
 

@@ -55,7 +55,8 @@
                     v-if="user.profileImageURL !== undefined"
                   />
                   <img
-                    :src="noProfileImage"
+                    src="@main/images/no_profile_image.png"
+                    alt="noImage"
                     class="is-rounded"
                     v-if="user.profileImageURL === undefined"
                   />
@@ -95,7 +96,6 @@
 
 <script setup>
 import { ref, reactive, defineExpose } from 'vue';
-  import noProfileImage from '@main/images/no_profile_image.png';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
@@ -104,7 +104,6 @@ const props = defineProps({
   sharedGroupId: String,
   csrf: String,
 });
-
 defineExpose({ activateSearchModal });
 
 const isSearchModalActive = ref(false);

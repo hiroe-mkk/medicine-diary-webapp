@@ -51,6 +51,7 @@ const props = defineProps({
   message: String,
   details: String,
 });
+defineExpose({ activate });
 
 const isSimpleMessageActive = ref(false);
 const isDetailsMessageActive = ref(false);
@@ -73,8 +74,6 @@ function activate(type, message, details) {
     }, 5000);
   }
 }
-
-defineExpose({ activate });
 </script>
 
 <style scoped>
