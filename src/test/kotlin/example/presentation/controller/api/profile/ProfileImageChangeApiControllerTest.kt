@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.*
 import org.springframework.http.*
 import org.springframework.mock.web.*
 import org.springframework.security.test.web.servlet.request.*
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
 import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
@@ -30,9 +31,10 @@ internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMv
     @WithMockAuthenticatedAccount
     @DisplayName("プロフィール画像の変更に成功した場合、ステータスコード204のレスポンスを返す")
     fun profileImageChangeSucceeds_returnsResponseWithStatus204() {
+        //when:
         val actions = mockMvc.perform(multipart(PATH)
                                           .file(multipartFile)
-                                          .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                                          .with(csrf()))
 
         //then:
         actions.andExpect(status().isNoContent)
@@ -49,7 +51,7 @@ internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMv
         //when:
         val actions = mockMvc.perform(multipart(PATH)
                                           .file(invalidMultipartFile)
-                                          .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                                          .with(csrf()))
 
         //then:
         actions.andExpect(status().isBadRequest)
@@ -68,7 +70,7 @@ internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMv
         //when:
         val actions = mockMvc.perform(multipart(PATH)
                                           .file(multipartFile)
-                                          .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                                          .with(csrf()))
 
         //then:
         actions.andExpect(status().isNotFound)
@@ -80,7 +82,7 @@ internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMv
         //when:
         val actions = mockMvc.perform(multipart(PATH)
                                           .file(multipartFile)
-                                          .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                                          .with(csrf()))
 
         //then:
         actions.andExpect(status().isUnauthorized)
