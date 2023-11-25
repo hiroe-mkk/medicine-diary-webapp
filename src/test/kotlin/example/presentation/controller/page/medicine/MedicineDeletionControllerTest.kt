@@ -28,7 +28,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     @Test
     @WithMockAuthenticatedAccount
     @DisplayName("薬の削除に成功した場合、薬概要一覧画面にリダイレクトする")
-    fun medicineUpdateSucceeds_redirectToMedicineDetailPage() {
+    fun medicineDeletionSucceeds_redirectToMedicineOverviewsPage() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
@@ -45,7 +45,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     @Test
     @WithMockAuthenticatedAccount
     @DisplayName("薬が見つからなかった場合、薬概要一覧画面にリダイレクトする")
-    fun medicineDetailNotFound_displayNotFoundErrorPage() {
+    fun medicineNotFound_redirectToMedicineOverviewsPage() {
         //given:
         val badMedicineId = MedicineId("NonexistentId")
 

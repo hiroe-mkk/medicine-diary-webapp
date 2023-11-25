@@ -70,7 +70,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("服用記録の追加に成功した場合、最後にリクエストされた画面にリダイレクトする")
+        @DisplayName("服用記録の追加に成功した場合、直前に閲覧していた画面にリダイレクトする")
         fun medicationRecordAdditionSucceeds_redirectToLastRequestedPage() {
             //given:
             val userSession = userSessionProvider.getUserSessionOrElseThrow()
@@ -94,7 +94,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("バリデーションエラーが発生した場合、薬登録画面を再表示する")
+        @DisplayName("バリデーションエラーが発生した場合、服用記録追加画面を再表示する")
         fun validationErrorOccurs_redisplayMedicationRecordAdditionPage() {
             //given:
             val invalidMedicineId = ""

@@ -40,8 +40,8 @@ internal class MedicineDetailControllerTest(@Autowired private val mockMvc: Mock
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("薬詳細が見つからなかった場合、NotFoundエラー画面を表示する")
-    fun medicineDetailNotFound_displayNotFoundErrorPage() {
+    @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
+    fun medicineNotFound_displayNotFoundErrorPage() {
         //given:
         val badMedicineId = MedicineId("NonexistentId")
 
