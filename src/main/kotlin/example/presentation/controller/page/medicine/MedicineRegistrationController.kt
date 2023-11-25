@@ -52,11 +52,12 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
             return "medicine/registrationForm"
         }
 
-        medicineService.registerMedicine(medicineBasicInfoEditCommand,
-                                         isWantToOwn,
-                                         userSessionProvider.getUserSessionOrElseThrow())
+        val medicineId = medicineService.registerMedicine(medicineBasicInfoEditCommand,
+                                                          isWantToOwn,
+                                                          userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の登録が完了しました。"))
-        return "redirect:/medicines"
+        redirectAttributes.addAttribute("medicineId", medicineId)
+        return "redirect:/medicines/{medicineId}"
     }
 }

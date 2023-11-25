@@ -1,10 +1,14 @@
 package example.presentation.controller.page.medicine
 
+import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
+import io.mockk.*
 import org.junit.jupiter.api.*
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.*
+import org.springframework.boot.test.mock.mockito.*
 import org.springframework.security.test.web.servlet.request.*
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
@@ -58,7 +62,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("薬の登録に成功した場合、薬概要一覧画面にリダイレクトする")
+        @DisplayName("薬の登録に成功した場合、薬詳細画面にリダイレクトする")
         fun medicineRegistrationSucceeds_redirectToMedicineOverviewsPage() {
             //when:
             val actions = mockMvc.perform(post(PATH)
@@ -74,8 +78,9 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("isWantToOwn", isWantToOwn))
 
             //then:
+            val medicineId = actions.andReturn().modelAndView?.model?.get("medicineId");
             actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/medicines"))
+                .andExpect(redirectedUrl("/medicines/${medicineId}"))
         }
 
         @Test
