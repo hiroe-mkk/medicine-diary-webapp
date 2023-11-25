@@ -53,7 +53,7 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
     @Transactional(readOnly = true)
     fun getModificationEditCommand(medicationRecordId: MedicationRecordId,
                                    userSession: UserSession): MedicationRecordEditCommand {
-        val medicationRecord = findOwnedMedicationRecordOrElseThrowException(medicationRecordId, userSession)
+        val medicationRecord = findRecordedMedicationRecordOrElseThrowException(medicationRecordId, userSession)
         return MedicationRecordEditCommand.initialize(medicationRecord)
     }
 
@@ -64,7 +64,7 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                                command: MedicationRecordEditCommand,
                                userSession: UserSession) {
         val medicine = findAvailableMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
-        val medicationRecord = findOwnedMedicationRecordOrElseThrowException(medicationRecordId, userSession)
+        val medicationRecord = findRecordedMedicationRecordOrElseThrowException(medicationRecordId, userSession)
         medicationRecord.modify(medicine,
                                 command.validatedDose,
                                 command.validFollowUp,
@@ -77,14 +77,15 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
      * 服用記録を削除する
      */
     fun deleteMedicationRecord(medicationRecordId: MedicationRecordId, userSession: UserSession) {
-        val medicationRecord = medicationRecordQueryService.findOwnedMedicationRecord(medicationRecordId,
-                                                                                      userSession.accountId) ?: return
+        val medicationRecord = medicationRecordQueryService.findRecordedMedicationRecord(medicationRecordId,
+                                                                                         userSession.accountId)
+                               ?: return
         medicationRecordRepository.deleteById(medicationRecord.id)
     }
 
-    private fun findOwnedMedicationRecordOrElseThrowException(medicationRecordId: MedicationRecordId,
-                                                              userSession: UserSession): MedicationRecord {
-        return medicationRecordQueryService.findOwnedMedicationRecord(medicationRecordId, userSession.accountId)
+    private fun findRecordedMedicationRecordOrElseThrowException(medicationRecordId: MedicationRecordId,
+                                                                 userSession: UserSession): MedicationRecord {
+        return medicationRecordQueryService.findRecordedMedicationRecord(medicationRecordId, userSession.accountId)
                ?: throw MedicationRecordNotFoundException(medicationRecordId)
     }
 

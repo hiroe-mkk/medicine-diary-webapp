@@ -33,7 +33,7 @@ internal class MedicationRecordQueryServiceTest(@Autowired private val medicatio
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, requesterMedicine.id)
 
         //when:
-        val actual = medicationRecordQueryService.findOwnedMedicationRecord(medicationRecord.id, requesterAccountId)
+        val actual = medicationRecordQueryService.findRecordedMedicationRecord(medicationRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).usingRecursiveComparison().isEqualTo(medicationRecord)
@@ -47,7 +47,7 @@ internal class MedicationRecordQueryServiceTest(@Autowired private val medicatio
         val medicationRecord = testMedicationRecordInserter.insert(user1AccountId, requesterMedicine.id)
 
         //when:
-        val actual = medicationRecordQueryService.findOwnedMedicationRecord(medicationRecord.id, requesterAccountId)
+        val actual = medicationRecordQueryService.findRecordedMedicationRecord(medicationRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).isNull()
