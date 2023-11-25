@@ -1,4 +1,4 @@
-package example.presentation.controller.page.user
+package example.presentation.controller.page
 
 import example.domain.model.account.*
 import example.presentation.shared.usersession.*
@@ -36,7 +36,7 @@ internal class UserControllerTest(@Autowired private val mockMvc: MockMvc,
 
         //then:
         actions.andExpect(status().isOk)
-            .andExpect(view().name("user/user"))
+            .andExpect(view().name("user"))
     }
 
     @Test

@@ -1,4 +1,4 @@
-package example.presentation.controller.page.user
+package example.presentation.controller.page
 
 import example.application.query.user.*
 import example.application.service.sharedgroup.*
@@ -24,6 +24,6 @@ class UserController(private val userQueryService: UserQueryService,
                                                                    userSessionProvider.getUserSessionOrElseThrow()))
 
         model.addAttribute("lastRequestedPagePath", "/users/${accountId}");
-        return "user/user"
+        return "user"
     }
 }
