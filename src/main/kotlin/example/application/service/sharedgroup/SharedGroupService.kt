@@ -19,10 +19,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有する
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
-        sharedGroupParticipationService.requireSharePossible(userSession.accountId)
-        val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
-
         requireAccountExists(target)
+        sharedGroupParticipationService.requireSharePossible(userSession.accountId)
+
+        val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
         sharedGroup.invite(target, userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
         return sharedGroup.id
@@ -32,10 +32,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに招待する
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
+        requireAccountExists(target)
         val participatingSharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)
                                            ?.let { if (it.id == sharedGroupId) it else null }
                                        ?: throw SharedGroupNotFoundException(sharedGroupId)
-        requireAccountExists(target)
 
         participatingSharedGroup.invite(target, userSession.accountId)
         sharedGroupRepository.save(participatingSharedGroup)
