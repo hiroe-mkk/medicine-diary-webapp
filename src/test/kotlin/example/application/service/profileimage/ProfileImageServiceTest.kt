@@ -21,40 +21,61 @@ internal class ProfileImageServiceTest(@Autowired private val profileRepository:
                                        @Autowired private val testAccountInserter: TestAccountInserter) {
     private val profileImageService: ProfileImageService = ProfileImageService(profileRepository, profileImageStorage)
 
-    private val command = TestImageFactory.createImageUploadCommand()
+    @Nested
+    inner class ChangeProfileImage {
+        private val command = TestImageFactory.createImageUploadCommand()
 
-    @Test
-    @DisplayName("プロフィール画像が未設定の場合、プロフィール画像の変更に成功する")
-    fun profileImageIsNotSet_changingProfileImageSucceeds() {
-        //given:
-        val requesterAccountId = testAccountInserter.insertAccountAndProfile(profileImageURL = null).first.id
-        val userSession = UserSessionFactory.create(requesterAccountId)
+        @Test
+        @DisplayName("プロフィール画像が設定されていない場合、プロフィール画像の変更に成功する")
+        fun profileImageIsNotSet_changingProfileImageSucceeds() {
+            //given:
+            val requesterAccountId = testAccountInserter.insertAccountAndProfile(profileImageURL = null).first.id
+            val userSession = UserSessionFactory.create(requesterAccountId)
 
-        //when:
-        val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
+            //when:
+            val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
 
-        //then:
-        val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
-        assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
-        verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
+            //then:
+            val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
+            assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
+            verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
+        }
+
+        @Test
+        @DisplayName("プロフィール画像が設定されている場合、プロフィール画像の変更に成功する")
+        fun profileImageIsSet_changingProfileImageSucceeds() {
+            //given:
+            val oldProfileImageURL = ProfileImageURL("endpoint", "/profileimage/oldProfileImage.png")
+            val requesterAccountId =
+                    testAccountInserter.insertAccountAndProfile(profileImageURL = oldProfileImageURL).first.id
+            val userSession = UserSessionFactory.create(requesterAccountId)
+
+            //when:
+            val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
+
+            //then:
+            val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
+            assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
+            verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
+            verify(exactly = 1) { profileImageStorage.delete(oldProfileImageURL) }
+        }
     }
 
     @Test
-    @DisplayName("プロフィール画像が設定済みの場合、プロフィール画像の変更に成功する")
-    fun profileImageIsSet_changingProfileImageSucceeds() {
+    @DisplayName("プロフィール画像を削除する")
+    fun deleteProfileImage() {
         //given:
-        val oldProfileImageURL = ProfileImageURL("endpoint", "/profileimage/oldProfileImage")
+        val profileImageURL = ProfileImageURL("endpoint", "/profileimage/profileImage.png")
         val requesterAccountId =
-                testAccountInserter.insertAccountAndProfile(profileImageURL = oldProfileImageURL).first.id
+                testAccountInserter.insertAccountAndProfile(profileImageURL = profileImageURL).first.id
         val userSession = UserSessionFactory.create(requesterAccountId)
 
         //when:
-        val newProfileImageURL = profileImageService.changeProfileImage(command, userSession)
+        profileImageService.deleteProfileImage(userSession)
 
         //then:
         val foundProfile = profileRepository.findByAccountId(userSession.accountId)!!
-        assertThat(foundProfile.profileImageURL).isEqualTo(newProfileImageURL)
-        verify(exactly = 1) { profileImageStorage.upload(newProfileImageURL, any()) }
-        verify(exactly = 1) { profileImageStorage.delete(oldProfileImageURL) }
+        assertThat(foundProfile.profileImageURL).isNull()
+        verify(exactly = 1) { profileImageStorage.delete(profileImageURL) }
     }
 }

@@ -9,16 +9,25 @@ import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/api/profile/image/change")
+@RequestMapping("/api/profile/image")
 class ProfileImageChangeApiController(private val profileImageService: ProfileImageService,
                                       private val userSessionProvider: UserSessionProvider) {
     /**
      * プロフィール画像を変更する
      */
-    @PostMapping
+    @PostMapping("/change")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeProfileImage(@Validated imageUploadCommand: ImageUploadCommand) {
         profileImageService.changeProfileImage(imageUploadCommand,
                                                userSessionProvider.getUserSessionOrElseThrow())
+    }
+
+    /**
+     * プロフィール画像を削除する
+     */
+    @PostMapping("delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteProfileImage() {
+        profileImageService.deleteProfileImage(userSessionProvider.getUserSessionOrElseThrow())
     }
 }
