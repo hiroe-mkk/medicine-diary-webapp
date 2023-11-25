@@ -1,6 +1,5 @@
 package example.domain.model.sharedgroup
 
-import example.application.service.profile.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import org.springframework.stereotype.*
@@ -23,7 +22,7 @@ class SharedGroupParticipationService(private val sharedGroupQueryService: Share
     }
 
     private fun isUsernameDefaultValue(accountId: AccountId): Boolean {
-        val profile = profileRepository.findByAccountId(accountId) ?: throw ProfileNotFoundException(accountId)
+        val profile = profileRepository.findByAccountId(accountId) ?: return false
         return profile.username.isDefaultValue()
     }
 }

@@ -1,6 +1,6 @@
 package example.application.service.profileimage
 
-import example.application.service.profile.*
+import example.application.service.account.*
 import example.application.shared.command.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
@@ -15,8 +15,7 @@ class ProfileImageService(private val profileRepository: ProfileRepository,
     /**
      * プロフィール画像を変更する
      */
-    fun changeProfileImage(command: ImageUploadCommand,
-                           userSession: UserSession): ProfileImageURL {
+    fun changeProfileImage(command: ImageUploadCommand, userSession: UserSession): ProfileImageURL {
         val profile = findProfileOrElseThrowException(userSession)
 
         profile.profileImageURL?.let { profileImageStorage.delete(it) }
@@ -30,7 +29,8 @@ class ProfileImageService(private val profileRepository: ProfileRepository,
     }
 
     private fun findProfileOrElseThrowException(userSession: UserSession): Profile {
+        // プロフィールのライフサイクルはアカウントと同じため、プロフィールが見つからない場合は、アカウントが存在しないと考えられる
         return profileRepository.findByAccountId(userSession.accountId)
-               ?: throw ProfileNotFoundException(userSession.accountId)
+               ?: throw AccountNotFoundException(userSession.accountId)
     }
 }

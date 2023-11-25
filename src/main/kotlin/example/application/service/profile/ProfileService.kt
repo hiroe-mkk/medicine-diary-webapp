@@ -1,5 +1,6 @@
 package example.application.service.profile
 
+import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.profile.*
 import org.springframework.stereotype.*
@@ -32,7 +33,8 @@ class ProfileService(private val profileRepository: ProfileRepository,
     }
 
     private fun findProfileOrElseThrowException(userSession: UserSession): Profile {
+        // プロフィールのライフサイクルはアカウントと同じため、プロフィールが見つからない場合は、アカウントが存在しないと考えられる
         return profileRepository.findByAccountId(userSession.accountId)
-               ?: throw ProfileNotFoundException(userSession.accountId)
+               ?: throw AccountNotFoundException(userSession.accountId)
     }
 }
