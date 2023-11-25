@@ -21,7 +21,6 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
                                   @Autowired private val sharedGroupRepository: SharedGroupRepository,
                                   @Autowired private val medicineRepository: MedicineRepository,
                                   @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                                  @Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                   @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
                                   @Autowired private val medicineDeletionService: MedicineDeletionService,
                                   @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
@@ -30,9 +29,7 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
                                   @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private val accountService: AccountService = AccountService(accountRepository,
                                                                 profileRepository,
-                                                                sharedGroupRepository,
                                                                 medicationRecordRepository,
-                                                                sharedGroupQueryService,
                                                                 sharedGroupUnshareService,
                                                                 medicineDeletionService)
 

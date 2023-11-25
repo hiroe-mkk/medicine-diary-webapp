@@ -24,44 +24,53 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
                                              @Autowired private val testMedicineInserter: TestMedicineInserter,
                                              @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
-    private lateinit var user1AccountId: AccountId
+    private lateinit var userAccountIds: List<AccountId>
 
     @BeforeEach
     internal fun setUp() {
         requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
-        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
+        userAccountIds = listOf(testAccountInserter.insertAccountAndProfile().first.id,
+                                testAccountInserter.insertAccountAndProfile().first.id)
     }
 
     @Test
-    @DisplayName("共有を停止する")
-    fun unshareSharedGroup() {
+    @DisplayName("共有を停止し、全ての招待を拒否する")
+    fun unshareAndRejectAllInvitation() {
         //given:
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId, user1AccountId))
+        val participatingSharedGroup =
+                testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]),
+                                               invitees = setOf(userAccountIds[1]))
+        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(userAccountIds[1]),
+                                                                invitees = setOf(requesterAccountId))
 
         //when:
-        sharedGroupUnshareService.unshare(requesterAccountId)
+        sharedGroupUnshareService.unshareAndRejectAllInvitation(requesterAccountId)
 
         //then:
-        val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
-        assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(user1AccountId)
-        assertThat(foundSharedGroup?.invitees).isEmpty()
+        val foundParticipatedSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
+        assertThat(foundParticipatedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[0])
+        assertThat(foundParticipatedSharedGroup?.invitees).containsExactlyInAnyOrder(userAccountIds[1])
+        val foundInvitedSharedGroup = sharedGroupRepository.findById(invitedSharedGroup.id)
+        assertThat(foundInvitedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[1])
+        assertThat(foundInvitedSharedGroup?.invitees).isEmpty()
     }
 
     @Test
-    @DisplayName("削除するとメンバー数が0になる場合、共有グループは削除される")
-    fun memberIsEmptyAfterDeletion_SharedGroupIsDeleted() {
+    @DisplayName("共有を停止するとメンバー数が0になる場合、共有グループは削除される")
+    fun membersEmptyAfterUnshare_sharedGroupIsDeleted() {
         //given:
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
-        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
+        val participatingSharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId),
+                                                                      invitees = setOf(userAccountIds[0]))
+        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(participatingSharedGroup.id))
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
         sharedGroupUnshareService.unshare(requesterAccountId)
 
         //then:
-        val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+        val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
         assertThat(foundSharedGroup).isNull()
-        val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)
+        val foundMedicines = medicineRepository.findByOwner(participatingSharedGroup.id)
         assertThat(foundMedicines).isEmpty()
         val foundMedicationRecords = medicationRecordRepository.findById(medicationRecord.id)
         assertThat(foundMedicationRecords).isNull()

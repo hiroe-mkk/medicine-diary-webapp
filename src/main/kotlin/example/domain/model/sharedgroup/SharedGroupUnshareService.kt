@@ -19,4 +19,14 @@ class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRe
             sharedGroupRepository.save(sharedGroup)
         }
     }
+
+    fun unshareAndRejectAllInvitation(accountId: AccountId) {
+        unshare(accountId)
+
+        val invitedSharedGroups = sharedGroupQueryService.findInvitedSharedGroups(accountId)
+        invitedSharedGroups.forEach {
+            it.rejectInvitation(accountId)
+            sharedGroupRepository.save(it)
+        }
+    }
 }
