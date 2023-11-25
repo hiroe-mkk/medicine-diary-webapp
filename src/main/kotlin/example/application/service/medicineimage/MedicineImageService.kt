@@ -31,6 +31,18 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
         return medicineImageURL
     }
 
+    /**
+     * 薬画像を削除する
+     */
+    fun deleteMedicineImage(medicineId: MedicineId, userSession: UserSession) {
+        val medicine = medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
+        if (medicine?.medicineImageURL == null) return
+
+        medicineImageStorage.delete(medicine.medicineImageURL!!)
+        medicine.deleteMedicineImage()
+        medicineRepository.save(medicine)
+    }
+
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
         return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)

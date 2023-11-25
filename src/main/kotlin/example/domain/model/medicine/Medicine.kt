@@ -55,6 +55,10 @@ class Medicine(val id: MedicineId,
         this.medicineImageURL = medicineImageURL
     }
 
+    fun deleteMedicineImage() {
+        this.medicineImageURL = null
+    }
+
     fun adjustInventory(inventory: Inventory) {
         this.inventory = inventory
     }
