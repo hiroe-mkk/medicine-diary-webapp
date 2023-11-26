@@ -14,32 +14,30 @@
                     <label class="radio ml-0 mr-2">
                       <input
                         type="radio"
-                        name="isWantToOwn"
-                        value="true"
-                        :checked="isWantToOwn"
-                        @click="isWantToOwn = true"
+                        name="isOwnedBySharedGroup"
+                        value="false"
+                        v-model="isOwnedBySharedGroup"
                       />
                       <strong class="has-text-grey"
-                        >あなたのお薬として登録する</strong
-                      >
+                        >あなたのお薬として登録する
+                      </strong>
                     </label>
                     <label class="radio mx-0">
                       <input
                         type="radio"
-                        name="isWantToOwn"
-                        value="false"
-                        :checked="!isWantToOwn"
-                        @click="isWantToOwn = false"
+                        name="isOwnedBySharedGroup"
+                        value="true"
+                        v-model="isOwnedBySharedGroup"
                       />
                       <strong class="has-text-grey"
-                        >共有グループのお薬として登録する</strong
-                      >
+                        >共有グループのお薬として登録する
+                      </strong>
                     </label>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="field my-3" v-show="isWantToOwn">
+            <div class="field my-3" v-show="!isOwnedBySharedGroup">
               <div class="field-body">
                 <div class="field">
                   <div class="control">
@@ -73,10 +71,10 @@
 import { ref } from 'vue';
 
 const props = defineProps({
-  isWantToOwn: Boolean,
+  isOwnedBySharedGroup: Boolean,
   isPublic: Boolean,
 });
 
-const isWantToOwn = ref(props.isWantToOwn);
+const isOwnedBySharedGroup = ref(props.isOwnedBySharedGroup);
 const isPublic = ref(props.isPublic);
 </script>

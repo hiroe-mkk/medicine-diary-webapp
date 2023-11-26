@@ -151,7 +151,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             every { localDateTimeProvider.now() } returns localDateTime
 
             //when:
-            val medicineId = medicineService.registerMedicine(command, true, userSession)
+            val medicineId = medicineService.registerMedicine(command, userSession)
 
             //then:
             val foundMedicine = medicineRepository.findById(medicineId)

@@ -7,22 +7,25 @@ import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-class MedicineCreationService(private val sharedGroupRepository: SharedGroupRepository) {
+class MedicineCreationService(private val sharedGroupQueryService: SharedGroupQueryService) {
     fun create(id: MedicineId,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
                precautions: Note,
+               isOwnedBySharedGroup: Boolean,
                isPublic: Boolean,
                registeredAt: LocalDateTime,
-               registrant: AccountId,
-               isWantToOwn: Boolean): Medicine {
-        val owner = if (isWantToOwn) {
-            MedicineOwner.create(registrant)
+               registrant: AccountId): Medicine {
+        val owner = if (isOwnedBySharedGroup) {
+            val participatingSharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(registrant)
+            if (participatingSharedGroup != null) {
+                MedicineOwner.create(participatingSharedGroup.id)
+            } else {
+                MedicineOwner.create(registrant)
+            }
         } else {
-            findParticipatingSharedGroup(registrant)
-                ?.let { MedicineOwner.create(it.id) }
-            ?: MedicineOwner.create(registrant)
+            MedicineOwner.create(registrant)
         }
 
         return Medicine(id,
@@ -36,6 +39,4 @@ class MedicineCreationService(private val sharedGroupRepository: SharedGroupRepo
                         null,
                         registeredAt)
     }
-
-    private fun findParticipatingSharedGroup(accountId: AccountId) = sharedGroupRepository.findByMember(accountId)
 }

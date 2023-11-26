@@ -58,7 +58,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
         private val effects = arrayOf("頭痛", "解熱")
         private val precautions = "服用間隔は4時間以上開けること。"
         private val isPublic = "true"
-        private val isWantToOwn = "false"
+        private val isOwnedBySharedGroup = "false"
 
         @Test
         @WithMockAuthenticatedAccount
@@ -75,7 +75,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("effects", effects[1])
                                               .param("precautions", precautions)
                                               .param("isPublic", isPublic)
-                                              .param("isWantToOwn", isWantToOwn))
+                                              .param("isOwnedBySharedGroup", isOwnedBySharedGroup))
 
             //then:
             val medicineId = actions.andReturn().modelAndView?.model?.get("medicineId");
@@ -101,7 +101,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("effects", effects[1])
                                               .param("precautions", precautions)
                                               .param("isPublic", isPublic)
-                                              .param("isWantToOwn", isWantToOwn))
+                                              .param("isOwnedBySharedGroup", isOwnedBySharedGroup))
 
             //then:
             actions.andExpect(status().isOk)
@@ -122,7 +122,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("effects", effects[1])
                                               .param("precautions", precautions)
                                               .param("isPublic", isPublic)
-                                              .param("isWantToOwn", isWantToOwn))
+                                              .param("isOwnedBySharedGroup", isOwnedBySharedGroup))
 
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/"))

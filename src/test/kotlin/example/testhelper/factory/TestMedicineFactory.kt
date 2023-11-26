@@ -43,6 +43,7 @@ object TestMedicineFactory {
                                                                         EffectInputField("頭痛"),
                                                                         EffectInputField("解熱")),
                                                                 precautions: String = "服用間隔は4時間以上開けること。",
+                                                                isOwnedBySharedGroup: Boolean = false,
                                                                 isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
@@ -51,6 +52,7 @@ object TestMedicineFactory {
                                             timingOptions,
                                             effects,
                                             precautions,
+                                            isOwnedBySharedGroup,
                                             isPublic)
     }
 
@@ -63,6 +65,7 @@ object TestMedicineFactory {
                                                                                                    EffectInputField("解熱"),
                                                                                                    EffectInputField("肩こり")),
                                                           precautions: String = "服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。",
+                                                          isOwnedBySharedGroup: Boolean = false,
                                                           isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,
                                             quantity,
@@ -71,6 +74,7 @@ object TestMedicineFactory {
                                             timingOptions,
                                             effects,
                                             precautions,
+                                            isOwnedBySharedGroup,
                                             isPublic)
     }
 

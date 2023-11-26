@@ -23,7 +23,7 @@
               th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
             ></div>
             <medicine-owner
-              th:attr="':is-want-to-own'=${isWantToOwn}, ':is-public'=${form.isPublic}"
+              th:attr="':is-owned-by-shared-group'=${form.isOwnedBySharedGroup}, ':is-public'=${form.isPublic}"
               th:if="${isParticipatingInSharedGroup}"
             ></medicine-owner>
           </div>

@@ -39,19 +39,16 @@ internal class MedicineCreationServiceTest(@Autowired private val medicineCreati
     @CsvSource("true", "false")
     @DisplayName("所有する薬を作成する")
     fun createOwnedMedicine(isPublic: Boolean) {
-        //given:
-        val isWantToOwn = true
-
         //when:
         val actual = medicineCreationService.create(medicineId,
                                                     medicineName,
                                                     dosageAndAdministration,
                                                     effects,
                                                     precautions,
+                                                    false,
                                                     isPublic,
                                                     registeredAt,
-                                                    requesterAccountId,
-                                                    isWantToOwn)
+                                                    requesterAccountId)
 
         //then:
         assertThat(actual.owner).isEqualTo(MedicineOwner.create(requesterAccountId))
@@ -64,7 +61,7 @@ internal class MedicineCreationServiceTest(@Autowired private val medicineCreati
     fun createSharedGroupMedicine(isPublic: Boolean) {
         //given:
         val sharedGroupId = testSharedGroupInserter.insert(members = setOf(requesterAccountId)).id
-        val isWantToOwn = false
+        val isOwnedBySharedGroup = true
 
         //when:
         val actual = medicineCreationService.create(medicineId,
@@ -72,10 +69,10 @@ internal class MedicineCreationServiceTest(@Autowired private val medicineCreati
                                                     dosageAndAdministration,
                                                     effects,
                                                     precautions,
+                                                    true,
                                                     isPublic,
                                                     registeredAt,
-                                                    requesterAccountId,
-                                                    isWantToOwn)
+                                                    requesterAccountId)
 
         //then:
         assertThat(actual.owner).isEqualTo(MedicineOwner.create(sharedGroupId))
@@ -86,19 +83,16 @@ internal class MedicineCreationServiceTest(@Autowired private val medicineCreati
     @CsvSource("true", "false")
     @DisplayName("共有グループが見つからなかった場合、所有する薬が作成される")
     fun sharedGroupNotFound_OwnedMedicineIsCreated(isPublic: Boolean) {
-        //given:
-        val isWantToOwn = false
-
         //when:
         val actual = medicineCreationService.create(medicineId,
                                                     medicineName,
                                                     dosageAndAdministration,
                                                     effects,
                                                     precautions,
+                                                    true,
                                                     isPublic,
                                                     registeredAt,
-                                                    requesterAccountId,
-                                                    isWantToOwn)
+                                                    requesterAccountId)
 
         //then:
         assertThat(actual.owner).isEqualTo(MedicineOwner.create(requesterAccountId))
