@@ -30,7 +30,7 @@
   <body>
     <div id="home" sec:authorize="isAuthenticated()">
       <div class="hero is-fullheight-with-navbar">
-        <header id="header" class="hero-head">
+        <header class="hero-head">
           <navbar
             th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
           ></navbar>
@@ -42,7 +42,7 @@
         <main
           class="hero-body has-background-info-light is-flex is-align-items-flex-start py-5"
         >
-          <div class="container is-widescreen">
+          <div class="container is-widescreen p-3">
             <div class="container is-max-desktop">
               <div class="tile is-ancestor px-3">
                 <div class="tile is-5 is-parent">
@@ -217,7 +217,7 @@
         </main>
         <footer class="hero-footer has-text-centered pb-3">
           <a
-            class="button is-size-7 has-text-info-light is-ghost"
+            class="is-size-7 has-text-link"
             th:href="@{/agreement}"
           >
             利用規約
@@ -283,7 +283,7 @@
         </div>
         <div class="block m-0">
           <a
-            class="button is-size-7 has-text-link is-ghost"
+            class="is-size-7 has-text-link"
             th:href="@{/agreement}"
           >
             利用規約
