@@ -28,12 +28,12 @@ class MedicationRecord(val id: MedicationRecordId,
 
     fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
 
-    fun modify(takenMedicine: Medicine,
-               dose: Dose,
-               followUp: FollowUp,
-               note: Note,
-               takenAt: LocalDateTime) {
-        this.takenMedicine = takenMedicine.id
+    fun changeAttributes(takenMedicine: MedicineId,
+                         dose: Dose,
+                         followUp: FollowUp,
+                         note: Note,
+                         takenAt: LocalDateTime) {
+        this.takenMedicine = takenMedicine
         this.dose = dose
         this.followUp = followUp
         this.note = note

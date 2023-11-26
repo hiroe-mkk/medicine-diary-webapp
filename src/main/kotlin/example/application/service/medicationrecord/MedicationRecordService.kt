@@ -63,13 +63,13 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
     fun modifyMedicationRecord(medicationRecordId: MedicationRecordId,
                                command: MedicationRecordEditCommand,
                                userSession: UserSession) {
-        val medicine = findAvailableMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
+        findAvailableMedicineOrElseThrowException(command.validatedTakenMedicine, userSession)
         val medicationRecord = findRecordedMedicationRecordOrElseThrowException(medicationRecordId, userSession)
-        medicationRecord.modify(medicine,
-                                command.validatedDose,
-                                command.validFollowUp,
-                                command.validatedNote,
-                                command.validatedTakenAt)
+        medicationRecord.changeAttributes(command.validatedTakenMedicine,
+                                          command.validatedDose,
+                                          command.validFollowUp,
+                                          command.validatedNote,
+                                          command.validatedTakenAt)
         medicationRecordRepository.save(medicationRecord)
     }
 
