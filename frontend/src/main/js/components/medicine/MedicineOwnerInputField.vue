@@ -15,7 +15,7 @@
                       <input
                         type="radio"
                         name="isOwnedBySharedGroup"
-                        value="false"
+                        :value="false"
                         v-model="isOwnedBySharedGroup"
                       />
                       <strong class="has-text-grey"
@@ -26,7 +26,7 @@
                       <input
                         type="radio"
                         name="isOwnedBySharedGroup"
-                        value="true"
+                        :value="true"
                         v-model="isOwnedBySharedGroup"
                       />
                       <strong class="has-text-grey"

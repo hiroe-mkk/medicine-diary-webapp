@@ -13,11 +13,12 @@
     <div id="medicineForm" layout:fragment="content">
       <div class="container is-max-desktop p-3">
         <div class="has-text-centered">
-          <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
-            お薬登録
-          </p>
+          <p
+            class="is-size-4 has-text-weight-bold has-text-grey-dark"
+            th:text="${title}"
+          ></p>
         </div>
-        <form method="post" class="form" th:action="@{/medicines/register}">
+        <form method="post" class="form" th:action="@{__${executePath}__}">
           <div class="content my-4">
             <div
               th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"

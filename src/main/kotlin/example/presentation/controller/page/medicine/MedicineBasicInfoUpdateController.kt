@@ -16,17 +16,21 @@ import org.springframework.web.servlet.mvc.support.*
 @Controller
 @RequestMapping("/medicines/{medicineId}/basicinfo/update")
 class MedicineBasicInfoUpdateController(private val medicineService: MedicineService,
+                                        private val sharedGroupService: SharedGroupService,
                                         private val userSessionProvider: UserSessionProvider) {
-    @ModelAttribute("medicineId")
-    fun medicineId(@PathVariable medicineId: MedicineId): MedicineId = medicineId
-
     @ModelAttribute("timings")
     fun timings(): Array<Timing> = Timing.values()
 
-    @ModelAttribute("isOwned")
-    fun isOwned(@PathVariable medicineId: MedicineId): Boolean {
-        return medicineService.isOwnedMedicine(medicineId, userSessionProvider.getUserSessionOrElseThrow())
+    @ModelAttribute("isParticipatingInSharedGroup")
+    fun isParticipatingInSharedGroup(): Boolean {
+        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
+
+    @ModelAttribute("title")
+    fun title(): String = "お薬基本情報更新"
+
+    @ModelAttribute("executePath")
+    fun executePath(@PathVariable medicineId: MedicineId): String = "/medicines/${medicineId}/basicinfo/update"
 
     /**
      * 薬基本情報更新画面を表示する
@@ -37,7 +41,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
         val command = medicineService.getUpdateMedicineBasicInfoEditCommand(medicineId,
                                                                             userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
-        return "medicine/updateForm"
+        return "medicine/form"
     }
 
     /**
@@ -48,7 +52,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
                                 @ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                                 bindingResult: BindingResult,
                                 redirectAttributes: RedirectAttributes): String {
-        if (bindingResult.hasErrors()) return "medicine/updateForm"
+        if (bindingResult.hasErrors()) return "medicine/form"
 
         medicineService.updateMedicineBasicInfo(medicineId,
                                                 medicineBasicInfoEditCommand,

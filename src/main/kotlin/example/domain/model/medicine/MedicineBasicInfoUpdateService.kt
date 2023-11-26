@@ -22,65 +22,64 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
         val medicine = medicineQueryService.findAvailableMedicine(id, registrant)
                        ?: throw MedicineNotFoundException(id)
 
-        if (isOwnedBySharedGroup) {
-            if (medicine.owner.isSharedGroup) {
-                medicine.changeBasicInfo(medicineName, dosageAndAdministration, effects, precautions, isPublic)
-                medicineRepository.save(medicine)
+        if (medicine.owner.isSharedGroup) {
+            if (isOwnedBySharedGroup) {
+                updateBasicInfo(medicine, medicineName, dosageAndAdministration, effects, precautions, isPublic)
             } else {
-                changeOwnerFromAccountToSharedGroup(medicine,
-                                                    medicineName,
-                                                    dosageAndAdministration,
-                                                    effects,
-                                                    precautions,
-                                                    isPublic,
-                                                    registrant)
+                changeOwnerFromSharedGroupToAccountAndUpdateBasicInfo(medicine,
+                                                                      medicineName,
+                                                                      dosageAndAdministration,
+                                                                      effects,
+                                                                      precautions,
+                                                                      isPublic,
+                                                                      registrant)
             }
-        } else {
-            if (medicine.owner.isAccount) {
-                medicine.changeBasicInfo(medicineName, dosageAndAdministration, effects, precautions, isPublic)
-                medicineRepository.save(medicine)
+        } else if (medicine.owner.isAccount) {
+            if (isOwnedBySharedGroup) {
+                changeOwnerFromAccountToSharedGroupAndUpdateBasicInfo(medicine,
+                                                                      medicineName,
+                                                                      dosageAndAdministration,
+                                                                      effects,
+                                                                      precautions,
+                                                                      isPublic,
+                                                                      registrant)
             } else {
-                changeOwnerFromSharedGroupToAccount(medicine,
-                                                    medicineName,
-                                                    dosageAndAdministration,
-                                                    effects,
-                                                    precautions,
-                                                    isPublic,
-                                                    registrant)
+                updateBasicInfo(medicine, medicineName, dosageAndAdministration, effects, precautions, isPublic)
             }
         }
     }
 
-    private fun changeOwnerFromAccountToSharedGroup(registrantMedicine: Medicine,
-                                                    newMedicineName: MedicineName,
-                                                    newDosageAndAdministration: DosageAndAdministration,
-                                                    newEffects: Effects,
-                                                    newPrecautions: Note,
-                                                    newIsPublic: Boolean,
-                                                    registrant: AccountId) {
-        changeOwnerAndUpdateBasicInfo(registrantMedicine,
-                                      newMedicineName,
-                                      newDosageAndAdministration,
-                                      newEffects,
-                                      newPrecautions,
-                                      newIsPublic,
-                                      medicineOwnerCreationService.createSharedGroupOwner(registrant))
+    private fun changeOwnerFromAccountToSharedGroupAndUpdateBasicInfo(registrantMedicine: Medicine,
+                                                                      newMedicineName: MedicineName,
+                                                                      newDosageAndAdministration: DosageAndAdministration,
+                                                                      newEffects: Effects,
+                                                                      newPrecautions: Note,
+                                                                      newIsPublic: Boolean,
+                                                                      registrant: AccountId) {
+        registrantMedicine.changeOwner(medicineOwnerCreationService.createSharedGroupOwner(registrant))
+        updateBasicInfo(registrantMedicine,
+                        newMedicineName,
+                        newDosageAndAdministration,
+                        newEffects,
+                        newPrecautions,
+                        newIsPublic)
     }
 
-    private fun changeOwnerFromSharedGroupToAccount(sharedGroupMedicine: Medicine,
-                                                    newMedicineName: MedicineName,
-                                                    newDosageAndAdministration: DosageAndAdministration,
-                                                    newEffects: Effects,
-                                                    newPrecautions: Note,
-                                                    newIsPublic: Boolean,
-                                                    registrant: AccountId) {
-        changeOwnerAndUpdateBasicInfo(sharedGroupMedicine,
-                                      newMedicineName,
-                                      newDosageAndAdministration,
-                                      newEffects,
-                                      newPrecautions,
-                                      newIsPublic,
-                                      medicineOwnerCreationService.createAccountOwner(registrant))
+    private fun changeOwnerFromSharedGroupToAccountAndUpdateBasicInfo(sharedGroupMedicine: Medicine,
+                                                                      newMedicineName: MedicineName,
+                                                                      newDosageAndAdministration: DosageAndAdministration,
+                                                                      newEffects: Effects,
+                                                                      newPrecautions: Note,
+                                                                      newIsPublic: Boolean,
+                                                                      registrant: AccountId) {
+        sharedGroupMedicine.changeOwner(medicineOwnerCreationService.createAccountOwner(registrant))
+        updateBasicInfo(sharedGroupMedicine,
+                        newMedicineName,
+                        newDosageAndAdministration,
+                        newEffects,
+                        newPrecautions,
+                        newIsPublic)
+
         val medicationRecordsByOthers = medicationRecordRepository.findByTakenMedicine(sharedGroupMedicine.id)
             .filterNot { it.recorder == registrant }
             .groupBy { it.recorder }
@@ -105,19 +104,13 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
         }
     }
 
-    private fun changeOwnerAndUpdateBasicInfo(sharedGroupMedicine: Medicine,
-                                              newMedicineName: MedicineName,
-                                              newDosageAndAdministration: DosageAndAdministration,
-                                              newEffects: Effects,
-                                              newPrecautions: Note,
-                                              newIsPublic: Boolean,
-                                              newMedicineOwner: MedicineOwner) {
-        sharedGroupMedicine.changeOwner(newMedicineOwner)
-        sharedGroupMedicine.changeBasicInfo(newMedicineName,
-                                            newDosageAndAdministration,
-                                            newEffects,
-                                            newPrecautions,
-                                            newIsPublic)
-        medicineRepository.save(sharedGroupMedicine)
+    private fun updateBasicInfo(medicine: Medicine,
+                                medicineName: MedicineName,
+                                dosageAndAdministration: DosageAndAdministration,
+                                effects: Effects,
+                                precautions: Note,
+                                isPublic: Boolean) {
+        medicine.changeBasicInfo(medicineName, dosageAndAdministration, effects, precautions, isPublic)
+        medicineRepository.save(medicine)
     }
 }

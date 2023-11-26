@@ -3,6 +3,7 @@ package example.presentation.controller.page.medicine
 import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
 import example.application.shared.usersession.*
+import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
@@ -26,6 +27,12 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
         return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 
+    @ModelAttribute("title")
+    fun title(): String = "お薬登録"
+
+    @ModelAttribute("executePath")
+    fun executePath(): String = "/medicines/register"
+
     /**
      * 薬登録画面を表示する
      */
@@ -34,7 +41,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
         val form =
                 medicineService.getRegistrationMedicineBasicInfoEditCommand(userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", form)
-        return "medicine/registrationForm"
+        return "medicine/form"
     }
 
     /**
@@ -44,7 +51,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
     fun registerMedicine(@ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                          bindingResult: BindingResult,
                          redirectAttributes: RedirectAttributes): String {
-        if (bindingResult.hasErrors()) return "medicine/registrationForm"
+        if (bindingResult.hasErrors()) return "medicine/form"
 
         val medicineId = medicineService.registerMedicine(medicineBasicInfoEditCommand,
                                                           userSessionProvider.getUserSessionOrElseThrow())

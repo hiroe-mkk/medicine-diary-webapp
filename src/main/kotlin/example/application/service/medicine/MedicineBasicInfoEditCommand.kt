@@ -58,6 +58,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "â€»ã
                                                 medicine.dosageAndAdministration.timingOptions,
                                                 medicine.effects.values.map(::EffectInputField),
                                                 medicine.precautions.value,
+                                                medicine.owner.isSharedGroup,
                                                 medicine.isPublic)
         }
     }
