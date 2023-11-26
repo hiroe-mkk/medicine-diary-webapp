@@ -11,7 +11,7 @@ import java.time.*
  * 薬
  */
 class Medicine(val id: MedicineId,
-               val owner: MedicineOwner,
+               owner: MedicineOwner,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
@@ -20,6 +20,8 @@ class Medicine(val id: MedicineId,
                isPublic: Boolean,
                inventory: Inventory?,
                val registeredAt: LocalDateTime) {
+    var owner: MedicineOwner = owner
+        private set
     var medicineName: MedicineName = medicineName
         private set
     var dosageAndAdministration: DosageAndAdministration = dosageAndAdministration
@@ -51,6 +53,10 @@ class Medicine(val id: MedicineId,
         this.isPublic = if (owner.isSharedGroup) true else isPublic
     }
 
+    fun changeOwner(newOwner: MedicineOwner) {
+        this.owner = newOwner
+    }
+
     fun changeMedicineImage(medicineImageURL: MedicineImageURL) {
         this.medicineImageURL = medicineImageURL
     }
@@ -65,6 +71,20 @@ class Medicine(val id: MedicineId,
 
     fun stopInventoryManagement() {
         this.inventory = null
+    }
+
+    fun cloneWithMedicineIdAndOwner(newMedicineId: MedicineId, newOwner: MedicineOwner): Medicine {
+        return Medicine(newMedicineId,
+                        newOwner,
+                        medicineName,
+                        dosageAndAdministration,
+                        effects,
+                        precautions,
+                        medicineImageURL,
+                        isPublic,
+                        inventory,
+                        registeredAt
+        )
     }
 
     fun taken(medicationRecordId: MedicationRecordId,

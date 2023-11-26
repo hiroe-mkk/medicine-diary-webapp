@@ -68,6 +68,8 @@
             #{isPublic},
             #{registeredAt}
         )ON DUPLICATE KEY UPDATE
+            account_id = #{accountId, jdbcType=VARCHAR},
+            shared_group_id = #{sharedGroupId, jdbcType=VARCHAR},
             medicine_name = #{medicineName},
             quantity = #{quantity},
             dose_unit = #{doseUnit},

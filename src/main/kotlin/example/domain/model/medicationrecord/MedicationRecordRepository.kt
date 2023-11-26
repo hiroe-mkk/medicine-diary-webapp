@@ -8,7 +8,11 @@ interface MedicationRecordRepository {
 
     fun findById(medicationRecordId: MedicationRecordId): MedicationRecord?
 
+    fun findByTakenMedicine(medicineId: MedicineId): Set<MedicationRecord>
+
     fun save(medicationRecord: MedicationRecord)
+
+    fun saveAll(medicationRecords: Collection<MedicationRecord>)
 
     fun deleteById(medicationRecordId: MedicationRecordId)
 

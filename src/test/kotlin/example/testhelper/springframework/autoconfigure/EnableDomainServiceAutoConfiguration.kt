@@ -35,7 +35,7 @@ annotation class EnableDomainServiceAutoConfiguration {
         fun sharedGroupUnshareService(): SharedGroupUnshareService {
             return SharedGroupUnshareService(sharedGroupRepository,
                                              sharedGroupQueryService(),
-                                             medicineAndMedicationRecordsDeletionService())
+                                             medicineDeletionService())
         }
 
         @Bean
@@ -49,7 +49,14 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineAndMedicationRecordsDeletionService(): MedicineDeletionService {
+        fun medicineOwnerChangeService(): MedicineOwnerChangeService {
+            return MedicineOwnerChangeService(medicineRepository,
+                                              medicationRecordRepository,
+                                              medicineQueryService())
+        }
+
+        @Bean
+        fun medicineDeletionService(): MedicineDeletionService {
             return MedicineDeletionService(medicineRepository,
                                            medicineImageStorage,
                                            medicationRecordRepository,

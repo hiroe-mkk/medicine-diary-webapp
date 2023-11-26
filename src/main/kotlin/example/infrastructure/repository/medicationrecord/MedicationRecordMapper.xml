@@ -11,6 +11,15 @@
             medication_record_id = #{medicationRecordId};
     </select>
 
+    <select id="findAllByMedicineId" resultMap="MedicationRecordResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medication_records
+        WHERE
+            taken_medicine = #{medicineId};
+    </select>
+
     <insert id="upsert">
         INSERT INTO medication_records(
             medication_record_id,
@@ -40,6 +49,39 @@
             after_medication = #{afterMedication, jdbcType=VARCHAR},
             note = #{note},
             taken_at = #{takenAt};
+    </insert>
+
+    <insert id="upsertAll">
+        INSERT INTO medication_records(
+            medication_record_id,
+            recorder,
+            taken_medicine,
+            quantity,
+            symptom,
+            before_medication,
+            after_medication,
+            note,
+            taken_at
+        )VALUES
+            <foreach collection="medicationRecords" item="medicationRecord" separator=",">
+                (#{medicationRecord.medicationRecordId},
+                 #{medicationRecord.recorder},
+                 #{medicationRecord.takenMedicine},
+                 #{medicationRecord.quantity},
+                 #{medicationRecord.symptom},
+                 #{medicationRecord.beforeMedication},
+                 #{medicationRecord.afterMedication, jdbcType=VARCHAR},
+                 #{medicationRecord.note},
+                 #{medicationRecord.takenAt})
+            </foreach>
+        ON DUPLICATE KEY UPDATE
+            taken_medicine = VALUES(taken_medicine),
+            quantity = VALUES(quantity),
+            symptom = VALUES(symptom),
+            before_medication = VALUES(before_medication),
+            after_medication = VALUES(after_medication),
+            note = VALUES(note),
+            taken_at = VALUES(taken_at);
     </insert>
 
     <delete id="deleteOneByMedicationRecordId">

@@ -39,4 +39,8 @@ class MedicationRecord(val id: MedicationRecordId,
         this.note = note
         this.takenAt = takenAt
     }
+
+    fun changeTakenMedicine(takenMedicine: MedicineId) {
+        this.takenMedicine = takenMedicine
+    }
 }
