@@ -55,6 +55,7 @@ class Medicine(val id: MedicineId,
 
     fun changeOwner(newOwner: MedicineOwner) {
         this.owner = newOwner
+        this.isPublic = if (newOwner.isSharedGroup) true else isPublic
     }
 
     fun changeMedicineImage(medicineImageURL: MedicineImageURL) {
@@ -71,20 +72,6 @@ class Medicine(val id: MedicineId,
 
     fun stopInventoryManagement() {
         this.inventory = null
-    }
-
-    fun cloneWithMedicineIdAndOwner(newMedicineId: MedicineId, newOwner: MedicineOwner): Medicine {
-        return Medicine(newMedicineId,
-                        newOwner,
-                        medicineName,
-                        dosageAndAdministration,
-                        effects,
-                        precautions,
-                        medicineImageURL,
-                        isPublic,
-                        inventory,
-                        registeredAt
-        )
     }
 
     fun taken(medicationRecordId: MedicationRecordId,

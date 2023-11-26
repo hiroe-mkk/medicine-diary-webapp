@@ -12,6 +12,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
                       private val medicineQueryService: MedicineQueryService,
                       private val medicineCreationService: MedicineCreationService,
+                      private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
                       private val medicineDeletionService: MedicineDeletionService) {
     /**
      * 薬を取得する
@@ -103,13 +104,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     fun updateMedicineBasicInfo(medicineId: MedicineId,
                                 command: MedicineBasicInfoEditCommand,
                                 userSession: UserSession) {
-        val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
-        medicine.changeBasicInfo(command.validatedMedicineName,
-                                 command.validatedDosageAndAdministration,
-                                 command.validatedEffects,
-                                 command.validatedPrecautions,
-                                 command.isPublic)
-        medicineRepository.save(medicine)
+        medicineBasicInfoUpdateService.update(medicineId,
+                                              command.validatedMedicineName,
+                                              command.validatedDosageAndAdministration,
+                                              command.validatedEffects,
+                                              command.validatedPrecautions,
+                                              command.isOwnedBySharedGroup,
+                                              command.isPublic,
+                                              userSession.accountId)
     }
 
     /**

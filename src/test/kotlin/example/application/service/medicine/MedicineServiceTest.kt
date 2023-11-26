@@ -23,6 +23,7 @@ import java.time.*
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                    @Autowired private val medicineQueryService: MedicineQueryService,
                                    @Autowired private val medicineCreationService: MedicineCreationService,
+                                   @Autowired private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
                                    @Autowired private val medicineDeletionService: MedicineDeletionService,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter,
@@ -32,6 +33,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                                                    localDateTimeProvider,
                                                                    medicineQueryService,
                                                                    medicineCreationService,
+                                                                   medicineBasicInfoUpdateService,
                                                                    medicineDeletionService)
 
     private lateinit var userSession: UserSession
@@ -166,49 +168,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     null,
                                     localDateTime)
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
-        }
-    }
-
-    @Nested
-    inner class UpdateMedicineBasicInfoTest {
-        private val command = TestMedicineFactory.createCompletedUpdateMedicineBasicInfoEditCommand()
-
-        @Test
-        @DisplayName("薬基本情報を更新する")
-        fun updateMedicineBasicInfo() {
-            //given:
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
-
-            //when:
-            medicineService.updateMedicineBasicInfo(medicine.id, command, userSession)
-
-            //then:
-            val foundMedicine = medicineRepository.findById(medicine.id)
-            val expected = Medicine(medicine.id,
-                                    medicine.owner,
-                                    command.validatedMedicineName,
-                                    command.validatedDosageAndAdministration,
-                                    command.validatedEffects,
-                                    command.validatedPrecautions,
-                                    medicine.medicineImageURL,
-                                    command.isPublic,
-                                    medicine.inventory,
-                                    medicine.registeredAt)
-            assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
-        }
-
-        @Test
-        @DisplayName("服用可能な薬が見つからなかった場合、薬基本情報の更新に失敗する")
-        fun availableMedicineNotFound_updatingMedicineBasicInfoFails() {
-            //given:
-            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
-
-            //when:
-            val target: () -> Unit = { medicineService.updateMedicineBasicInfo(medicine.id, command, userSession) }
-
-            //then:
-            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
         }
     }
 

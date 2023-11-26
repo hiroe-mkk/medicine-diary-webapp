@@ -44,15 +44,21 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineCreationService(): MedicineCreationService {
-            return MedicineCreationService(sharedGroupQueryService())
+        fun medicineOwnerCreationService(): MedicineOwnerCreationService {
+            return MedicineOwnerCreationService(sharedGroupQueryService())
         }
 
         @Bean
-        fun medicineOwnerChangeService(): MedicineOwnerChangeService {
-            return MedicineOwnerChangeService(medicineRepository,
-                                              medicationRecordRepository,
-                                              medicineQueryService())
+        fun medicineCreationService(): MedicineCreationService {
+            return MedicineCreationService(medicineOwnerCreationService())
+        }
+
+        @Bean
+        fun medicineBasicInfoUpdateService(): MedicineBasicInfoUpdateService {
+            return MedicineBasicInfoUpdateService(medicineRepository,
+                                                  medicationRecordRepository,
+                                                  medicineOwnerCreationService(),
+                                                  medicineQueryService())
         }
 
         @Bean

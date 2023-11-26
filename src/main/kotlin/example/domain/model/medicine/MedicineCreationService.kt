@@ -1,13 +1,12 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
-import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-class MedicineCreationService(private val sharedGroupQueryService: SharedGroupQueryService) {
+class MedicineCreationService(private val medicineOwnerCreationService: MedicineOwnerCreationService) {
     fun create(id: MedicineId,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
@@ -17,25 +16,20 @@ class MedicineCreationService(private val sharedGroupQueryService: SharedGroupQu
                isPublic: Boolean,
                registeredAt: LocalDateTime,
                registrant: AccountId): Medicine {
-        val owner = if (isOwnedBySharedGroup) {
-            val participatingSharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(registrant)
-            if (participatingSharedGroup != null) {
-                MedicineOwner.create(participatingSharedGroup.id)
-            } else {
-                MedicineOwner.create(registrant)
-            }
+        val medicineOwner = if (isOwnedBySharedGroup) {
+            medicineOwnerCreationService.createSharedGroupOwner(registrant)
         } else {
-            MedicineOwner.create(registrant)
+            medicineOwnerCreationService.createAccountOwner(registrant)
         }
 
         return Medicine(id,
-                        owner,
+                        medicineOwner,
                         medicineName,
                         dosageAndAdministration,
                         effects,
                         precautions,
                         null,
-                        if (owner.isSharedGroup) true else isPublic,
+                        if (medicineOwner.isSharedGroup) true else isPublic,
                         null,
                         registeredAt)
     }
