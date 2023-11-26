@@ -68,16 +68,16 @@
             #{isPublic},
             #{registeredAt}
         )ON DUPLICATE KEY UPDATE
-            account_id = #{accountId, jdbcType=VARCHAR},
-            shared_group_id = #{sharedGroupId, jdbcType=VARCHAR},
-            medicine_name = #{medicineName},
-            quantity = #{quantity},
-            dose_unit = #{doseUnit},
-            times_per_day = #{timesPerDay},
-            precautions = #{precautions},
-            medicine_image_url_endpoint = #{medicineImageURLEndpoint, jdbcType=VARCHAR},
-            medicine_image_url_path = #{medicineImageURLPath, jdbcType=VARCHAR},
-            is_public = #{isPublic};
+            account_id = VALUES(account_id),
+            shared_group_id = VALUES(shared_group_id),
+            medicine_name = VALUES(medicine_name),
+            quantity = VALUES(quantity),
+            dose_unit = VALUES(dose_unit),
+            times_per_day = VALUES(times_per_day),
+            precautions = VALUES(precautions),
+            medicine_image_url_endpoint = VALUES(medicine_image_url_endpoint),
+            medicine_image_url_path = VALUES(medicine_image_url_path),
+            is_public = VALUES(is_public);
     </insert>
 
     <insert id="insertOneInventory">

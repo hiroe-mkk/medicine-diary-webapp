@@ -42,13 +42,13 @@
             #{note},
             #{takenAt}
         )ON DUPLICATE KEY UPDATE
-            taken_medicine = #{takenMedicine},
-            quantity = #{quantity},
-            symptom = #{symptom},
-            before_medication = #{beforeMedication},
-            after_medication = #{afterMedication, jdbcType=VARCHAR},
-            note = #{note},
-            taken_at = #{takenAt};
+            taken_medicine = VALUES(taken_medicine),
+            quantity = VALUES(quantity),
+            symptom = VALUES(symptom),
+            before_medication = VALUES(before_medication),
+            after_medication = VALUES(after_medication),
+            note = VALUES(note),
+            taken_at = VALUES(taken_at);
     </insert>
 
     <insert id="upsertAll">

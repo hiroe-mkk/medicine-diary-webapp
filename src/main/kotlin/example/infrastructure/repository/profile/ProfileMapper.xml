@@ -29,9 +29,9 @@
             #{profileImageURLEndpoint, jdbcType=VARCHAR},
             #{profileImageURLPath, jdbcType=VARCHAR}
         )ON DUPLICATE KEY UPDATE
-            username = #{username},
-            profile_image_url_endpoint = #{profileImageURLEndpoint, jdbcType=VARCHAR},
-            profile_image_url_path = #{profileImageURLPath, jdbcType=VARCHAR};
+            username = VALUES(username),
+            profile_image_url_endpoint = VALUES(profile_image_url_endpoint),
+            profile_image_url_path = VALUES(profile_image_url_path);
     </insert>
 
     <delete id="deleteProfile">
