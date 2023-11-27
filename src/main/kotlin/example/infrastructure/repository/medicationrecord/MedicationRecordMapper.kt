@@ -9,6 +9,8 @@ interface MedicationRecordMapper {
 
     fun findAllByMedicineId(medicineId: String): Set<MedicationRecord>
 
+    fun findAllByMedicineIdAndAccountId(medicineId: String, accountId: String): Set<MedicationRecord>
+
     fun upsert(medicationRecords: MedicationRecordSaveEntity)
 
     fun upsertAll(medicationRecords: Collection<MedicationRecordSaveEntity>)

@@ -80,7 +80,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有を停止する
      */
     fun unshare(userSession: UserSession) {
-        return sharedGroupUnshareService.unshare(userSession.accountId)
+        return sharedGroupUnshareService.cloneSharedGroupMedicinesAndUnshare(userSession.accountId)
     }
 
     /**

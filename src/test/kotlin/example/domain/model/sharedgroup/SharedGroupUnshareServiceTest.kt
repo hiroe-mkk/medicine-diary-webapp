@@ -34,8 +34,8 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
     }
 
     @Test
-    @DisplayName("共有を停止し、全ての招待を拒否する")
-    fun unshareAndRejectAllInvitation() {
+    @DisplayName("全ての招待を拒否し、共有を停止する")
+    fun rejectAllInvitationAndUnshare() {
         //given:
         val participatingSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]),
@@ -44,7 +44,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
                                                                 invitees = setOf(requesterAccountId))
 
         //when:
-        sharedGroupUnshareService.unshareAndRejectAllInvitation(requesterAccountId)
+        sharedGroupUnshareService.rejectAllInvitationAndUnshare(requesterAccountId)
 
         //then:
         val foundParticipatedSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
@@ -56,23 +56,46 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
     }
 
     @Test
+    @DisplayName("薬を複製し、共有を停止する")
+    fun cloneSharedGroupMedicinesAndUnshare() {
+        //given:
+        val participatingSharedGroup =
+                testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
+        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(participatingSharedGroup.id))
+        val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
+
+        //when:
+        sharedGroupUnshareService.cloneSharedGroupMedicinesAndUnshare(requesterAccountId)
+
+        //then:
+        val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
+        assertThat(foundSharedGroup?.members).containsExactly(userAccountIds[0])
+        val foundSharedGroupMedicine = medicineRepository.findById(sharedGroupMedicine.id)
+        assertThat(foundSharedGroupMedicine).usingRecursiveComparison().isEqualTo(sharedGroupMedicine)
+        val foundOwnedMedicine = medicineRepository.findByOwner(requesterAccountId).first()
+        assertThat(foundOwnedMedicine)
+            .usingRecursiveComparison()
+            .ignoringFields("id", "owner")
+            .isEqualTo(foundSharedGroupMedicine)
+        val foundMedicationRecord = medicationRecordRepository.findById(medicationRecord.id)
+        assertThat(foundMedicationRecord?.takenMedicine).isEqualTo(foundOwnedMedicine.id)
+    }
+
+    @Test
     @DisplayName("共有を停止するとメンバー数が0になる場合、共有グループは削除される")
     fun membersEmptyAfterUnshare_sharedGroupIsDeleted() {
         //given:
         val participatingSharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId),
                                                                       invitees = setOf(userAccountIds[0]))
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(participatingSharedGroup.id))
-        val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
-        sharedGroupUnshareService.unshare(requesterAccountId)
+        sharedGroupUnshareService.cloneSharedGroupMedicinesAndUnshare(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
         assertThat(foundSharedGroup).isNull()
-        val foundMedicines = medicineRepository.findByOwner(participatingSharedGroup.id)
-        assertThat(foundMedicines).isEmpty()
-        val foundMedicationRecords = medicationRecordRepository.findById(medicationRecord.id)
-        assertThat(foundMedicationRecords).isNull()
+        val foundSharedGroupMedicine = medicineRepository.findById(sharedGroupMedicine.id)
+        assertThat(foundSharedGroupMedicine).isNull()
     }
 }

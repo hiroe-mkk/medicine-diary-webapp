@@ -21,6 +21,10 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
         return medicationRecordMapper.findAllByMedicineId(takenMedicine.value)
     }
 
+    override fun findByTakenMedicineAndRecorder(takenMedicine: MedicineId, recorder: AccountId): Set<MedicationRecord> {
+        return medicationRecordMapper.findAllByMedicineIdAndAccountId(takenMedicine.value, recorder.value)
+    }
+
     override fun save(medicationRecord: MedicationRecord) {
         medicationRecordMapper.upsert(MedicationRecordSaveEntity(medicationRecord.id.value,
                                                                  medicationRecord.recorder.value,

@@ -41,7 +41,7 @@ class AccountService(private val accountRepository: AccountRepository,
 
         medicationRecordRepository.deleteByRecorder(account.id)
         medicineDeletionService.deleteAllOwnedMedicinesAndMedicationRecords(userSession.accountId)
-        sharedGroupUnshareService.unshareAndRejectAllInvitation(userSession.accountId)
+        sharedGroupUnshareService.rejectAllInvitationAndUnshare(userSession.accountId)
 
         profileRepository.deleteByAccountId(account.id)
         accountRepository.deleteById(account.id)

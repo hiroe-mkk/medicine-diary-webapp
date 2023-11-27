@@ -20,6 +20,15 @@
             taken_medicine = #{medicineId};
     </select>
 
+    <select id="findAllByMedicineIdAndAccountId" resultMap="MedicationRecordResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medication_records
+        WHERE
+            taken_medicine = #{medicineId} AND recorder = #{accountId};
+    </select>
+
     <insert id="upsert">
         INSERT INTO medication_records(
             medication_record_id,

@@ -34,7 +34,11 @@ annotation class EnableDomainServiceAutoConfiguration {
         @Bean
         fun sharedGroupUnshareService(): SharedGroupUnshareService {
             return SharedGroupUnshareService(sharedGroupRepository,
+                                             medicineRepository,
+                                             medicationRecordRepository,
                                              sharedGroupQueryService(),
+                                             medicineQueryService(),
+                                             medicineOwnerCreationService(),
                                              medicineDeletionService())
         }
 
