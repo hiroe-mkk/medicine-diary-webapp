@@ -14,10 +14,10 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
         return minioProperties.endpoint + "/" + minioProperties.bucketName
     }
 
-    override fun put(URL: URL, fileContent: FileContent) {
+    override fun put(url: URL, fileContent: FileContent) {
         minioClient.putObject(PutObjectArgs.builder()
                                   .bucket(minioProperties.bucketName)
-                                  .`object`(convertToObjectName(URL))
+                                  .`object`(convertToObjectName(url))
                                   .stream(fileContent.content,
                                           fileContent.size.toLong(),
                                           -1)
@@ -25,10 +25,21 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                   .build())
     }
 
-    override fun remove(URL: URL) {
+    override fun copy(sourceURL: URL, targetURL: URL) {
+        minioClient.copyObject(CopyObjectArgs.builder()
+                                   .source(CopySource.builder()
+                                               .bucket(minioProperties.bucketName)
+                                               .`object`(convertToObjectName(sourceURL))
+                                               .build())
+                                   .bucket(minioProperties.bucketName)
+                                   .`object`(convertToObjectName(targetURL))
+                                   .build())
+    }
+
+    override fun remove(url: URL) {
         minioClient.removeObject(RemoveObjectArgs.builder()
                                      .bucket(minioProperties.bucketName)
-                                     .`object`(convertToObjectName(URL))
+                                     .`object`(convertToObjectName(url))
                                      .build())
     }
 

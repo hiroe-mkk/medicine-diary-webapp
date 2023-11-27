@@ -17,6 +17,10 @@ class ObjectStorageMedicineImageStorage(private val objectStorageClient: ObjectS
         objectStorageClient.put(medicineImageURL, fileContent)
     }
 
+    override fun copy(sourceMedicineImageURL: MedicineImageURL, targetMedicineImageUrl: MedicineImageURL) {
+        objectStorageClient.copy(sourceMedicineImageURL, targetMedicineImageUrl)
+    }
+
     override fun delete(medicineImageURL: MedicineImageURL) {
         objectStorageClient.remove(medicineImageURL)
     }

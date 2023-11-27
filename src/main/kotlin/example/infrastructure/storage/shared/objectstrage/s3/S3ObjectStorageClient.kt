@@ -7,6 +7,7 @@ import example.infrastructure.storage.shared.objectstrage.*
 import org.springframework.context.annotation.*
 import org.springframework.stereotype.*
 
+
 @Profile("prod")
 @Component
 class S3ObjectStorageClient(private val s3Properties: S3Properties,
@@ -15,21 +16,27 @@ class S3ObjectStorageClient(private val s3Properties: S3Properties,
         return s3Properties.endpoint
     }
 
-    override fun put(URL: URL, fileContent: FileContent) {
+    override fun put(url: URL, fileContent: FileContent) {
         val objectMetadata = ObjectMetadata().also {
             it.contentType = fileContent.type.toString()
             it.contentLength = fileContent.size.toLong()
         }
         val putObjectRequest = PutObjectRequest(s3Properties.bucketName,
-                                                convertToObjectName(URL),
+                                                convertToObjectName(url),
                                                 fileContent.content,
                                                 objectMetadata)
 
         amazonS3.putObject(putObjectRequest)
     }
 
-    override fun remove(URL: URL) {
-        amazonS3.deleteObject(s3Properties.bucketName, convertToObjectName(URL))
+    override fun copy(sourceURL: URL, targetURL: URL) {
+        val copyRequest = CopyObjectRequest(s3Properties.bucketName, convertToObjectName(sourceURL),
+                                            s3Properties.bucketName, convertToObjectName(targetURL))
+        amazonS3.copyObject(copyRequest)
+    }
+
+    override fun remove(url: URL) {
+        amazonS3.deleteObject(s3Properties.bucketName, convertToObjectName(url))
     }
 
     override fun removeAll(urls: Collection<URL>) {

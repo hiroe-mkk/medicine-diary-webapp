@@ -3,11 +3,13 @@ package example.domain.model.sharedgroup
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
+import example.domain.model.medicine.medicineimage.*
 import org.springframework.stereotype.*
 
 @Component
 class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRepository,
                                 private val medicineRepository: MedicineRepository,
+                                private val medicineImageStorage: MedicineImageStorage,
                                 private val medicationRecordRepository: MedicationRecordRepository,
                                 private val sharedGroupQueryService: SharedGroupQueryService,
                                 private val medicineQueryService: MedicineQueryService,
@@ -17,8 +19,14 @@ class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRe
         val sharedGroupMedicines = medicineQueryService.findAllSharedGroupMedicines(accountId)
         sharedGroupMedicines.forEach { sharedGroupMedicine ->
             val newMedicineOwner = medicineOwnerCreationService.createAccountOwner(accountId)
-            val newMedicine = sharedGroupMedicine.cloneWithMedicineIdAndOwner(medicineRepository.createMedicineId(),
-                                                                              newMedicineOwner)
+            val newMedicineImageURL = sharedGroupMedicine.medicineImageURL?.let {
+                val newMedicineImageURL = medicineImageStorage.createURL()
+                medicineImageStorage.copy(it, newMedicineImageURL)
+                newMedicineImageURL
+            }
+            val newMedicine = sharedGroupMedicine.clone(medicineRepository.createMedicineId(),
+                                                        newMedicineOwner,
+                                                        newMedicineImageURL)
             medicineRepository.save(newMedicine)
 
             val medicationRecords = medicationRecordRepository.findByTakenMedicineAndRecorder(sharedGroupMedicine.id,

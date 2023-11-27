@@ -7,6 +7,8 @@ interface MedicineImageStorage {
 
     fun upload(medicineImageURL: MedicineImageURL, fileContent: FileContent)
 
+    fun copy(sourceMedicineImageURL: MedicineImageURL, targetMedicineImageUrl: MedicineImageURL)
+
     fun delete(medicineImageURL: MedicineImageURL)
 
     fun deleteAll(medicineImageURLs: Collection<MedicineImageURL>)

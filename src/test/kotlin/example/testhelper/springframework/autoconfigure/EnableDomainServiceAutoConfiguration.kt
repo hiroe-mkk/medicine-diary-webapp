@@ -35,6 +35,7 @@ annotation class EnableDomainServiceAutoConfiguration {
         fun sharedGroupUnshareService(): SharedGroupUnshareService {
             return SharedGroupUnshareService(sharedGroupRepository,
                                              medicineRepository,
+                                             medicineImageStorage,
                                              medicationRecordRepository,
                                              sharedGroupQueryService(),
                                              medicineQueryService(),

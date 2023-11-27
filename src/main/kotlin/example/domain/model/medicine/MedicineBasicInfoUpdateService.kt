@@ -3,12 +3,14 @@ package example.domain.model.medicine
 import example.application.service.medicine.*
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
+import example.domain.model.medicine.medicineimage.*
 import example.domain.shared.type.*
 import org.springframework.stereotype.*
 
 @Component
 class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRepository,
                                      private val medicationRecordRepository: MedicationRecordRepository,
+                                     private val medicineImageStorage: MedicineImageStorage,
                                      private val medicineOwnerCreationService: MedicineOwnerCreationService,
                                      private val medicineQueryService: MedicineQueryService) {
     fun update(id: MedicineId,
@@ -87,13 +89,18 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
 
         medicationRecordsByOthers.keys.forEach { recorder ->
             val newMedicineOwner = medicineOwnerCreationService.createAccountOwner(recorder)
+            val newMedicineImageURL = sharedGroupMedicine.medicineImageURL?.let {
+                val newMedicineImageURL = medicineImageStorage.createURL()
+                medicineImageStorage.copy(it, newMedicineImageURL)
+                newMedicineImageURL
+            }
             val newMedicine = Medicine(medicineRepository.createMedicineId(),
                                        newMedicineOwner,
                                        newMedicineName,
                                        newDosageAndAdministration,
                                        newEffects,
                                        newPrecautions,
-                                       sharedGroupMedicine.medicineImageURL,
+                                       newMedicineImageURL,
                                        newIsPublic,
                                        sharedGroupMedicine.inventory,
                                        sharedGroupMedicine.registeredAt)

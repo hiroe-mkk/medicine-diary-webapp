@@ -74,18 +74,17 @@ class Medicine(val id: MedicineId,
         this.inventory = null
     }
 
-    fun cloneWithMedicineIdAndOwner(newMedicineId: MedicineId, newOwner: MedicineOwner): Medicine {
+    fun clone(newMedicineId: MedicineId, newOwner: MedicineOwner, newMedicineImageURL: MedicineImageURL?): Medicine {
         return Medicine(newMedicineId,
                         newOwner,
-                        medicineName,
-                        dosageAndAdministration,
-                        effects,
-                        precautions,
-                        medicineImageURL,
-                        isPublic,
-                        inventory,
-                        registeredAt
-        )
+                        this.medicineName,
+                        this.dosageAndAdministration,
+                        this.effects,
+                        this.precautions,
+                        newMedicineImageURL,
+                        this.isPublic,
+                        this.inventory,
+                        this.registeredAt)
     }
 
     fun taken(medicationRecordId: MedicationRecordId,
