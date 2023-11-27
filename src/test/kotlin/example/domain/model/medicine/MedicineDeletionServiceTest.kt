@@ -35,7 +35,7 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
     @DisplayName("所有する薬とその服用記録を削除する")
     fun deleteOwnedMedicineAndMedicationRecords() {
         //given:
-        val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/medicineImage.png")
+        val medicineImageURL = medicineImageStorage.createURL()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId),
                                                    medicineImageURL = medicineImageURL)
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)

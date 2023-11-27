@@ -57,7 +57,7 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     @DisplayName("薬画像が設定済みの場合、薬画像の変更に成功する")
     fun medicineImageIsSet_changingMedicineImageSucceeds() {
         //given:
-        val oldMedicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage.png")
+        val oldMedicineImageURL = medicineImageStorage.createURL()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId),
                                                    medicineImageURL = oldMedicineImageURL)
 
@@ -93,7 +93,7 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     @DisplayName("薬画像を削除する")
     fun deleteMedicineImage() {
         //given:
-        val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/medicineImage.png")
+        val medicineImageURL = medicineImageStorage.createURL()
         val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId),
                                                    medicineImageURL = medicineImageURL)
 
