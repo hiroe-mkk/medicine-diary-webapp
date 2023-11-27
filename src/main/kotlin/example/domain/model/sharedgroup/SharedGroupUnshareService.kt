@@ -13,7 +13,7 @@ class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRe
 
         sharedGroup.unshare(accountId)
         if (sharedGroup.shouldDelete()) {
-            medicineDeletionService.deleteAllSharedGroupMedicines(sharedGroup.id)
+            medicineDeletionService.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)
             sharedGroupRepository.deleteById(sharedGroup.id)
         } else {
             sharedGroupRepository.save(sharedGroup)

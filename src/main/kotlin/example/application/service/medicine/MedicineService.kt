@@ -130,7 +130,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 薬を削除する
      */
     fun deleteMedicine(medicineId: MedicineId, userSession: UserSession) {
-        medicineDeletionService.delete(medicineId, userSession.accountId)
+        medicineDeletionService.deleteOwnedMedicineAndMedicationRecords(medicineId, userSession.accountId)
     }
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,

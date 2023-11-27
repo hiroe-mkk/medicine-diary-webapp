@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.*
 @DomainLayerTest
 internal class MedicineDeletionServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                            @Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                           @Autowired private val medicineImageStorage: MedicineImageStorage,
                                            @Autowired private val medicineDeletionService: MedicineDeletionService,
                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
@@ -31,60 +32,64 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
     }
 
     @Test
-    @DisplayName("薬を削除する")
-    fun deleteMedicine() {
+    @DisplayName("所有する薬とその服用記録を削除する")
+    fun deleteOwnedMedicineAndMedicationRecords() {
         //given:
-        val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/oldMedicineImage")
+        val medicineImageURL = MedicineImageURL("endpoint", "/medicineimage/medicineImage.png")
         val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId),
                                                    medicineImageURL = medicineImageURL)
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
         //when:
-        medicineDeletionService.delete(medicine.id, requesterAccountId)
+        medicineDeletionService.deleteOwnedMedicineAndMedicationRecords(medicine.id, requesterAccountId)
 
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)
         assertThat(foundMedicine).isNull()
         val foundMedicationRecord = medicationRecordRepository.findById(medicationRecord.id)
         assertThat(foundMedicationRecord).isNull()
+        verify(exactly = 1) { medicineImageStorage.delete(medicineImageURL) }
     }
 
     @Test
-    @DisplayName("共有グループの薬をすべて削除する")
-    fun deleteAllSharedGroupMedicines() {
+    @DisplayName("全ての所有する薬とその服用記録を削除する")
+    fun deleteAllOwnedMedicinesAndMedicationRecords() {
         //given
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
-        val medicationRecordIds = List(3) {
-            val medicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
-            testMedicationRecordInserter.insert(requesterAccountId, medicine.id).id
-        }
-
-        //when:
-        medicineDeletionService.deleteAllSharedGroupMedicines(sharedGroup.id)
-
-        //then:
-        val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)
-        assertThat(foundMedicines).isEmpty()
-        val foundMedicationRecords = medicationRecordIds.mapNotNull { medicationRecordRepository.findById(it) }
-        assertThat(foundMedicationRecords).isEmpty()
-    }
-
-    @Test
-    @DisplayName("所有する薬をすべて削除する")
-    fun deleteAllOwnedMedicines() {
-        //given
-        val medicationRecordIds = List(3) {
+        val ownedMedicines = List(3) {
             val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
-            testMedicationRecordInserter.insert(requesterAccountId, medicine.id).id
+            testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
+            medicine
         }
 
         //when:
-        medicineDeletionService.deleteAllOwnedMedicines(requesterAccountId)
+        medicineDeletionService.deleteAllOwnedMedicinesAndMedicationRecords(requesterAccountId)
 
         //then:
         val foundMedicines = medicineRepository.findByOwner(requesterAccountId)
         assertThat(foundMedicines).isEmpty()
-        val foundMedicationRecords = medicationRecordIds.mapNotNull { medicationRecordRepository.findById(it) }
+        val foundMedicationRecords = ownedMedicines.flatMap { medicationRecordRepository.findByTakenMedicine(it.id) }
+        assertThat(foundMedicationRecords).isEmpty()
+    }
+
+    @Test
+    @DisplayName("全ての共有グループの薬とその服用記録を削除する")
+    fun deleteAllSharedGroupMedicinesAndMedicationRecords() {
+        //given
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
+        val sharedGroupMedicines = List(3) {
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
+            testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
+            medicine
+        }
+
+        //when:
+        medicineDeletionService.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)
+
+        //then:
+        val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)
+        assertThat(foundMedicines).isEmpty()
+        val foundMedicationRecords =
+                sharedGroupMedicines.flatMap { medicationRecordRepository.findByTakenMedicine(it.id) }
         assertThat(foundMedicationRecords).isEmpty()
     }
 }

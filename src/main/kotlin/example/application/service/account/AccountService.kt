@@ -40,7 +40,7 @@ class AccountService(private val accountRepository: AccountRepository,
         val account = accountRepository.findById(userSession.accountId) ?: return
 
         medicationRecordRepository.deleteByRecorder(account.id)
-        medicineDeletionService.deleteAllOwnedMedicines(userSession.accountId)
+        medicineDeletionService.deleteAllOwnedMedicinesAndMedicationRecords(userSession.accountId)
         sharedGroupUnshareService.unshareAndRejectAllInvitation(userSession.accountId)
 
         profileRepository.deleteByAccountId(account.id)
