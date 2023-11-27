@@ -5,7 +5,7 @@
   </head>
   <body>
     <div
-      class="is-flex is-align-items-center"
+      class="is-flex is-align-items-center is-justify-content-center"
       th:fragment="macro(sharedGroup, isParticipating)"
     >
       <div
@@ -89,19 +89,6 @@
           class="has-text-weight-bold has-text-grey-dark m-0 p-0"
           th:text="${invitee.username}"
         ></p>
-      </div>
-      <div class="has-text-centered mx-2" th:if="${isParticipating}">
-        <div
-          class="icon fas fa-2x is-flex is-align-items-center has-text-link is-clickable ml-3"
-          @click="activateUserSearchModal()"
-        >
-          <i class="fa-solid fa-plus"></i>
-        </div>
-        <user-search
-          ref="userSearch"
-          th:attr="shared-group-id=${participatingSharedGroup.sharedGroupId}, csrf=${_csrf.token}"
-        >
-        </user-search>
       </div>
 
       <confirmation-message

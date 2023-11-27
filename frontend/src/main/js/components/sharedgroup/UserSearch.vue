@@ -21,8 +21,8 @@
               v-model="keyword"
               placeholder="ユーザー名"
             />
-            <span class="help">
-              ※ユーザー名が設定されていないユーザーを検索することはできません。
+            <span class="help has-text-left">
+              ※ ユーザー名が設定されていないユーザーを検索することはできません。
             </span>
           </p>
           <p class="control">

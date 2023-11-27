@@ -1,6 +1,6 @@
 <template>
-  <div class="content m-2" v-if="members.length !== 0">
-    <div class="is-flex is-align-items-center">
+  <div class="content m-2">
+    <div class="is-flex is-align-items-center" v-if="members.length !== 0">
       <div class="has-text-centered mx-2" v-for="member in members">
         <div class="is-flex is-justify-content-center">
           <a class="image is-64x64 m-0" :href="`/users/${member.accountId}`">
@@ -17,10 +17,15 @@
             />
           </a>
         </div>
-        <p class="is-size-7 has-text-weight-bold has-text-grey-dark m-0 p-0">
+        <p class="has-text-weight-bold has-text-grey-dark m-0 p-0">
           {{ member.username }}
         </p>
       </div>
+    </div>
+    <div class="has-text-centered" v-if="members.length === 0">
+      <p class="is-size-7 has-text-weight-semibold has-text-grey">
+        メンバーがいません。
+      </p>
     </div>
   </div>
 </template>
