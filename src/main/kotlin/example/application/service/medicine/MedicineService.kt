@@ -47,14 +47,6 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 所有している薬か
-     */
-    @Transactional(readOnly = true)
-    fun isOwnedMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
-        return medicineQueryService.isOwnedMedicine(medicineId, userSession.accountId)
-    }
-
-    /**
      * 服用可能な薬な薬か
      */
     @Transactional(readOnly = true)

@@ -7,17 +7,8 @@ import org.springframework.stereotype.*
 @Component
 class MedicineQueryService(private val medicineRepository: MedicineRepository,
                            private val sharedGroupRepository: SharedGroupRepository) {
-    fun findOwnedMedicine(medicineId: MedicineId, accountId: AccountId): Medicine? {
-        val medicine = medicineRepository.findById(medicineId) ?: return null
-        return if (medicine.isOwnedBy(accountId)) medicine else null
-    }
-
     fun findAllOwnedMedicines(accountId: AccountId): Set<Medicine> {
         return medicineRepository.findByOwner(accountId)
-    }
-
-    fun isOwnedMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
-        return findOwnedMedicine(medicineId, accountId) != null
     }
 
     fun findAllSharedGroupMedicines(accountId: AccountId): Set<Medicine> {
@@ -59,17 +50,15 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
         return if (medicine.isPublic && sharedGroup.members.contains(medicine.owner.accountId)) medicine else null
     }
 
-    fun isViewableMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
-        return findViewableMedicine(medicineId, accountId) != null
-    }
-
     fun findAllViewableMedicines(accountId: AccountId): Set<Medicine> {
         val ownedMedicines = findAllOwnedMedicines(accountId)
-        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return ownedMedicines
-        val sharedGroupMedicines = medicineRepository.findByOwner(sharedGroup.id)
-        val members = sharedGroup.members - accountId
-        val membersMedicines = medicineRepository.findByOwners(members).filter { it.isPublic }
+        val sharedGroupMedicines = findAllSharedGroupMedicines(accountId)
+        val membersMedicines = findAllMembersMedicines(accountId)
         return ownedMedicines + sharedGroupMedicines + membersMedicines
+    }
+
+    fun isViewableMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
+        return findViewableMedicine(medicineId, accountId) != null
     }
 
     private fun findParticipatingSharedGroup(accountId: AccountId) = sharedGroupRepository.findByMember(accountId)
