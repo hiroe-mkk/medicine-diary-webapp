@@ -4,7 +4,7 @@
       ref="changeableImage"
       :image="props.profileImage"
       :csrf="props.csrf"
-      executePath="/api/profile/image/change"
+      executeRootPath="/api/profile/image"
       imageName="プロフィール画像"
       :noImage="noProfileImage"
       :isRounded="true"
@@ -40,7 +40,7 @@
       </div>
       <div
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
-        @click="activateProfileImageChangeModal()"
+        @click="activateProfileImageMenuModal()"
       >
         <span class="icon-text">
           <span class="icon has-text-link ml-3">
@@ -265,8 +265,8 @@ function changeUsernameCompleted() {
   resultMessage.value.activate('INFO', 'ユーザー名の変更が完了しました。');
 }
 
-function activateProfileImageChangeModal() {
-  changeableImage.value.activateChangeModal();
+function activateProfileImageMenuModal() {
+  changeableImage.value.activateMenuModal();
 }
 
 function activateAccountDeletionConfirmationModal() {

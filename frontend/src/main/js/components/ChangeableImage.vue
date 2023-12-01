@@ -1,6 +1,10 @@
 <template>
   <div class="is-flex is-justify-content-center">
-    <figure class="image m-2" :class="{ 'is-128x128': isFixedSize }">
+    <figure
+      class="image is-clickable m-2"
+      :class="{ 'is-128x128': isFixedSize }"
+      @click="activateMenuModal()"
+    >
       <img
         :src="image"
         :class="{ 'is-rounded': isRounded }"
@@ -14,11 +18,37 @@
     </figure>
   </div>
 
-  <div class="modal" :class="{ 'is-active': isImageChangeModalActive }">
-    <div
-      class="modal-background"
-      @click="isImageChangeModalActive = false"
-    ></div>
+  <div class="modal" :class="{ 'is-active': isMenuModalActive }">
+    <div class="modal-background" @click="isMenuModalActive = false"></div>
+    <div class="modal-content is-flex is-justify-content-center">
+      <div class="content">
+        <button
+          class="button is-dark is-fullwidth is-small mb-1"
+          v-if="image != undefined"
+          @click="deleteImage()"
+        >
+          <strong class="mx-6">現在の画像を削除する</strong>
+        </button>
+        <button
+          type="button"
+          class="button is-dark is-fullwidth is-small mb-1"
+          @click="activateTrimmingModal()"
+        >
+          <strong class="mx-6">画像を変更する</strong>
+        </button>
+        <button
+          type="button"
+          class="button is-dark is-fullwidth is-small has-text-danger-dark mb-1"
+          @click="isMenuModalActive = false"
+        >
+          <strong class="mx-6">キャンセル</strong>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" :class="{ 'is-active': isTrimmingModalActive }">
+    <div class="modal-background" @click="isTrimmingModalActive = false"></div>
     <div class="modal-content">
       <div
         class="notification has-background-white has-text-centered py-3 px-5"
@@ -27,7 +57,7 @@
           <button
             class="delete"
             type="button"
-            @click="isImageChangeModalActive = false"
+            @click="isTrimmingModalActive = false"
           ></button>
         </div>
         <div
@@ -86,7 +116,7 @@
               <button
                 type="button"
                 class="button is-small is-rounded is-outlined is-danger"
-                @click="isImageChangeModalActive = false"
+                @click="isTrimmingModalActive = false"
               >
                 キャンセル
               </button>
@@ -113,26 +143,35 @@ import { ImageTrimmingManager } from '@main/js/composables/model/ImageTrimmingMa
 const props = defineProps({
   image: String,
   csrf: String,
-  executePath: String,
+  executeRootPath: String,
   imageName: String,
   noImage: String,
   isRounded: { type: Boolean, default: false },
   isFixedSize: { type: Boolean, default: false },
 });
-defineExpose({ activateChangeModal });
+defineExpose({ activateMenuModal });
 
 const image = ref(props.image);
-const isImageChangeModalActive = ref(false);
+const isMenuModalActive = ref(false);
+const isTrimmingModalActive = ref(false);
 const trimmingContainer = ref(null);
 const imageTrimmingManager = reactive(new ImageTrimmingManager());
 
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
 
-function activateChangeModal() {
+function activateMenuModal() {
+  if (image.value === undefined) {
+    activateTrimmingModal();
+  } else {
+    isMenuModalActive.value = true;
+  }
+}
+
+function activateTrimmingModal() {
   fieldErrors.clear();
   imageTrimmingManager.destroy();
-  isImageChangeModalActive.value = true;
+  isTrimmingModalActive.value = true;
 }
 
 function fileSelected(event) {
@@ -149,10 +188,11 @@ async function submitForm() {
   form.set('image', result);
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest(props.executePath, form)
+  HttpRequestClient.submitPostRequest(`${props.executeRootPath}/change`, form)
     .then(() => {
       image.value = URL.createObjectURL(result);
-      isImageChangeModalActive.value = false;
+      isTrimmingModalActive.value = false;
+      isMenuModalActive.value = false;
       resultMessage.value.activate(
         'INFO',
         `${props.imageName}の変更が完了しました。`
@@ -167,6 +207,47 @@ async function submitForm() {
             return;
           }
         } else if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          resultMessage.value.activate(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
+
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
+}
+
+function deleteImage() {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+
+  HttpRequestClient.submitPostRequest(`${props.executeRootPath}/delete`, form)
+    .then(() => {
+      resultMessage.value.activate('INFO', `画像の削除が完了しました。`);
+      isMenuModalActive.value = false;
+      image.value = undefined;
+    })
+    .catch((error) => {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
           // 認証エラーが発生した場合
           location.reload();
           return;

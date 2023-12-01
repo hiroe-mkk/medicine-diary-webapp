@@ -29,14 +29,14 @@
             <div class="column p-3 is-one-third">
               <changeable-image
                 ref="changeableImage"
-                th:attr="image=*{medicineImageURL}, csrf=${_csrf.token}, execute-path='/api/medicines/__*{medicineId}__/image/change'"
+                th:attr="image=*{medicineImageURL}, csrf=${_csrf.token}, execute-root-path='/api/medicines/__*{medicineId}__/image'"
                 image-name="お薬画像"
                 :no-image="noMedicineImage"
                 th:if="*{medicineImageURL!=null}"
               ></changeable-image>
               <changeable-image
                 ref="changeableImage"
-                th:attr="csrf=${_csrf.token}, execute-path='/api/medicines/__*{medicineId}__/image/change'"
+                th:attr="csrf=${_csrf.token}, execute-root-path='/api/medicines/__*{medicineId}__/image'"
                 image-name="お薬画像"
                 :no-image="noMedicineImage"
                 th:if="*{medicineImageURL==null}"
@@ -204,7 +204,7 @@
               <button
                 type="button"
                 class="button is-dark is-fullwidth is-small mb-1"
-                @click="activateMedicineImageChangeModal()"
+                @click="activateMedicineImageMenuModal()"
               >
                 <strong class="mx-6">画像を変更する</strong>
               </button>

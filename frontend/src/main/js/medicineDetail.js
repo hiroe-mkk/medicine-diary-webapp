@@ -13,9 +13,9 @@ createApp({
     };
   },
   methods: {
-    activateMedicineImageChangeModal() {
+    activateMedicineImageMenuModal() {
       this.isMenuModalActive = false;
-      this.$refs.changeableImage.activateChangeModal();
+      this.$refs.changeableImage.activateMenuModal();
     },
     activateDeletionConfirmationModal() {
       this.isMenuModalActive = false;
