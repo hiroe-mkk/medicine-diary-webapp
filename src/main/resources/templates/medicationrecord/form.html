@@ -176,9 +176,7 @@
                       name="note"
                       placeholder="500文字以内で入力してください。"
                       th:errorclass="is-danger"
-                    >
-[[*{note}]]</textarea
-                    >
+                    >[[*{note}]]</textarea>
                     <p
                       class="help is-danger"
                       th:if="${#fields.hasErrors('note')}"
@@ -205,17 +203,18 @@
           </div>
         </form>
 
-        <div class="content has-text-centered" th:if="${form == null}">
+        <div class="content has-text-centered p-5" th:if="${form == null}">
           <p class="has-text-weight-bold has-text-danger-dark">
-            お薬を登録してください。
+            お薬が登録されていません。<br />
+            お薬を登録してから服用記録を追加してください。
           </p>
 
           <a class="px-0 py-4" th:href="@{/medicines/register}">
             <p class="button is-link is-rounded is-outlined">
-              <span class="icon fas fa-lg is-flex is-align-items-center mr-0">
-                <i class="fa-solid fa-plus"></i>
+              <strong>お薬を登録する</strong>
+              <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+                <i class="fa-solid fa-capsules"></i>
               </span>
-              <strong> お薬を登録する </strong>
             </p>
           </a>
         </div>
