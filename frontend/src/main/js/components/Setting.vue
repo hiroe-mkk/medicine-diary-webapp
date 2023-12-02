@@ -166,7 +166,7 @@
                   削除後、データを復元することはできません。"
     button-label="削除する"
     path="/account/delete"
-    th:attr="csrf=${_csrf.token}"
+    :csrf="props.csrf"
   >
   </ConfirmationMessage>
   <ResultMessage ref="resultMessage"></ResultMessage>
