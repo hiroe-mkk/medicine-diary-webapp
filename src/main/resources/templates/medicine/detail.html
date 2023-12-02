@@ -241,7 +241,7 @@
         <confirmation-message
           ref="confirmationMessage"
           message="このお薬を削除しますか？"
-          details="服用記録を含む、お薬に関する全ての情報が削除されます。"
+          details="服用記録を含む、お薬に関する全ての情報が削除されます。本当に削除してよろしいですか？"
           button-label="削除"
           th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
         ></confirmation-message>

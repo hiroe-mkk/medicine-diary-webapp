@@ -162,8 +162,7 @@
   <ConfirmationMessage
     ref="accountDeletionConfirmationModal"
     message="アカウントを削除しますか？"
-    details="アカウントを削除すると、全てのデータが削除されます。
-                  削除後、データを復元することはできません。"
+    details="アカウントを削除すると、全てのデータが削除されます。削除後、データを復元することはできません。本当に削除してよろしいですか？"
     button-label="削除する"
     path="/account/delete"
     :csrf="props.csrf"
