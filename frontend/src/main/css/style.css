@@ -60,3 +60,7 @@
 .blinking-text {
   animation: blink 5s infinite;
 }
+
+.border-bottom {
+  border-bottom: 1px solid #999;
+}

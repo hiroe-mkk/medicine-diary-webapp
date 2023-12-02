@@ -46,9 +46,9 @@
               class="column p-3 is-flex is-flex-direction-column is-justify-content-space-between"
             >
               <div class="m-2">
-                <div class="block">
+                <div class="border-bottom block m-0 pb-3">
                   <p
-                    class="is-size-5 has-text-weight-bold has-text-link has-text-centered mb-3"
+                    class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
                   >
                     用法・用量
                   </p>
@@ -102,26 +102,49 @@
                       </span>
                     </p>
                   </div>
-                  <p class="tags are-medium has-text-right m-0">
-                    <span
-                      class="tag mb-0 is-warning is-rounded has-text-weight-bold"
-                      th:each="effect:*{effects.values}"
-                      th:text="${effect}"
-                    ></span>
-                  </p>
                 </div>
-                <div class="block" th:if="*{!precautions.isBlank()}">
+                <div class="block m-0 py-3">
+                  <p
+                    class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
+                  >
+                    効能
+                  </p>
+                  <span>
+                    <span
+                      th:each="effect, status:*{effects.values}"
+                      th:remove="tag"
+                    >
+                      <span
+                        class="has-text-weight-semibold"
+                        th:text=" ${effect}"
+                      ></span>
+                      <span
+                        class="has-text-weight-semibold"
+                        th:if="${__${status.size}__ != __${status.count}__}"
+                      >
+                        ・
+                      </span>
+                    </span>
+                  </span>
+                </div>
+                <div class="block m-0 py-3" th:if="*{!precautions.isBlank()}">
                   <p
                     class="is-size-5 has-text-weight-bold has-text-danger-dark has-text-centered mb-3"
                   >
                     注意事項
                   </p>
-                  <div th:each="line:*{precautions.toLines()}" th:remove="tag">
-                    <p
-                      class="has-text-weight-semibold mb-1"
-                      th:text="${line}"
-                    ></p>
-                  </div>
+
+                  <p class="notification has-background-danger-light p-4">
+                    <span
+                      th:each="line:*{precautions.toLines()}"
+                      th:remove="tag"
+                    >
+                      <span
+                        class="has-text-weight-semibold mb-1"
+                        th:text="${line}"
+                      ></span>
+                    </span>
+                  </p>
                 </div>
                 <inventory
                   ref="inventory"

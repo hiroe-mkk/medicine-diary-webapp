@@ -8,7 +8,7 @@
     <div class="tile is-ancestor has-text-grey-dark">
       <div class="tile is-parent is-8 p-2">
         <div
-          class="tile is-child notification has-background-white-bis has-text-right py-2 px-4"
+          class="tile is-child notification has-background-success-light has-text-right py-2 px-4"
         >
           <p class="has-text-weight-bold has-text-centered mb-2">使用中</p>
           <p>
@@ -37,7 +37,7 @@
       </div>
       <div class="tile is-parent p-2">
         <div
-          class="tile is-child notification has-background-white-bis is-flex is-flex-direction-column is-justify-content-space-between has-text-right py-2 px-4"
+          class="tile is-child notification has-background-success-light is-flex is-flex-direction-column is-justify-content-space-between has-text-right py-2 px-4"
         >
           <p class="has-text-weight-bold has-text-centered mb-2">未使用</p>
           <strong class="is-size-5"
