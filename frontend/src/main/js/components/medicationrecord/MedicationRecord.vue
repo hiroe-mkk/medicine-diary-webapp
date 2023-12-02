@@ -16,8 +16,14 @@
           'is-flex is-justify-content-flex-end': !props.displayRecorder,
         }"
       >
-        <span class="is-flex is-align-items-center" v-if="props.displayRecorder">
-          <a class="image is-32x32 is-inline-block m-0" :href="`/users/${medicationRecord.value.recorder.accountId}`">
+        <span
+          class="is-flex is-align-items-center"
+          v-if="props.displayRecorder"
+        >
+          <a
+            class="image is-32x32 is-inline-block m-0"
+            :href="`/users/${medicationRecord.value.recorder.accountId}`"
+          >
             <img
               :src="medicationRecord.value.recorder.profileImageURL"
               class="is-rounded"
@@ -159,6 +165,10 @@
             </button>
           </p>
         </div>
+        <div
+          class="block py-3"
+          v-if="!medicationRecord.value.isRecordedBySelf"
+        ></div>
       </div>
     </div>
   </div>

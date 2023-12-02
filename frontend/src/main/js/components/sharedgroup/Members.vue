@@ -22,7 +22,7 @@
         </p>
       </div>
     </div>
-    <div class="has-text-centered" v-if="members.length === 0">
+    <div class="has-text-centered py-2" v-if="members.length === 0">
       <p class="is-size-7 has-text-weight-semibold has-text-grey">
         メンバーがいません。
       </p>

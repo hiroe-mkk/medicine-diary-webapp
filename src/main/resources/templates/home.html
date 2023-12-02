@@ -88,11 +88,12 @@
                       </div>
                     </div>
                     <div
-                      class="has-text-left"
+                      class="has-text-left py-3"
                       th:if="${isParticipatingInSharedGroup}"
                     >
                       <a
                         class="has-text-weight-bold has-text-link"
+                        style="text-decoration: none"
                         href="/shared-group/management"
                       >
                         共有グループメンバー
@@ -216,10 +217,7 @@
           </div>
         </main>
         <footer class="hero-footer has-text-centered pb-3">
-          <a
-            class="is-size-7 has-text-link"
-            th:href="@{/agreement}"
-          >
+          <a class="is-size-7 has-text-link" th:href="@{/agreement}">
             利用規約
           </a>
         </footer>
@@ -282,10 +280,7 @@
           </div>
         </div>
         <div class="block m-0">
-          <a
-            class="is-size-7 has-text-link"
-            th:href="@{/agreement}"
-          >
+          <a class="is-size-7 has-text-link" th:href="@{/agreement}">
             利用規約
           </a>
         </div>
