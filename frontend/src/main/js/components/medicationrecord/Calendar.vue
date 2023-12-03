@@ -113,9 +113,10 @@ const calendarOptions = {
     dateSelected(info.dateStr);
   },
   eventClick: (info) => {
-    dateSelected(
-      info.event.start.toLocaleDateString().slice(0, 10).replace(/\//g, '-')
-    );
+    const jstOffset = 9 * 60; // JSTのUTCオフセット（日本はUTC+9）
+    const jstTime = info.event.start.getTime() + jstOffset * 60 * 1000;
+    const jstDate = new Date(jstTime);
+    dateSelected(jstDate.toISOString().slice(0, 10));
   },
 };
 
