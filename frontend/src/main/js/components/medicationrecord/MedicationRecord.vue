@@ -121,13 +121,15 @@
             </span>
           </span>
         </p>
-        <p class="has-text-left" v-if="medicationRecord.value.note !== ''">
-          <span class="has-text-weight-semibold">ノート</span>
-          <span
-            class="notification has-text-weight-semibold has-background-white-bis has-text-left py-2 px-3 my-2 mx-0"
-          >
-            {{ medicationRecord.value.note }}
-          </span>
+        <p
+          class="border-bottom my-5"
+          v-if="medicationRecord.value.note !== ''"
+        ></p>
+        <p
+          class="has-text-weight-semibold has-text-left"
+          v-if="medicationRecord.value.note !== ''"
+        >
+          {{ medicationRecord.value.note }}
         </p>
       </div>
       <div

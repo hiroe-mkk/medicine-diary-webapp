@@ -1,18 +1,17 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="content mb-3">
-      <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
-        服用記録
-      </p>
+      <p class="is-size-4 has-text-weight-bold has-text-grey-dark">服用記録</p>
     </div>
 
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
-        ref="filteredDedicationRecords"
+        ref="filteredMedicationRecords"
         :displayRecorder="props.displayRecorder"
         :allowLoadMore="true"
         :can-append="false"
         :elements="['symptom', 'dateTime']"
+        :csrf="props.csrf"
       ></FilteredMedicationRecords>
     </div>
   </div>
@@ -33,12 +32,12 @@ const props = defineProps({
 });
 
 const filter = reactive(new Filter());
-const filteredDedicationRecords = ref(null);
+const filteredMedicationRecords = ref(null);
 
 const resultMessage = ref(null);
 
 onMounted(async () => {
   filter.medicineId = props.medicineId;
-  filteredDedicationRecords.value.loadMedicationRecords(filter);
+  filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
 </script>

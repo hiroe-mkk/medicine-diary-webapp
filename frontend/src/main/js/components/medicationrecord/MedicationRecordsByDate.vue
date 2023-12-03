@@ -13,6 +13,7 @@
         :allowLoadMore="false"
         :can-append="false"
         :elements="['medicine', 'dateTime']"
+        :csrf="props.csrf"
       ></FilteredMedicationRecords>
     </div>
   </div>
