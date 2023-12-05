@@ -1,19 +1,14 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
-    <div class="content m-3">
-      <p class="icon-text is-size-4 is-flex is-justify-content-center">
-        <strong class="has-text-grey-dark">服用記録一覧</strong>
-        <span class="icon has-text-grey-dark mx-2">
-          <i class="fa-solid fa-book-open"></i>
-        </span>
-      </p>
+    <div class="content mb-3">
+      <p class="is-size-4 has-text-weight-bold has-text-grey-dark">服用記録一覧</p>
     </div>
 
     <div class="content is-inline-block m-2" v-if="members.length !== 0">
       <div class="is-flex is-align-items-center">
         <div
           class="is-clickable mx-2"
-          :class="{ opacity: !filter.isUserActive(self.value.accountId) }"
+          :class="{ opacity: !isUserEnabled(self.value.accountId) }"
           @click="toggleUserActive(self.value.accountId)"
           v-if="self.value !== undefined"
         >
@@ -26,7 +21,7 @@
               />
               <img
                 class="is-rounded"
-                :src="noProfileImage"
+                src="@main/images/no_profile_image.png"
                 v-if="self.value.profileImageURL === undefined"
               />
             </figure>
@@ -37,7 +32,7 @@
         </div>
         <div
           class="is-clickable mx-2"
-          :class="{ opacity: !filter.isUserActive(member.accountId) }"
+          :class="{ opacity: !isUserEnabled(member.accountId) }"
           @click="toggleUserActive(member.accountId)"
           v-for="member in members"
         >
@@ -50,7 +45,7 @@
               />
               <img
                 class="is-rounded"
-                :src="noProfileImage"
+                src="@main/images/no_profile_image.png"
                 v-if="member.profileImageURL === undefined"
               />
             </figure>
@@ -65,7 +60,11 @@
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
         ref="filteredMedicationRecords"
-        :hasMembers="members.length !== 0"
+        :displayRecorder="props.isParticipatingInSharedGroup"
+        :isAllowLoadMore="true"
+        :isShowAppendButton="false"
+        :elements="['medicine', 'dateTime']"
+        :csrf="props.csrf"
       ></FilteredMedicationRecords>
     </div>
   </div>
@@ -78,7 +77,6 @@ import { ref, reactive, onMounted } from 'vue';
 import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
-import noProfileImage from '@main/images/no_profile_image.png';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
@@ -94,10 +92,9 @@ const filteredMedicationRecords = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?own')
+  await HttpRequestClient.submitGetRequest('/api/users?self')
     .then((data) => {
       self.value = data;
-      filter.addAccountId(data.accountId);
     })
     .catch(() => {
       resultMessage.value.activate(
@@ -111,7 +108,6 @@ onMounted(async () => {
     await HttpRequestClient.submitGetRequest('/api/users?members')
       .then((data) => {
         members.push(...data.users);
-        filter.addAllAccountIds(members.map((member) => member.accountId));
       })
       .catch(() => {
         resultMessage.value.activate(
@@ -126,7 +122,21 @@ onMounted(async () => {
 });
 
 function toggleUserActive(accountId) {
-  filter.toggleUserActive(accountId);
+  if (filter.accountId === accountId) {
+    filter.accountId = undefined;
+  } else {
+    filter.accountId = accountId;
+  }
   filteredMedicationRecords.value.loadMedicationRecords(filter);
 }
+
+function isUserEnabled(accountId) {
+  return filter.accountId === undefined || filter.accountId === accountId;
+}
 </script>
+
+<style scoped>
+.opacity {
+  opacity: 0.3;
+}
+</style>

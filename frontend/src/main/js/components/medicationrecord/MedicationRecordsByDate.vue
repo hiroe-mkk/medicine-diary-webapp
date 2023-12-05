@@ -2,8 +2,20 @@
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="notification has-background-white p-3">
       <div class="content mb-3">
-        <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
+        <p class="is-size-4 has-text-weight-bold has-text-grey-dark mb-0">
           最近の服用記録
+        </p>
+        <p class="has-text-right">
+          <a
+            class="icon-text is-size-7"
+            style="text-decoration: none"
+            href="/medication-records"
+          >
+            <strong>もっと見る</strong>
+            <span class="icon has-text-link m-0">
+              <i class="fa-solid fa-angle-right"></i>
+            </span>
+          </a>
         </p>
       </div>
 
@@ -36,7 +48,7 @@ const filteredMedicationRecords = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
-  filter.sizePerPage = 10;
+  filter.sizePerPage = 5;
   filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
 </script>

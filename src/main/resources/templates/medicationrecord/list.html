@@ -15,23 +15,18 @@
         th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
       ></medication-records>
 
-      <div class="bottom-fullwidth">
-        <div class="tabs is-fullwidth has-background-info-light">
-          <ul class="m-0">
-            <li>
-              <a class="px-0 py-4" th:href="@{/medication-records/add}">
-                <p class="button is-link is-rounded is-outlined">
-                  <strong> 服用記録を追加する </strong>
-                  <span
-                    class="icon fas fa-lg is-flex is-align-items-center mr-0"
-                  >
-                    <i class="fa-solid fa-file-pen"></i>
-                  </span>
-                </p>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div
+        class="bottom-fullwidth has-text-centered has-background-info-light py-4 m-0"
+      >
+        <a
+          class="button is-link is-rounded is-outlined px-5"
+          th:href="@{/medication-records/add}"
+        >
+          <strong>服用記録を追加する</strong>
+          <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+            <i class="fa-solid fa-file-pen"></i>
+          </span>
+        </a>
       </div>
     </div>
   </body>
