@@ -62,6 +62,7 @@ annotation class EnableDomainServiceAutoConfiguration {
         fun medicineBasicInfoUpdateService(): MedicineBasicInfoUpdateService {
             return MedicineBasicInfoUpdateService(medicineRepository,
                                                   medicationRecordRepository,
+                                                  medicineImageStorage,
                                                   medicineOwnerCreationService(),
                                                   medicineQueryService())
         }
