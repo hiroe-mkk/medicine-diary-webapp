@@ -7,7 +7,6 @@ export class MedicationRecords {
     this._filter = undefined;
 
     this.__currentPage = 0;
-    this._sizePerPage = 10;
     this._totalPages = 0;
   }
 
@@ -88,7 +87,8 @@ export class Filter {
     const params = new URLSearchParams();
     if (this.medicineId !== undefined)
       params.append('medicineid', this.medicineId);
-    if (this.accountId !== undefined) params.append('accountid', this.accountId);
+    if (this.accountId !== undefined)
+      params.append('accountid', this.accountId);
     if (this.start !== undefined) params.append('start', this.start);
     if (this.end !== undefined) params.append('end', this.end);
     params.append('size', this.sizePerPage);

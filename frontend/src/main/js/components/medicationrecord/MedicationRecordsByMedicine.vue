@@ -7,9 +7,9 @@
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
         ref="filteredMedicationRecords"
-        :displayRecorder="props.displayRecorder"
-        :allowLoadMore="true"
-        :can-append="false"
+        :displayRecorder="props.isParticipatingInSharedGroup"
+        :isAllowLoadMore="true"
+        :isShowAppendButton="false"
         :elements="['symptom', 'dateTime']"
         :csrf="props.csrf"
       ></FilteredMedicationRecords>
@@ -27,7 +27,7 @@ import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   medicineId: String,
-  displayRecorder: Boolean,
+  isParticipatingInSharedGroup: Boolean,
   csrf: String,
 });
 

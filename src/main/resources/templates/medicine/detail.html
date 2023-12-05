@@ -164,7 +164,7 @@
 
         <div class="content pb-6">
           <medication-records
-            th:attr="medicine-id=*{medicineId}, ':display-recorder'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+            th:attr="medicine-id=*{medicineId}, ':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
           ></medication-records>
         </div>
       </div>

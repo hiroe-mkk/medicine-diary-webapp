@@ -91,7 +91,7 @@
     <!-- TODO: 自動的に読み込まれるように変更する -->
     <div
       class="has-text-centered mt-2"
-      v-if="props.allowLoadMore && medicationRecords.canLoadMore"
+      v-if="props.isAllowLoadMore && medicationRecords.canLoadMore"
     >
       <p
         class="is-size-7 has-text-link is-clickable"
@@ -102,7 +102,7 @@
     </div>
   </div>
 
-  <div class="content has-text-centered p-2 m-0" v-if="props.canAppend">
+  <div class="content has-text-centered p-2 m-0" v-if="props.isShowAppendButton">
     <slot></slot>
   </div>
 
@@ -127,8 +127,8 @@ import MedicationRecord from '@main/js/components/medicationrecord/MedicationRec
 const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   displayRecorder: Boolean,
-  allowLoadMore: Boolean,
-  canAppend: Boolean,
+  isAllowLoadMore: Boolean,
+  isShowAppendButton: Boolean,
   elements: Array,
   csrf: String,
 });

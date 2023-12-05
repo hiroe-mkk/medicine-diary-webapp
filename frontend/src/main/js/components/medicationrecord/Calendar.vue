@@ -25,8 +25,8 @@
         <FilteredMedicationRecords
           ref="filteredMedicationRecords"
           :displayRecorder="false"
-          :allowLoadMore="false"
-          :canAppend="canAppend"
+          :isAllowLoadMore="false"
+          :isShowAppendButton="props.isSelfCalendar"
           :elements="['medicine', 'time']"
         >
           <a
@@ -55,7 +55,7 @@ import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   accountId: String,
-  canAppend: Boolean,
+  isSelfCalendar: Boolean,
   csrf: String,
 });
 

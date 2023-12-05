@@ -64,7 +64,7 @@
 
     <div class="notification has-background-white p-3">
       <FilteredMedicationRecords
-        ref="filteredDedicationRecords"
+        ref="filteredMedicationRecords"
         :hasMembers="members.length !== 0"
       ></FilteredMedicationRecords>
     </div>
@@ -89,7 +89,7 @@ const props = defineProps({
 const self = reactive({ value: undefined });
 const members = reactive([]);
 const filter = reactive(new Filter());
-const filteredDedicationRecords = ref(null);
+const filteredMedicationRecords = ref(null);
 
 const resultMessage = ref(null);
 
@@ -122,11 +122,11 @@ onMounted(async () => {
       });
   }
 
-  filteredDedicationRecords.value.loadMedicationRecords(filter);
+  filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
 
 function toggleUserActive(accountId) {
   filter.toggleUserActive(accountId);
-  filteredDedicationRecords.value.loadMedicationRecords(filter);
+  filteredMedicationRecords.value.loadMedicationRecords(filter);
 }
 </script>

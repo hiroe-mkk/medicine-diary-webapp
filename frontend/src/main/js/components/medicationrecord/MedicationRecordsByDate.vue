@@ -8,10 +8,10 @@
       </div>
 
       <FilteredMedicationRecords
-        ref="filteredDedicationRecords"
-        :displayRecorder="props.displayRecorder"
-        :allowLoadMore="false"
-        :can-append="false"
+        ref="filteredMedicationRecords"
+        :displayRecorder="props.isParticipatingInSharedGroup"
+        :isAllowLoadMore="false"
+        :isShowAppendButton="false"
         :elements="['medicine', 'dateTime']"
         :csrf="props.csrf"
       ></FilteredMedicationRecords>
@@ -26,14 +26,17 @@ import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
-const props = defineProps({ displayRecorder: Boolean, csrf: String });
+const props = defineProps({
+  isParticipatingInSharedGroup: Boolean,
+  csrf: String,
+});
 
 const filter = reactive(new Filter());
-const filteredDedicationRecords = ref(null);
+const filteredMedicationRecords = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
   filter.sizePerPage = 10;
-  filteredDedicationRecords.value.loadMedicationRecords(filter);
+  filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
 </script>
