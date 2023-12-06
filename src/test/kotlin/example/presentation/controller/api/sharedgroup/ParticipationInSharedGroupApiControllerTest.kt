@@ -1,7 +1,8 @@
-package example.presentation.controller.page.sharedgroup
+package example.presentation.controller.api.sharedgroup
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
+import example.presentation.controller.api.sharedgroup.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -17,12 +18,12 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class ParticipationInSharedGroupControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                        @Autowired private val testAccountInserter: TestAccountInserter,
-                                                        @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                        @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class ParticipationInSharedGroupApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                           @Autowired private val testAccountInserter: TestAccountInserter,
+                                                           @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                           @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/shared-group/participate"
+        private const val PATH = "/api/shared-group/participate"
     }
 
     private lateinit var user1AccountId: AccountId
@@ -34,8 +35,8 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの参加に成功した場合、共有グループ管理画面にリダイレクトする")
-    fun participateInSharedGroupSucceeds_redirectToShredGroupManagementPage() {
+    @DisplayName("共有グループへの参加に成功した場合、ステータスコード204のレスポンスを返す")
+    fun participateInSharedGroupSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
@@ -47,14 +48,13 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
                                           .param("sharedGroupId", sharedGroup.id.value))
 
         //then:
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/shared-group/management"))
+        actions.andExpect(status().isNoContent)
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの参加に失敗した場合、共有グループ管理画面にリダイレクトする")
-    fun participationInSharedGroupFails_redirectToShredGroupManagementPage() {
+    @DisplayName("共有グループへの参加に失敗した場合、ステータスコード209のレスポンスを返す")
+    fun participationInSharedGroupFails_returnsResponseWithStatus209() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId),
@@ -66,14 +66,13 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
                                           .param("sharedGroupId", sharedGroup.id.value))
 
         //then:
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/shared-group/management"))
+        actions.andExpect(status().isConflict)
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループが見つからなかった場合、NotFoundエラー画面を表示する")
-    fun sharedGroupNotFound_displayNotFoundErrorPage() {
+    @DisplayName("共有グループが見つからなかった場合、ステータスコード404のレスポンスを返す")
+    fun sharedGroupNotFound_returnsResponseWithStatus404() {
         //given:
         val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -84,12 +83,11 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
 
         //then:
         actions.andExpect(status().isNotFound)
-            .andExpect(view().name("error/notFoundError"))
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToHomePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
+    fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
         val sharedGroupId = SharedGroupId("sharedGroupId")
 
@@ -98,7 +96,7 @@ internal class ParticipationInSharedGroupControllerTest(@Autowired private val m
                                           .with(csrf())
                                           .param("sharedGroupId", sharedGroupId.value))
 
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/"))
+        //then:
+        actions.andExpect(status().isUnauthorized)
     }
 }

@@ -18,37 +18,29 @@
             :csrf="props.csrf"
           ></SharedGroup>
         </div>
-        <form class="form mt-2" method="post" action="?">
-          <input
-            name="sharedGroupId"
-            :value="invitedSharedGroup.sharedGroupId"
-            hidden
-          />
-          <input name="_csrf" :value="props.csrf" hidden />
-          <p class="help" v-if="participatingSharedGroup.value !== undefined">
-            ※参加できる共有グループは1つまでです。<br />
-            　この共有グループに参加するためには、現在参加している共有グループでの共有を停止してください。
+        <p class="help" v-if="participatingSharedGroup.value !== undefined">
+          ※参加できる共有グループは1つまでです。<br />
+          　この共有グループに参加するためには、現在参加している共有グループでの共有を停止してください。
+        </p>
+        <div class="field is-grouped is-grouped-centered p-2">
+          <p class="control">
+            <button
+              class="button is-small is-rounded is-outlined is-link"
+              @click="participateIn(invitedSharedGroup.sharedGroupId)"
+              :disabled="participatingSharedGroup.value !== undefined"
+            >
+              参加する
+            </button>
           </p>
-          <div class="field is-grouped is-grouped-centered p-2">
-            <p class="control">
-              <button
-                class="button is-small is-rounded is-outlined is-link"
-                formaction="/shared-group/participate"
-                :disabled="participatingSharedGroup.value !== undefined"
-              >
-                参加する
-              </button>
-            </p>
-            <p class="control">
-              <button
-                class="button is-small is-rounded is-outlined is-danger"
-                formaction="/shared-group/reject"
-              >
-                拒否する
-              </button>
-            </p>
-          </div>
-        </form>
+          <p class="control">
+            <button
+              class="button is-small is-rounded is-outlined is-danger"
+              formaction="/shared-group/reject"
+            >
+              拒否する
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -218,7 +210,7 @@ onMounted(async () => {
 
 async function loadSharedGroup() {
   participatingSharedGroup.value = undefined;
-  invitedSharedGroups.value = [];
+  invitedSharedGroups.splice(0, invitedSharedGroups.length);
 
   await HttpRequestClient.submitGetRequest('/api/shared-group')
     .then((data) => {
@@ -226,6 +218,47 @@ async function loadSharedGroup() {
       invitedSharedGroups.push(...data.invitedSharedGroups);
     })
     .catch(() => {
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
+}
+
+function participateIn(sharedGroupId) {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+  form.set('sharedGroupId', sharedGroupId);
+
+  HttpRequestClient.submitPostRequest('/api/shared-group/participate', form)
+    .then(() => {
+      resultMessage.value.activate('INFO', `共有グループに参加しました。`);
+      loadSharedGroup();
+    })
+    .catch((error) => {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          resultMessage.value.activate(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
+
       resultMessage.value.activate(
         'ERROR',
         'エラーが発生しました。',
