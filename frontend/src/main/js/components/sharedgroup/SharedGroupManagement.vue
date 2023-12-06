@@ -155,31 +155,26 @@
                 <strong class="is-size-5 mb-1"> 共有を停止しますか？ </strong>
                 <br />
               </p>
-              <form class="form" method="post" action="/shared-group/unshare">
-                <input name="_csrf" :value="props.csrf" hidden />
-                <input
-                  name="sharedGroupId"
-                  :value="participatingSharedGroup.value.sharedGroupId"
-                  hidden
-                  v-if="participatingSharedGroup.value !== undefined"
-                />
-                <div class="field is-grouped is-grouped-centered p-2">
-                  <p class="control">
-                    <button class="button is-small is-rounded is-link">
-                      停止する
-                    </button>
-                  </p>
-                  <p class="control">
-                    <button
-                      type="button"
-                      class="button is-small is-rounded is-outlined is-danger"
-                      @click="isUnshareConfirmationModalActive = false"
-                    >
-                      キャンセル
-                    </button>
-                  </p>
-                </div>
-              </form>
+              <div class="field is-grouped is-grouped-centered p-2">
+                <p class="control">
+                  <button
+                    type="button"
+                    class="button is-small is-rounded is-link"
+                    @click="unshare()"
+                  >
+                    停止する
+                  </button>
+                </p>
+                <p class="control">
+                  <button
+                    type="button"
+                    class="button is-small is-rounded is-outlined is-danger"
+                    @click="isUnshareConfirmationModalActive = false"
+                  >
+                    キャンセル
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -192,7 +187,10 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import {
+  HttpRequestClient,
+  HttpRequestFailedError,
+} from '@main/js/composables/HttpRequestClient.js';
 import UserSearch from '@main/js/components/sharedgroup/UserSearch.vue';
 import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
@@ -248,8 +246,23 @@ function reject(sharedGroupId) {
     .then(() => {
       resultMessage.value.activate(
         'INFO',
-        `共有グループへの招待を拒否しました`
+        `共有グループへの招待を拒否しました。`
       );
+      loadSharedGroup();
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+}
+
+function unshare() {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+
+  HttpRequestClient.submitPostRequest('/api/shared-group/unshare', form)
+    .then(() => {
+      resultMessage.value.activate('INFO', `共有を停止しました。`);
+      isUnshareConfirmationModalActive.value = false;
       loadSharedGroup();
     })
     .catch((error) => {
