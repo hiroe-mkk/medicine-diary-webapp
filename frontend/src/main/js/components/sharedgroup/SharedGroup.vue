@@ -52,7 +52,7 @@
           class="image is-64x64 is-clickable m-0"
           v-if="props.isParticipating"
           @click="
-            selectedUser = invitee.accountId;
+            selectedInvitee = invitee;
             isInvitationCancellationConfirmationModalActive = true;
           "
         >
@@ -103,44 +103,100 @@
                 </strong>
                 <br />
               </p>
-              <form class="form" method="post" action="/shared-group/cancel">
-                <input name="_csrf" :value="props.csrf" hidden />
-                <div class="field is-grouped is-grouped-centered p-2">
-                  <p class="control">
-                    <button class="button is-small is-rounded is-link">
-                      取り消す
-                    </button>
-                  </p>
-                  <p class="control">
-                    <button
-                      type="button"
-                      class="button is-small is-rounded is-outlined is-danger"
-                      @click="
-                        isInvitationCancellationConfirmationModalActive = false
-                      "
-                    >
-                      キャンセル
-                    </button>
-                  </p>
-                </div>
-              </form>
+              <div class="field is-grouped is-grouped-centered p-2">
+                <p class="control">
+                  <button
+                    type="button"
+                    class="button is-small is-rounded is-link"
+                    @click="invitationCancellation()"
+                  >
+                    取り消す
+                  </button>
+                </p>
+                <p class="control">
+                  <button
+                    type="button"
+                    class="button is-small is-rounded is-outlined is-danger"
+                    @click="
+                      isInvitationCancellationConfirmationModalActive = false
+                    "
+                  >
+                    キャンセル
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+import {
+  HttpRequestClient,
+  HttpRequestFailedError,
+} from '@main/js/composables/HttpRequestClient.js';
+import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   sharedGroup: Object,
   isParticipating: Boolean,
   csrf: String,
 });
+const emits = defineEmits(['update']);
 
 const isInvitationCancellationConfirmationModalActive = ref(false);
-const selectedUser = ref('');
+const selectedInvitee = ref('');
+const resultMessage = ref(null);
+
+function invitationCancellation() {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+  form.set('sharedGroupId', props.sharedGroup.sharedGroupId);
+  form.set('accountId', selectedInvitee.value.accountId);
+
+  HttpRequestClient.submitPostRequest('/api/shared-group/cancel', form)
+    .then(() => {
+      resultMessage.value.activate(
+        'INFO',
+        `共有グループへの招待を取り消しました。`
+      );
+      isInvitationCancellationConfirmationModalActive.value = false;
+      emits('update');
+    })
+    .catch((error) => {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          resultMessage.value.activate(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
+
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
+}
 </script>

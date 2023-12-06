@@ -15,6 +15,7 @@
           <SharedGroup
             :sharedGroup="invitedSharedGroup"
             :isParticipating="false"
+            :csrf="props.csrf"
           ></SharedGroup>
         </div>
         <form class="form mt-2" method="post" action="?">
@@ -109,6 +110,8 @@
       <SharedGroup
         :sharedGroup="participatingSharedGroup.value"
         :isParticipating="true"
+        :csrf="props.csrf"
+        @update="loadSharedGroup()"
       ></SharedGroup>
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">
@@ -210,6 +213,13 @@ const userSearch = ref(null);
 const resultMessage = ref(null);
 
 onMounted(async () => {
+  loadSharedGroup();
+});
+
+async function loadSharedGroup() {
+  participatingSharedGroup.value = undefined;
+  invitedSharedGroups.value = [];
+
   await HttpRequestClient.submitGetRequest('/api/shared-group')
     .then((data) => {
       participatingSharedGroup.value = data.participatingSharedGroup;
@@ -222,7 +232,7 @@ onMounted(async () => {
         '通信状態をご確認のうえ、再度お試しください。'
       );
     });
-});
+}
 
 function activateUserSearchModal() {
   userSearch.value.activateSearchModal();
