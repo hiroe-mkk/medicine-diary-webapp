@@ -1,4 +1,4 @@
-package example.presentation.controller.page.sharedgroup
+package example.presentation.controller.api.sharedgroup
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
@@ -17,12 +17,12 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                              @Autowired private val testAccountInserter: TestAccountInserter,
-                                                              @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                              @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class InvitationToSharedGroupRejectionApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                                 @Autowired private val testAccountInserter: TestAccountInserter,
+                                                                 @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                                 @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/shared-group/reject"
+        private const val PATH = "/api/shared-group/reject"
     }
 
     private lateinit var user1AccountId: AccountId
@@ -34,8 +34,8 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの招待の拒否に成功した場合、共有グループ管理画面にリダイレクトする")
-    fun rejectInvitationToSharedGroupSucceeds_redirectToShredGroupManagementPage() {
+    @DisplayName("共有グループへの招待の拒否に成功した場合、ステータスコード204のレスポンスを返す")
+    fun rejectInvitationToSharedGroupSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
@@ -47,14 +47,13 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
                                           .param("sharedGroupId", sharedGroup.id.value))
 
         //then:
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/shared-group/management"))
+        actions.andExpect(status().isNoContent)
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループが見つからなかった場合、共有グループ管理画面にリダイレクトする")
-    fun sharedGroupNotFound_redirectToShredGroupManagementPage() {
+    @DisplayName("共有グループが見つからなかった場合、ステータスコード204のレスポンスを返す")
+    fun sharedGroupNotFound_returnsResponseWithStatus204() {
         //given:
         val badSharedGroupId = SharedGroupId("NonexistentId")
 
@@ -64,13 +63,12 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
                                           .param("sharedGroupId", badSharedGroupId.value))
 
         //then:
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/shared-group/management"))
+        actions.andExpect(status().isNoContent)
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
-    fun requestedByUnauthenticatedUser_redirectToHomePage() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
+    fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
         val sharedGroupId = SharedGroupId("sharedGroupId")
 
@@ -80,7 +78,6 @@ internal class InvitationToSharedGroupRejectionControllerTest(@Autowired private
                                           .param("sharedGroupId", sharedGroupId.value))
 
         //then:
-        actions.andExpect(status().isFound)
-            .andExpect(redirectedUrl("/"))
+        actions.andExpect(status().isUnauthorized)
     }
 }

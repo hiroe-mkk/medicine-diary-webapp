@@ -25,6 +25,7 @@
         <div class="field is-grouped is-grouped-centered p-2">
           <p class="control">
             <button
+              type="button"
               class="button is-small is-rounded is-outlined is-link"
               @click="participateIn(invitedSharedGroup.sharedGroupId)"
               :disabled="participatingSharedGroup.value !== undefined"
@@ -34,8 +35,9 @@
           </p>
           <p class="control">
             <button
+              type="button"
               class="button is-small is-rounded is-outlined is-danger"
-              formaction="/shared-group/reject"
+              @click="reject(invitedSharedGroup.sharedGroupId)"
             >
               拒否する
             </button>
@@ -218,11 +220,7 @@ async function loadSharedGroup() {
       invitedSharedGroups.push(...data.invitedSharedGroups);
     })
     .catch(() => {
-      resultMessage.value.activate(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
+      handleError(error);
     });
 }
 
@@ -237,34 +235,56 @@ function participateIn(sharedGroupId) {
       loadSharedGroup();
     })
     .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          resultMessage.value.activate(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          resultMessage.value.activate(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
+      handleError(error);
+    });
+}
 
+function reject(sharedGroupId) {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+  form.set('sharedGroupId', sharedGroupId);
+
+  HttpRequestClient.submitPostRequest('/api/shared-group/reject', form)
+    .then(() => {
+      resultMessage.value.activate(
+        'INFO',
+        `共有グループへの招待を拒否しました`
+      );
+      loadSharedGroup();
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+}
+
+function handleError(error) {
+  if (error instanceof HttpRequestFailedError) {
+    if (error.status == 401) {
+      // 認証エラーが発生した場合
+      location.reload();
+      return;
+    } else if (error.status == 500) {
+      resultMessage.value.activate(
+        'ERROR',
+        'システムエラーが発生しました。',
+        'お手数ですが、再度お試しください。'
+      );
+      return;
+    } else if (error.hasMessage()) {
       resultMessage.value.activate(
         'ERROR',
         'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
+        error.getMessage()
       );
-    });
+      return;
+    }
+  }
+
+  resultMessage.value.activate(
+    'ERROR',
+    'エラーが発生しました。',
+    '通信状態をご確認のうえ、再度お試しください。'
+  );
 }
 
 function activateUserSearchModal() {
