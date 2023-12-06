@@ -1,4 +1,7 @@
 package example.application.query.sharedgroup
 
-data class JSONSharedGroups(val participatingSharedGroup: JSONSharedGroup?,
+import com.fasterxml.jackson.annotation.*
+
+data class JSONSharedGroups(@JsonInclude(JsonInclude.Include.NON_NULL)
+                            val participatingSharedGroup: JSONSharedGroup?,
                             val invitedSharedGroups: Set<JSONSharedGroup>)

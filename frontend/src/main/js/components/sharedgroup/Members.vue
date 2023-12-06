@@ -28,11 +28,14 @@
       </p>
     </div>
   </div>
+  
+  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const members = reactive([]);
 const resultMessage = ref(null);
