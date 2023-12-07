@@ -90,7 +90,11 @@
         </span>
       </button>
     </div>
-    <UserSearch ref="userSearch" :csrf="props.csrf"></UserSearch>
+    <UserSearch
+      ref="userSearch"
+      :csrf="props.csrf"
+      @update="loadSharedGroup()"
+    ></UserSearch>
   </div>
 
   <div v-if="participatingSharedGroup.value !== undefined">
@@ -137,6 +141,7 @@
       ref="userSearch"
       :sharedGroupId="participatingSharedGroup.value.sharedGroupId"
       :csrf="props.csrf"
+      @update="loadSharedGroup()"
     >
     </UserSearch>
     <div

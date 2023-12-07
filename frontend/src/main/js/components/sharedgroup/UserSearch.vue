@@ -74,45 +74,74 @@
     </div>
   </div>
 
-  <ConfirmationMessage
-    ref="confirmationMessage"
-    :message="
-      props.sharedGroupId === undefined
-        ? 'このユーザーと共有しますか？'
-        : 'このユーザーを招待しますか？'
-    "
-    :button-label="props.sharedGroupId === undefined ? '共有する' : '招待する'"
-    :path="
-      props.sharedGroupId === undefined
-        ? '/shared-group/share'
-        : '/shared-group/invite'
-    "
-    :csrf="props.csrf"
-  >
-  </ConfirmationMessage>
+  <div class="modal" :class="{ 'is-active': isSelectedModalActive }">
+    <div class="modal-background" @click="isSelectedModalActive = false"></div>
+    <div class="modal-content is-flex is-justify-content-center">
+      <div class="message is-inline-block is-info">
+        <div class="message-body">
+          <div class="content">
+            <p class="has-text-centered mb-2">
+              <strong class="is-size-5 mb-1">
+                {{
+                  props.sharedGroupId === undefined
+                    ? 'このユーザーと共有しますか？'
+                    : 'このユーザーを招待しますか？'
+                }}
+              </strong>
+              <br />
+            </p>
+            <div class="field is-grouped is-grouped-centered p-2">
+              <p class="control">
+                <button
+                  type="button"
+                  class="button is-small is-rounded is-link"
+                  @click="selected()"
+                >
+                  {{
+                    props.sharedGroupId === undefined ? '共有する' : '招待する'
+                  }}
+                </button>
+              </p>
+              <p class="control">
+                <button
+                  type="button"
+                  class="button is-small is-rounded is-outlined is-danger"
+                  @click="isSelectedModalActive = false"
+                >
+                  キャンセル
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose } from 'vue';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { ref, reactive, defineEmits, defineExpose } from 'vue';
+import {
+  HttpRequestClient,
+  HttpRequestFailedError,
+} from '@main/js/composables/HttpRequestClient.js';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
-import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 
 const props = defineProps({
   sharedGroupId: String,
   csrf: String,
 });
+const emits = defineEmits(['update']);
 defineExpose({ activateSearchModal });
 
 const isSearchModalActive = ref(false);
 const keyword = ref('');
 const searchResults = reactive([]);
 const isSearchSucceeds = ref(false);
-
+const isSelectedModalActive = ref(false);
 const resultMessage = ref(null);
-const confirmationMessage = ref(null);
 
 function activateSearchModal() {
   keyword.value = '';
@@ -141,10 +170,55 @@ function search() {
 }
 
 function selected(user) {
-  const params = { accountId: user.accountId };
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
   if (props.sharedGroupId !== undefined) {
-    params.sharedGroupId = props.sharedGroupId;
+    form.set('sharedGroupId', props.sharedGroupId);
   }
-  confirmationMessage.value.activate(params);
+  form.set('accountId', user.accountId);
+
+  const path =
+    props.sharedGroupId === undefined
+      ? '/api/shared-group/share'
+      : '/api/shared-group/invite';
+  const message =
+    props.sharedGroupId === undefined
+      ? '共有リクエストを送信しました。'
+      : '共有グループに招待しました。';
+  HttpRequestClient.submitPostRequest(path, form)
+    .then(() => {
+      resultMessage.value.activate('INFO', message);
+      isSelectedModalActive.value = false;
+      emits('update');
+    })
+    .catch((error) => {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          resultMessage.value.activate(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          resultMessage.value.activate(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
+
+      resultMessage.value.activate(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
 }
 </script>
