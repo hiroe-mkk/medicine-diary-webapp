@@ -102,7 +102,10 @@
     </div>
   </div>
 
-  <div class="content has-text-centered p-2 m-0" v-if="props.isShowAppendButton">
+  <div
+    class="content has-text-centered p-2 m-0"
+    v-if="props.isShowAppendButton"
+  >
     <slot></slot>
   </div>
 
@@ -112,16 +115,14 @@
     :csrf="props.csrf"
     @deleted="medicationRecordDeleted"
   ></MedicationRecord>
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose } from 'vue';
+import { ref, reactive, defineExpose, provide, inject } from 'vue';
 import {
   MedicationRecords,
   MedicationRecordUtils,
 } from '@main/js/composables/model/MedicationRecords.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
 
 const props = defineProps({
@@ -133,15 +134,18 @@ const props = defineProps({
   csrf: String,
 });
 defineExpose({ loadMedicationRecords });
+provide(
+  'activateResultMessageFromChild',
+  activateResultMessageFromChild
+);
+const activateResultMessage = inject('activateResultMessage');
 
 const medicationRecords = reactive(new MedicationRecords());
 const medicationRecord = ref(null);
 
-const resultMessage = ref(null);
-
 function loadMedicationRecords(filter) {
   medicationRecords.load(filter).catch(() => {
-    resultMessage.value.activate(
+    activateResultMessage(
       'ERROR',
       'エラーが発生しました。',
       '通信状態をご確認のうえ、再度お試しください。'
@@ -151,7 +155,7 @@ function loadMedicationRecords(filter) {
 
 function loadMoreMedicationRecords() {
   medicationRecords.loadMore().catch(() => {
-    resultMessage.value.activate(
+    activateResultMessage(
       'ERROR',
       'エラーが発生しました。',
       '通信状態をご確認のうえ、再度お試しください。'
@@ -167,5 +171,9 @@ function activateMedicationRecordModal(medicationRecordId) {
 
 function medicationRecordDeleted(medicationRecordId) {
   medicationRecords.delete(medicationRecordId);
+}
+
+function activateResultMessageFromChild(type, message, details) {
+  activateResultMessage(type, message, details);
 }
 </script>

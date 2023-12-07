@@ -117,23 +117,21 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, defineEmits, defineExpose } from 'vue';
+import { ref, reactive, defineEmits, defineExpose, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   sharedGroupId: String,
   csrf: String,
 });
 const emits = defineEmits(['update']);
+const activateResultMessage = inject('activateResultMessage');
 defineExpose({ activateSearchModal });
 
 const isSearchModalActive = ref(false);
@@ -141,7 +139,6 @@ const keyword = ref('');
 const searchResults = reactive([]);
 const isSearchSucceeds = ref(false);
 const isSelectedModalActive = ref(false);
-const resultMessage = ref(null);
 
 function activateSearchModal() {
   keyword.value = '';
@@ -161,7 +158,7 @@ function search() {
       isSearchSucceeds.value = true;
     })
     .catch(() => {
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'
@@ -187,7 +184,7 @@ function selected(user) {
       : '共有グループに招待しました。';
   HttpRequestClient.submitPostRequest(path, form)
     .then(() => {
-      resultMessage.value.activate('INFO', message);
+      activateResultMessage('INFO', message);
       isSelectedModalActive.value = false;
       emits('update');
     })
@@ -198,14 +195,14 @@ function selected(user) {
           location.reload();
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -214,7 +211,7 @@ function selected(user) {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

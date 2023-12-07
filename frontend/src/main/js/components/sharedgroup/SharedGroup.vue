@@ -131,17 +131,14 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   sharedGroup: Object,
@@ -149,10 +146,10 @@ const props = defineProps({
   csrf: String,
 });
 const emits = defineEmits(['update']);
+const activateResultMessage = inject('activateResultMessage');
 
 const isInvitationCancellationConfirmationModalActive = ref(false);
 const selectedInvitee = ref('');
-const resultMessage = ref(null);
 
 function invitationCancellation() {
   const form = new FormData();
@@ -162,12 +159,12 @@ function invitationCancellation() {
 
   HttpRequestClient.submitPostRequest('/api/shared-group/cancel', form)
     .then(() => {
-      resultMessage.value.activate(
+      isInvitationCancellationConfirmationModalActive.value = false;
+      emits('update');
+      activateResultMessage(
         'INFO',
         `共有グループへの招待を取り消しました。`
       );
-      isInvitationCancellationConfirmationModalActive.value = false;
-      emits('update');
     })
     .catch((error) => {
       if (error instanceof HttpRequestFailedError) {
@@ -176,14 +173,14 @@ function invitationCancellation() {
           location.reload();
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -192,7 +189,7 @@ function invitationCancellation() {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

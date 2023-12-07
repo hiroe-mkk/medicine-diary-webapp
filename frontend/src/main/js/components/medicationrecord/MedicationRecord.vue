@@ -174,18 +174,15 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineEmits } from 'vue';
+import { ref, reactive, defineExpose, defineEmits, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { MedicationRecordUtils } from '@main/js/composables/model/MedicationRecords.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   displayRecorder: Boolean,
@@ -193,11 +190,12 @@ const props = defineProps({
 });
 const emits = defineEmits(['deleted']);
 defineExpose({ activateMedicationRecordModal });
+const activateResultMessageFromChild = inject(
+  'activateResultMessageFromChild'
+);
 
 const medicationRecord = reactive({ value: undefined });
 const isSelectedMedicationRecordModalActive = ref(false);
-
-const resultMessage = ref(null);
 
 function activateMedicationRecordModal(selectedMedicationRecord) {
   medicationRecord.value = selectedMedicationRecord;
@@ -213,7 +211,10 @@ function deleteMedicationRecord(medicationRecordId) {
     form
   )
     .then(() => {
-      resultMessage.value.activate('INFO', `服用記録の削除が完了しました。`);
+      activateResultMessageFromChild(
+        'INFO',
+        `服用記録の削除が完了しました。`
+      );
       isSelectedMedicationRecordModalActive.value = false;
       emits('deleted', medicationRecordId);
     })
@@ -224,14 +225,14 @@ function deleteMedicationRecord(medicationRecordId) {
           location.reload();
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessageFromChild(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessageFromChild(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -240,7 +241,7 @@ function deleteMedicationRecord(medicationRecordId) {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessageFromChild(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

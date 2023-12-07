@@ -1,7 +1,9 @@
 <template>
   <div class="container has-text-centered is-max-desktop p-3">
     <div class="content mb-3">
-      <p class="is-size-4 has-text-weight-bold has-text-grey-dark">服用記録一覧</p>
+      <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
+        服用記録一覧
+      </p>
     </div>
 
     <div class="content is-inline-block m-2" v-if="members.length !== 0">
@@ -73,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, provide } from 'vue';
 import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
@@ -83,6 +85,7 @@ const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   csrf: String,
 });
+provide('activateResultMessage', activateResultMessage);
 
 const self = reactive({ value: undefined });
 const members = reactive([]);
@@ -132,6 +135,10 @@ function toggleUserActive(accountId) {
 
 function isUserEnabled(accountId) {
   return filter.accountId === undefined || filter.accountId === accountId;
+}
+
+function activateResultMessage(type, message, details) {
+  resultMessage.value.activate(type, message, details);
 }
 </script>
 

@@ -126,18 +126,15 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose } from 'vue';
+import { ref, reactive, defineExpose, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 import { ImageTrimmingManager } from '@main/js/composables/model/ImageTrimmingManager.js';
 
 const props = defineProps({
@@ -150,6 +147,7 @@ const props = defineProps({
   isFixedSize: { type: Boolean, default: false },
 });
 defineExpose({ activateMenuModal });
+const activateResultMessage = inject('activateResultMessage');
 
 const image = ref(props.image);
 const isMenuModalActive = ref(false);
@@ -158,7 +156,6 @@ const trimmingContainer = ref(null);
 const imageTrimmingManager = reactive(new ImageTrimmingManager());
 
 const fieldErrors = reactive(new FieldErrors());
-const resultMessage = ref(null);
 
 function activateMenuModal() {
   if (image.value === undefined) {
@@ -193,7 +190,7 @@ async function submitForm() {
       image.value = URL.createObjectURL(result);
       isTrimmingModalActive.value = false;
       isMenuModalActive.value = false;
-      resultMessage.value.activate(
+      activateResultMessage(
         'INFO',
         `${props.imageName}の変更が完了しました。`
       );
@@ -211,14 +208,14 @@ async function submitForm() {
           location.reload();
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -227,7 +224,7 @@ async function submitForm() {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'
@@ -241,7 +238,7 @@ function deleteImage() {
 
   HttpRequestClient.submitPostRequest(`${props.executeRootPath}/delete`, form)
     .then(() => {
-      resultMessage.value.activate('INFO', `画像の削除が完了しました。`);
+      activateResultMessage('INFO', `画像の削除が完了しました。`);
       isMenuModalActive.value = false;
       image.value = undefined;
     })
@@ -252,14 +249,14 @@ function deleteImage() {
           location.reload();
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -268,7 +265,7 @@ function deleteImage() {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref ,provide} from 'vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -58,6 +58,7 @@ const props = defineProps({
   isSelfCalendar: Boolean,
   csrf: String,
 });
+provide('activateResultMessage', activateResultMessage);
 
 const filteredMedicationRecords = ref(null);
 
@@ -138,6 +139,10 @@ function toDateJpnStr(date) {
 
   const [year, month, day] = date.split('-');
   return `${year}年${month}月${day}日`;
+}
+
+function activateResultMessage(type, message, details) {
+  resultMessage.value.activate(type, message, details);
 }
 </script>
 

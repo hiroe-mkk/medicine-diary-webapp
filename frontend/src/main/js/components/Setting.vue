@@ -171,7 +171,7 @@
   <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, provide } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
@@ -187,6 +187,7 @@ const props = defineProps({
   profileImage: String,
   csrf: String,
 });
+provide('activateResultMessage', activateResultMessage);
 
 const username = ref(props.username);
 const isUsernameChangeModalActive = ref(false);
@@ -270,5 +271,9 @@ function activateProfileImageMenuModal() {
 
 function activateAccountDeletionConfirmationModal() {
   accountDeletionConfirmationModal.value.activate();
+}
+
+function activateResultMessage(type, message, details) {
+  resultMessage.value.activate(type, message, details);
 }
 </script>

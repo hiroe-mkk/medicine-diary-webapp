@@ -191,7 +191,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, provide } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
@@ -201,6 +201,7 @@ import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({ csrf: String });
+provide('activateResultMessage', activateResultMessage);
 
 const participatingSharedGroup = reactive({ value: undefined });
 const invitedSharedGroups = reactive([]);
@@ -307,5 +308,9 @@ function handleError(error) {
 
 function activateUserSearchModal() {
   userSearch.value.activateSearchModal();
+}
+
+function activateResultMessage(type, message, details) {
+  resultMessage.value.activate(type, message, details);
 }
 </script>
