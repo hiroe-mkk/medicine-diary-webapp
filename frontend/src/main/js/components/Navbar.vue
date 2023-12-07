@@ -36,6 +36,12 @@
                 <strong class="px-2">お薬一覧</strong>
               </span>
             </a>
+            <a class="navbar-item" href="/medication-records">
+              <span class="has-text-link-dark pl-3 pr-0">
+                <i class="fa-solid fa-rectangle-list"></i>
+                <strong class="px-2">服用記録一覧</strong>
+              </span>
+            </a>
             <a class="navbar-item" href="/calendar">
               <span class="has-text-link-dark pl-3 pr-0">
                 <i class="fa-solid fa-calendar-days"></i>
@@ -73,6 +79,18 @@
           <a class="has-text-link-dark is-hidden-desktop" href="/medicines">
             <i class="fa-solid fa-capsules"></i>
             <strong class="px-2">お薬一覧</strong>
+          </a>
+        </div>
+        <div
+          class="navbar-item is-hidden-desktop py-1 px-5"
+          v-if="props.isAuthenticated"
+        >
+          <a
+            class="has-text-link-dark is-hidden-desktop"
+            href="/medication-records"
+          >
+            <i class="fa-solid fa-rectangle-list"></i>
+            <strong class="px-2">服用記録一覧</strong>
           </a>
         </div>
         <div
