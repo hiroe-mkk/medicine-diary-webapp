@@ -28,7 +28,7 @@
       </p>
     </div>
   </div>
-  
+
   <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
@@ -40,8 +40,8 @@ import ResultMessage from '@main/js/components/ResultMessage.vue';
 const members = reactive([]);
 const resultMessage = ref(null);
 
-onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?members')
+onMounted(() => {
+  HttpRequestClient.submitGetRequest('/api/users?members')
     .then((data) => {
       members.push(...data.users);
     })

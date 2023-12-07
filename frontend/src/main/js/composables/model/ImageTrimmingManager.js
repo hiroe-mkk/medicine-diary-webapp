@@ -22,16 +22,19 @@ export class ImageTrimmingManager {
     this._croppie = new Croppie(container, croppieOption);
   }
 
-  result() {
+  async result() {
     if (!this.isTrimming) return;
 
-    return this._croppie
-      .result({
+    try {
+      const blob = await this._croppie.result({
         type: 'blob',
         size: { width: 400, height: 400 },
         format: 'jpeg',
-      })
-      .then((blob) => blob);
+      });
+      return blob;
+    } catch (error) {
+      throw error;
+    }
   }
 
   destroy() {

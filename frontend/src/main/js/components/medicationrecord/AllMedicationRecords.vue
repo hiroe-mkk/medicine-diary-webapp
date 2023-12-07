@@ -94,8 +94,8 @@ const filteredMedicationRecords = ref(null);
 
 const resultMessage = ref(null);
 
-onMounted(async () => {
-  await HttpRequestClient.submitGetRequest('/api/users?self')
+onMounted(() => {
+  HttpRequestClient.submitGetRequest('/api/users?self')
     .then((data) => {
       self.value = data;
     })
@@ -108,7 +108,7 @@ onMounted(async () => {
     });
 
   if (props.isParticipatingInSharedGroup) {
-    await HttpRequestClient.submitGetRequest('/api/users?members')
+    HttpRequestClient.submitGetRequest('/api/users?members')
       .then((data) => {
         members.push(...data.users);
       })

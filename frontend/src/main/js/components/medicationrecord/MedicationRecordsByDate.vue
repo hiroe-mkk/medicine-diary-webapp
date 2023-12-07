@@ -48,7 +48,7 @@ const filter = reactive(new Filter());
 const filteredMedicationRecords = ref(null);
 const resultMessage = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   filter.sizePerPage = 5;
   filteredMedicationRecords.value.loadMedicationRecords(filter);
 });

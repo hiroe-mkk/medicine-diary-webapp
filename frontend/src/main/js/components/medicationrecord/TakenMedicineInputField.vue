@@ -101,11 +101,11 @@ const quantityErrors = reactive([]);
 
 const resultMessage = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   medicineIdErrors.push(...ArrayConverter.fromString(props.medicineIdErrors));
   quantityErrors.push(...ArrayConverter.fromString(props.quantityErrors));
 
-  await loadMedicines();
+  loadMedicines();
   if (props.medicineId !== undefined) {
     takenMedicine.medicine = medicines.find(
       (medicine) => medicine.medicineId === props.medicineId

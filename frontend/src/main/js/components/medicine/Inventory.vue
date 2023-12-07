@@ -263,7 +263,7 @@ const isInventoryAdjustmentModalActive = ref(false);
 const fieldErrors = reactive(new FieldErrors());
 const resultMessage = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   if (props.remainingQuantity !== undefined) {
     inventory.value = {
       remainingQuantity: props.remainingQuantity,

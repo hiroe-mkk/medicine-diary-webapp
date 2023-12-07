@@ -214,11 +214,11 @@ onMounted(async () => {
   loadSharedGroup();
 });
 
-async function loadSharedGroup() {
+function loadSharedGroup() {
   participatingSharedGroup.value = undefined;
   invitedSharedGroups.splice(0, invitedSharedGroups.length);
 
-  await HttpRequestClient.submitGetRequest('/api/shared-group')
+  HttpRequestClient.submitGetRequest('/api/shared-group')
     .then((data) => {
       participatingSharedGroup.value = data.participatingSharedGroup;
       invitedSharedGroups.push(...data.invitedSharedGroups);

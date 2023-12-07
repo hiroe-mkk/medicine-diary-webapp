@@ -37,7 +37,7 @@ const filteredMedicationRecords = ref(null);
 
 const resultMessage = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   filter.medicineId = props.medicineId;
   filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
