@@ -82,6 +82,10 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "YAHOO_CLIENT_SECRET"
             "valueFrom" = "/${var.prefix}/spring/security/oauth2/yahoo_client_secret"
+          },
+          {
+            "name"      = "USER_ADMIN_PASSWORD"
+            "valueFrom" = "/${var.prefix}/user/admin_password"
           }
         ]
 

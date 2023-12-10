@@ -54,7 +54,7 @@ resource "aws_lb_target_group" "this" {
   vpc_id               = var.vpc_this_id
 
   health_check {
-    path                = "/"
+    path                = "/actuator/health"
     port                = "traffic-port"
     protocol            = "HTTP"
     matcher             = 200

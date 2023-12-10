@@ -1,48 +1,65 @@
 spring:
   datasource:
-    driverClassName: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://host.docker.internal:13306/medicine_diary'
-    username: 'root'
-    password: 'root'
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://host.docker.internal:13306/medicine_diary
+    username: root
+    password: root
   security:
     oauth2:
       client:
         registration:
           github:
-            clientId: '${GITHUB_CLIENT_ID}'
-            clientSecret: '${GITHUB_CLIENT_SECRET}'
+            clientId: ${GITHUB_CLIENT_ID}
+            clientSecret: ${GITHUB_CLIENT_SECRET}
           line:
-            clientId: '${LINE_CLIENT_ID}'
-            clientSecret: '${LINE_CLIENT_SECRET}'
-            provider: 'line'
-            scope: 'profile'
-            authorizationGrantType: 'authorization_code'
-            redirectUri: 'http://localhost:8080/login/oauth2/code/line'
+            clientId: ${LINE_CLIENT_ID}
+            clientSecret: ${LINE_CLIENT_SECRET}
+            provider: line
+            scope: profile
+            authorizationGrantType: authorization_code
+            redirectUri: http://localhost:8080/login/oauth2/code/line
           yahoo:
-            clientId: '${YAHOO_CLIENT_ID}'
-            clientSecret: '${YAHOO_CLIENT_SECRET}'
-            provider: 'yahoo'
-            scope: 'openid'
-            authorizationGrantType: 'authorization_code'
-            redirectUri: 'http://localhost:8080/login/oauth2/code/yahoo'
+            clientId: ${YAHOO_CLIENT_ID}
+            clientSecret: ${YAHOO_CLIENT_SECRET}
+            provider: yahoo
+            scope: openid
+            authorizationGrantType: authorization_code
+            redirectUri: http://localhost:8080/login/oauth2/code/yahoo
         provider:
           line:
-            authorizationUri: 'https://access.line.me/oauth2/v2.1/authorize'
-            tokenUri: 'https://api.line.me/oauth2/v2.1/token'
-            userInfoUri: 'https://api.line.me/v2/profile'
-            userNameAttribute: 'userId'
+            authorizationUri: https://access.line.me/oauth2/v2.1/authorize
+            tokenUri: https://api.line.me/oauth2/v2.1/token
+            userInfoUri: https://api.line.me/v2/profile
+            userNameAttribute: userId
           yahoo:
-            authorizationUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/authorization'
-            tokenUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/token'
-            jwkSetUri: 'https://auth.login.yahoo.co.jp/yconnect/v2/jwks'
+            authorizationUri: https://auth.login.yahoo.co.jp/yconnect/v2/authorization
+            tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
+            jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
+
+# Actuatorエンドポイントへのアクセス制御
+management:
+  endpoint:
+    env:
+      show-values: always
+    health:
+      show-details: always
+  endpoints:
+    web:
+      basePath: /actuator
+      exposure:
+        include: '*'
 
 minio:
-  user: 'root'
-  password: 'root-password'
-  endpoint: 'http://host.docker.internal:19000'
-  bucketName: 'medicine-diary'
-
+  user: root
+  password: root-password
+  endpoint: http://host.docker.internal:19000
+  bucketName: medicine-diary
 
 endpoint:
   image:
-    illustration: 'http://host.docker.internal:19000/medicine-diary/illustrations'
+    illustration: http://host.docker.internal:19000/medicine-diary/illustrations
+
+user:
+  admin:
+    username: admin
+    password: password

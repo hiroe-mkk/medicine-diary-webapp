@@ -16,7 +16,7 @@ class AuthenticationEntryPointImpl : AuthenticationEntryPoint {
                           response: HttpServletResponse,
                           authException: AuthenticationException?) {
         // TODO: 存在しないエンドポイントに対するリクエストの場合は、NotFoundエラー画面にリダイレクトするように修正する
-        if (PathMatcher.isApiCall(request.requestURI)) {
+        if (PathMatcher.isApiCall(request.requestURI) || PathMatcher.isActuatorCall(request.requestURI)) {
             response.status = HttpServletResponse.SC_UNAUTHORIZED
         } else {
             val redirectResolver = RedirectResolver(request, response)
