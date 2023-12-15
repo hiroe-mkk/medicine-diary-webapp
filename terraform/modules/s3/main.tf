@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "this" {
   bucket = "${var.prefix}"
 
-  force_destroy = false // TODO: trueに変更する
+  force_destroy = false
 
   tags = {
     Name = "${var.prefix}-s3-bucket"

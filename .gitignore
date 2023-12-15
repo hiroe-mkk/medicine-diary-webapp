@@ -3,6 +3,8 @@ docs/todo.txt
 
 *.env
 **/.terraform/*
+*.tfstate
+*.tfstate.*
 *.tfvars
 frontend/node_modules/
 src/main/resources/static/dist
