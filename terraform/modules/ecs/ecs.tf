@@ -40,6 +40,10 @@ resource "aws_ecs_task_definition" "this" {
             "valueFrom" = "/${var.prefix}/aws/s3_endpoint"
           },
           {
+            "name"      = "WEB_ENDPOINT"
+            "valueFrom" = "/${var.prefix}/aws/web_endpoint"
+          },
+          {
             "name"      = "MYSQL_DATABASE_NAME"
             "valueFrom" = "/${var.prefix}/spring/datasource/mysql_database_name"
           },

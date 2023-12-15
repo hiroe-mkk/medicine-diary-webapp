@@ -17,14 +17,14 @@ spring:
             provider: line
             scope: profile
             authorizationGrantType: authorization_code
-            redirectUri: https://okusuri-nikki-kk.link/login/oauth2/code/line
+            redirectUri: ${WEB_ENDPOINT}/login/oauth2/code/line
           yahoo:
             clientId: ${YAHOO_CLIENT_ID}
             clientSecret: ${YAHOO_CLIENT_SECRET}
             provider: yahoo
             scope: openid
             authorizationGrantType: authorization_code
-            redirectUri: https://okusuri-nikki-kk.link/login/oauth2/code/yahoo
+            redirectUri: ${WEB_ENDPOINT}/login/oauth2/code/yahoo
         provider:
           line:
             authorizationUri: https://access.line.me/oauth2/v2.1/authorize
