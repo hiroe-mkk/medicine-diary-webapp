@@ -51,6 +51,13 @@ management:
       exposure:
         include: health, info
         exclude: shutdown, env, trace, configprops, heapdump
+  metrics:
+    web:
+      server:
+        requests-metric-name: http.server.requests
+    distribution:
+      percentiles:
+        "http.server.requests": 0.5, 0.99 # 50％ile と 99%ile を取得する
 
 aws:
   s3:

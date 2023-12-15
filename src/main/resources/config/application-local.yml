@@ -48,6 +48,13 @@ management:
       basePath: /actuator
       exposure:
         include: '*'
+  metrics:
+    web:
+      server:
+        requests-metric-name: http.server.requests
+    distribution:
+      percentiles:
+        "http.server.requests": 0.5, 0.99
 
 minio:
   user: root
