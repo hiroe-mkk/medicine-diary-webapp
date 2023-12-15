@@ -26,7 +26,8 @@
         FROM
             medication_records
         WHERE
-            taken_medicine = #{medicineId} AND recorder = #{accountId};
+            taken_medicine = #{medicineId}
+            AND recorder = #{accountId};
     </select>
 
     <insert id="upsert">

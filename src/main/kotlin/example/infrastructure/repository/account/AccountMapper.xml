@@ -17,7 +17,8 @@
         FROM
             oauth2_credentials
         WHERE
-            id_p = #{idP} AND subject = #{subject};
+            id_p = #{idP}
+            AND subject = #{subject};
     </select>
 
     <select id="findOneOauth2CredentialByAccountId" resultMap="Oauth2CredentialResultMap">

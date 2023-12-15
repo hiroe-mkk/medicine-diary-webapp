@@ -15,15 +15,14 @@
             (SELECT * FROM members LEFT OUTER JOIN profiles ON members.member = profiles.account_id) AS members_with_profiles
             LEFT OUTER JOIN
                 (SELECT * FROM invitees LEFT OUTER JOIN profiles ON invitees.invitee = profiles.account_id) AS invitees_with_profiles
-                ON members_with_profiles.shared_group_id = invitees_with_profiles.shared_group_id
+                 ON members_with_profiles.shared_group_id = invitees_with_profiles.shared_group_id
         WHERE
             members_with_profiles.shared_group_id IN(
              SELECT shared_group_id
              FROM members
              WHERE members.member = #{accountId}
             )
-            OR
-            invitees_with_profiles.shared_group_id IN(
+            OR invitees_with_profiles.shared_group_id IN(
              SELECT DISTINCT shared_group_id
              FROM invitees
              WHERE invitees.invitee = #{accountId}

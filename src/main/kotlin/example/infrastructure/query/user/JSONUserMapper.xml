@@ -22,7 +22,9 @@
         FROM
             profiles
         WHERE
-            account_id != #{accountId} AND username != '' AND username LIKE CONCAT('%', #{keyword}, '%')
+            account_id != #{accountId}
+            AND username != ''
+            AND username LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY
             username_size ASC
         LIMIT 100
