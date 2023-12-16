@@ -21,12 +21,13 @@ module "iam" {
 module "ecs" {
   source = "../../modules/ecs"
 
-  prefix                          = local.prefix
-  security_group_webapp_id        = module.security_group.security_group_webapp_id
-  subnet_public_ids               = module.network.subnet_public_ids
-  lb_target_group_this_arn        = module.routing.lb_target_group_this_arn
-  iam_role_ecs_task_arn           = module.iam.iam_role_ecs_task_arn
-  iam_role_ecs_task_execution_arn = module.iam.iam_role_ecs_task_execution_arn
+  prefix                               = local.prefix
+  security_group_webapp_id             = module.security_group.security_group_webapp_id
+  subnet_public_ids                    = module.network.subnet_public_ids
+  lb_target_group_this_arn             = module.routing.lb_target_group_this_arn
+  iam_role_ecs_task_arn                = module.iam.iam_role_ecs_task_arn
+  iam_role_ecs_task_execution_arn      = module.iam.iam_role_ecs_task_execution_arn
+  cloudwatch_log_group_springboot_name = module.cloudwatch.cloudwatch_log_group_springboot_name
 }
 
 module "cloudwatch" {

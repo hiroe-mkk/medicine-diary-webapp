@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "this" {
         logConfiguration = {
           logDriver = "awslogs"
           options = {
-            awslogs-group         = "/ecs/logs/${var.prefix}/springboot"
+            awslogs-group         = var.cloudwatch_log_group_springboot_name
             awslogs-region        = data.aws_region.current.id
             awslogs-stream-prefix = "ecs"
           }
