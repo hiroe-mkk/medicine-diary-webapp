@@ -7,7 +7,7 @@ resource "aws_cloudfront_distribution" "s3_bucket" {
 
   enabled = true
 
-  aliases = ["image.${data.aws_route53_zone.this.name}"]
+  aliases = [var.image_domain]
 
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.cloudfront.arn

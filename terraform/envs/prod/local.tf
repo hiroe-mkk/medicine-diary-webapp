@@ -7,5 +7,6 @@ locals {
   prefix                 = "${local.project}-${local.env}"
   prefix_with_underscore = "${local.project_with_underscore}_${local.env}"
 
-  root_domain = "okusuri-nikki-kk.link"
+  root_domain  = "okusuri-nikki-kk.link"
+  image_domain = "image.${local.root_domain}"
 }

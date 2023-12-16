@@ -45,6 +45,7 @@ module "routing" {
 
   prefix                                     = local.prefix
   root_domain                                = local.root_domain
+  image_domain                               = local.image_domain
   security_group_alb_id                      = module.security_group.security_group_alb_id
   vpc_this_id                                = module.network.vpc_this_id
   subnet_public_ids                          = module.network.subnet_public_ids

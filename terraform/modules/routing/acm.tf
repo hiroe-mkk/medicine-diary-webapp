@@ -17,7 +17,7 @@ resource "aws_acm_certificate_validation" "root" {
 
 resource "aws_acm_certificate" "cloudfront" {
   provider          = aws.virginia
-  domain_name       = "image.${data.aws_route53_zone.this.name}"
+  domain_name       = var.image_domain
   validation_method = "DNS"
 
   tags = {

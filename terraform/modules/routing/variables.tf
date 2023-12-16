@@ -6,6 +6,10 @@ variable "root_domain" {
   type = string
 }
 
+variable "image_domain" {
+  type = string
+}
+
 variable "security_group_alb_id" {
   type = string
 }

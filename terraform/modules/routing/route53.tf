@@ -46,7 +46,7 @@ resource "aws_route53_record" "certificate_validation_cloudfront" {
 }
 
 resource "aws_route53_record" "s3_cname" {
-  name    = "image.${data.aws_route53_zone.this.name}"
+  name    = var.image_domain
   type    = "CNAME"
   zone_id = data.aws_route53_zone.this.zone_id
   ttl     = 60
