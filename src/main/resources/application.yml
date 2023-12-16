@@ -11,5 +11,8 @@ spring:
       mode: always
       encoding: utf-8
 
+logging:
+  config: classpath:logback/logback-spring.xml
+
 mybatis:
   typeAliasesPackage: example.domain # XML の中でクラスを指定する際、完全修飾名の記述を省略できるようにする

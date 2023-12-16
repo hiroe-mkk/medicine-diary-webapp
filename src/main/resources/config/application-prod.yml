@@ -59,6 +59,11 @@ management:
       percentiles:
         "http.server.requests": 0.5, 0.99 # 50％ile と 99%ile を取得する
 
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+
 aws:
   s3:
     endpoint: ${S3_ENDPOINT}
