@@ -4,6 +4,7 @@ import org.springframework.boot.gradle.tasks.run.*
 plugins {
     id("org.springframework.boot") version "3.1.3"
     id("io.spring.dependency-management") version "1.1.3"
+    id("org.flywaydb.flyway") version "9.21.0"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
 }
@@ -49,6 +50,8 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
     testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2")
     implementation("io.minio:minio:8.5.4")
 
