@@ -61,6 +61,14 @@
                   <p class="help is-danger" v-for="error in quantityErrors">
                     {{ error }}
                   </p>
+                  <span
+                    class="icon is-small is-right has-text-grey has-text-weight-bold"
+                    v-if="takenMedicine.medicine !== undefined"
+                  >
+                    {{
+                      takenMedicine.medicine.dosageAndAdministration.doseUnit
+                    }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -86,7 +94,10 @@ const props = defineProps({
   quantityErrors: { type: String, default: '[]' },
 });
 
-const takenMedicine = reactive({ medicine: undefined, quantity: 0.0 });
+const takenMedicine = reactive({
+  medicine: undefined,
+  quantity: 0.0,
+});
 const medicines = reactive([]);
 const medicineIdErrors = reactive([]);
 const quantityErrors = reactive([]);

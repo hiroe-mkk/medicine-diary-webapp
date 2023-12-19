@@ -74,55 +74,6 @@
                 </div>
               </div>
             </div>
-            <div class="field is-horizontal my-3">
-              <div class="field-label is-flex is-align-items-center">
-                <label class="label has-text-grey"></label>
-              </div>
-              <div class="field-body">
-                <div class="field my-3">
-                  <div class="field-body">
-                    <div class="field">
-                      <label class="label has-text-grey">
-                        症状が現れた時間
-                      </label>
-                      <div class="control mb-1">
-                        <input
-                          class="input is-info is-rounded"
-                          type="time"
-                          name="symptomOnsetAt"
-                          th:value="*{symptomOnsetAt}"
-                          th:errorclass="is-danger"
-                        />
-                        <p
-                          class="help is-danger"
-                          th:if="${#fields.hasErrors('symptomOnsetAt')}"
-                          th:errors="*{symptomOnsetAt}"
-                        ></p>
-                      </div>
-                    </div>
-                    <div class="field">
-                      <label class="label has-text-grey">
-                        効果が現れた時間
-                      </label>
-                      <div class="control mb-1">
-                        <input
-                          class="input is-info is-rounded"
-                          type="time"
-                          name="onsetEffectAt"
-                          th:value="*{onsetEffectAt}"
-                          th:errorclass="is-danger"
-                        />
-                        <p
-                          class="help is-danger"
-                          th:if="${#fields.hasErrors('onsetEffectAt')}"
-                          th:errors="*{onsetEffectAt}"
-                        ></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <div class="field is-horizontal my-3">
               <div class="field-label is-flex is-align-items-center">
@@ -222,6 +173,55 @@
                           </div>
                         </div>
                       </div>
+                      <div class="field is-horizontal my-3">
+                        <div class="field-label is-flex is-align-items-center">
+                          <label class="label has-text-grey"></label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field my-3">
+                            <div class="field-body">
+                              <div class="field">
+                                <label class="label has-text-grey">
+                                  症状が現れた時間
+                                </label>
+                                <div class="control mb-1">
+                                  <input
+                                    class="input is-info is-rounded"
+                                    type="time"
+                                    name="symptomOnsetAt"
+                                    th:value="*{symptomOnsetAt}"
+                                    th:errorclass="is-danger"
+                                  />
+                                  <p
+                                    class="help is-danger"
+                                    th:if="${#fields.hasErrors('symptomOnsetAt')}"
+                                    th:errors="*{symptomOnsetAt}"
+                                  ></p>
+                                </div>
+                              </div>
+                              <div class="field">
+                                <label class="label has-text-grey">
+                                  効果が現れた時間
+                                </label>
+                                <div class="control mb-1">
+                                  <input
+                                    class="input is-info is-rounded"
+                                    type="time"
+                                    name="onsetEffectAt"
+                                    th:value="*{onsetEffectAt}"
+                                    th:errorclass="is-danger"
+                                  />
+                                  <p
+                                    class="help is-danger"
+                                    th:if="${#fields.hasErrors('onsetEffectAt')}"
+                                    th:errors="*{onsetEffectAt}"
+                                  ></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -241,7 +241,9 @@
                       name="note"
                       placeholder="500文字以内で入力してください。"
                       th:errorclass="is-danger"
-                    >[[*{note}]]</textarea>
+                    >
+[[*{note}]]</textarea
+                    >
                     <p
                       class="help is-danger"
                       th:if="${#fields.hasErrors('note')}"
