@@ -42,7 +42,9 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                                               command.validFollowUp,
                                               command.validatedNote,
                                               command.validatedTakenMedicineOn,
-                                              command.validatedTakenMedicineAt)
+                                              command.validatedTakenMedicineAt,
+                                              command.validatedSymptomOnsetAt,
+                                              command.validatedOnsetEffectAt)
         medicineRepository.save(medicine)
         medicationRecordRepository.save(medicationRecord)
         return medicationRecord.id
@@ -71,7 +73,9 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                                           command.validFollowUp,
                                           command.validatedNote,
                                           command.validatedTakenMedicineOn,
-                                          command.validatedTakenMedicineAt)
+                                          command.validatedTakenMedicineAt,
+                                          command.validatedSymptomOnsetAt,
+                                          command.validatedOnsetEffectAt)
         medicationRecordRepository.save(medicationRecord)
     }
 

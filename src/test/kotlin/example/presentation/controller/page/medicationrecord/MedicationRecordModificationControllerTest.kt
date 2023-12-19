@@ -84,6 +84,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         private val note: String = "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"
         private val takenMedicineOn: String = "2020-01-02"
         private val takenMedicineAt: String = "10:00"
+        private val onsetEffectAt: String = "10:30"
 
         @Test
         @WithMockAuthenticatedAccount
@@ -105,7 +106,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("onsetEffectAt", onsetEffectAt))
 
             //then:
             actions.andExpect(status().isFound)
@@ -130,7 +132,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("onsetEffectAt", onsetEffectAt))
 
             //then:
             actions.andExpect(status().isOk)
@@ -156,7 +159,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("onsetEffectAt", onsetEffectAt))
 
             //then:
             actions.andExpect(status().isNotFound)
@@ -181,7 +185,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("onsetEffectAt", onsetEffectAt))
 
             //then:
             actions.andExpect(status().isFound)
@@ -204,7 +209,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("onsetEffectAt", onsetEffectAt))
 
             //then:
             actions.andExpect(status().isFound)

@@ -79,6 +79,12 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
                                     medicationRecord.note.value,
                                     DateTimeFormatter.ofPattern("yyyy/MM/dd").format(medicationRecord.takenMedicineOn),
                                     DateTimeFormatter.ofPattern("HH:mm").format(medicationRecord.takenMedicineAt),
+                                    medicationRecord.symptomOnsetAt?.let {
+                                        DateTimeFormatter.ofPattern("HH:mm").format(it)
+                                    },
+                                    medicationRecord.onsetEffectAt?.let {
+                                        DateTimeFormatter.ofPattern("HH:mm").format(it)
+                                    },
                                     JSONUser(profile.accountId.value,
                                              profile.username.value,
                                              profile.profileImageURL?.toURL()),

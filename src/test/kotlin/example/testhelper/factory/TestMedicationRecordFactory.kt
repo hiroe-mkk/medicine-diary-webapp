@@ -12,7 +12,9 @@ object TestMedicationRecordFactory {
                                        afterMedication: ConditionLevel? = null,
                                        note: String = "",
                                        takenMedicineOn: LocalDate = LocalDate.of(2020, 1, 1),
-                                       takenMedicineAt: LocalTime = LocalTime.of(7, 0))
+                                       takenMedicineAt: LocalTime = LocalTime.of(7, 0),
+                                       symptomOnsetAt: LocalTime? = LocalTime.of(6, 30),
+                                       onsetEffectAt: LocalTime? = null)
             : MedicationRecordEditCommand {
         return MedicationRecordEditCommand(takenMedicine,
                                            quantity,
@@ -21,7 +23,9 @@ object TestMedicationRecordFactory {
                                            afterMedication,
                                            note,
                                            takenMedicineOn,
-                                           takenMedicineAt)
+                                           takenMedicineAt,
+                                           symptomOnsetAt,
+                                           onsetEffectAt)
     }
 
     fun createCompletedModificationCommand(takenMedicine: String = "testMedicineId",
@@ -31,14 +35,19 @@ object TestMedicationRecordFactory {
                                            afterMedication: ConditionLevel? = ConditionLevel.GOOD,
                                            note: String = "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。",
                                            takenMedicineOn: LocalDate = LocalDate.of(2020, 1, 2),
-                                           takenMedicineAt: LocalTime = LocalTime.of(10, 0))
+                                           takenMedicineAt: LocalTime = LocalTime.of(10, 0),
+                                           symptomOnsetAt: LocalTime? = null,
+                                           onsetEffectAt: LocalTime? = LocalTime.of(10, 30))
             : MedicationRecordEditCommand {
         return MedicationRecordEditCommand(takenMedicine,
                                            quantity,
                                            symptom,
                                            beforeMedication,
                                            afterMedication,
-                                           note, takenMedicineOn,
-                                           takenMedicineAt)
+                                           note,
+                                           takenMedicineOn,
+                                           takenMedicineAt,
+                                           symptomOnsetAt,
+                                           onsetEffectAt)
     }
 }

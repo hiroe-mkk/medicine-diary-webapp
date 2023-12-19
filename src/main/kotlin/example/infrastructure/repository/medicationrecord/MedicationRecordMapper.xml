@@ -41,7 +41,9 @@
             after_medication,
             note,
             taken_medicine_on,
-            taken_medicine_at
+            taken_medicine_at,
+            symptom_onset_at,
+            onset_effect_at
         )VALUES(
             #{medicationRecordId},
             #{recorder},
@@ -52,7 +54,9 @@
             #{afterMedication, jdbcType=VARCHAR},
             #{note},
             #{takenMedicineOn},
-            #{takenMedicineAt}
+            #{takenMedicineAt},
+            #{symptomOnsetAt, jdbcType=VARCHAR},
+            #{onsetEffectAt, jdbcType=VARCHAR}
         )ON DUPLICATE KEY UPDATE
             taken_medicine = VALUES(taken_medicine),
             quantity = VALUES(quantity),
@@ -61,7 +65,9 @@
             after_medication = VALUES(after_medication),
             note = VALUES(note),
             taken_medicine_on = VALUES(taken_medicine_on),
-            taken_medicine_at = VALUES(taken_medicine_at);
+            taken_medicine_at = VALUES(taken_medicine_at),
+            symptom_onset_at = VALUES(symptom_onset_at),
+            onset_effect_at = VALUES(onset_effect_at);
     </insert>
 
     <insert id="upsertAll">
@@ -75,7 +81,9 @@
             after_medication,
             note,
             taken_medicine_on,
-            taken_medicine_at
+            taken_medicine_at,
+            symptom_onset_at,
+            onset_effect_at
         )VALUES
             <foreach collection="medicationRecords" item="medicationRecord" separator=",">
                 (#{medicationRecord.medicationRecordId},
@@ -87,7 +95,9 @@
                  #{medicationRecord.afterMedication, jdbcType=VARCHAR},
                  #{medicationRecord.note},
                  #{medicationRecord.takenMedicineOn},
-                 #{medicationRecord.takenMedicineAt})
+                 #{medicationRecord.takenMedicineAt},
+                 #{medicationRecord.symptomOnsetAt, jdbcType=VARCHAR},
+                 #{medicationRecord.onsetEffectAt, jdbcType=VARCHAR})
             </foreach>
         ON DUPLICATE KEY UPDATE
             taken_medicine = VALUES(taken_medicine),
@@ -97,7 +107,9 @@
             after_medication = VALUES(after_medication),
             note = VALUES(note),
             taken_medicine_on = VALUES(taken_medicine_on),
-            taken_medicine_at = VALUES(taken_medicine_at);
+            taken_medicine_at = VALUES(taken_medicine_at),
+            symptom_onset_at = VALUES(symptom_onset_at),
+            onset_effect_at = VALUES(onset_effect_at);
     </insert>
 
     <delete id="deleteOneByMedicationRecordId">
@@ -117,16 +129,18 @@
 
 
     <sql id="AllColumns">
-        medication_record_id AS medication_record_id,
-        recorder AS recorder,
-        taken_medicine AS taken_medicine,
-        quantity AS quantity,
-        symptom AS symptom,
-        before_medication AS before_medication,
-        after_medication AS after_medication,
-        note AS note,
-        taken_medicine_on AS taken_medicine_on,
-        taken_medicine_at AS taken_medicine_at
+        medication_record_id,
+        recorder,
+        taken_medicine,
+        quantity,
+        symptom,
+        before_medication,
+        after_medication,
+        note,
+        taken_medicine_on,
+        taken_medicine_at,
+        symptom_onset_at,
+        onset_effect_at
     </sql>
 
     <resultMap id="MedicationRecordResultMap" type="MedicationRecord">
@@ -139,6 +153,8 @@
             <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
             <arg column="taken_medicine_on" javaType="java.time.LocalDate"/>
             <arg column="taken_medicine_at" javaType="java.time.LocalTime"/>
+            <arg column="symptom_onset_at" javaType="java.time.LocalTime"/>
+            <arg column="onset_effect_at" javaType="java.time.LocalTime"/>
         </constructor>
     </resultMap>
     <resultMap id="MedicationRecordIdResultMap" type="MedicationRecordId">

@@ -68,6 +68,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         private val note: String = ""
         private val takenMedicineOn: String = "2020-01-01"
         private val takenMedicineAt: String = "07:00"
+        private val symptomOnsetAt: String = "06:30"
 
         @Test
         @WithMockAuthenticatedAccount
@@ -87,7 +88,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("symptomOnsetAt", symptomOnsetAt))
 
             //then:
             actions.andExpect(status().isFound)
@@ -110,8 +112,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
-
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("symptomOnsetAt", symptomOnsetAt))
             //then:
             actions.andExpect(status().isOk)
                 .andExpect(view().name("medicationrecord/form"))
@@ -134,7 +136,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("symptomOnsetAt", symptomOnsetAt))
 
             //then:
             actions.andExpect(status().isFound)
@@ -156,7 +159,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
                                               .param("takenMedicineOn", takenMedicineOn)
-                                              .param("takenMedicineAt", takenMedicineAt))
+                                              .param("takenMedicineAt", takenMedicineAt)
+                                              .param("symptomOnsetAt", symptomOnsetAt))
 
             //then:
             actions.andExpect(status().isFound)

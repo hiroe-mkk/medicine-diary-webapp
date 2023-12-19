@@ -31,14 +31,18 @@ data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "※�
                                        val takenMedicineOn: LocalDate?,
                                        @field:NotNull(message = "※服用した時間を入力してください。")
                                        @field:DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-                                       val takenMedicineAt: LocalTime?) {
+                                       val takenMedicineAt: LocalTime?,
+                                       val symptomOnsetAt: LocalTime?,
+                                       val onsetEffectAt: LocalTime?) {
     val validatedTakenMedicine: MedicineId = MedicineId(takenMedicine)
     val validatedDose: Dose = Dose(quantity ?: 0.0)
     val validFollowUp: FollowUp = FollowUp(symptom, beforeMedication ?: ConditionLevel.A_LITTLE_BAD, afterMedication)
     val validatedNote: Note = Note(note.trim())
     val validatedTakenMedicineOn: LocalDate = takenMedicineOn ?: LocalDate.now()
     val validatedTakenMedicineAt: LocalTime = takenMedicineAt?.truncatedTo(ChronoUnit.MINUTES)
-                                              ?: LocalTime.now().truncatedTo(ChronoUnit.MINUTES)
+                                              ?: LocalTime.of(0, 0)
+    val validatedSymptomOnsetAt: LocalTime? = symptomOnsetAt?.truncatedTo(ChronoUnit.MINUTES)
+    val validatedOnsetEffectAt: LocalTime? = onsetEffectAt?.truncatedTo(ChronoUnit.MINUTES)
 
     companion object {
         fun initialize(medicineId: MedicineId? = null,
@@ -50,7 +54,9 @@ data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "※�
                                                null,
                                                "",
                                                date ?: LocalDate.now(),
-                                               LocalTime.of(0, 0))
+                                               LocalTime.of(0, 0),
+                                               null,
+                                               null)
         }
 
         fun initialize(medicationRecord: MedicationRecord): MedicationRecordEditCommand {
@@ -61,7 +67,9 @@ data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "※�
                                                medicationRecord.followUp.afterMedication,
                                                medicationRecord.note.value,
                                                medicationRecord.takenMedicineOn,
-                                               medicationRecord.takenMedicineAt)
+                                               medicationRecord.takenMedicineAt,
+                                               medicationRecord.symptomOnsetAt,
+                                               medicationRecord.onsetEffectAt)
         }
     }
 }

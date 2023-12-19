@@ -15,7 +15,9 @@ class MedicationRecord(val id: MedicationRecordId,
                        followUp: FollowUp,
                        note: Note,
                        takenMedicineOn: LocalDate,
-                       takenMedicineAt: LocalTime) {
+                       takenMedicineAt: LocalTime,
+                       symptomOnsetAt: LocalTime?,
+                       onsetEffectAt: LocalTime?) {
     var takenMedicine: MedicineId = takenMedicine
         private set
     var dose: Dose = dose
@@ -28,6 +30,10 @@ class MedicationRecord(val id: MedicationRecordId,
         private set
     var takenMedicineAt: LocalTime = takenMedicineAt
         private set
+    var symptomOnsetAt: LocalTime? = symptomOnsetAt
+        private set
+    var onsetEffectAt: LocalTime? = onsetEffectAt
+        private set
 
     fun isRecordedBy(accountId: AccountId): Boolean = recorder == accountId
 
@@ -36,13 +42,17 @@ class MedicationRecord(val id: MedicationRecordId,
                          followUp: FollowUp,
                          note: Note,
                          takenMedicineOn: LocalDate,
-                         takenMedicineAt: LocalTime) {
+                         takenMedicineAt: LocalTime,
+                         symptomOnsetAt: LocalTime?,
+                         onsetEffectAt: LocalTime?) {
         this.takenMedicine = takenMedicine
         this.dose = dose
         this.followUp = followUp
         this.note = note
         this.takenMedicineOn = takenMedicineOn
         this.takenMedicineAt = takenMedicineAt
+        this.symptomOnsetAt = symptomOnsetAt
+        this.onsetEffectAt = onsetEffectAt
     }
 
     fun changeTakenMedicine(takenMedicine: MedicineId) {

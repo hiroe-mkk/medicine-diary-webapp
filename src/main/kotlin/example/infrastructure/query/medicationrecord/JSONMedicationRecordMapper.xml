@@ -35,6 +35,8 @@
         medication_records.note AS note,
         DATE_FORMAT(medication_records.taken_medicine_on, '%Y/%m/%d') AS taken_medicine_on,
         TIME_FORMAT(medication_records.taken_medicine_at, '%H:%i') AS taken_medicine_at,
+        TIME_FORMAT(medication_records.symptom_onset_at, '%H:%i') AS symptom_onset_at,
+        TIME_FORMAT(medication_records.onset_effect_at, '%H:%i') AS onset_effect_at,
         medicines.medicine_id AS medicine_id,
         medicines.medicine_name AS medicine_name,
         CONCAT(medication_records.quantity, medicines.dose_unit) AS dose,
@@ -84,6 +86,8 @@
             <arg column="note" javaType="String"/>
             <arg column="taken_medicine_on" javaType="String"/>
             <arg column="taken_medicine_at" javaType="String"/>
+            <arg column="symptom_onset_at" javaType="String"/>
+            <arg column="onset_effect_at" javaType="String"/>
             <arg column="{account_id, username, profile_image_url}"
                  javaType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap"/>
             <arg column="is_recorded_by_self" javaType="_boolean"/>

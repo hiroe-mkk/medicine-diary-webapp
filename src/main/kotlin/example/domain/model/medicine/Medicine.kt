@@ -93,8 +93,19 @@ class Medicine(val id: MedicineId,
               followUp: FollowUp,
               note: Note,
               takenOn: LocalDate,
-              takenAt: LocalTime): MedicationRecord {
+              takenAt: LocalTime,
+              symptomOnsetAt: LocalTime?,
+              onsetEffectAt: LocalTime?): MedicationRecord {
         this.inventory = this.inventory?.decrease(dose)
-        return MedicationRecord(medicationRecordId, recorder, id, dose, followUp, note, takenOn, takenAt)
+        return MedicationRecord(medicationRecordId,
+                                recorder,
+                                id,
+                                dose,
+                                followUp,
+                                note,
+                                takenOn,
+                                takenAt,
+                                symptomOnsetAt,
+                                onsetEffectAt)
     }
 }

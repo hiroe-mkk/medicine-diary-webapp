@@ -70,8 +70,16 @@
           <strong>{{ medicationRecord.value.takenMedicineOn }}</strong>
         </p>
         <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">服用した時間</span>
+          <span class="has-text-weight-semibold">時間</span>
           <strong>{{ medicationRecord.value.takenMedicineAt }}</strong>
+        </p>
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-weight-semibold">症状が現れた時間</span>
+          <strong>{{ medicationRecord.value.symptomOnsetAt }}</strong>
+        </p>
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-weight-semibold">効果が現れた時間</span>
+          <strong>{{ medicationRecord.value.onsetEffectAt }}</strong>
         </p>
         <p class="is-flex is-justify-content-space-between mb-2">
           <span class="has-text-weight-semibold">症状</span>

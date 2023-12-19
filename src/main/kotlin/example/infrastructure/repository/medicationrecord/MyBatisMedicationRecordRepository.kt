@@ -35,7 +35,9 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
                                                                  medicationRecord.followUp.afterMedication,
                                                                  medicationRecord.note.value,
                                                                  medicationRecord.takenMedicineOn,
-                                                                 medicationRecord.takenMedicineAt))
+                                                                 medicationRecord.takenMedicineAt,
+                                                                 medicationRecord.symptomOnsetAt,
+                                                                 medicationRecord.onsetEffectAt))
     }
 
     override fun saveAll(medicationRecords: Collection<MedicationRecord>) {
@@ -50,7 +52,9 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
                                        it.followUp.afterMedication,
                                        it.note.value,
                                        it.takenMedicineOn,
-                                       it.takenMedicineAt)
+                                       it.takenMedicineAt,
+                                       it.symptomOnsetAt,
+                                       it.onsetEffectAt)
         })
     }
 
