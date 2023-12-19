@@ -39,7 +39,7 @@ internal class AccountDeletionControllerTest(@Autowired private val mockMvc: Moc
         //when:
         val actions = mockMvc.perform(post(PATH).with(csrf()))
 
-
+        //then:
         actions.andExpect(status().isFound)
             .andExpect(redirectedUrl("/"))
     }

@@ -33,7 +33,7 @@
             <div class="field is-horizontal my-3">
               <div class="field-label is-flex is-align-items-center">
                 <label class="label has-text-grey">
-                  日時
+                  服用した日時
                   <span class="tag is-rounded is-danger is-light ml-2"
                     >必須</span
                   >
@@ -44,15 +44,31 @@
                   <div class="control is-expanded">
                     <input
                       class="input is-info is-rounded"
-                      type="datetime-local"
-                      name="takenAt"
-                      th:value="*{takenAt}"
+                      type="date"
+                      name="takenMedicineOn"
+                      th:value="*{takenMedicineOn}"
                       th:errorclass="is-danger"
                     />
                     <p
                       class="help is-danger"
-                      th:if="${#fields.hasErrors('takenAt')}"
-                      th:errors="*{takenAt}"
+                      th:if="${#fields.hasErrors('takenMedicineOn')}"
+                      th:errors="*{takenMedicineOn}"
+                    ></p>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control is-expanded">
+                    <input
+                      class="input is-info is-rounded"
+                      type="time"
+                      name="takenMedicineAt"
+                      th:value="*{takenMedicineAt}"
+                      th:errorclass="is-danger"
+                    />
+                    <p
+                      class="help is-danger"
+                      th:if="${#fields.hasErrors('takenMedicineAt')}"
+                      th:errors="*{takenMedicineAt}"
                     ></p>
                   </div>
                 </div>

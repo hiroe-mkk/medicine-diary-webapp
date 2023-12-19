@@ -72,13 +72,13 @@
             class="has-text-weight-semibold"
             v-if="props.elements.includes('dateTime')"
           >
-            {{ medicationRecord.takenAt }}
+            {{ `${medicationRecord.takenMedicineOn} ${medicationRecord.takenMedicineAt}` }}
           </span>
           <span
             class="has-text-weight-semibold"
             v-if="props.elements.includes('time')"
           >
-            {{ medicationRecord.takenAt.slice(11, 19) }}
+            {{ medicationRecord.takenMedicineAt }}
           </span>
         </p>
       </div>

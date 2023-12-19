@@ -19,7 +19,7 @@
         WHERE
             <include refid="Filtering"/>
         ORDER BY
-            taken_at DESC
+            TIMESTAMP(taken_medicine_on, taken_medicine_at) DESC
         LIMIT
             #{pageSize}
         OFFSET
@@ -33,7 +33,8 @@
         medication_records.before_medication AS before_medication,
         medication_records.after_medication AS after_medication,
         medication_records.note AS note,
-        DATE_FORMAT(medication_records.taken_at, '%Y/%m/%d %H:%i') AS taken_at,
+        DATE_FORMAT(medication_records.taken_medicine_on, '%Y/%m/%d') AS taken_medicine_on,
+        TIME_FORMAT(medication_records.taken_medicine_at, '%H:%i') AS taken_medicine_at,
         medicines.medicine_id AS medicine_id,
         medicines.medicine_name AS medicine_name,
         CONCAT(medication_records.quantity, medicines.dose_unit) AS dose,
@@ -62,13 +63,13 @@
         </if>
         <choose>
             <when test="start != null and end == null">
-                AND DATE(taken_at) <![CDATA[ >= ]]> #{start}
+                AND taken_medicine_on <![CDATA[ >= ]]> #{start}
             </when>
             <when test="start == null and end != null">
-                AND DATE(taken_at) <![CDATA[ <= ]]> #{end}
+                AND taken_medicine_on <![CDATA[ <= ]]> #{end}
             </when>
             <when test="start != null and end != null">
-                AND DATE(taken_at) BETWEEN #{start} AND #{end}
+                AND taken_medicine_on BETWEEN #{start} AND #{end}
             </when>
         </choose>
     </sql>
@@ -81,7 +82,8 @@
             <arg column="{symptom, before_medication, after_medication}"
                  javaType="example.application.query.medicationrecord.JSONFollowUp" resultMap="JSONFollowUpResultMap"/>
             <arg column="note" javaType="String"/>
-            <arg column="taken_at" javaType="String"/>
+            <arg column="taken_medicine_on" javaType="String"/>
+            <arg column="taken_medicine_at" javaType="String"/>
             <arg column="{account_id, username, profile_image_url}"
                  javaType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap"/>
             <arg column="is_recorded_by_self" javaType="_boolean"/>

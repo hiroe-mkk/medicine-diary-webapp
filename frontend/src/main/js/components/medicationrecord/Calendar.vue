@@ -90,7 +90,7 @@ const calendarOptions = {
 
       const dates = new Set(
         result.medicationRecords.map((medicationRecord) =>
-          medicationRecord.takenAt.slice(0, 10).replace(/\//g, '-')
+          medicationRecord.takenMedicineOn.replace(/\//g, '-')
         )
       );
       const events = Array.from(dates).map((date) => ({ start: date }));

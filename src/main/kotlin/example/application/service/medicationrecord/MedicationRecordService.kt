@@ -41,7 +41,8 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                                               command.validatedDose,
                                               command.validFollowUp,
                                               command.validatedNote,
-                                              command.validatedTakenAt)
+                                              command.validatedTakenMedicineOn,
+                                              command.validatedTakenMedicineAt)
         medicineRepository.save(medicine)
         medicationRecordRepository.save(medicationRecord)
         return medicationRecord.id
@@ -69,7 +70,8 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                                           command.validatedDose,
                                           command.validFollowUp,
                                           command.validatedNote,
-                                          command.validatedTakenAt)
+                                          command.validatedTakenMedicineOn,
+                                          command.validatedTakenMedicineAt)
         medicationRecordRepository.save(medicationRecord)
     }
 

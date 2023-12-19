@@ -52,7 +52,7 @@
       </div>
       <div class="modal-card-body px-5">
         <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">服用したお薬</span>
+          <span class="has-text-weight-semibold">お薬</span>
           <span>
             <a
               class="is-underlined has-text-link has-text-weight-semibold"
@@ -66,8 +66,12 @@
           </span>
         </p>
         <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">服用した日時</span>
-          <strong>{{ medicationRecord.value.takenAt }}</strong>
+          <span class="has-text-weight-semibold">日付</span>
+          <strong>{{ medicationRecord.value.takenMedicineOn }}</strong>
+        </p>
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-weight-semibold">服用した時間</span>
+          <strong>{{ medicationRecord.value.takenMedicineAt }}</strong>
         </p>
         <p class="is-flex is-justify-content-space-between mb-2">
           <span class="has-text-weight-semibold">症状</span>

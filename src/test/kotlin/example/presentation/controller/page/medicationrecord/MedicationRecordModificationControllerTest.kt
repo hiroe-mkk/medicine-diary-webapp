@@ -82,7 +82,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         private val beforeMedication: ConditionLevel = ConditionLevel.A_LITTLE_BAD
         private val afterMedication: ConditionLevel = ConditionLevel.GOOD
         private val note: String = "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"
-        private val takenAt: String = "2000-01-01T10:00"
+        private val takenMedicineOn: String = "2020-01-02"
+        private val takenMedicineAt: String = "10:00"
 
         @Test
         @WithMockAuthenticatedAccount
@@ -103,7 +104,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
-                                              .param("takenAt", takenAt))
+                                              .param("takenMedicineOn", takenMedicineOn)
+                                              .param("takenMedicineAt", takenMedicineAt))
 
             //then:
             actions.andExpect(status().isFound)
@@ -127,7 +129,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
-                                              .param("takenAt", takenAt))
+                                              .param("takenMedicineOn", takenMedicineOn)
+                                              .param("takenMedicineAt", takenMedicineAt))
 
             //then:
             actions.andExpect(status().isOk)
@@ -152,7 +155,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
-                                              .param("takenAt", takenAt))
+                                              .param("takenMedicineOn", takenMedicineOn)
+                                              .param("takenMedicineAt", takenMedicineAt))
 
             //then:
             actions.andExpect(status().isNotFound)
@@ -176,7 +180,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
-                                              .param("takenAt", takenAt))
+                                              .param("takenMedicineOn", takenMedicineOn)
+                                              .param("takenMedicineAt", takenMedicineAt))
 
             //then:
             actions.andExpect(status().isFound)
@@ -198,8 +203,10 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("afterMedication", afterMedication.name)
                                               .param("note", note)
-                                              .param("takenAt", takenAt))
+                                              .param("takenMedicineOn", takenMedicineOn)
+                                              .param("takenMedicineAt", takenMedicineAt))
 
+            //then:
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/"))
         }

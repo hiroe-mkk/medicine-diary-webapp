@@ -11,4 +11,5 @@ class MedicationRecordSaveEntity(val medicationRecordId: String,
                                  val beforeMedication: ConditionLevel,
                                  val afterMedication: ConditionLevel?,
                                  val note: String,
-                                 val takenAt: LocalDateTime)
+                                 val takenMedicineOn: LocalDate,
+                                 val takenMedicineAt: LocalTime)

@@ -20,14 +20,16 @@ class TestMedicationRecordInserter(private val medicationRecordRepository: Medic
                dose: Dose = Dose(1.0),
                followUp: FollowUp = FollowUp("頭痛", ConditionLevel.A_LITTLE_BAD, null),
                note: Note = Note(""),
-               takenAt: LocalDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)): MedicationRecord {
+               takenMedicineOn: LocalDate = LocalDate.of(2020, 1, 2),
+               takenMedicineAt: LocalTime = LocalTime.of(7, 0)): MedicationRecord {
         val medicationRecord = MedicationRecord(medicationRecordId,
                                                 accountId,
                                                 takenMedicine,
                                                 dose,
                                                 followUp,
                                                 note,
-                                                takenAt)
+                                                takenMedicineOn,
+                                                takenMedicineAt)
         medicationRecordRepository.save(medicationRecord)
         return medicationRecord
     }

@@ -58,14 +58,6 @@
                       'is-danger': quantityErrors.length !== 0,
                     }"
                   />
-                  <span
-                    class="icon is-small is-right has-text-grey has-text-weight-bold"
-                    v-if="takenMedicine.medicine !== undefined"
-                  >
-                    {{
-                      takenMedicine.medicine.dosageAndAdministration.doseUnit
-                    }}
-                  </span>
                   <p class="help is-danger" v-for="error in quantityErrors">
                     {{ error }}
                   </p>
@@ -101,11 +93,11 @@ const quantityErrors = reactive([]);
 
 const resultMessage = ref(null);
 
-onMounted(() => {
+onMounted(async () => {
   medicineIdErrors.push(...ArrayConverter.fromString(props.medicineIdErrors));
   quantityErrors.push(...ArrayConverter.fromString(props.quantityErrors));
 
-  loadMedicines();
+  await loadMedicines();
   if (props.medicineId !== undefined) {
     takenMedicine.medicine = medicines.find(
       (medicine) => medicine.medicineId === props.medicineId

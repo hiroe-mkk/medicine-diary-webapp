@@ -65,7 +65,8 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
                                             command.validatedDose,
                                             command.validFollowUp,
                                             command.validatedNote,
-                                            command.validatedTakenAt)
+                                            command.validatedTakenMedicineOn,
+                                            command.validatedTakenMedicineAt)
             assertThat(foundMedicationRecord).usingRecursiveComparison().isEqualTo(expected)
             val foundMedicine = medicineRepository.findById(requesterMedicine.id)
             val expectedInventory = Inventory(4.0, 12.0, null, null, 2)
@@ -115,7 +116,8 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
                                             command.validatedDose,
                                             command.validFollowUp,
                                             command.validatedNote,
-                                            command.validatedTakenAt)
+                                            command.validatedTakenMedicineOn,
+                                            command.validatedTakenMedicineAt)
             assertThat(foundMedicationRecord).usingRecursiveComparison().isEqualTo(expected)
         }
 

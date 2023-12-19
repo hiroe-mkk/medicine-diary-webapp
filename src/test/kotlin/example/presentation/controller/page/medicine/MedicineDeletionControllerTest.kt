@@ -68,6 +68,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
         val actions = mockMvc.perform(post(PATH, medicineId)
                                           .with(csrf()))
 
+        //then:
         actions.andExpect(status().isFound)
             .andExpect(redirectedUrl("/"))
     }

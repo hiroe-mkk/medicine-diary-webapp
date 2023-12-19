@@ -124,6 +124,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("isPublic", isPublic)
                                               .param("isOwnedBySharedGroup", isOwnedBySharedGroup))
 
+            //then
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/"))
         }

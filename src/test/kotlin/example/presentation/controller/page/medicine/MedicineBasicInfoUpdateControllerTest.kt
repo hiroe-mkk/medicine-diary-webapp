@@ -178,6 +178,7 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
                                               .param("effects", effects[2])
                                               .param("precautions", precautions))
 
+            //then:
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/"))
         }
