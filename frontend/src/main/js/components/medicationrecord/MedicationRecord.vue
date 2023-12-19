@@ -10,11 +10,7 @@
     ></div>
     <div class="modal-card">
       <div
-        class="modal-card-head has-background-white p-3"
-        :class="{
-          'is-flex is-justify-content-space-between': props.displayRecorder,
-          'is-flex is-justify-content-flex-end': !props.displayRecorder,
-        }"
+        class="modal-card-head has-background-white is-flex is-justify-content-space-between p-3"
       >
         <span
           class="is-flex is-align-items-center"
@@ -44,6 +40,15 @@
             {{ medicationRecord.value.recorder.username }}
           </span>
         </span>
+        <span
+          class="is-flex is-align-items-center"
+          v-if="!props.displayRecorder"
+        >
+          　
+        </span>
+        <span class="is-size-5 has-text-weight-bold">
+          {{ medicationRecord.value.takenMedicineOn }}
+        </span>
         <button
           class="delete"
           type="button"
@@ -52,86 +57,79 @@
       </div>
       <div class="modal-card-body px-5">
         <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">お薬</span>
+          <span class="has-text-grey-dark has-text-weight-semibold">お薬</span>
           <span>
             <a
-              class="is-underlined has-text-link has-text-weight-semibold"
+              class="is-underlined has-text-link has-text-weight-bold"
               :href="`/medicines/${medicationRecord.value.takenMedicine.medicineId}`"
             >
               {{ medicationRecord.value.takenMedicine.medicineName }}
             </a>
-            <strong class="ml-2">
+            <strong class="has-text-weight-bold ml-2">
               {{ medicationRecord.value.takenMedicine.dose }}
             </strong>
           </span>
         </p>
-        <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">日付</span>
-          <strong>{{ medicationRecord.value.takenMedicineOn }}</strong>
+        <span class="has-text-grey-dark has-text-weight-semibold has-text-left">症状</span>
+        <p class="has-text-right mb-2">
+          <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
         </p>
-        <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">時間</span>
-          <strong>{{ medicationRecord.value.takenMedicineAt }}</strong>
+        <p class="has-text-grey-dark has-text-weight-semibold has-text-left">
+          経過
         </p>
-        <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">症状が現れた時間</span>
-          <strong>{{ medicationRecord.value.symptomOnsetAt }}</strong>
-        </p>
-        <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">効果が現れた時間</span>
-          <strong>{{ medicationRecord.value.onsetEffectAt }}</strong>
-        </p>
-        <p class="is-flex is-justify-content-space-between mb-2">
-          <span class="has-text-weight-semibold">症状</span>
+        <p class="has-text-right mb-2">
           <span>
-            <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
-            <span class="has-text-weight-semibold">
-              (
-              <small>{{
-                MedicationRecordUtils.convertConditionLevelToString(
+            <span
+              class="has-text-weight-bold"
+              v-if="medicationRecord.value.symptomOnsetAt !== undefined"
+            >
+              {{ medicationRecord.value.symptomOnsetAt }}
+            </span>
+            <span
+              v-html="
+                MedicationRecordUtils.convertConditionLevelToIcon(
                   medicationRecord.value.followUp.beforeMedication
                 )
-              }}</small>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.value.followUp.beforeMedication
-                  )
-                "
-              ></span>
-              <span
-                class="icon is-small mx-2"
-                v-if="
-                  medicationRecord.value.followUp.afterMedication !== undefined
-                "
-              >
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-              <small
-                v-if="
-                  medicationRecord.value.followUp.afterMedication !== undefined
-                "
-              >
-                {{
-                  MedicationRecordUtils.convertConditionLevelToString(
-                    medicationRecord.value.followUp.afterMedication
-                  )
-                }}
-              </small>
-              <span
-                v-html="
-                  MedicationRecordUtils.convertConditionLevelToIcon(
-                    medicationRecord.value.followUp.afterMedication
-                  )
-                "
-                v-if="
-                  medicationRecord.value.followUp.afterMedication !== undefined
-                "
-              >
-              </span>
-              )
+              "
+            ></span>
+            <span class="icon is-small mx-2">
+              <i class="fa-solid fa-angles-right"></i>
             </span>
-          </span>
+
+            <span class="has-text-weight-bold">
+              {{ medicationRecord.value.takenMedicineAt }}
+            </span>
+            <span class="icon is-small mx-1">
+              <i class="fa-solid fa-capsules"></i>
+            </span>
+            <span
+              class="icon is-small mx-2"
+              v-if="
+                medicationRecord.value.onsetEffectAt !== undefined ||
+                medicationRecord.value.followUp.afterMedication !== undefined
+              "
+            >
+              <i class="fa-solid fa-angles-right"></i>
+            </span>
+
+            <span
+              class="has-text-weight-bold"
+              v-if="medicationRecord.value.onsetEffectAt !== undefined"
+            >
+              {{ medicationRecord.value.onsetEffectAt }}
+            </span>
+            <span
+              v-html="
+                MedicationRecordUtils.convertConditionLevelToIcon(
+                  medicationRecord.value.followUp.afterMedication
+                )
+              "
+              v-if="
+                medicationRecord.value.followUp.afterMedication !== undefined
+              "
+            >
+            </span
+          ></span>
         </p>
         <p
           class="border-bottom my-5"
@@ -202,9 +200,7 @@ const props = defineProps({
 });
 const emits = defineEmits(['deleted']);
 defineExpose({ activateMedicationRecordModal });
-const activateResultMessageFromChild = inject(
-  'activateResultMessageFromChild'
-);
+const activateResultMessageFromChild = inject('activateResultMessageFromChild');
 
 const medicationRecord = reactive({ value: undefined });
 const isSelectedMedicationRecordModalActive = ref(false);
@@ -223,10 +219,7 @@ function deleteMedicationRecord(medicationRecordId) {
     form
   )
     .then(() => {
-      activateResultMessageFromChild(
-        'INFO',
-        `服用記録の削除が完了しました。`
-      );
+      activateResultMessageFromChild('INFO', `服用記録の削除が完了しました。`);
       isSelectedMedicationRecordModalActive.value = false;
       emits('deleted', medicationRecordId);
     })
