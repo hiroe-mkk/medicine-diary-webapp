@@ -9,8 +9,8 @@
       @click="isMedicationRecordsModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification has-text-centered has-background-white p-3">
-        <p class="is-flex is-justify-content-space-between">
+      <div class="notification has-text-centered has-background-white py-3 px-5">
+        <p class="is-flex is-justify-content-space-between py-1">
           <span>　</span>
           <strong class="is-size-4 has-text-grey-dark">
             {{ toDateJpnStr(selectedDateStr) }}

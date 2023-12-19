@@ -1,7 +1,7 @@
 <template>
-  <div class="container has-text-centered is-max-desktop p-3">
-    <div class="notification has-background-white p-3">
-      <div class="content mb-3">
+  <div class="container has-text-centered is-max-desktop">
+    <div class="notification has-background-white py-3 px-5">
+      <div class="content m-0">
         <p class="is-size-4 has-text-weight-bold has-text-grey-dark mb-0">
           最近の服用記録
         </p>
@@ -11,7 +11,7 @@
             style="text-decoration: none"
             href="/medication-records"
           >
-            <strong>もっと見る</strong>
+            <strong class="has-text-link">もっと見る</strong>
             <span class="icon has-text-link m-0">
               <i class="fa-solid fa-angle-right"></i>
             </span>

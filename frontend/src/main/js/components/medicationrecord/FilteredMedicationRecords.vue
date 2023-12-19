@@ -8,7 +8,7 @@
   </div>
 
   <div
-    class="content p-2 m-0"
+    class="content m-0"
     v-if="medicationRecords.isLoaded && medicationRecords.size !== 0"
     v-clock
   >

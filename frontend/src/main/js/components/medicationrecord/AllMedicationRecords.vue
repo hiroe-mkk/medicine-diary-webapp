@@ -1,5 +1,5 @@
 <template>
-  <div class="container has-text-centered is-max-desktop p-3">
+  <div class="container has-text-centered is-max-desktop">
     <div class="content mb-3">
       <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
         服用記録一覧
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="notification has-background-white p-3">
+    <div class="notification has-background-white py-3 px-5">
       <FilteredMedicationRecords
         ref="filteredMedicationRecords"
         :displayRecorder="props.isParticipatingInSharedGroup"
