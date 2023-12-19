@@ -49,18 +49,6 @@
               ></span>
             </span>
           </div>
-          <div class="media-right">
-            <p
-              class="image is-96x96 is-clickable mx-3"
-              th:if="*{medicineImageURL != null}"
-              th:attr="'@click'=|activateMedicineImageModal('*{medicineImageURL}')|"
-            >
-              <img th:src="*{medicineImageURL}" />
-            </p>
-            <p class="image is-96x96 mx-3" th:if="*{medicineImageURL == null}">
-              <img :src="noMedicineImage" />
-            </p>
-          </div>
         </div>
 
         <div class="modal" :class="{ 'is-active': isMedicineImageModalActive }">
