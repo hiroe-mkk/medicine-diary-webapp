@@ -70,8 +70,8 @@
             </strong>
           </span>
         </p>
-        <span class="has-text-grey-dark has-text-weight-semibold has-text-left">症状</span>
-        <p class="has-text-right mb-2">
+        <p class="is-flex is-justify-content-space-between mb-2">
+          <span class="has-text-grey-dark has-text-weight-semibold">症状</span>
           <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
         </p>
         <p class="has-text-grey-dark has-text-weight-semibold has-text-left">
