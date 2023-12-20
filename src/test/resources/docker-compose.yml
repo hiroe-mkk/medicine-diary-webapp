@@ -23,7 +23,7 @@ services:
       MINIO_ROOT_PASSWORD: 'root-password'
     ports:
       - '19000:9000'
-      - '19090:9090' # コンソール用のポート
+      - '19090:9090' # 管理ダッシュボード用
     volumes:
       - minio-data:/data
     command: ['server', '/data', '--console-address', ':9090']
@@ -39,7 +39,14 @@ services:
       mc mb --ignore-existing myminio/medicine-diary;
       mc anonymous set download myminio/medicine-diary;
       exit 0;"
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog-medicine-diary-test
+    ports:
+      - '11025:1025'
+      - '18025:8025' # 管理ダッシュボード用
 
 volumes:
   mysql-data:
   minio-data:
+  mailhog-data:

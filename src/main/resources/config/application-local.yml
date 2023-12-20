@@ -35,6 +35,16 @@ spring:
             authorizationUri: https://auth.login.yahoo.co.jp/yconnect/v2/authorization
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
+  mail:
+    host: host.docker.internal
+    port: 11025
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
 
 # Actuatorエンドポイントへのアクセス制御
 management:
@@ -73,6 +83,16 @@ minio:
   password: root-password
   endpoint: http://host.docker.internal:19000
   bucketName: medicine-diary
+
+
+application:
+  name: お薬日記
+  endpoint:
+    web: http://localhost:8080
+  admin:
+    username: admin
+    password: password
+    emailAddress: application@example.co.jp
 
 endpoint:
   image:

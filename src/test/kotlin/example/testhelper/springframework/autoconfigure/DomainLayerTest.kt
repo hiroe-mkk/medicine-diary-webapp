@@ -5,6 +5,7 @@ package example.testhelper.springframework.autoconfigure
  */
 @MyBatisRepositoryTest
 @UseMockObjectStorageClient
+@UseMockEmailSenderClient
 @EnableObjectStorageAutoConfiguration
 @EnableDomainServiceAutoConfiguration
 annotation class DomainLayerTest

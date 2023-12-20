@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.*
  */
 @SpringBootTest
 @UseMockObjectStorageClient
+@UseMockEmailSenderClient
 @EnableTestDataInserterAutoConfiguration
 @Transactional
 @AutoConfigureMockMvc
