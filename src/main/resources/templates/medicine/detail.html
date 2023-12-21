@@ -136,14 +136,9 @@
 
                   <p class="notification has-background-danger-light p-4">
                     <span
-                      th:each="line:*{precautions.toLines()}"
-                      th:remove="tag"
-                    >
-                      <span
-                        class="has-text-weight-semibold mb-1"
-                        th:text="${line}"
-                      ></span>
-                    </span>
+                      class="has-text-weight-semibold mb-1"
+                      th:text="*{precautions}"
+                    ></span>
                   </p>
                 </div>
                 <inventory

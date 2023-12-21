@@ -1,7 +1,6 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
-import example.domain.shared.type.*
 import org.springframework.stereotype.*
 import java.time.*
 
@@ -11,7 +10,7 @@ class MedicineCreationService(private val medicineOwnerCreationService: Medicine
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
-               precautions: Note,
+               precautions: String,
                isOwnedBySharedGroup: Boolean,
                isPublic: Boolean,
                registeredAt: LocalDateTime,

@@ -18,8 +18,7 @@ internal class MedicineTest {
                                                                                            3,
                                                                                            listOf(Timing.AS_NEEDED))
     private val effects: Effects = Effects(listOf("頭痛", "解熱", "肩こり"))
-    private val precautions: Note = Note("服用間隔は4時間以上開けること。\n" +
-                                         "再度症状があらわれた場合には3回目を服用してもよい。")
+    private val precautions: String = "服用間隔は4時間以上開けること。再度症状があらわれた場合には3回目を服用してもよい。"
 
     @ParameterizedTest
     @CsvSource("true", "false")

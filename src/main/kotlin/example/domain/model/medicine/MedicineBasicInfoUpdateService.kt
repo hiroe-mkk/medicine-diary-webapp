@@ -4,7 +4,6 @@ import example.application.service.medicine.*
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.medicineimage.*
-import example.domain.shared.type.*
 import org.springframework.stereotype.*
 
 @Component
@@ -17,7 +16,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
-               precautions: Note,
+               precautions: String,
                isOwnedBySharedGroup: Boolean,
                isPublic: Boolean,
                registrant: AccountId) {
@@ -55,7 +54,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                                                                       newMedicineName: MedicineName,
                                                                       newDosageAndAdministration: DosageAndAdministration,
                                                                       newEffects: Effects,
-                                                                      newPrecautions: Note,
+                                                                      newPrecautions: String,
                                                                       newIsPublic: Boolean,
                                                                       registrant: AccountId) {
         registrantMedicine.changeOwner(medicineOwnerCreationService.createSharedGroupOwner(registrant))
@@ -71,7 +70,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                                                                       newMedicineName: MedicineName,
                                                                       newDosageAndAdministration: DosageAndAdministration,
                                                                       newEffects: Effects,
-                                                                      newPrecautions: Note,
+                                                                      newPrecautions: String,
                                                                       newIsPublic: Boolean,
                                                                       registrant: AccountId) {
         sharedGroupMedicine.changeOwner(medicineOwnerCreationService.createAccountOwner(registrant))
@@ -115,7 +114,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                                 medicineName: MedicineName,
                                 dosageAndAdministration: DosageAndAdministration,
                                 effects: Effects,
-                                precautions: Note,
+                                precautions: String,
                                 isPublic: Boolean) {
         medicine.changeBasicInfo(medicineName, dosageAndAdministration, effects, precautions, isPublic)
         medicineRepository.save(medicine)

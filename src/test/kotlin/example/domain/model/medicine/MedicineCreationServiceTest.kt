@@ -32,7 +32,7 @@ internal class MedicineCreationServiceTest(@Autowired private val medicineCreati
                                                                                            3,
                                                                                            emptyList())
     private val effects: Effects = Effects(listOf("頭痛", "解熱"))
-    private val precautions: Note = Note("服用間隔は4時間以上開けること。")
+    private val precautions: String = "服用間隔は4時間以上開けること。"
     private val registeredAt = LocalDateTime.of(2020, 1, 1, 0, 0)
 
     @ParameterizedTest

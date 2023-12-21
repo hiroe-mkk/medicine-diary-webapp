@@ -2,7 +2,6 @@ package example.application.service.medicationrecord
 
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.domain.shared.type.*
 import example.domain.shared.validation.*
 import jakarta.validation.constraints.*
 import org.springframework.format.annotation.*
@@ -37,7 +36,7 @@ data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "‚Äª„Å
     val validatedTakenMedicine: MedicineId = MedicineId(takenMedicine)
     val validatedDose: Dose = Dose(quantity ?: 0.0)
     val validFollowUp: FollowUp = FollowUp(symptom, beforeMedication ?: ConditionLevel.A_LITTLE_BAD, afterMedication)
-    val validatedNote: Note = Note(note.trim())
+    val validatedNote: String = note.trim()
     val validatedTakenMedicineOn: LocalDate = takenMedicineOn ?: LocalDate.now()
     val validatedTakenMedicineAt: LocalTime = takenMedicineAt?.truncatedTo(ChronoUnit.MINUTES)
                                               ?: LocalTime.of(0, 0)
@@ -65,7 +64,7 @@ data class MedicationRecordEditCommand(@field:NotWhitespaceOnly(message = "‚Äª„Å
                                                medicationRecord.followUp.symptom,
                                                medicationRecord.followUp.beforeMedication,
                                                medicationRecord.followUp.afterMedication,
-                                               medicationRecord.note.value,
+                                               medicationRecord.note,
                                                medicationRecord.takenMedicineOn,
                                                medicationRecord.takenMedicineAt,
                                                medicationRecord.symptomOnsetAt,

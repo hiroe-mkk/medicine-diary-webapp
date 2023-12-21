@@ -3,7 +3,6 @@ package example.testhelper.inserter
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.domain.shared.type.*
 import org.springframework.boot.test.context.*
 import java.time.*
 
@@ -19,7 +18,7 @@ class TestMedicationRecordInserter(private val medicationRecordRepository: Medic
                medicationRecordId: MedicationRecordId = MedicationRecordId("testMedicationRecordId${num++}"),
                dose: Dose = Dose(1.0),
                followUp: FollowUp = FollowUp("頭痛", ConditionLevel.A_LITTLE_BAD, null),
-               note: Note = Note(""),
+               note: String = "",
                takenMedicineOn: LocalDate = LocalDate.of(2020, 1, 2),
                takenMedicineAt: LocalTime = LocalTime.of(7, 0),
                symptomOnsetAt: LocalTime? = LocalTime.of(6, 30),

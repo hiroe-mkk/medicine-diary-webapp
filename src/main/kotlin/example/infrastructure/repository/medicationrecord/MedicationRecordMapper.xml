@@ -150,7 +150,7 @@
             <arg column="taken_medicine" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="quantity" javaType="Dose" resultMap="DoseResultMap"/>
             <arg column="{symptom, before_medication, after_medication}" javaType="FollowUp" resultMap="FollowUpResultMap"/>
-            <arg column="note" javaType="Note" resultMap="NoteResultMap"/>
+            <arg column="note" javaType="String"/>
             <arg column="taken_medicine_on" javaType="java.time.LocalDate"/>
             <arg column="taken_medicine_at" javaType="java.time.LocalTime"/>
             <arg column="symptom_onset_at" javaType="java.time.LocalTime"/>
@@ -182,11 +182,6 @@
             <arg column="symptom" javaType="String"/>
             <arg column="before_medication" javaType="ConditionLevel"/>
             <arg column="after_medication" javaType="ConditionLevel"/>
-        </constructor>
-    </resultMap>
-    <resultMap id="NoteResultMap" type="Note">
-        <constructor>
-            <idArg column="note" javaType="String"/>
         </constructor>
     </resultMap>
 </mapper>

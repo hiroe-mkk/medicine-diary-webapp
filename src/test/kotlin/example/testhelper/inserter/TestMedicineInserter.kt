@@ -2,7 +2,6 @@ package example.testhelper.inserter
 
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.domain.shared.type.*
 import org.springframework.boot.test.context.*
 import java.time.*
 
@@ -21,7 +20,7 @@ class TestMedicineInserter(private val medicineRepository: MedicineRepository) {
                                                                                           3,
                                                                                           emptyList()),
                effects: Effects = Effects(listOf("頭痛", "解熱")),
-               precautions: Note = Note("服用間隔は4時間以上開けること。"),
+               precautions: String = "服用間隔は4時間以上開けること。",
                medicineImageURL: MedicineImageURL? = null,
                isPublic: Boolean = false,
                inventory: Inventory? = Inventory(5.0, 12.0, null, null, 2),

@@ -2,7 +2,6 @@ package example.domain.model.medicationrecord
 
 import example.domain.model.account.*
 import example.domain.model.medicine.*
-import example.domain.shared.type.*
 import java.time.*
 
 /**
@@ -13,7 +12,7 @@ class MedicationRecord(val id: MedicationRecordId,
                        takenMedicine: MedicineId,
                        dose: Dose,
                        followUp: FollowUp,
-                       note: Note,
+                       note: String,
                        takenMedicineOn: LocalDate,
                        takenMedicineAt: LocalTime,
                        symptomOnsetAt: LocalTime?,
@@ -24,7 +23,7 @@ class MedicationRecord(val id: MedicationRecordId,
         private set
     var followUp: FollowUp = followUp
         private set
-    var note: Note = note
+    var note: String = note
         private set
     var takenMedicineOn: LocalDate = takenMedicineOn
         private set
@@ -40,7 +39,7 @@ class MedicationRecord(val id: MedicationRecordId,
     fun changeAttributes(takenMedicine: MedicineId,
                          dose: Dose,
                          followUp: FollowUp,
-                         note: Note,
+                         note: String,
                          takenMedicineOn: LocalDate,
                          takenMedicineAt: LocalTime,
                          symptomOnsetAt: LocalTime?,

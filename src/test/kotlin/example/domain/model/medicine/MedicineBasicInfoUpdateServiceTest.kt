@@ -25,8 +25,7 @@ internal class MedicineBasicInfoUpdateServiceTest(@Autowired private val medicin
                                                                                               3,
                                                                                               listOf(Timing.AS_NEEDED))
     private val newEffects: Effects = Effects(listOf("頭痛", "解熱", "肩こり"))
-    private val newPrecautions: Note = Note("服用間隔は4時間以上開けること。\n" +
-                                            "再度症状があらわれた場合には3回目を服用してもよい。")
+    private val newPrecautions: String = "服用間隔は4時間以上開けること。再度症状があらわれた場合には3回目を服用してもよい。"
     private val newIsPublic = false
 
     @BeforeEach

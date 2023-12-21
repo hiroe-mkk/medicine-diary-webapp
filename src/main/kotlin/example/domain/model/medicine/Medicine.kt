@@ -4,7 +4,6 @@ import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
-import example.domain.shared.type.*
 import java.time.*
 
 /**
@@ -15,7 +14,7 @@ class Medicine(val id: MedicineId,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
                effects: Effects,
-               precautions: Note,
+               precautions: String,
                medicineImageURL: MedicineImageURL?,
                isPublic: Boolean,
                inventory: Inventory?,
@@ -28,7 +27,7 @@ class Medicine(val id: MedicineId,
         private set
     var effects: Effects = effects
         private set
-    var precautions: Note = precautions
+    var precautions: String = precautions
         private set
     var medicineImageURL: MedicineImageURL? = medicineImageURL
         private set
@@ -44,7 +43,7 @@ class Medicine(val id: MedicineId,
     fun changeBasicInfo(medicineName: MedicineName,
                         dosageAndAdministration: DosageAndAdministration,
                         effects: Effects,
-                        precautions: Note,
+                        precautions: String,
                         isPublic: Boolean) {
         this.medicineName = medicineName
         this.dosageAndAdministration = dosageAndAdministration
@@ -91,7 +90,7 @@ class Medicine(val id: MedicineId,
               recorder: AccountId,
               dose: Dose,
               followUp: FollowUp,
-              note: Note,
+              note: String,
               takenOn: LocalDate,
               takenAt: LocalTime,
               symptomOnsetAt: LocalTime?,

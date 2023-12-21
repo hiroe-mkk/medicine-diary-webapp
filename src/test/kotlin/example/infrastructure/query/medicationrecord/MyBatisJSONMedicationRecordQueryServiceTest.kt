@@ -76,7 +76,7 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
                                     JSONFollowUp(medicationRecord.followUp.symptom,
                                                  medicationRecord.followUp.beforeMedication.name,
                                                  medicationRecord.followUp.afterMedication?.name),
-                                    medicationRecord.note.value,
+                                    medicationRecord.note,
                                     DateTimeFormatter.ofPattern("yyyy/MM/dd").format(medicationRecord.takenMedicineOn),
                                     DateTimeFormatter.ofPattern("HH:mm").format(medicationRecord.takenMedicineAt),
                                     medicationRecord.symptomOnsetAt?.let {

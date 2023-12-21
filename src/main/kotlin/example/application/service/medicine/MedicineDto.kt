@@ -2,7 +2,6 @@ package example.application.service.medicine
 
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.domain.shared.type.*
 import java.time.*
 
 data class MedicineDto(val medicineId: MedicineId,
@@ -10,7 +9,7 @@ data class MedicineDto(val medicineId: MedicineId,
                        val medicineName: MedicineName,
                        val dosageAndAdministration: DosageAndAdministration,
                        val effects: Effects,
-                       val precautions: Note,
+                       val precautions: String,
                        val medicineImageURL: MedicineImageURL?,
                        val isPublic: Boolean,
                        val inventory: Inventory?,

@@ -1,7 +1,6 @@
 package example.application.service.medicine
 
 import example.domain.model.medicine.*
-import example.domain.shared.type.*
 import example.domain.shared.validation.*
 import jakarta.validation.*
 import jakarta.validation.constraints.*
@@ -36,7 +35,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "â€»ã
                                     timesPerDay ?: 0,
                                     timingOptions)
     val validatedEffects: Effects = Effects(effects.map(EffectInputField::value))
-    val validatedPrecautions: Note = Note(precautions.trim())
+    val validatedPrecautions: String = precautions.trim()
 
     companion object {
         fun initialize(): MedicineBasicInfoEditCommand {
@@ -57,7 +56,7 @@ data class MedicineBasicInfoEditCommand(@field:NotWhitespaceOnly(message = "â€»ã
                                                 medicine.dosageAndAdministration.timesPerDay,
                                                 medicine.dosageAndAdministration.timingOptions,
                                                 medicine.effects.values.map(::EffectInputField),
-                                                medicine.precautions.value,
+                                                medicine.precautions,
                                                 medicine.owner.isSharedGroup,
                                                 medicine.isPublic)
         }

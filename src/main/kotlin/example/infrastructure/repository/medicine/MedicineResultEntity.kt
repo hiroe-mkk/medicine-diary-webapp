@@ -2,7 +2,6 @@ package example.infrastructure.repository.medicine
 
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.domain.shared.type.*
 import example.infrastructure.repository.shared.*
 import java.time.*
 
@@ -12,7 +11,7 @@ class MedicineResultEntity(val medicineId: MedicineId,
                            val dose: Dose,
                            val doseUnit: String,
                            val timesPerDay: Int,
-                           val precautions: Note,
+                           val precautions: String,
                            val medicineImageURL: MedicineImageURL?,
                            val isPublic: Boolean,
                            val inventory: Inventory?,

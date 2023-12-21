@@ -5,7 +5,6 @@ import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.domain.shared.type.*
 import java.time.*
 
 object TestMedicineFactory {
@@ -17,7 +16,7 @@ object TestMedicineFactory {
                                                                                                   3,
                                                                                                   emptyList()),
                        effects: Effects = Effects(listOf("頭痛", "解熱")),
-                       precautions: Note = Note("服用間隔は4時間以上開けること。"),
+                       precautions: String = "服用間隔は4時間以上開けること。",
                        medicineImageURL: MedicineImageURL? = null,
                        isPublic: Boolean = true,
                        inventory: Inventory? = Inventory(5.0, 12.0, null, null, 2),
@@ -64,7 +63,7 @@ object TestMedicineFactory {
                                                           effects: List<EffectInputField> = listOf(EffectInputField("頭痛"),
                                                                                                    EffectInputField("解熱"),
                                                                                                    EffectInputField("肩こり")),
-                                                          precautions: String = "服用間隔は4時間以上開けること。\n再度症状があらわれた場合には3回目を服用してもよい。",
+                                                          precautions: String = "服用間隔は4時間以上開けること。再度症状があらわれた場合には3回目を服用してもよい。",
                                                           isOwnedBySharedGroup: Boolean = false,
                                                           isPublic: Boolean = true): MedicineBasicInfoEditCommand {
         return MedicineBasicInfoEditCommand(medicineName,

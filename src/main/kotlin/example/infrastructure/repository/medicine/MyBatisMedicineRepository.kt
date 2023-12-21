@@ -38,7 +38,7 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
                                          medicine.dosageAndAdministration.dose.quantity,
                                          medicine.dosageAndAdministration.doseUnit,
                                          medicine.dosageAndAdministration.timesPerDay,
-                                         medicine.precautions.value,
+                                         medicine.precautions,
                                          medicine.medicineImageURL?.endpoint,
                                          medicine.medicineImageURL?.path,
                                          medicine.isPublic,
