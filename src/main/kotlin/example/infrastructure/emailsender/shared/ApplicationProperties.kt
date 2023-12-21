@@ -7,7 +7,8 @@ data class ApplicationProperties(val name: String,
                                  val endpoint: Endpoint,
                                  val admin: Admin) {
 
-    data class Endpoint(val web: String)
+    data class Endpoint(val web: String,
+                        val image: String)
 
     data class Admin(val username: String,
                      val password: String,

@@ -74,10 +74,7 @@ application:
   name: お薬日記
   endpoint:
     web: ${WEB_ENDPOINT}
+    image: ${S3_ENDPOINT}
   admin:
     username: ${USER_ADMIN_USERNAME:admin}
     password: ${USER_ADMIN_PASSWORD}
-
-endpoint:
-  image:
-    illustration: ${S3_ENDPOINT}/illustrations

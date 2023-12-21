@@ -89,11 +89,8 @@ application:
   name: お薬日記
   endpoint:
     web: http://localhost:8080
+    image: http://host.docker.internal:19000/medicine-diary
   admin:
     username: admin
     password: password
     emailAddress: application@example.co.jp
-
-endpoint:
-  image:
-    illustration: http://host.docker.internal:19000/medicine-diary/illustrations
