@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class CalendarControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class CalendarPageControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
         private const val PATH = "/calendar"
     }

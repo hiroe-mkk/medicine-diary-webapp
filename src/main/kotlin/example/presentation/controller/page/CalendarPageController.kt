@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/calendar")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class CalendarController(private val userSessionProvider: UserSessionProvider) {
+class CalendarPageController(private val userSessionProvider: UserSessionProvider) {
     /**
      * カレンダー画面を表示する
      */
