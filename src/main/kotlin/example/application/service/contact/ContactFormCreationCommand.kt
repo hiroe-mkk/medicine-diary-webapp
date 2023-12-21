@@ -19,4 +19,10 @@ data class ContactFormCreationCommand(@field:NotWhitespaceOnly(message = "※ご
     val validatedEmailAddress: EmailAddress = EmailAddress(emailAddress.trim())
     val validatedName: String = name.trim()
     val validatedMessage: String = message.trim()
+
+    companion object {
+        fun initialize(): ContactFormCreationCommand {
+            return ContactFormCreationCommand("", "", "")
+        }
+    }
 }

@@ -49,7 +49,7 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
         }.authorizeHttpRequests {
             it.requestMatchers(toStaticResources().atCommonLocations()).permitAll() // 静的リソース
                 .requestMatchers("/dist/**").permitAll() // frontend サブプロジェクトのビルド成果物が格納されているディレクトリ
-                .requestMatchers("/", "/about", "/agreement", "/login").permitAll()
+                .requestMatchers("/", "/about", "/agreement", "/contact", "/login").permitAll()
                 .anyRequest().authenticated()
         }.exceptionHandling {
             it.authenticationEntryPoint(AuthenticationEntryPointImpl())
