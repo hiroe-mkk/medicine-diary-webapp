@@ -20,10 +20,10 @@ import org.springframework.security.web.authentication.*
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccountService) {
-    @Value("\${user.admin.username}")
+    @Value("\${application.admin.username}")
     lateinit var adminUsername: String
 
-    @Value("\${user.admin.password}")
+    @Value("\${application.admin.password}")
     lateinit var adminPassword: String
 
     @Bean

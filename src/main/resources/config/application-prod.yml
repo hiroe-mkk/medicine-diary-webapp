@@ -69,11 +69,15 @@ aws:
     endpoint: ${S3_ENDPOINT}
     bucketName: ${S3_BUCKET}
 
-endpoint:
-  image:
-    illustration: ${S3_ENDPOINT}/illustrations
 
-user:
+application:
+  name: お薬日記
+  endpoint:
+    web: ${WEB_ENDPOINT}
   admin:
     username: ${USER_ADMIN_USERNAME:admin}
     password: ${USER_ADMIN_PASSWORD}
+
+endpoint:
+  image:
+    illustration: ${S3_ENDPOINT}/illustrations

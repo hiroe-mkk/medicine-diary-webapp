@@ -97,8 +97,3 @@ application:
 endpoint:
   image:
     illustration: http://host.docker.internal:19000/medicine-diary/illustrations
-
-user:
-  admin:
-    username: admin
-    password: password
