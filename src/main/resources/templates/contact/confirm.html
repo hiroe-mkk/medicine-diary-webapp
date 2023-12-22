@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+      <div class="container is-max-desktop p-3">
+        <div class="has-text-centered">
+          <p class="is-size-4 has-text-weight-bold has-text-grey-dark py-3">
+            お問い合わせ内容確認
+          </p>
+          <p class="has-text-weight-bold">
+            以下の内容で送信してよろしいですか？
+          </p>
+        </div>
+
+        <form
+          method="post"
+          class="form"
+          th:action="@{/contact}"
+          th:object="${form}"
+        >
+          <div class="content py-4">
+            <div class="notification py-3 px-5">
+              <p class="has-text-grey-dark pb-2">
+                <strong>ご連絡先メールアドレス *</strong><br />
+                <span>[[*{emailAddress}]]</span>
+                <input
+                  type="text"
+                  name="emailAddress"
+                  th:value="*{emailAddress}"
+                  hidden
+                />
+              </p>
+              <p class="has-text-grey-dark pb-2">
+                <strong>お名前 *</strong><br />
+                <span>[[*{name}]]</span>
+                <input type="text" name="name" th:value="*{name}" hidden />
+              </p>
+              <p class="has-text-grey-dark pb-2">
+                <strong>お問い合わせ内容 *</strong><br />
+                <span>[[*{content}]]</span>
+                <input
+                  type="text"
+                  name="content"
+                  th:value="*{content}"
+                  hidden
+                />
+              </p>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-centered my-3">
+            <p class="control">
+              <button class="button is-small is-rounded is-link">送信</button>
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                class="button is-small is-rounded is-outlined is-danger"
+                @click="goBack()"
+              >
+                キャンセル
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
