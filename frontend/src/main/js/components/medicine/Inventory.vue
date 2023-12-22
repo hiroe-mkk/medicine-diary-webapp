@@ -72,7 +72,7 @@
           在庫
         </p>
         <form class="form" method="post" @submit.prevent="submitForm()">
-          <div class="content my-3">
+          <div class="content py-3">
             <p class="has-text-weight-bold has-text-grey-dark">
               使用中のパッケージ
             </p>
@@ -175,10 +175,10 @@
               </div>
             </div>
 
-            <p class="has-text-weight-bold has-text-grey-dark pb-2">
+            <p class="has-text-weight-bold has-text-grey-dark">
               未使用のパッケージ
             </p>
-            <div class="notification has-background-white-bis pt-3 pb-4 px-5">
+            <div class="notification has-background-white-bis py-4 px-5">
               <div class="field">
                 <div class="control has-icons-right">
                   <input

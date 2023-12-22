@@ -18,8 +18,8 @@
             th:text="${title}"
           ></p>
         </div>
-        <form method="post" class="form" th:action="@{__${executePath}__}">
-          <div class="content my-4">
+        <form class="form" method="post" th:action="@{__${executePath}__}">
+          <div class="content py-4">
             <div
               th:replace="~{fragments/medicineBasicInfoForm::macro(${form})}"
             ></div>
@@ -30,12 +30,12 @@
           </div>
           <div class="field is-grouped is-grouped-centered my-3">
             <p class="control">
-              <button class="button is-small is-rounded is-link">完了</button>
+              <button class="button is-rounded is-link">完了</button>
             </p>
             <p class="control">
               <button
                 type="button"
-                class="button is-small is-rounded is-outlined is-danger"
+                class="button is-rounded is-outlined is-danger"
                 @click="goBack()"
               >
                 キャンセル

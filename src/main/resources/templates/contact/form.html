@@ -9,6 +9,99 @@
   </head>
 
   <body>
+    <div layout:fragment="content">
+      <div class="container is-max-desktop p-3">
+        <div class="has-text-centered">
+          <p class="is-size-4 has-text-weight-bold has-text-grey-dark py-3">
+            お問い合わせ
+          </p>
+          <div class="message is-link is-inline-block has-text-weight-semibold">
+            <p class="message-body has-text-left">
+              以下のフォームより、お気軽にお問い合わせください。<br />
+              お問い合わせいただいた内容は確認後、回答させていただきます。<br />
+              ※個人情報は、ご本人の同意なく第三者に提供することはございません。<br />
+            </p>
+          </div>
+        </div>
+        <form
+          method="post"
+          class="form"
+          th:action="@{/contact?confirm}"
+          th:object="${form}"
+        >
+          <div class="content py-4">
+            <div class="field my-3">
+              <label class="label has-text-grey is-flex is-align-items-center">
+                ご連絡先メールアドレス
+                <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+              </label>
+              <div class="control">
+                <input
+                  class="input is-info is-rounded"
+                  type="email"
+                  name="emailAddress"
+                  th:value="*{emailAddress}"
+                  th:errorclass="is-danger"
+                />
+                <p
+                  class="help is-danger"
+                  th:if="${#fields.hasErrors('emailAddress')}"
+                  th:errors="*{emailAddress}"
+                ></p>
+              </div>
+            </div>
 
+            <div class="field my-3">
+              <label class="label has-text-grey is-flex is-align-items-center">
+                お名前
+                <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+              </label>
+              <div class="control">
+                <input
+                  class="input is-info is-rounded"
+                  type="text"
+                  name="name"
+                  th:value="*{name}"
+                  th:errorclass="is-danger"
+                />
+                <p
+                  class="help is-danger"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"
+                ></p>
+              </div>
+            </div>
+
+            <div class="field my-3">
+              <label class="label has-text-grey is-flex is-align-items-center">
+                お問い合わせ内容
+                <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+              </label>
+              <div class="control">
+                <textarea
+                  class="textarea is-info has-fixed-size"
+                  rows="5"
+                  name="content"
+                  placeholder="500文字以内で入力してください。"
+                  th:errorclass="is-danger"
+                >[[*{content}]]</textarea>
+                <p
+                  class="help is-danger"
+                  th:if="${#fields.hasErrors('content')}"
+                  th:errors="*{content}"
+                ></p>
+              </div>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-centered my-3">
+            <p class="control">
+              <button class="button is-rounded is-link">
+                入力内容を確認する
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

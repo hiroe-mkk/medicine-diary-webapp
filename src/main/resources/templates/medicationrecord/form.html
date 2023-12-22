@@ -25,7 +25,7 @@
           th:object="${form}"
           th:if="${form != null}"
         >
-          <div class="content my-4">
+          <div class="content py-4">
             <div class="field is-horizontal my-3">
               <div class="field-label is-flex is-align-items-center">
                 <label class="label has-text-grey">服用したお薬</label>
@@ -256,9 +256,7 @@
                       name="note"
                       placeholder="500文字以内で入力してください。"
                       th:errorclass="is-danger"
-                    >
-[[*{note}]]</textarea
-                    >
+                    >[[*{note}]]</textarea>
                     <p
                       class="help is-danger"
                       th:if="${#fields.hasErrors('note')}"
@@ -271,12 +269,12 @@
           </div>
           <div class="field is-grouped is-grouped-centered my-3">
             <p class="control">
-              <button class="button is-small is-rounded is-link">完了</button>
+              <button class="button is-rounded is-link">完了</button>
             </p>
             <p class="control">
               <button
                 type="button"
-                class="button is-small is-rounded is-outlined is-danger"
+                class="button is-rounded is-outlined is-danger"
                 @click="goBack()"
               >
                 キャンセル
