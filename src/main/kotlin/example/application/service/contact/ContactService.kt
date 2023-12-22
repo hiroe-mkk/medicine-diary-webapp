@@ -11,6 +11,6 @@ class ContactService(private val contactEmailSender: ContactEmailSender) {
     fun sendContactEmail(command: ContactFormCreationCommand) {
         contactEmailSender.send(ContactForm(command.validatedEmailAddress,
                                             command.validatedName,
-                                            command.validatedMessage))
+                                            command.validatedContent))
     }
 }

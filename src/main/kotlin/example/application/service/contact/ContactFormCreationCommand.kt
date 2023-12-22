@@ -15,10 +15,10 @@ data class ContactFormCreationCommand(@field:NotWhitespaceOnly(message = "※ご
                                       val name: String,
                                       @field:NotWhitespaceOnly(message = "※お問い合わせ内容を入力してください。")
                                       @field:Size(max = 500, message = "※{max}文字以内で入力してください。")
-                                      val message: String) {
+                                      val content: String) {
     val validatedEmailAddress: EmailAddress = EmailAddress(emailAddress.trim())
     val validatedName: String = name.trim()
-    val validatedMessage: String = message.trim()
+    val validatedContent: String = content.trim()
 
     companion object {
         fun initialize(): ContactFormCreationCommand {

@@ -7,4 +7,4 @@ import example.domain.shared.type.*
  */
 data class ContactForm(val emailAddress: EmailAddress,
                        val name: String,
-                       val message: String)
+                       val content: String)
