@@ -11,9 +11,10 @@ import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
+
 @Controller
 @RequestMapping("/contact")
-class ContactPageController {
+class ContactPageController(private val contactService: ContactService) {
     /**
      * お問い合わせ画面を表示する
      */
@@ -28,9 +29,30 @@ class ContactPageController {
      */
     @PostMapping(params = ["confirm"])
     fun confirmContactContent(@ModelAttribute("form") @Validated contactFormCreationCommand: ContactFormCreationCommand,
-                         bindingResult: BindingResult): String {
+                              bindingResult: BindingResult): String {
         if (bindingResult.hasErrors()) return "contact/form"
 
         return "contact/confirm"
+    }
+
+    /**
+     * お問い合わせフォームを送信する
+     */
+    @PostMapping
+    fun sendContactForm(@ModelAttribute("form") @Validated contactFormCreationCommand: ContactFormCreationCommand,
+                        bindingResult: BindingResult,
+                        redirectAttributes: RedirectAttributes): String {
+        if (bindingResult.hasErrors()) return "contact/form"
+
+        contactService.sendContactForm(contactFormCreationCommand)
+        return "redirect:/contact?complete"
+    }
+
+    /**
+     * お問い合わせ完了画面を表示する
+     */
+    @GetMapping(params = ["complete"])
+    fun displayContactCompletionPage(): String {
+        return "contact/complete"
     }
 }
