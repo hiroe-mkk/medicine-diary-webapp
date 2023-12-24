@@ -1,3 +1,6 @@
+# ---------------------------
+# ルートドメイン
+# ---------------------------
 resource "aws_route53_record" "certificate_validation_root" {
   for_each = {
     for dvo in aws_acm_certificate.root.domain_validation_options : dvo.domain_name => {
@@ -28,9 +31,12 @@ resource "aws_route53_record" "root_a" {
 }
 
 
-resource "aws_route53_record" "certificate_validation_cloudfront" {
+# ---------------------------
+# 画像用ドメイン
+# ---------------------------
+resource "aws_route53_record" "certificate_validation_image" {
   for_each = {
-    for dvo in aws_acm_certificate.cloudfront.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.image.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       type   = dvo.resource_record_type
       record = dvo.resource_record_value
@@ -45,7 +51,7 @@ resource "aws_route53_record" "certificate_validation_cloudfront" {
   allow_overwrite = true
 }
 
-resource "aws_route53_record" "s3_cname" {
+resource "aws_route53_record" "image_cname" {
   name    = var.image_domain
   type    = "CNAME"
   zone_id = data.aws_route53_zone.this.zone_id
