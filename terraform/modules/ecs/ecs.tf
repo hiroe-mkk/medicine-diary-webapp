@@ -60,6 +60,14 @@ resource "aws_ecs_task_definition" "this" {
             "valueFrom" = "/${var.prefix}/spring/datasource/mysql_username"
           },
           {
+            "name"      = "GMAIL_USERNAME"
+            "valueFrom" = "/${var.prefix}/spring/mail/gmail_username"
+          },
+          {
+            "name"      = "GMAIL_APP_PASSWORD"
+            "valueFrom" = "/${var.prefix}/spring/mail/gmail_app_password"
+          },
+          {
             "name"      = "PROFILES"
             "valueFrom" = "/${var.prefix}/spring/profiles"
           },

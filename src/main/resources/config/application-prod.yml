@@ -35,6 +35,19 @@ spring:
             authorizationUri: https://auth.login.yahoo.co.jp/yconnect/v2/authorization
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+        auth: true
+
 
 # Actuatorエンドポイントへのアクセス制御
 management:
@@ -59,6 +72,7 @@ management:
       percentiles:
         "http.server.requests": 0.5, 0.99 # 50％ile と 99%ile を取得する
 
+
 logging:
   level:
     root: INFO
@@ -75,6 +89,8 @@ application:
   endpoint:
     web: ${WEB_ENDPOINT}
     image: ${S3_ENDPOINT}
+  emailAddress:
+    contact: ${GMAIL_USERNAME}
   admin:
     username: ${USER_ADMIN_USERNAME:admin}
     password: ${USER_ADMIN_PASSWORD}
