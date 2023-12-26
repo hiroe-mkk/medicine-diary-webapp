@@ -90,7 +90,8 @@ application:
   endpoint:
     web: http://localhost:8080
     image: http://host.docker.internal:19000/medicine-diary
+  emailAddress:
+    contact: application@example.co.jp
   admin:
     username: admin
     password: password
-    emailAddress: application@example.co.jp

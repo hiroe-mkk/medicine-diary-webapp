@@ -6,9 +6,7 @@ import org.springframework.stereotype.*
 @Component
 class HtmlEmailFactory(private val applicationProperties: ApplicationProperties) {
     fun createHeader(to: EmailAddress): Email.Header {
-        return Email.Header(EmailAddress(applicationProperties.admin.emailAddress),
-                            to,
-                            "【${applicationProperties.name}】")
+        return Email.Header(to, "【${applicationProperties.name}】")
     }
 
     fun createBodyHeader(title: String): String {
