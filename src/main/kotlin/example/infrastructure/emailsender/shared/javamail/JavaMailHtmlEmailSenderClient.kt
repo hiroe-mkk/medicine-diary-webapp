@@ -9,8 +9,8 @@ import java.nio.charset.*
 
 @Profile("local")
 @Component
-class JavaMailEmailSenderClient(private val applicationProperties: ApplicationProperties,
-                                private val javaMailSender: JavaMailSender) : EmailSenderClient {
+class JavaMailHtmlEmailSenderClient(private val applicationProperties: ApplicationProperties,
+                                    private val javaMailSender: JavaMailSender) : EmailSenderClient {
     override fun send(email: Email) {
         val mimeMessage = javaMailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, false, StandardCharsets.UTF_8.name())
