@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://host.docker.internal:13306/medicine_diary
+    url: jdbc:mysql://localhost:13306/medicine_diary
     username: root
     password: root
   security:
@@ -36,7 +36,7 @@ spring:
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
   mail:
-    host: host.docker.internal
+    host: localhost
     port: 11025
     properties:
       mail:
@@ -81,7 +81,7 @@ logging:
 minio:
   user: root
   password: root-password
-  endpoint: http://host.docker.internal:19000
+  endpoint: http://localhost:19000
   bucketName: medicine-diary
 
 
@@ -89,7 +89,7 @@ application:
   name: お薬日記
   endpoint:
     web: http://localhost:8080
-    image: http://host.docker.internal:19000/medicine-diary
+    image: http://localhost:19000/medicine-diary
   emailAddress:
     contact: application@example.co.jp
   admin:
