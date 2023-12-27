@@ -11,7 +11,7 @@ class JavaMailEmailSenderClient(private val applicationProperties: ApplicationPr
     override fun send(email: Email) {
         val mimeMessage = javaMailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, false, StandardCharsets.UTF_8.name())
-        helper.setFrom(applicationProperties.emailAddress.contact)
+        helper.setFrom(applicationProperties.emailAddress)
         helper.setTo(email.header.to.toString())
         helper.setSubject(email.header.subject)
         helper.setText(email.body)
