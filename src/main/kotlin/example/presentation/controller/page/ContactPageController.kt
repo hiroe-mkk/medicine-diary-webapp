@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
 
-
 @Controller
 @RequestMapping("/contact")
 class ContactPageController(private val contactService: ContactService) {
@@ -21,6 +20,14 @@ class ContactPageController(private val contactService: ContactService) {
     @GetMapping
     fun displayContactPage(model: Model): String {
         model.addAttribute("form", ContactFormCreationCommand.initialize())
+        return "contact/form"
+    }
+
+    /**
+     * お問い合わせ画面を再表示する
+     */
+    @PostMapping(params = ["redo"])
+    fun redisplayContactPage(@ModelAttribute("form") @Validated contactFormCreationCommand: ContactFormCreationCommand): String {
         return "contact/form"
     }
 

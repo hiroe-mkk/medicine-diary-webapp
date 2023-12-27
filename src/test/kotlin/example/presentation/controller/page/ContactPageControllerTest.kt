@@ -40,6 +40,24 @@ internal class ContactPageControllerTest(@Autowired private val mockMvc: MockMvc
     }
 
     @Nested
+    inner class RedisplayContactPageTest {
+        @Test
+        @DisplayName("お問い合わせ画面を再表示する")
+        fun redisplayContactPage() {
+            //when:
+            val actions = mockMvc.perform(post("${PATH}?redo")
+                                              .with(csrf())
+                                              .param("emailAddress", emailAddress)
+                                              .param("name", name)
+                                              .param("content", content))
+
+            //then:
+            actions.andExpect(status().isOk)
+                .andExpect(view().name("contact/form"))
+        }
+    }
+
+    @Nested
     inner class ConfirmContactContentTest {
         @Test
         @DisplayName("お問い合わせ内容確認画面を表示する")
