@@ -90,8 +90,7 @@ application:
   endpoint:
     web: http://localhost:8080
     image: http://localhost:19000/medicine-diary
-  emailAddress:
-    contact: application@example.co.jp
+  emailAddress: application@example.co.jp
   admin:
     username: admin
     password: password

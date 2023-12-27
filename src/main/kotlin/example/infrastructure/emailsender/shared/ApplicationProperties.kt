@@ -5,13 +5,11 @@ import org.springframework.boot.context.properties.*
 @ConfigurationProperties(prefix = "application")
 data class ApplicationProperties(val name: String,
                                  val endpoint: Endpoint,
-                                 val emailAddress: EmailAddress,
+                                 val emailAddress: String,
                                  val admin: Admin) {
 
     data class Endpoint(val web: String,
                         val image: String)
-
-    data class EmailAddress(val contact: String)
 
     data class Admin(val username: String,
                      val password: String)

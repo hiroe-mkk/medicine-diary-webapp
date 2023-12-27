@@ -89,8 +89,7 @@ application:
   endpoint:
     web: ${WEB_ENDPOINT}
     image: ${S3_ENDPOINT}
-  emailAddress:
-    contact: ${GMAIL_USERNAME}
+  emailAddress: ${GMAIL_USERNAME}
   admin:
     username: ${USER_ADMIN_USERNAME:admin}
     password: ${USER_ADMIN_PASSWORD}
