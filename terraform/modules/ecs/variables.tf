@@ -37,6 +37,6 @@ variable "iam_role_ecs_task_execution_arn" {
   type = string
 }
 
-variable "cloudwatch_log_group_springboot_name"{
+variable "cloudwatch_log_group_springboot_name" {
   type = string
 }

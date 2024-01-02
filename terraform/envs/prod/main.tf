@@ -18,24 +18,6 @@ module "iam" {
   s3_bucket_this_arn = module.s3.s3_bucket_this_arn
 }
 
-module "ecs" {
-  source = "../../modules/ecs"
-
-  prefix                               = local.prefix
-  security_group_webapp_id             = module.security_group.security_group_webapp_id
-  subnet_public_ids                    = module.network.subnet_public_ids
-  lb_target_group_this_arn             = module.routing.lb_target_group_this_arn
-  iam_role_ecs_task_arn                = module.iam.iam_role_ecs_task_arn
-  iam_role_ecs_task_execution_arn      = module.iam.iam_role_ecs_task_execution_arn
-  cloudwatch_log_group_springboot_name = module.cloudwatch.cloudwatch_log_group_springboot_name
-}
-
-module "cloudwatch" {
-  source = "../../modules/cloudwatch"
-
-  prefix = local.prefix
-}
-
 module "routing" {
   source = "../../modules/routing"
 
@@ -51,6 +33,12 @@ module "routing" {
   subnet_public_ids                          = module.network.subnet_public_ids
   s3_bucket_this_id                          = module.s3.s3_bucket_this_id
   s3_bucket_this_bucket_regional_domain_name = module.s3.s3_bucket_this_bucket_regional_domain_name
+}
+
+module "cloudwatch" {
+  source = "../../modules/cloudwatch"
+
+  prefix = local.prefix
 }
 
 module "db" {
@@ -69,4 +57,16 @@ module "s3" {
   prefix                                = local.prefix
   cloudfront_distribution_s3_bucket_arn = module.routing.cloudfront_distribution_s3_bucket_arn
   iam_role_ecs_task_arn                 = module.iam.iam_role_ecs_task_arn
+}
+
+module "ecs" {
+  source = "../../modules/ecs"
+
+  prefix                               = local.prefix
+  security_group_webapp_id             = module.security_group.security_group_webapp_id
+  subnet_public_ids                    = module.network.subnet_public_ids
+  lb_target_group_this_arn             = module.routing.lb_target_group_this_arn
+  iam_role_ecs_task_arn                = module.iam.iam_role_ecs_task_arn
+  iam_role_ecs_task_execution_arn      = module.iam.iam_role_ecs_task_execution_arn
+  cloudwatch_log_group_springboot_name = module.cloudwatch.cloudwatch_log_group_springboot_name
 }
