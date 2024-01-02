@@ -127,6 +127,8 @@ resource "aws_ecs_service" "this" {
   cluster         = aws_ecs_cluster.this.arn
   task_definition = aws_ecs_task_definition.this.arn
 
+  enable_execute_command = true
+
   desired_count                      = var.desired_count
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
