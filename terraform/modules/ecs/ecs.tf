@@ -40,6 +40,10 @@ resource "aws_ecs_task_definition" "this" {
             "valueFrom" = "/${var.prefix}/aws/s3_endpoint"
           },
           {
+            "name"      = "SES_VERIFIED_ADDRESS"
+            "valueFrom" = "/${var.prefix}/aws/ses_verified_address"
+          },
+          {
             "name"      = "WEB_ENDPOINT"
             "valueFrom" = "/${var.prefix}/aws/web_endpoint"
           },
@@ -58,14 +62,6 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "MYSQL_USERNAME"
             "valueFrom" = "/${var.prefix}/spring/datasource/mysql_username"
-          },
-          {
-            "name"      = "GMAIL_USERNAME"
-            "valueFrom" = "/${var.prefix}/spring/mail/gmail_username"
-          },
-          {
-            "name"      = "GMAIL_APP_PASSWORD"
-            "valueFrom" = "/${var.prefix}/spring/mail/gmail_app_password"
           },
           {
             "name"      = "PROFILES"

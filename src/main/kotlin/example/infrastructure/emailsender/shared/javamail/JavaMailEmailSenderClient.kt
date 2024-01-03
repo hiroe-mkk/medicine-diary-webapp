@@ -1,10 +1,12 @@
 package example.infrastructure.emailsender.shared.javamail
 
 import example.infrastructure.emailsender.shared.*
+import org.springframework.context.annotation.*
 import org.springframework.mail.javamail.*
 import org.springframework.stereotype.*
 import java.nio.charset.*
 
+@Profile("local")
 @Component
 class JavaMailEmailSenderClient(private val applicationProperties: ApplicationProperties,
                                 private val javaMailSender: JavaMailSender) : EmailSenderClient {

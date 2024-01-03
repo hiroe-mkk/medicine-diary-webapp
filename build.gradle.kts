@@ -39,6 +39,7 @@ dependencies {
     // AWS
     implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.529"))
     implementation("com.amazonaws:aws-java-sdk-s3")
+    implementation("com.amazonaws:aws-java-sdk-ses")
 
     // セキュリティ
     implementation("org.springframework.boot:spring-boot-starter-security")

@@ -35,18 +35,6 @@ spring:
             authorizationUri: https://auth.login.yahoo.co.jp/yconnect/v2/authorization
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${GMAIL_USERNAME}
-    password: ${GMAIL_APP_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-            required: true
-        auth: true
 
 
 # Actuatorエンドポイントへのアクセス制御
@@ -82,14 +70,15 @@ aws:
   s3:
     endpoint: ${S3_ENDPOINT}
     bucketName: ${S3_BUCKET}
-
+  ses:
+    address: ${SES_VERIFIED_ADDRESS}
 
 application:
   name: お薬日記
   endpoint:
     web: ${WEB_ENDPOINT}
     image: ${S3_ENDPOINT}
-  emailAddress: ${GMAIL_USERNAME}
+  emailAddress: ${SES_VERIFIED_ADDRESS}
   admin:
     username: ${USER_ADMIN_USERNAME:admin}
     password: ${USER_ADMIN_PASSWORD}

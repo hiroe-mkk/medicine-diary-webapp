@@ -115,3 +115,33 @@ resource "aws_iam_role_policy_attachment" "ecs_task_s3" {
   role       = aws_iam_role.ecs_task.name
   policy_arn = aws_iam_policy.s3.arn
 }
+
+
+resource "aws_iam_policy" "ses" {
+  name = "${var.prefix}-ses"
+
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "ses:SendRawEmail",
+            "ses:SendEmail"
+          ],
+          "Resource" : "*"
+        }
+      ]
+    }
+  )
+
+  tags = {
+    Name = "${var.prefix}-ses"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_ses" {
+  role       = aws_iam_role.ecs_task.name
+  policy_arn = aws_iam_policy.ses.arn
+}
