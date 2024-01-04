@@ -33,7 +33,8 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
             .httpBasic {
                 it.realmName("Actuator and Admin Realm")
             }.authorizeHttpRequests {
-                it.requestMatchers("/actuator/**").hasRole("ADMIN")
+                it.requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/actuator/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             }
         return http.build()
@@ -57,13 +58,6 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
             it.logoutSuccessHandler(LogoutSuccessHandlerImpl())
         }
         return http.build()
-    }
-
-    @Bean
-    fun webSecurityCustomizer(): WebSecurityCustomizer {
-        return WebSecurityCustomizer {
-            it.ignoring().requestMatchers("/actuator/health")
-        }
     }
 
     @Bean

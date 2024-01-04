@@ -40,9 +40,6 @@ spring:
 # Actuatorエンドポイントへのアクセス制御
 management:
   endpoint:
-    env:
-      show-values: when_authorized
-      roles: admin
     health:
       show-details: when_authorized # healthエンドポイントの詳細情報を認証時のみ表示
       roles: admin
@@ -50,21 +47,14 @@ management:
     web:
       basePath: /actuator
       exposure:
-        include: health, info
-        exclude: shutdown, env, trace, configprops, heapdump
-  metrics:
-    web:
-      server:
-        requests-metric-name: http.server.requests
-    distribution:
-      percentiles:
-        "http.server.requests": 0.5, 0.99 # 50％ile と 99%ile を取得する
-
+        include: health
+        exclude: 'shutdown, env, trace, configprops, heapdump'
 
 logging:
   level:
     root: INFO
     org.springframework: WARN
+
 
 aws:
   s3:
