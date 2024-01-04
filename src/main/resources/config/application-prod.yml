@@ -77,8 +77,8 @@ application:
   name: お薬日記
   endpoint:
     web: ${WEB_ENDPOINT}
-    image: ${S3_ENDPOINT}
+    image: ${IMAGE_ENDPOINT}
   emailAddress: ${SES_VERIFIED_ADDRESS}
   admin:
-    username: ${USER_ADMIN_USERNAME:admin}
-    password: ${USER_ADMIN_PASSWORD}
+    username: ${ADMIN_USERNAME:admin}
+    password: ${ADMIN_PASSWORD}

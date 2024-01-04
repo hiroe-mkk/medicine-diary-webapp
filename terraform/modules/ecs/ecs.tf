@@ -32,6 +32,18 @@ resource "aws_ecs_task_definition" "this" {
 
         "secrets" = [
           {
+            "name"      = "ADMIN_PASSWORD"
+            "valueFrom" = "/${var.prefix}/application/admin_password"
+          },
+          {
+            "name"      = "WEB_ENDPOINT"
+            "valueFrom" = "/${var.prefix}/application/web_endpoint"
+          },
+          {
+            "name"      = "IMAGE_ENDPOINT"
+            "valueFrom" = "/${var.prefix}/application/image_endpoint"
+          },
+          {
             "name"      = "S3_BUCKET"
             "valueFrom" = "/${var.prefix}/aws/s3_bucket"
           },
@@ -42,10 +54,6 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "SES_VERIFIED_ADDRESS"
             "valueFrom" = "/${var.prefix}/aws/ses_verified_address"
-          },
-          {
-            "name"      = "WEB_ENDPOINT"
-            "valueFrom" = "/${var.prefix}/aws/web_endpoint"
           },
           {
             "name"      = "MYSQL_DATABASE_NAME"
@@ -90,10 +98,6 @@ resource "aws_ecs_task_definition" "this" {
           {
             "name"      = "YAHOO_CLIENT_SECRET"
             "valueFrom" = "/${var.prefix}/spring/security/oauth2/yahoo_client_secret"
-          },
-          {
-            "name"      = "USER_ADMIN_PASSWORD"
-            "valueFrom" = "/${var.prefix}/user/admin_password"
           }
         ]
 
