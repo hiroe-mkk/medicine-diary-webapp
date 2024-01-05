@@ -1,8 +1,8 @@
-# ローカルの jdk で起動する (8080) 場合
+# コンテナの jdk で起動する (18080) 場合
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/medicine_diary
+    url: jdbc:mysql://mysql:3306/medicine_diary
     username: root
     password: root
   security:
@@ -18,14 +18,14 @@ spring:
             provider: line
             scope: profile
             authorizationGrantType: authorization_code
-            redirectUri: http://localhost:8080/login/oauth2/code/line
+            redirectUri: http://localhost:18080/login/oauth2/code/line
           yahoo:
             clientId: ${YAHOO_CLIENT_ID}
             clientSecret: ${YAHOO_CLIENT_SECRET}
             provider: yahoo
             scope: openid
             authorizationGrantType: authorization_code
-            redirectUri: http://localhost:8080/login/oauth2/code/yahoo
+            redirectUri: http://localhost:18080/login/oauth2/code/yahoo
         provider:
           line:
             authorizationUri: https://access.line.me/oauth2/v2.1/authorize
@@ -37,8 +37,8 @@ spring:
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
   mail:
-    host: localhost
-    port: 11025
+    host: minio
+    port: 1025
     properties:
       mail:
         smtp:
@@ -82,14 +82,14 @@ logging:
 minio:
   user: root
   password: root-password
-  endpoint: http://localhost:19000
+  endpoint: http://mailhog:9000
   bucketName: medicine-diary
 
 
 application:
   name: お薬日記
   endpoint:
-    web: http://localhost:8080
+    web: http://localhost:18080
     image: http://localhost:19000/medicine-diary
   emailAddress: application@example.co.jp
   admin:
