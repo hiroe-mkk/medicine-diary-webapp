@@ -6,31 +6,58 @@
 
   <body>
     <div th:fragment="macro" th:remove="tag">
-      <div class="block">
-        <p class="my-5">
-          <strong class="underline-marker is-size-4 has-text-link"
-            >お薬日記とは？
-          </strong>
-        </p>
-        <p class="has-text-weight-semibold">
-          お薬を服用した際、体調の変化や副作用を記録したことはありますか？<br />
-          服用後の体の変化や感じたことを記録することで、薬の効果や健康状態について新たな気づきを得ることができます。<br />
-          しかし、紙や手帳に記録するのは手間がかかりますし、管理も面倒ですよね。<br />
-          お薬日記は、データを手軽に入力でき、いつでも簡単にアクセスできるため、継続的に記録するのに最適です。<br />
-          ぜひ、お薬日記で記録を始めてみてください。
-        </p>
-      </div>
-      <div class="block">
-        <p class="my-5">
-          <strong class="underline-marker is-size-4 has-text-link">
-            お薬日記でなにができるの？
-          </strong>
-        </p>
+      <div class="content has-text-left p-3 my-3">
         <div class="tile is-ancestor">
+          <div class="tile is-10 is-vertical is-parent">
+            <div class="tile is-child">
+              <strong class="underline-marker is-size-4 has-text-link-dark">
+                お薬を服用したとき、記録を残していますか？
+              </strong>
+            </div>
+            <div class="tile is-child px-4">
+              <p class="block has-text-weight-semibold">
+                日々のお薬や体調の記録は、より適切な治療法を見つけるカギとなります。<br />
+              </p>
+              <p class="block has-text-weight-semibold">
+                でも、手書きは手間がかかって管理も面倒ですよね。<br />
+                『
+                <strong class="is-size-5 has-text-info-dark"> お薬日記</strong>
+                』なら、お薬を服用したときにサクッと入力するだけ！<br />
+                いつでもどこでも手軽に記録が確認できます。
+              </p>
+              <p class="block has-text-weight-semibold">
+                カンタン操作で健康状態をらくらく見える化する 『
+                <strong class="is-size-5 has-text-info-dark"> お薬日記 </strong>
+                』 。<br />
+                あなたもぜひ始めてみませんか？
+              </p>
+            </div>
+          </div>
           <div class="tile is-parent">
-            <div class="notification has-background-white p-5">
+            <div
+              class="tile is-child is-flex is-justify-content-center is-align-items-flex-end"
+            >
+              <figure class="image is-128x128 m-0 px-3">
+                <img
+                  th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/inspiration.png'"
+                  alt="medicines"
+                />
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content p-3">
+        <p class="my-5 has-text-left">
+          <strong class="underline-marker is-size-4 has-text-link">
+            お薬日記でできること
+          </strong>
+        </p>
+        <div class="tile is-ancestor px-3">
+          <div class="tile is-parent">
+            <div class="tile is-child notification has-background-white p-3">
               <div class="is-flex is-justify-content-center">
-                <figure class="image is-128x128 m-0">
+                <figure class="image is-128x128 m-0 pt-3">
                   <img
                     th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/medicines.png'"
                     alt="medicines"
@@ -40,18 +67,16 @@
               <strong class="underline-marker has-text-link">
                 お薬情報を簡単登録
               </strong>
-              <p
-                class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
-              >
-                お薬の名前や使い方など、詳細な情報を簡単に登録して管理できます。
-                写真も追加できるので、お薬の見た目も視覚的に確認できます。
+              <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
+                お薬の名前や使い方など、詳細な情報を登録して、まとめて管理できます。
+                写真も設定できるので、お薬の種類が一目でわかります。
               </p>
             </div>
           </div>
           <div class="tile is-parent">
-            <div class="notification has-background-white p-5">
+            <div class="tile is-child notification has-background-white p-3">
               <div class="is-flex is-justify-content-center">
-                <figure class="image is-128x128 m-0">
+                <figure class="image is-128x128 m-0 pt-3">
                   <img
                     th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/shopping.png'"
                     alt="shopping"
@@ -61,20 +86,18 @@
               <strong class="underline-marker has-text-link">
                 在庫を管理して購入のタイミングを把握
               </strong>
-              <p
-                class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
-              >
-                お薬には、必要に応じて在庫情報を設定することができます。
-                在庫状況がいつでも確認できるので、必要な時に不足してしまったり、余分に買ってしまったりするのを防ぐことができます。
+              <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
+                お薬には、必要に応じて在庫情報を設定できます。
+                いつでもどこでも在庫状況が確認できるので、必要な時に不足したり余分に購入したりすることを防げます。
               </p>
             </div>
           </div>
         </div>
-        <div class="tile is-ancestor">
+        <div class="tile is-ancestor px-3">
           <div class="tile is-parent">
-            <div class="notification has-background-white p-5">
+            <div class="tile is-child notification has-background-white p-3">
               <div class="is-flex is-justify-content-center">
-                <figure class="image is-128x128 m-0">
+                <figure class="image is-128x128 m-0 pt-3">
                   <img
                     th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/writing.png'"
                     alt="writing"
@@ -82,20 +105,18 @@
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
-                お薬の効果や変化を記録して体調管理
+                服用したお薬と効果を記録して体調管理
               </strong>
-              <p
-                class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
-              >
-                服用したお薬に関する情報を記録できます。
-                お薬を服用した時間や効果などを記録することで、体の変化が把握しやすくなります。
+              <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
+                服用したお薬とその効果などの情報を簡単に記録できます。
+                服用した時間や体調の変化などを詳細に記録することで、健康状態が把握しやすくなります。
               </p>
             </div>
           </div>
           <div class="tile is-parent">
-            <div class="notification has-background-white p-5">
+            <div class="tile is-child notification has-background-white p-3">
               <div class="is-flex is-justify-content-center">
-                <figure class="image is-128x128 m-0">
+                <figure class="image is-128x128 m-0 pt-3">
                   <img
                     th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/calendar.png'"
                     alt="calendar"
@@ -105,20 +126,18 @@
               <strong class="underline-marker has-text-link">
                 カレンダーでお薬を服用した日を確認
               </strong>
-              <p
-                class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
-              >
+              <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
                 お薬を服用した日をカレンダーでチェックできます。
                 日付ごとに服用した記録が表示されるので、服用パターンが一目でわかります。
               </p>
             </div>
           </div>
         </div>
-        <div class="tile is-ancestor">
+        <div class="tile is-ancestor px-3">
           <div class="tile is-parent">
-            <div class="notification has-background-white p-5">
+            <div class="tile is-child notification has-background-white p-3">
               <div class="is-flex is-justify-content-center">
-                <figure class="image is-128x128 m-0">
+                <figure class="image is-128x128 mb-5 pt-3">
                   <img
                     th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/share.png'"
                     alt="share"
@@ -128,9 +147,7 @@
               <strong class="underline-marker has-text-link">
                 家族やパートナーと情報を共有する
               </strong>
-              <p
-                class="is-size-7 has-text-weight-semibold has-text-left py-3 px-0"
-              >
+              <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
                 お薬や服用記録を家族やパートナーと共有できます。
                 お互いの健康状態を知り、理解し合うことで、安心感や絆が生まれ、ストレスや不安の軽減に繋がります。
               </p>

@@ -2,7 +2,7 @@
 <html
   xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-  class="has-navbar-fixed-top has-background-info-light"
+  class="has-navbar-fixed-top has-background-info-dark"
 >
   <head>
     <meta charset="UTF-8" />
@@ -29,7 +29,7 @@
 
   <body>
     <div id="home" sec:authorize="isAuthenticated()">
-      <div class="hero is-fullheight-with-navbar">
+      <div class="hero is-fullheight-with-navbar has-background-info-light">
         <header class="hero-head">
           <navbar
             th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
@@ -40,7 +40,7 @@
           ></resultmessage>
         </header>
         <main
-          class="hero-body has-background-info-light is-flex is-align-items-flex-start py-5"
+          class="hero-body is-flex is-align-items-flex-start py-5"
         >
           <div class="container is-max-desktop">
             <div class="tile is-ancestor">
@@ -244,7 +244,7 @@
               </figure>
             </div>
           </div>
-          <div class="container has-text-centered py-5">
+          <div class="container has-text-centered py-3">
             <div
               class="button is-medium is-info is-light is-rounded"
               @click="isAccountRegistrationModalActive = true"
@@ -261,27 +261,34 @@
         </main>
       </div>
 
-      <div class="container has-text-centered is-max-desktop p-5 my-5">
-        <div th:replace="~{fragments/about::macro}"></div>
-        <div class="block mt-3">
-          <div
-            class="button is-medium has-background-info-dark has-text-white is-rounded"
-            @click="isAccountRegistrationModalActive = true"
-          >
-            <strong class="px-5" @click="activateAccountRegistrationModal()">
-              お薬日記をはじめる
-            </strong>
-            <authentication ref="authentication"></authentication>
+      <div class="hero is-fullheight has-background-info-light">
+        <div class="hero-body p-5">
+          <div class="container has-text-centered is-max-desktop">
+            <div th:replace="~{fragments/about::macro}"></div>
+            <div class="block mt-4 mb-6">
+              <div
+                class="button is-medium has-background-info-dark has-text-white is-rounded"
+                @click="isAccountRegistrationModalActive = true"
+              >
+                <strong
+                  class="px-5"
+                  @click="activateAccountRegistrationModal()"
+                >
+                  お薬日記をはじめる
+                </strong>
+                <authentication ref="authentication"></authentication>
+              </div>
+            </div>
+            <div class="block m-0">
+              <a class="is-size-7 has-text-link" th:href="@{/contact}">
+                お問い合わせ
+              </a>
+              <span class="px-3">/</span>
+              <a class="is-size-7 has-text-link" th:href="@{/agreement}">
+                利用規約
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="block m-0">
-          <a class="is-size-7 has-text-link" th:href="@{/contact}">
-            お問い合わせ
-          </a>
-          <span class="px-3">/</span>
-          <a class="is-size-7 has-text-link" th:href="@{/agreement}">
-            利用規約
-          </a>
         </div>
       </div>
     </div>
