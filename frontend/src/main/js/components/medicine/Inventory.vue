@@ -14,13 +14,16 @@
           <p>
             <strong class="is-size-5">
               {{ inventory.value.remainingQuantity }} /
-              {{ inventory.value.quantityPerPackage }}
+              {{ inventory.value.quantityPerPackage }} 
             </strong>
-            <strong>{{ props.doseUnit }}</strong>
+            <span class="has-text-weight-semibold"> {{ props.doseUnit }}</span>
           </p>
           <p
             class="has-text-weight-semibold"
-            v-if="inventory.value.startedOn !== undefined"
+            v-if="
+              inventory.value.startedOn !== undefined &&
+              inventory.value.startedOn !== ''
+            "
           >
             使用開始日 ( {{ inventory.value.startedOn.replace(/-/g, '/') }} )
           </p>
@@ -40,9 +43,12 @@
           class="tile is-child notification has-background-success-light is-flex is-flex-direction-column is-justify-content-space-between has-text-right py-2 px-4"
         >
           <p class="has-text-weight-bold has-text-centered mb-2">未使用</p>
-          <strong class="is-size-5"
-            >{{ inventory.value.unusedPackage }}個</strong
-          >
+          <p>
+            <strong class="is-size-4">
+              {{ inventory.value.unusedPackage }}
+            </strong>
+            <span class="has-text-weight-semibold is-size-5"> 個</span>
+          </p>
         </div>
       </div>
     </div>
@@ -71,7 +77,7 @@
         >
           在庫
         </p>
-        <form class="form" method="post" @submit.prevent="submitForm()">
+        <form class="form" method="post" @submit.prevent="adjustInventory()">
           <div class="content py-3">
             <p class="has-text-weight-bold has-text-grey-dark">
               使用中のパッケージ
@@ -231,6 +237,48 @@
       </div>
     </div>
   </div>
+
+  <div
+    class="modal"
+    :class="{ 'is-active': isStoppageConfirmationModalActive }"
+  >
+    <div
+      class="modal-background"
+      @click="isStoppageConfirmationModalActive = false"
+    ></div>
+    <div class="modal-content is-flex is-justify-content-center">
+      <div class="message is-inline-block is-info">
+        <div class="message-body">
+          <div class="content">
+            <p class="has-text-centered mb-2">
+              <strong class="is-size-5 mb-1">在庫管理を終了しますか？</strong>
+              <br />
+            </p>
+            <div class="field is-grouped is-grouped-centered p-2">
+              <p class="control">
+                <button
+                  type="button"
+                  class="button is-small is-rounded is-link"
+                  @click="stopInventoryManagement()"
+                >
+                  終了する
+                </button>
+              </p>
+              <p class="control">
+                <button
+                  type="button"
+                  class="button is-small is-rounded is-outlined is-danger"
+                  @click="isStoppageConfirmationModalActive = false"
+                >
+                  キャンセル
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -259,13 +307,13 @@ const props = defineProps({
   csrf: String,
 });
 const emits = defineEmits(['updated:is-enabled']);
-defineExpose({ activateInventoryAdjustmentModal });
+defineExpose({ activateAdjustmentModal, activateStoppageConfirmationModal });
 const activateResultMessage = inject('activateResultMessage');
 
 const inventory = reactive({ value: undefined });
 const editingInventory = reactive({ value: undefined });
 const isInventoryAdjustmentModalActive = ref(false);
-
+const isStoppageConfirmationModalActive = ref(false);
 const fieldErrors = reactive(new FieldErrors());
 
 onMounted(() => {
@@ -281,7 +329,29 @@ onMounted(() => {
   emits('updated:is-enabled', inventory.value !== undefined);
 });
 
-function submitForm() {
+function activateAdjustmentModal() {
+  if (inventory.value !== undefined) {
+    editingInventory.value = {
+      remainingQuantity: inventory.value.remainingQuantity,
+      quantityPerPackage: inventory.value.quantityPerPackage,
+      startedOn: inventory.value.startedOn,
+      expirationOn: inventory.value.expirationOn,
+      unusedPackage: inventory.value.unusedPackage,
+    };
+  } else {
+    editingInventory.value = {
+      remainingQuantity: 0.0,
+      quantityPerPackage: 0.0,
+      startedOn: '',
+      expirationOn: '',
+      unusedPackage: 0,
+    };
+  }
+  fieldErrors.clear();
+  isInventoryAdjustmentModalActive.value = true;
+}
+
+function adjustInventory() {
   const form = new URLSearchParams();
   form.set('remainingQuantity', editingInventory.value.remainingQuantity);
   form.set('quantityPerPackage', editingInventory.value.quantityPerPackage);
@@ -314,7 +384,7 @@ function submitForm() {
       isInventoryAdjustmentModalActive.value = false;
 
       activateResultMessage('INFO', message);
-      emits('updated:is-enabled', inventory.value !== undefined);
+      emits('updated:is-enabled', true);
       return;
     })
     .catch((error) => {
@@ -361,25 +431,52 @@ function submitForm() {
     });
 }
 
-function activateInventoryAdjustmentModal() {
-  if (inventory.value !== undefined) {
-    editingInventory.value = {
-      remainingQuantity: inventory.value.remainingQuantity,
-      quantityPerPackage: inventory.value.quantityPerPackage,
-      startedOn: inventory.value.startedOn,
-      expirationOn: inventory.value.expirationOn,
-      unusedPackage: inventory.value.unusedPackage,
-    };
-  } else {
-    editingInventory.value = {
-      remainingQuantity: 0.0,
-      quantityPerPackage: 0.0,
-      startedOn: '',
-      expirationOn: '',
-      unusedPackage: 0,
-    };
-  }
-  fieldErrors.clear();
-  isInventoryAdjustmentModalActive.value = true;
+function activateStoppageConfirmationModal() {
+  isStoppageConfirmationModalActive.value = true;
+}
+
+function stopInventoryManagement() {
+  const form = new FormData();
+  form.set('_csrf', props.csrf);
+
+  HttpRequestClient.submitPostRequest(
+    `/api/medicines/${props.medicineId}/inventory/stop`,
+    form
+  )
+    .then(() => {
+      inventory.value = undefined;
+      activateResultMessage('INFO', `在庫管理を終了しました。`);
+      isStoppageConfirmationModalActive.value = false;
+      emits('updated:is-enabled', false);
+    })
+    .catch((error) => {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          activateResultMessage(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          activateResultMessage(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
+
+      activateResultMessage(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+    });
 }
 </script>

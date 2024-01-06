@@ -242,6 +242,14 @@
               <button
                 type="button"
                 class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateInventoryManagementStoppageConfirmationModal()"
+                v-if="isInventoryManagementEnabled"
+              >
+                <strong class="mx-6">在庫管理を終了する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
                 @click="activateDeletionConfirmationModal()"
               >
                 <strong>お薬を削除する</strong>

@@ -26,13 +26,17 @@ createApp({
       this.isMenuModalActive = false;
       this.$refs.changeableImage.activateMenuModal();
     },
+    activateInventoryAdjustmentModal() {
+      this.isMenuModalActive = false;
+      this.$refs.inventory.activateAdjustmentModal();
+    },
+    activateInventoryManagementStoppageConfirmationModal() {
+      this.isMenuModalActive = false;
+      this.$refs.inventory.activateStoppageConfirmationModal();
+    },
     activateDeletionConfirmationModal() {
       this.isMenuModalActive = false;
       this.$refs.confirmationMessage.activate();
-    },
-    activateInventoryAdjustmentModal() {
-      this.isMenuModalActive = false;
-      this.$refs.inventory.activateInventoryAdjustmentModal();
     },
     activateResultMessage(type, message, details) {
       this.$refs.resultMessage.activate(type, message, details);
