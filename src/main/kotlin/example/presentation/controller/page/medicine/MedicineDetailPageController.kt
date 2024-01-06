@@ -29,15 +29,7 @@ class MedicineDetailPageController(private val medicineService: MedicineService,
                            sharedGroupService.isParticipatingInSharedGroup(userSession))
         model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
 
-        model.addAttribute("lastRequestedPagePath", lastRequestPagePath(medicineId, lastRequestedPagePath))
+        model.addAttribute("lastRequestedPagePath", "/medicines/${medicineId}")
         return "medicine/detail"
-    }
-
-    private fun lastRequestPagePath(medicineId: MedicineId, lastRequestedPagePath: LastRequestedPagePath?): String {
-        return if (lastRequestedPagePath?.value == null || lastRequestedPagePath.value == "/medicines/${medicineId}") {
-            "/medicines"
-        } else {
-            lastRequestedPagePath.value
-        }
     }
 }
