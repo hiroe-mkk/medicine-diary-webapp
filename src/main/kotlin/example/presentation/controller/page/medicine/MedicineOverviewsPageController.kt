@@ -19,7 +19,7 @@ class MedicineOverviewsPageController(private val medicineService: MedicineServi
                                       private val sharedGroupService: SharedGroupService,
                                       private val userSessionProvider: UserSessionProvider) {
     /**
-     * 薬概要一覧画面を表示するF
+     * 薬一覧画面を表示する
      */
     @GetMapping
     fun displayMedicineOverviewsPage(model: Model): String {

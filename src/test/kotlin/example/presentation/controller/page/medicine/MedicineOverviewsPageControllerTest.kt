@@ -20,7 +20,7 @@ internal class MedicineOverviewsPageControllerTest(@Autowired private val mockMv
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("薬概要一覧画面を表示する")
+    @DisplayName("薬一覧画面を表示する")
     fun displayMedicineOverviewsPage() {
         //when:
         val actions = mockMvc.perform(get(PATH))
