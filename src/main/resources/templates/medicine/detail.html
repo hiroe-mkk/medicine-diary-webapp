@@ -108,7 +108,11 @@
                     </p>
                   </div>
                 </div>
-                <div class="block border-bottom" th:if="*{!effects.isEmpty()}">
+                <div
+                  class="block"
+                  th:classappend="*{inventory != null}?'border-bottom'"
+                  th:if="*{!effects.isEmpty()}"
+                >
                   <p
                     class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
                   >
@@ -138,11 +142,13 @@
                 </div>
                 <inventory
                   ref="inventory"
+                  @updated:is-enabled="isInventoryManagementEnabled = $event"
                   th:attr="medicine-id=*{medicineId}, dose-unit=*{dosageAndAdministration.doseUnit}, ':remaining-quantity'=*{inventory.remainingQuantity}, ':quantity-per-package'=*{inventory.quantityPerPackage}, started-on=*{inventory.startedOn}, expiration-on=*{inventory.expirationOn}, ':unused-package'=*{inventory.unusedPackage}, csrf=${_csrf.token}"
                   th:if="*{inventory != null}"
                 ></inventory>
                 <inventory
                   ref="inventory"
+                  @updated:is-enabled="isInventoryManagementEnabled = $event"
                   th:attr="medicine-id=*{medicineId}, dose-unit=*{dosageAndAdministration.doseUnit}, csrf=${_csrf.token}"
                   th:if="*{inventory ==null}"
                 >
@@ -226,11 +232,11 @@
                 class="button is-dark is-fullwidth is-small mb-1"
                 @click="activateInventoryAdjustmentModal()"
               >
-                <strong class="mx-6" th:if="*{inventory != null}">
-                  在庫を修正する
-                </strong>
-                <strong class="mx-6" th:if="*{inventory == null}">
+                <strong class="mx-6" v-if="!isInventoryManagementEnabled">
                   在庫管理を開始する
+                </strong>
+                <strong class="mx-6" v-if="isInventoryManagementEnabled">
+                  在庫を修正する
                 </strong>
               </button>
               <button

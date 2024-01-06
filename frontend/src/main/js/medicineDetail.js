@@ -17,6 +17,7 @@ createApp({
   data() {
     return {
       isMenuModalActive: false,
+      isInventoryManagementEnabled: false,
       noMedicineImage: noMedicineImage,
     };
   },

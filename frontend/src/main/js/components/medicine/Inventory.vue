@@ -234,7 +234,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, defineExpose, inject } from 'vue';
+import {
+  ref,
+  reactive,
+  onMounted,
+  defineEmits,
+  defineExpose,
+  inject,
+} from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
@@ -251,6 +258,7 @@ const props = defineProps({
   unusedPackage: Number,
   csrf: String,
 });
+const emits = defineEmits(['updated:is-enabled']);
 defineExpose({ activateInventoryAdjustmentModal });
 const activateResultMessage = inject('activateResultMessage');
 
@@ -270,6 +278,7 @@ onMounted(() => {
       unusedPackage: props.unusedPackage,
     };
   }
+  emits('updated:is-enabled', inventory.value !== undefined);
 });
 
 function submitForm() {
@@ -288,6 +297,13 @@ function submitForm() {
     form
   )
     .then(() => {
+      let message;
+      if (inventory.value !== undefined) {
+        message = '在庫の修正が完了しました。';
+      } else {
+        message = '在庫管理を修正しました。';
+      }
+
       inventory.value = {
         remainingQuantity: editingInventory.value.remainingQuantity,
         quantityPerPackage: editingInventory.value.quantityPerPackage,
@@ -296,7 +312,9 @@ function submitForm() {
         unusedPackage: editingInventory.value.unusedPackage,
       };
       isInventoryAdjustmentModalActive.value = false;
-      activateResultMessage('INFO', '在庫の修正が完了しました。');
+
+      activateResultMessage('INFO', message);
+      emits('updated:is-enabled', inventory.value !== undefined);
       return;
     })
     .catch((error) => {
