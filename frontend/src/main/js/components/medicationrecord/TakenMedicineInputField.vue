@@ -69,15 +69,12 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { ArrayConverter } from '@main/js/composables/ArrayConverter.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   medicineId: String,
@@ -93,8 +90,6 @@ const takenMedicine = reactive({
 const medicines = reactive([]);
 const medicineIdErrors = reactive([]);
 const quantityErrors = reactive([]);
-
-const resultMessage = ref(null);
 
 onMounted(async () => {
   medicineIdErrors.push(...ArrayConverter.fromString(props.medicineIdErrors));
@@ -121,7 +116,7 @@ function loadMedicines() {
       medicines.push(...data.medicines);
     })
     .catch((error) => {
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

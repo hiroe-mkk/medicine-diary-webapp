@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, provide, inject } from 'vue';
+import { ref, reactive, defineExpose, inject } from 'vue';
 import {
   MedicationRecords,
   MedicationRecordUtils,
@@ -134,10 +134,6 @@ const props = defineProps({
   csrf: String,
 });
 defineExpose({ loadMedicationRecords });
-provide(
-  'activateResultMessageFromChild',
-  activateResultMessageFromChild
-);
 const activateResultMessage = inject('activateResultMessage');
 
 const medicationRecords = reactive(new MedicationRecords());
@@ -171,9 +167,5 @@ function activateMedicationRecordModal(medicationRecordId) {
 
 function medicationRecordDeleted(medicationRecordId) {
   medicationRecords.delete(medicationRecordId);
-}
-
-function activateResultMessageFromChild(type, message, details) {
-  activateResultMessage(type, message, details);
 }
 </script>

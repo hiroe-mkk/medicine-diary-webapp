@@ -11,6 +11,8 @@
 
   <body>
     <div id="medicationRecords" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
       <medication-records
         th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
       ></medication-records>

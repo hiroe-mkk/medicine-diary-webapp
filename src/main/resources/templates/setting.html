@@ -11,6 +11,8 @@
 
   <body>
     <div id="setting" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
       <div class="container is-max-desktop p-3">
         <setting
           th:attr="username=${profile.username}, profile-image=${profile.profileImageURL}, csrf=${_csrf.token}"

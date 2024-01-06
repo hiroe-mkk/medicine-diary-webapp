@@ -168,10 +168,10 @@
     :csrf="props.csrf"
   >
   </ConfirmationMessage>
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
+
 <script setup>
-import { ref, reactive, provide } from 'vue';
+import { ref, reactive, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
@@ -179,7 +179,6 @@ import {
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
 import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
@@ -187,7 +186,7 @@ const props = defineProps({
   profileImage: String,
   csrf: String,
 });
-provide('activateResultMessage', activateResultMessage);
+const activateResultMessage = inject('activateResultMessage');
 
 const username = ref(props.username);
 const isUsernameChangeModalActive = ref(false);
@@ -196,7 +195,6 @@ const editingUsername = ref('');
 const changeableImage = ref(null);
 
 const fieldErrors = reactive(new FieldErrors());
-const resultMessage = ref(null);
 const accountDeletionConfirmationModal = ref(null);
 
 function activateUsernameChangeModal() {
@@ -228,21 +226,21 @@ function submitUsernameChangeForm() {
           location.reload();
           return;
         } else if (error.status == 409) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
           );
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -251,7 +249,7 @@ function submitUsernameChangeForm() {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'
@@ -262,7 +260,7 @@ function submitUsernameChangeForm() {
 function changeUsernameCompleted() {
   username.value = editingUsername.value;
   isUsernameChangeModalActive.value = false;
-  resultMessage.value.activate('INFO', 'ユーザー名の変更が完了しました。');
+  activateResultMessage('INFO', 'ユーザー名の変更が完了しました。');
 }
 
 function activateProfileImageMenuModal() {
@@ -271,9 +269,5 @@ function activateProfileImageMenuModal() {
 
 function activateAccountDeletionConfirmationModal() {
   accountDeletionConfirmationModal.value.activate();
-}
-
-function activateResultMessage(type, message, details) {
-  resultMessage.value.activate(type, message, details);
 }
 </script>

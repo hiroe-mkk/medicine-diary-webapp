@@ -28,17 +28,13 @@
       </p>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const members = reactive([]);
-const resultMessage = ref(null);
 
 onMounted(() => {
   HttpRequestClient.submitGetRequest('/api/users?members')
@@ -46,7 +42,7 @@ onMounted(() => {
       members.push(...data.users);
     })
     .catch(() => {
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

@@ -5,6 +5,6 @@ import ResultMessage from '@main/js/components/ResultMessage.vue';
 createApp({
   components: {
     navbar: Navbar,
-    resultmessage: ResultMessage,
+    'result-message': ResultMessage,
   },
 }).mount('#header');

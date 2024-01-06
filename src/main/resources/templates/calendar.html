@@ -11,6 +11,8 @@
 
   <body>
     <div id="calendar" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
       <calendar
         th:attr="account-id=${accountId}, csrf=${_csrf.token}"
         :is-self-calendar="true"

@@ -186,29 +186,25 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, provide } from 'vue';
+import { ref, reactive, onMounted, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import UserSearch from '@main/js/components/sharedgroup/UserSearch.vue';
 import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({ csrf: String });
-provide('activateResultMessage', activateResultMessage);
+const activateResultMessage = inject('activateResultMessage');
 
 const participatingSharedGroup = reactive({ value: undefined });
 const invitedSharedGroups = reactive([]);
 
 const isUnshareConfirmationModalActive = ref(false);
 const userSearch = ref(null);
-const resultMessage = ref(null);
 
 onMounted(async () => {
   loadSharedGroup();
@@ -235,7 +231,7 @@ function participateIn(sharedGroupId) {
 
   HttpRequestClient.submitPostRequest('/api/shared-group/participate', form)
     .then(() => {
-      resultMessage.value.activate('INFO', `共有グループに参加しました。`);
+      activateResultMessage('INFO', `共有グループに参加しました。`);
       loadSharedGroup();
     })
     .catch((error) => {
@@ -250,7 +246,7 @@ function reject(sharedGroupId) {
 
   HttpRequestClient.submitPostRequest('/api/shared-group/reject', form)
     .then(() => {
-      resultMessage.value.activate(
+      activateResultMessage(
         'INFO',
         `共有グループへの招待を拒否しました。`
       );
@@ -267,7 +263,7 @@ function unshare() {
 
   HttpRequestClient.submitPostRequest('/api/shared-group/unshare', form)
     .then(() => {
-      resultMessage.value.activate('INFO', `共有を停止しました。`);
+      activateResultMessage('INFO', `共有を停止しました。`);
       isUnshareConfirmationModalActive.value = false;
       loadSharedGroup();
     })
@@ -283,14 +279,14 @@ function handleError(error) {
       location.reload();
       return;
     } else if (error.status == 500) {
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'システムエラーが発生しました。',
         'お手数ですが、再度お試しください。'
       );
       return;
     } else if (error.hasMessage()) {
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         error.getMessage()
@@ -299,7 +295,7 @@ function handleError(error) {
     }
   }
 
-  resultMessage.value.activate(
+  activateResultMessage(
     'ERROR',
     'エラーが発生しました。',
     '通信状態をご確認のうえ、再度お試しください。'
@@ -308,9 +304,5 @@ function handleError(error) {
 
 function activateUserSearchModal() {
   userSearch.value.activateSearchModal();
-}
-
-function activateResultMessage(type, message, details) {
-  resultMessage.value.activate(type, message, details);
 }
 </script>

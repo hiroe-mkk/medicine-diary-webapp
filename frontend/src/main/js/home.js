@@ -7,6 +7,13 @@ import Members from '@main/js/components/sharedgroup/Members.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 createApp({
+  components: {
+    navbar: Navbar,
+    authentication: Authentication,
+    'medication-records': MedicationRecords,
+    members: Members,
+    'result-message': ResultMessage,
+  },
   data() {
     return {
       noProfileImage: noProfileImage,
@@ -16,12 +23,13 @@ createApp({
     activateAccountRegistrationModal() {
       this.$refs.authentication.activateAccountRegistrationModal();
     },
+    activateResultMessage(type, message, details) {
+      this.$refs.resultMessage.activate(type, message, details);
+    },
   },
-  components: {
-    navbar: Navbar,
-    resultmessage: ResultMessage,
-    authentication: Authentication,
-    'medication-records': MedicationRecords,
-    members: Members,
+  provide() {
+    return {
+      activateResultMessage: this.activateResultMessage,
+    };
   },
 }).mount('#home');

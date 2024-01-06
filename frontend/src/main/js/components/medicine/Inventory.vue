@@ -231,18 +231,15 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, defineExpose } from 'vue';
+import { ref, reactive, onMounted, defineExpose, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   medicineId: String,
@@ -255,13 +252,13 @@ const props = defineProps({
   csrf: String,
 });
 defineExpose({ activateInventoryAdjustmentModal });
+const activateResultMessage = inject('activateResultMessage');
 
 const inventory = reactive({ value: undefined });
 const editingInventory = reactive({ value: undefined });
 const isInventoryAdjustmentModalActive = ref(false);
 
 const fieldErrors = reactive(new FieldErrors());
-const resultMessage = ref(null);
 
 onMounted(() => {
   if (props.remainingQuantity !== undefined) {
@@ -299,7 +296,7 @@ function submitForm() {
         unusedPackage: editingInventory.value.unusedPackage,
       };
       isInventoryAdjustmentModalActive.value = false;
-      resultMessage.value.activate('INFO', '在庫の修正が完了しました。');
+      activateResultMessage('INFO', '在庫の修正が完了しました。');
       return;
     })
     .catch((error) => {
@@ -315,21 +312,21 @@ function submitForm() {
           location.reload();
           return;
         } else if (error.status == 409) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
           );
           return;
         } else if (error.status == 500) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          resultMessage.value.activate(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -338,7 +335,7 @@ function submitForm() {
         }
       }
 
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

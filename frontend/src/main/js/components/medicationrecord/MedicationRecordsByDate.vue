@@ -29,31 +29,24 @@
       ></FilteredMedicationRecords>
     </div>
   </div>
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, provide } from 'vue';
+import { ref, reactive, onMounted, inject } from 'vue';
 import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   csrf: String,
 });
-provide('activateResultMessage', activateResultMessage);
+const activateResultMessage = inject('activateResultMessage');
 
 const filter = reactive(new Filter());
 const filteredMedicationRecords = ref(null);
-const resultMessage = ref(null);
 
 onMounted(() => {
   filter.sizePerPage = 5;
   filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
-
-function activateResultMessage(type, message, details) {
-  resultMessage.value.activate(type, message, details);
-}
 </script>

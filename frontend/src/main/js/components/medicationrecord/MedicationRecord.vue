@@ -200,7 +200,7 @@ const props = defineProps({
 });
 const emits = defineEmits(['deleted']);
 defineExpose({ activateMedicationRecordModal });
-const activateResultMessageFromChild = inject('activateResultMessageFromChild');
+const activateResultMessage = inject('activateResultMessage');
 
 const medicationRecord = reactive({ value: undefined });
 const isSelectedMedicationRecordModalActive = ref(false);
@@ -219,7 +219,7 @@ function deleteMedicationRecord(medicationRecordId) {
     form
   )
     .then(() => {
-      activateResultMessageFromChild('INFO', `服用記録の削除が完了しました。`);
+      activateResultMessage('INFO', `服用記録の削除が完了しました。`);
       isSelectedMedicationRecordModalActive.value = false;
       emits('deleted', medicationRecordId);
     })
@@ -230,14 +230,14 @@ function deleteMedicationRecord(medicationRecordId) {
           location.reload();
           return;
         } else if (error.status == 500) {
-          activateResultMessageFromChild(
+          activateResultMessage(
             'ERROR',
             'システムエラーが発生しました。',
             'お手数ですが、再度お試しください。'
           );
           return;
         } else if (error.hasMessage()) {
-          activateResultMessageFromChild(
+          activateResultMessage(
             'ERROR',
             'エラーが発生しました。',
             error.getMessage()
@@ -246,7 +246,7 @@ function deleteMedicationRecord(medicationRecordId) {
         }
       }
 
-      activateResultMessageFromChild(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'

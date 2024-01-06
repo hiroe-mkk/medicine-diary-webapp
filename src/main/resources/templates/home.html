@@ -34,14 +34,17 @@
           <navbar
             th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
           ></navbar>
-          <resultmessage
+          <result-message
+            ref="resultMessage"
             th:attr="type=${resultMessage.type}, message=${resultMessage.message}, details=${resultMessage.details}?:''"
             th:if="${resultMessage!=null}"
-          ></resultmessage>
+          ></result-message>
+          <result-message
+            ref="resultMessage"
+            th:if="${resultMessage==null}"
+          ></result-message>
         </header>
-        <main
-          class="hero-body is-flex is-align-items-flex-start py-5"
-        >
+        <main class="hero-body is-flex is-align-items-flex-start py-5">
           <div class="container is-max-desktop">
             <div class="tile is-ancestor">
               <div class="tile is-5 is-parent">
@@ -225,10 +228,15 @@
           <navbar
             th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
           ></navbar>
-          <resultmessage
+          <result-message
+            ref="resultMessage"
             th:attr="type=${resultMessage.type}, message=${resultMessage.message}, details=${resultMessage.details}?:''"
             th:if="${resultMessage!=null}"
-          ></resultmessage>
+          ></result-message>
+          <result-message
+            ref="resultMessage"
+            th:if="${resultMessage==null}"
+          ></result-message>
         </header>
         <main
           class="hero-body has-background-info-dark is-flex is-flex-direction-column p-5"

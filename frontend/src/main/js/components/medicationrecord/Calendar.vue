@@ -38,12 +38,10 @@
       </div>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref ,provide} from 'vue';
+import { ref, inject } from 'vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -51,14 +49,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   accountId: String,
   isSelfCalendar: Boolean,
   csrf: String,
 });
-provide('activateResultMessage', activateResultMessage);
+const activateResultMessage = inject('activateResultMessage');
 
 const filteredMedicationRecords = ref(null);
 
@@ -66,7 +63,6 @@ const selectedDateStr = ref('');
 const isMedicationRecordsModalActive = ref(false);
 
 const calendarKey = ref(0);
-const resultMessage = ref(null);
 
 const calendarOptions = {
   locale: 'ja',
@@ -97,7 +93,7 @@ const calendarOptions = {
       successCallback(events);
     } catch (error) {
       failureCallback(error);
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'
@@ -139,10 +135,6 @@ function toDateJpnStr(date) {
 
   const [year, month, day] = date.split('-');
   return `${year}年${month}月${day}日`;
-}
-
-function activateResultMessage(type, message, details) {
-  resultMessage.value.activate(type, message, details);
 }
 </script>
 

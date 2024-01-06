@@ -11,6 +11,8 @@
 
   <body>
     <div id="medicineDetail" th:object="${medicine}" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
       <div class="container is-max-desktop p-3">
         <div class="content has-text-centered mb-3">
           <p class="icon-text has-text-grey-dark is-size-4">

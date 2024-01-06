@@ -70,29 +70,24 @@
       ></FilteredMedicationRecords>
     </div>
   </div>
-
-  <ResultMessage ref="resultMessage"></ResultMessage>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, provide } from 'vue';
+import { ref, reactive, onMounted, inject } from 'vue';
 import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
-import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 const props = defineProps({
   isParticipatingInSharedGroup: Boolean,
   csrf: String,
 });
-provide('activateResultMessage', activateResultMessage);
+const activateResultMessage = inject('activateResultMessage');
 
 const self = reactive({ value: undefined });
 const members = reactive([]);
 const filter = reactive(new Filter());
 const filteredMedicationRecords = ref(null);
-
-const resultMessage = ref(null);
 
 onMounted(() => {
   HttpRequestClient.submitGetRequest('/api/users?self')
@@ -100,7 +95,7 @@ onMounted(() => {
       self.value = data;
     })
     .catch(() => {
-      resultMessage.value.activate(
+      activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
         '通信状態をご確認のうえ、再度お試しください。'
@@ -113,7 +108,7 @@ onMounted(() => {
         members.push(...data.users);
       })
       .catch(() => {
-        resultMessage.value.activate(
+        activateResultMessage(
           'ERROR',
           'エラーが発生しました。',
           '通信状態をご確認のうえ、再度お試しください。'
@@ -135,10 +130,6 @@ function toggleUserActive(accountId) {
 
 function isUserEnabled(accountId) {
   return filter.accountId === undefined || filter.accountId === accountId;
-}
-
-function activateResultMessage(type, message, details) {
-  resultMessage.value.activate(type, message, details);
 }
 </script>
 
