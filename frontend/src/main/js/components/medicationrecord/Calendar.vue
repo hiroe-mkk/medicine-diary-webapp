@@ -1,6 +1,6 @@
 <template>
   <div class="container has-text-centered is-max-desktop pt-0 pb-6 px-2">
-    <FullCalendar :options="calendarOptions" :key="calendarKey" />
+    <FullCalendar :options="calendarOptions" ref="calendar" />
   </div>
 
   <div class="modal" :class="{ 'is-active': isMedicationRecordsModalActive }">
@@ -9,7 +9,9 @@
       @click="isMedicationRecordsModalActive = false"
     ></div>
     <div class="modal-content">
-      <div class="notification has-text-centered has-background-white py-3 px-5">
+      <div
+        class="notification has-text-centered has-background-white py-3 px-5"
+      >
         <p class="is-flex is-justify-content-space-between py-1">
           <span>　</span>
           <strong class="is-size-4 has-text-grey-dark">
@@ -28,6 +30,8 @@
           :isAllowLoadMore="false"
           :isShowAppendButton="props.isSelfCalendar"
           :elements="['medicine', 'time']"
+          :csrf="props.csrf"
+          @deleted="medicationRecordDeleted"
         >
           <a
             class="button is-small is-rounded is-link px-5"
@@ -41,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -62,7 +66,12 @@ const filteredMedicationRecords = ref(null);
 const selectedDateStr = ref('');
 const isMedicationRecordsModalActive = ref(false);
 
-const calendarKey = ref(0);
+const calendar = ref(null);
+let calendarApi = null;
+
+onMounted(() => {
+  calendarApi = calendar.value.getApi();
+});
 
 const calendarOptions = {
   locale: 'ja',
@@ -135,6 +144,10 @@ function toDateJpnStr(date) {
 
   const [year, month, day] = date.split('-');
   return `${year}年${month}月${day}日`;
+}
+
+function medicationRecordDeleted(medicationRecordId) {
+  calendarApi.refetchEvents();
 }
 </script>
 

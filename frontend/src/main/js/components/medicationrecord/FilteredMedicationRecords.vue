@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, inject } from 'vue';
+import { ref, reactive, defineExpose, defineEmits, inject } from 'vue';
 import {
   MedicationRecords,
   MedicationRecordUtils,
@@ -133,6 +133,7 @@ const props = defineProps({
   elements: Array,
   csrf: String,
 });
+const emits = defineEmits(['deleted']);
 defineExpose({ loadMedicationRecords });
 const activateResultMessage = inject('activateResultMessage');
 
@@ -167,5 +168,6 @@ function activateMedicationRecordModal(medicationRecordId) {
 
 function medicationRecordDeleted(medicationRecordId) {
   medicationRecords.delete(medicationRecordId);
+  emits('deleted', medicationRecordId);
 }
 </script>
