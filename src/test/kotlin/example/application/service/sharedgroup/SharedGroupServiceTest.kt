@@ -113,8 +113,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            val accountNotFoundException = assertThrows<AccountNotFoundException>(target)
-            assertThat(accountNotFoundException.accountId).isEqualTo(badAccountId)
+            assertThrows<ShareException>(target)
         }
     }
 

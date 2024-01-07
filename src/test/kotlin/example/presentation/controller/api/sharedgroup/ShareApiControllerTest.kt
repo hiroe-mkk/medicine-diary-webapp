@@ -65,7 +65,7 @@ internal class ShareApiControllerTest(@Autowired private val mockMvc: MockMvc,
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("アカウントが見つからなかった場合、ステータスコード404のレスポンスを返す")
+    @DisplayName("アカウントが見つからなかった場合、ステータスコード409のレスポンスを返す")
     fun accountNotFound_returnsResponseWithStatus404() {
         //given:
         val badAccountId = AccountId("NonexistentId")
@@ -76,7 +76,7 @@ internal class ShareApiControllerTest(@Autowired private val mockMvc: MockMvc,
                                           .param("accountId", badAccountId.value))
 
         //then:
-        actions.andExpect(status().isNotFound)
+        actions.andExpect(status().isConflict)
     }
 
     @Test

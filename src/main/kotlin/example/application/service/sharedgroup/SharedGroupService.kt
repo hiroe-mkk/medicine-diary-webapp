@@ -19,7 +19,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有する
      */
     fun share(target: AccountId, userSession: UserSession): SharedGroupId {
-        requireAccountExists(target)
+        accountRepository.findById(target) ?: throw ShareException("ユーザーが見つかりませんでした。")
         sharedGroupParticipationService.requireSharePossible(userSession.accountId)
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
