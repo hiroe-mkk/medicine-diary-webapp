@@ -1,6 +1,5 @@
 package example.application.service.sharedgroup
 
-import SharedGroupNotFoundException
 import example.application.service.account.*
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
@@ -214,8 +213,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.participateInSharedGroup(sharedGroup.id, userSession) }
 
             //then:
-            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
-            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
+            assertThrows<ParticipationInSharedGroupException>(target)
         }
 
         @Test
