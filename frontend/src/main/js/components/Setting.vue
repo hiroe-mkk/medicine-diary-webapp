@@ -80,7 +80,7 @@
       </form>
       <div
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
-        @click="activateAccountDeletionConfirmationModal()"
+        @click="isAccountDeletionConfirmationModalActive = true"
       >
         <span class="icon-text">
           <span class="icon has-text-danger ml-3">
@@ -159,15 +159,54 @@
     </div>
   </div>
 
-  <ConfirmationMessage
-    ref="accountDeletionConfirmationModal"
-    message="アカウントを削除しますか？"
-    details="アカウントを削除すると、全てのデータが削除されます。削除後、データを復元することはできません。本当に削除してよろしいですか？"
-    button-label="削除する"
-    path="/account/delete"
-    :csrf="props.csrf"
+  <div
+    class="modal"
+    :class="{ 'is-active': isAccountDeletionConfirmationModalActive }"
   >
-  </ConfirmationMessage>
+    <div
+      class="modal-background"
+      @click="isAccountDeletionConfirmationModalActive = false"
+    ></div>
+    <div class="modal-content is-flex is-justify-content-center">
+      <div class="message is-inline-block is-info">
+        <div class="message-body">
+          <div class="content">
+            <p class="has-text-centered mb-2">
+              <strong class="is-size-5 mb-1">
+                アカウントを削除しますか？
+              </strong>
+              <br />
+            </p>
+            <p class="has-text-left mb-2">
+              <small class="has-text-weight-semibold">
+                アカウントを削除すると、全てのデータが削除されます。<br />
+                削除後、データを復元することはできません。本当に削除してよろしいですか？
+              </small>
+            </p>
+            <form class="form" method="post" action="/account/delete">
+              <input name="_csrf" :value="props.csrf" hidden />
+              <div class="field is-grouped is-grouped-centered p-2">
+                <p class="control">
+                  <button class="button is-small is-rounded is-link">
+                    削除する
+                  </button>
+                </p>
+                <p class="control">
+                  <button
+                    type="button"
+                    class="button is-small is-rounded is-outlined is-danger"
+                    @click="isAccountDeletionConfirmationModalActive = false"
+                  >
+                    キャンセル
+                  </button>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -178,7 +217,6 @@ import {
 } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import ChangeableImage from '@main/js/components/ChangeableImage.vue';
-import ConfirmationMessage from '@main/js/components/ConfirmationMessage.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 
 const props = defineProps({
@@ -195,7 +233,7 @@ const editingUsername = ref('');
 const changeableImage = ref(null);
 
 const fieldErrors = reactive(new FieldErrors());
-const accountDeletionConfirmationModal = ref(null);
+const isAccountDeletionConfirmationModalActive = ref(false);
 
 function activateUsernameChangeModal() {
   fieldErrors.clear();
@@ -265,9 +303,5 @@ function changeUsernameCompleted() {
 
 function activateProfileImageMenuModal() {
   changeableImage.value.activateMenuModal();
-}
-
-function activateAccountDeletionConfirmationModal() {
-  accountDeletionConfirmationModal.value.activate();
 }
 </script>

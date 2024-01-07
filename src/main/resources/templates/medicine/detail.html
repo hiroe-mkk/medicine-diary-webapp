@@ -248,13 +248,57 @@
           </div>
         </div>
 
-        <confirmation-message
-          ref="confirmationMessage"
-          message="このお薬を削除しますか？"
-          details="服用記録を含む、お薬に関する全ての情報が削除されます。本当に削除してよろしいですか？"
-          button-label="削除"
-          th:attr="path=|/medicines/${medicineId}/delete|, csrf=${_csrf.token}"
-        ></confirmation-message>
+        <div
+          class="modal"
+          :class="{ 'is-active': isMedicineDeletionConfirmationModalActive }"
+        >
+          <div
+            class="modal-background"
+            @click="isMedicineDeletionConfirmationModalActive = false"
+          ></div>
+          <div class="modal-content is-flex is-justify-content-center">
+            <div class="message is-inline-block is-info">
+              <div class="message-body">
+                <div class="content">
+                  <p class="has-text-centered mb-2">
+                    <strong class="is-size-5 mb-1">
+                      このお薬を削除しますか？
+                    </strong>
+                    <br />
+                  </p>
+                  <p class="has-text-left mb-2">
+                    <small class="has-text-weight-semibold">
+                      服用記録を含む、お薬に関する全ての情報が削除されます。<br />
+                      本当に削除してよろしいですか？
+                    </small>
+                  </p>
+                  <form
+                    class="form"
+                    method="post"
+                    th:action="@{/medicines/{medicineId}/delete(medicineId=${medicine.medicineId})}"
+                  >
+                    <div class="field is-grouped is-grouped-centered p-2">
+                      <p class="control">
+                        <button class="button is-small is-rounded is-link">
+                          削除する
+                        </button>
+                      </p>
+                      <p class="control">
+                        <button
+                          type="button"
+                          class="button is-small is-rounded is-outlined is-danger"
+                          @click="isMedicineDeletionConfirmationModalActive = false"
+                        >
+                          キャンセル
+                        </button>
+                      </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

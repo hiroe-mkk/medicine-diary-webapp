@@ -14,6 +14,10 @@ export class MedicationRecords {
     return this._idToMedicationRecord;
   }
 
+  get valuesWithReverse() {
+    return this._idToMedicationRecord;
+  }
+
   get size() {
     return Object.keys(this._idToMedicationRecord).length;
   }
