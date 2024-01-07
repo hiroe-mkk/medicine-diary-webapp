@@ -23,6 +23,13 @@
             >
               <i class="fa-solid fa-lock"></i>
             </span>
+            <span
+              class="icon fas fa-lg has-text-link is-clickable ml-2"
+              @click="isMenuModalActive = true"
+              th:if="${isAvailableMedicine}"
+            >
+              <i class="fa-solid fa-ellipsis"></i>
+            </span>
           </p>
         </div>
 
@@ -172,42 +179,15 @@
         <div
           class="bottom-fullwidth has-text-centered has-background-info-light py-4 m-0"
         >
-          <div class="tabs is-fullwidth has-background-info-light p-0">
-            <ul>
-              <li>
-                <a
-                  class="is-small has-text-link"
-                  th:href="@{__${lastRequestedPagePath}__}"
-                >
-                  <span
-                    class="icon fas fa-2x is-flex is-align-items-center has-text-link"
-                  >
-                    <i class="fa-solid fa-reply"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="is-small has-text-link"
-                  th:href="@{/medication-records/add?medicine={medicine}(medicine=*{medicineId})}"
-                >
-                  <span class="icon fas fa-2x is-flex is-align-items-center">
-                    <i class="fa-solid fa-file-pen"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="is-small has-text-link"
-                  @click="isMenuModalActive = true"
-                >
-                  <span class="icon fas fa-2x is-flex is-align-items-center">
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </span>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <a
+            class="button is-link is-rounded is-outlined px-5"
+            th:href="@{/medication-records/add?medicine={medicine}(medicine=*{medicineId})}"
+          >
+            <strong>服用記録を追加する</strong>
+            <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+              <i class="fa-solid fa-file-pen"></i>
+            </span>
+          </a>
         </div>
 
         <div class="modal" :class="{ 'is-active': isMenuModalActive }">
