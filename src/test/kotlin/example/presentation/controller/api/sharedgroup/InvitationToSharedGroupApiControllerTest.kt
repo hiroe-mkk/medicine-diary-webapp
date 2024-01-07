@@ -70,7 +70,7 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループが見つからなかった場合、ステータスコード404のレスポンスを返す")
+    @DisplayName("共有グループが見つからなかった場合、ステータスコード409のレスポンスを返す")
     fun sharedGroupNotFound_returnsResponseWithStatus404() {
         //given:
         val badSharedGroupId = SharedGroupId("NonexistentId")
@@ -82,7 +82,7 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
                                           .param("accountId", user1AccountId.value))
 
         //then:
-        actions.andExpect(status().isNotFound)
+        actions.andExpect(status().isConflict)
     }
 
     @Test

@@ -34,7 +34,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
         accountRepository.findById(target) ?: throw InvitationToSharedGroupException("ユーザーが見つかりませんでした。")
         val participatingSharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)
                                            ?.let { if (it.id == sharedGroupId) it else null }
-                                       ?: throw SharedGroupNotFoundException(sharedGroupId)
+                                       ?: throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
 
         participatingSharedGroup.invite(target, userSession.accountId)
         sharedGroupRepository.save(participatingSharedGroup)

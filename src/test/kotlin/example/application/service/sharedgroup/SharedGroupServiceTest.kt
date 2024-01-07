@@ -148,8 +148,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            val sharedGroupNotFoundException = assertThrows<SharedGroupNotFoundException>(target)
-            assertThat(sharedGroupNotFoundException.sharedGroupId).isEqualTo(sharedGroup.id)
+            assertThrows<InvitationToSharedGroupException>(target)
         }
 
         @Test
