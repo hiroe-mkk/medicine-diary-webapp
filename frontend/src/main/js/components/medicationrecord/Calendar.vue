@@ -93,12 +93,19 @@ const calendarOptions = {
         '/api/medication-records?' + params.toString()
       );
 
-      const dates = new Set(
-        result.medicationRecords.map((medicationRecord) =>
+      const dates = result.medicationRecords
+        .map((medicationRecord) =>
           medicationRecord.takenMedicineOn.replace(/\//g, '-')
         )
-      );
-      const events = Array.from(dates).map((date) => ({ start: date }));
+        .reduce((map, date) => {
+          const count = map.get(date) || 0;
+          map.set(date, count + 1);
+          return map;
+        }, new Map());
+      const events = Array.from(dates.entries()).map(([date, count]) => ({
+        start: date,
+        count: count,
+      }));
       successCallback(events);
     } catch (error) {
       failureCallback(error);
@@ -111,9 +118,18 @@ const calendarOptions = {
   },
   eventColor: 'transparent',
   eventContent: function (arg) {
-    return {
-      html: `<span class="icon is-medium fas fa-2x has-text-link-dark"><i class="fa-solid fa-capsules p-1"></i></span>`,
-    };
+    const count = arg.event._def.extendedProps.count;
+    const icons =
+      `<span class="icon is-medium fas fas fa-lg has-text-link-dark pl-1">
+         <i class="fa-solid fa-capsules"></i>
+       </span>`.repeat(count);
+    const iconDesktop = `<p class="is-hidden-touch mx-2">${icons}</p>`;
+    const iconTouch = `
+        <p class="icon-text has-text-link-dark is-hidden-desktop m-1">
+          <span class="icon fas fa-lg"><i class="fa-solid fa-capsules"></i></span>
+          <strong>× ${count}</strong>
+        </p>`;
+    return { html: iconDesktop + iconTouch };
   },
   dateClick: (info) => {
     dateSelected(info.dateStr);
