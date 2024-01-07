@@ -26,6 +26,10 @@ createApp({
       this.isMenuModalActive = false;
       this.$refs.changeableImage.activateMenuModal();
     },
+    activateInventoryMenuModal() {
+      this.isMenuModalActive = false;
+      this.$refs.inventory.activateMenuModal();
+    },
     activateInventoryAdjustmentModal() {
       this.isMenuModalActive = false;
       this.$refs.inventory.activateAdjustmentModal();
