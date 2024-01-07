@@ -87,7 +87,7 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("アカウントが見つからなかった場合、ステータスコード404のレスポンスを返す")
+    @DisplayName("アカウントが見つからなかった場合、ステータスコード409のレスポンスを返す")
     fun accountNotFound_returnsResponseWithStatus404() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
@@ -101,7 +101,7 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
                                           .param("accountId", badAccountId.value))
 
         //then:
-        actions.andExpect(status().isNotFound)
+        actions.andExpect(status().isConflict)
     }
 
     @Test

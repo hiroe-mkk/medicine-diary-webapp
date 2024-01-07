@@ -1,7 +1,6 @@
 package example.application.service.sharedgroup
 
 import SharedGroupNotFoundException
-import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
@@ -32,7 +31,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに招待する
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, target: AccountId, userSession: UserSession) {
-        requireAccountExists(target)
+        accountRepository.findById(target) ?: throw InvitationToSharedGroupException("ユーザーが見つかりませんでした。")
         val participatingSharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)
                                            ?.let { if (it.id == sharedGroupId) it else null }
                                        ?: throw SharedGroupNotFoundException(sharedGroupId)
@@ -88,9 +87,5 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
         return sharedGroupQueryService.isParticipatingInSharedGroup(userSession.accountId)
-    }
-
-    private fun requireAccountExists(target: AccountId) {
-        accountRepository.findById(target) ?: throw AccountNotFoundException(target)
     }
 }
