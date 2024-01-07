@@ -46,16 +46,17 @@
         >
           　
         </span>
-        <span class="is-size-5 has-text-weight-bold">
-          {{ medicationRecord.value.takenMedicineOn }}
-        </span>
         <button
           class="delete"
           type="button"
           @click="isSelectedMedicationRecordModalActive = false"
         ></button>
       </div>
-      <div class="modal-card-body px-5">
+      <div class="modal-card-body py-3 px-5">
+        <p class="is-size-5 has-text-weight-bold has-text-centered mb-2">
+          <span>{{ medicationRecord.value.takenMedicineOn }}</span>
+          <span class="pl-2">{{ medicationRecord.value.takenMedicineAt }}</span>
+        </p>
         <p class="is-flex is-justify-content-space-between mb-2">
           <span class="has-text-grey-dark has-text-weight-semibold">お薬</span>
           <span>
@@ -74,11 +75,13 @@
           <span class="has-text-grey-dark has-text-weight-semibold">症状</span>
           <strong>{{ medicationRecord.value.followUp.symptom }}</strong>
         </p>
-        <p class="has-text-grey-dark has-text-weight-semibold has-text-left">
-          経過
-        </p>
-        <p class="has-text-right mb-2">
-          <span>
+        <div class="columns m-0">
+          <p
+            class="column has-text-grey-dark has-text-weight-semibold has-text-left p-0"
+          >
+            経過
+          </p>
+          <p class="column has-text-right mb-2 p-0">
             <span
               class="has-text-weight-bold"
               v-if="medicationRecord.value.symptomOnsetAt !== undefined"
@@ -128,15 +131,11 @@
                 medicationRecord.value.followUp.afterMedication !== undefined
               "
             >
-            </span
-          ></span>
-        </p>
+            </span>
+          </p>
+        </div>
         <p
-          class="border-bottom my-5"
-          v-if="medicationRecord.value.note !== ''"
-        ></p>
-        <p
-          class="has-text-weight-semibold has-text-left"
+          class="notification has-background-white-bis has-text-weight-semibold has-text-left p-3 m-2"
           v-if="medicationRecord.value.note !== ''"
         >
           {{ medicationRecord.value.note }}

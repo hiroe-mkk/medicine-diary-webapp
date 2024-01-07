@@ -32,55 +32,69 @@
           />
         </figure>
       </div>
-      <div class="media-content has-text-grey-dark">
-        <p class="has-text-left m-0" v-if="props.elements.includes('medicine')">
-          <strong>
-            {{ medicationRecord.takenMedicine.medicineName }}
-          </strong>
-          <strong class="pl-2">
-            {{ medicationRecord.takenMedicine.dose }}
-          </strong>
-        </p>
-        <p class="has-text-left m-0" v-if="props.elements.includes('symptom')">
-          <strong>
-            {{ medicationRecord.followUp.symptom }}
-          </strong>
-          <span
-            v-html="
-              MedicationRecordUtils.convertConditionLevelToIcon(
-                medicationRecord.followUp.beforeMedication
-              )
-            "
-          ></span>
-          <strong
-            class="icon is-small"
-            v-if="medicationRecord.followUp.afterMedication !== undefined"
+      <div
+        class="media-content columns has-text-grey-dark m-0"
+      >
+        <div class="column p-0">
+          <p
+            class="has-text-left m-0"
+            v-if="props.elements.includes('medicine')"
           >
-            <i class="fa-solid fa-angles-right"></i>
-          </strong>
-          <span
-            v-if="medicationRecord.followUp.afterMedication !== undefined"
-            v-html="
-              MedicationRecordUtils.convertConditionLevelToIcon(
-                medicationRecord.followUp.afterMedication
-              )
-            "
-          ></span>
-        </p>
-        <p class="has-text-right m-0">
-          <span
-            class="has-text-weight-semibold"
-            v-if="props.elements.includes('dateTime')"
+            <strong>
+              {{ medicationRecord.takenMedicine.medicineName }}
+            </strong>
+            <strong class="pl-2">
+              {{ medicationRecord.takenMedicine.dose }}
+            </strong>
+          </p>
+          <p
+            class="has-text-left m-0"
+            v-if="props.elements.includes('symptom')"
           >
-            {{ `${medicationRecord.takenMedicineOn} ${medicationRecord.takenMedicineAt}` }}
-          </span>
-          <span
-            class="has-text-weight-semibold"
-            v-if="props.elements.includes('time')"
-          >
-            {{ medicationRecord.takenMedicineAt }}
-          </span>
-        </p>
+            <strong>
+              {{ medicationRecord.followUp.symptom }}
+            </strong>
+            <span
+              v-html="
+                MedicationRecordUtils.convertConditionLevelToIcon(
+                  medicationRecord.followUp.beforeMedication
+                )
+              "
+            ></span>
+            <strong
+              class="icon is-small"
+              v-if="medicationRecord.followUp.afterMedication !== undefined"
+            >
+              <i class="fa-solid fa-angles-right"></i>
+            </strong>
+            <span
+              v-if="medicationRecord.followUp.afterMedication !== undefined"
+              v-html="
+                MedicationRecordUtils.convertConditionLevelToIcon(
+                  medicationRecord.followUp.afterMedication
+                )
+              "
+            ></span>
+          </p>
+        </div>
+        <div class="column p-0">
+          <p class="has-text-right m-0">
+            <span
+              class="has-text-weight-semibold"
+              v-if="props.elements.includes('dateTime')"
+            >
+              {{
+                `${medicationRecord.takenMedicineOn} ${medicationRecord.takenMedicineAt}`
+              }}
+            </span>
+            <span
+              class="has-text-weight-semibold"
+              v-if="props.elements.includes('time')"
+            >
+              {{ medicationRecord.takenMedicineAt }}
+            </span>
+          </p>
+        </div>
       </div>
       <div class="media-right">
         <p class="icon fas fa-lg has-text-link">
