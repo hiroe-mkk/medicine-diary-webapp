@@ -15,10 +15,12 @@
     <div
       class="media is-flex is-align-items-center is-clickable p-3 m-0"
       v-for="(medicationRecord, medicationRecordId) in medicationRecords.values"
-      @click="activateMedicationRecordModal(medicationRecordId)"
     >
       <div class="media-left" v-if="props.displayRecorder">
-        <figure class="image is-48x48 m-0">
+        <a
+          class="image is-48x48 m-0"
+          :href="`/users/${medicationRecord.recorder.accountId}`"
+        >
           <img
             :src="medicationRecord.recorder.profileImageURL"
             class="is-rounded"
@@ -30,10 +32,11 @@
             class="is-rounded"
             v-if="medicationRecord.recorder.profileImageURL === undefined"
           />
-        </figure>
+        </a>
       </div>
       <div
         class="media-content columns has-text-grey-dark m-0"
+        @click="activateMedicationRecordModal(medicationRecordId)"
       >
         <div class="column p-0">
           <p
@@ -96,7 +99,10 @@
           </p>
         </div>
       </div>
-      <div class="media-right">
+      <div
+        class="media-right"
+        @click="activateMedicationRecordModal(medicationRecordId)"
+      >
         <p class="icon fas fa-lg has-text-link">
           <i class="fa-solid fa-angle-right"></i>
         </p>
