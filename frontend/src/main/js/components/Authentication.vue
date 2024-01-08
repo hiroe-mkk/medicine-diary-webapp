@@ -26,7 +26,7 @@
               <span
                 class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-2"
               >
-                <img src="@main/images/yahoo_icon.png" alr="YahooIcon" />
+                <img src="@main/images/yahoo_icon.png" alt="" />
               </span>
               <strong>Yahoo! JAPANでログイン</strong>
             </a>
@@ -37,7 +37,7 @@
               href="/oauth2/authorization/line"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img src="@main/images/line_icon.png" alr="LineIcon" />
+                <img src="@main/images/line_icon.png" alt="" />
               </span>
               <strong>LINEでログイン</strong>
             </a>
@@ -48,7 +48,7 @@
               href="/oauth2/authorization/github"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img src="@main/images/github_icon.png" alr="GitHubIcon" />
+                <img src="@main/images/github_icon.png" alt="" />
               </span>
               <strong>GitHubでログイン</strong>
             </a>
@@ -102,7 +102,7 @@
               <span
                 class="icon fas fa-lg has-text-danger is-flex is-align-items-center mr-2"
               >
-                <img src="@main/images/yahoo_icon.png" alr="YahooIcon" />
+                <img src="@main/images/yahoo_icon.png" alt="" />
               </span>
               <strong>Yahoo! JAPANでログイン</strong>
             </a>
@@ -113,7 +113,7 @@
               href="/oauth2/authorization/line"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img src="@main/images/line_icon.png" alr="LineIcon" />
+                <img src="@main/images/line_icon.png" alt="" />
               </span>
               <strong>LINEでログイン</strong>
             </a>
@@ -124,7 +124,7 @@
               href="/oauth2/authorization/github"
             >
               <span class="icon fas fa-lg is-flex is-align-items-center mr-2">
-                <img src="@main/images/github_icon.png" alr="GitHubIcon" />
+                <img src="@main/images/github_icon.png" alt="" />
               </span>
               <strong>GitHubでログイン</strong>
             </a>

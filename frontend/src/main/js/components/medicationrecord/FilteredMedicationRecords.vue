@@ -23,12 +23,13 @@
         >
           <img
             :src="medicationRecord.recorder.profileImageURL"
+            alt=""
             class="is-rounded"
             v-if="medicationRecord.recorder.profileImageURL !== undefined"
           />
           <img
             src="@main/images/no_profile_image.png"
-            alt="noImage"
+            alt=""
             class="is-rounded"
             v-if="medicationRecord.recorder.profileImageURL === undefined"
           />

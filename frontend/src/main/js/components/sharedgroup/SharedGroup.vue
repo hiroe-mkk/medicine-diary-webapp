@@ -16,11 +16,13 @@
           <img
             class="is-rounded"
             :src="member.profileImageURL"
+            alt=""
             v-if="member.profileImageURL !== undefined"
           />
           <img
             class="is-rounded"
             src="@main/images/no_profile_image.png"
+            alt=""
             v-if="member.profileImageURL === undefined"
           />
         </a>
@@ -28,11 +30,13 @@
           <img
             class="is-rounded"
             :src="member.profileImageURL"
+            alt=""
             v-if="member.profileImageURL !== undefined"
           />
           <img
             class="is-rounded"
             src="@main/images/no_profile_image.png"
+            alt=""
             v-if="member.profileImageURL === undefined"
           />
         </figure>
@@ -59,11 +63,13 @@
           <img
             class="is-rounded"
             :src="invitee.profileImageURL"
+            alt=""
             v-if="invitee.profileImageURL !== undefined"
           />
           <img
             class="is-rounded"
             src="@main/images/no_profile_image.png"
+            alt=""
             v-if="invitee.profileImageURL === undefined"
           />
         </figure>
@@ -71,11 +77,13 @@
           <img
             class="is-rounded"
             :src="invitee.profileImageURL"
+            alt=""
             v-if="invitee.profileImageURL !== undefined"
           />
           <img
             class="is-rounded"
             src="@main/images/no_profile_image.png"
+            alt=""
             v-if="invitee.profileImageURL === undefined"
           />
         </figure>

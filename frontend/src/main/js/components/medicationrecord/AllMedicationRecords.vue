@@ -19,11 +19,13 @@
               <img
                 class="is-rounded"
                 :src="self.value.profileImageURL"
+                alt=""
                 v-if="self.value.profileImageURL !== undefined"
               />
               <img
                 class="is-rounded"
                 src="@main/images/no_profile_image.png"
+                alt=""
                 v-if="self.value.profileImageURL === undefined"
               />
             </figure>
@@ -43,11 +45,13 @@
               <img
                 class="is-rounded"
                 :src="member.profileImageURL"
+                alt=""
                 v-if="member.profileImageURL !== undefined"
               />
               <img
                 class="is-rounded"
                 src="@main/images/no_profile_image.png"
+                alt=""
                 v-if="member.profileImageURL === undefined"
               />
             </figure>

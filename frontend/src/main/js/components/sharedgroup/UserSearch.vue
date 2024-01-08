@@ -52,11 +52,12 @@
                   <img
                     :src="user.profileImageURL"
                     class="is-rounded"
+                    alt=""
                     v-if="user.profileImageURL !== undefined"
                   />
                   <img
                     src="@main/images/no_profile_image.png"
-                    alt="noImage"
+                    alt=""
                     class="is-rounded"
                     v-if="user.profileImageURL === undefined"
                   />

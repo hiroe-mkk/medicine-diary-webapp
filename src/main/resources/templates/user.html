@@ -18,11 +18,13 @@
           <figure class="image is-96x96 m-0">
             <img
               th:src="${user.profileImageURL}"
+              alt=""
               class="is-rounded"
               th:if="${user.profileImageURL != null}"
             />
             <img
               :src="noProfileImage"
+              alt=""
               class="is-rounded"
               th:if="${user.profileImageURL == null}"
             />

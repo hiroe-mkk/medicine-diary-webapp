@@ -21,10 +21,10 @@
               th:if="*{medicineImageURL != null}"
               th:attr="'@click'=|activateMedicineImageModal('*{medicineImageURL}')|"
             >
-              <img th:src="*{medicineImageURL}" />
+              <img th:src="*{medicineImageURL}" alt="" />
             </p>
             <p class="image is-96x96 mx-3" th:if="*{medicineImageURL == null}">
-              <img :src="noMedicineImage" />
+              <img :src="noMedicineImage" alt="" />
             </p>
           </div>
           <div class="media-content has-text-grey-dark">
@@ -57,7 +57,7 @@
             @click="isMedicineImageModalActive = false"
           ></div>
           <div class="modal-content is-flex is-justify-content-center m-0">
-            <img :src="selectedMedicineImageURL" style="max-height: 300px" />
+            <img :src="selectedMedicineImageURL" alt="" style="max-height: 300px" />
             <div class="ml-2">
               <button
                 class="delete"

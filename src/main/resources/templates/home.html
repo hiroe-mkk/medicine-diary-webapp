@@ -57,13 +57,13 @@
                         <img
                           th:src="${profile.profileImageURL}"
                           class="is-rounded"
-                          alt="image"
+                          alt=""
                           th:if="${profile.profileImageURL != null}"
                         />
                         <img
                           :src="noProfileImage"
                           class="is-rounded"
-                          alt="noImage"
+                          alt=""
                           th:if="${profile.profileImageURL == null}"
                         />
                       </figure>
@@ -122,6 +122,7 @@
                         <img
                           class="is-rounded has-background-white"
                           th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/medicines_small.png'"
+                          alt=""
                         />
                       </figure>
                     </div>
@@ -153,6 +154,7 @@
                         <img
                           class="is-rounded has-background-white"
                           th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/calendar_small.png'"
+                          alt=""
                         />
                       </figure>
                     </div>
@@ -184,6 +186,7 @@
                         <img
                           class="is-rounded has-background-white"
                           th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/writing_small.png'"
+                          alt=""
                         />
                       </figure>
                     </div>
@@ -246,7 +249,7 @@
               <figure class="image">
                 <img
                   th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/logo_home.png'"
-                  alt="logo"
+                  alt=""
                   style="max-width: 350px"
                 />
               </figure>

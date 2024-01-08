@@ -7,11 +7,13 @@
     >
       <img
         :src="image"
+        alt=""
         :class="{ 'is-rounded': isRounded }"
         v-if="image != undefined"
       />
       <img
         :src="noImage"
+        alt=""
         :class="{ 'is-rounded': isRounded }"
         v-if="image == undefined"
       />
@@ -71,7 +73,7 @@
             v-if="!imageTrimmingManager.isTrimming && image !== undefined"
           >
             <figure class="image is-128x128 m-0">
-              <img :src="image" />
+              <img :src="image" alt="" />
             </figure>
           </div>
           <div
