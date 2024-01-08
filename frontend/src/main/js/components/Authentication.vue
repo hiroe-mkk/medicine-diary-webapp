@@ -143,7 +143,7 @@
         </div>
         <div class="block">
           <a
-            class="has-text-weight-bold has-text-info"
+            class="is-size-7 has-text-weight-bold has-text-info"
             href="/agreement"
             >利用規約
           </a>

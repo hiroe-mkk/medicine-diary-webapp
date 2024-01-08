@@ -8,39 +8,52 @@
     <div th:fragment="macro" th:remove="tag">
       <div class="content has-text-left p-3 my-3">
         <div class="tile is-ancestor">
-          <div class="tile is-10 is-vertical is-parent">
-            <div class="tile is-child">
+          <div class="tile is-9 is-vertical is-parent">
+            <div class="tile is-child is-hidden-tablet">
+              <p class="mb-1">
+                <strong class="underline-marker is-size-4 has-text-link-dark">
+                  お薬を服用したとき、
+                </strong>
+              </p>
+              <p class="mb-0">
+                <span>　　</span>
+                <strong class="underline-marker is-size-4 has-text-link-dark">
+                  記録を残していますか？
+                </strong>
+              </p>
+            </div>
+            <div class="tile is-child is-hidden-mobile">
               <strong class="underline-marker is-size-4 has-text-link-dark">
                 お薬を服用したとき、記録を残していますか？
               </strong>
             </div>
-            <div class="tile is-child px-4">
-              <p class="block has-text-weight-semibold">
+            <div class="tile is-child px-2">
+              <span class="block has-text-weight-semibold">
                 日々のお薬や体調の記録は、より適切な治療法を見つけるカギとなります。<br />
-              </p>
-              <p class="block has-text-weight-semibold">
+              </span>
+              <span class="block has-text-weight-semibold">
                 でも、手書きは手間がかかって管理も面倒ですよね。<br />
                 『
                 <strong class="is-size-5 has-text-info-dark"> お薬日記</strong>
                 』なら、お薬を服用したときにサクッと入力するだけ！<br />
                 いつでもどこでも手軽に記録が確認できます。
-              </p>
-              <p class="block has-text-weight-semibold">
-                カンタン操作で健康状態をらくらく見える化する 『
+              </span>
+              <span class="block has-text-weight-semibold">
+                カンタン操作で、健康状態をらくらく見える化する 『
                 <strong class="is-size-5 has-text-info-dark"> お薬日記 </strong>
                 』 。<br />
-                あなたもぜひ始めてみませんか？
-              </p>
+                あなたも始めてみませんか？
+              </span>
             </div>
           </div>
           <div class="tile is-parent">
             <div
               class="tile is-child is-flex is-justify-content-center is-align-items-flex-end"
             >
-              <figure class="image is-128x128 m-0 px-3">
+              <figure class="image is-128x128">
                 <img
                   th:src="${@environment.getProperty('application.endpoint.image')} + '/illustration/inspiration.png'"
-                  alt="medicines"
+                  alt=""
                 />
               </figure>
             </div>
@@ -84,7 +97,7 @@
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
-                在庫を管理して購入のタイミングを把握
+                在庫を管理
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
                 お薬には、必要に応じて在庫情報を設定できます。
@@ -105,7 +118,7 @@
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
-                服用したお薬と効果を記録して体調管理
+                服用したお薬を記録
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
                 服用したお薬とその効果などの情報を簡単に記録できます。
@@ -145,7 +158,7 @@
                 </figure>
               </div>
               <strong class="underline-marker has-text-link">
-                家族やパートナーと情報を共有する
+                家族やパートナーと情報共有
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
                 お薬や服用記録を家族やパートナーと共有できます。
