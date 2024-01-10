@@ -136,7 +136,7 @@
           </p>
         </div>
         <p
-          class="notification has-background-white-bis has-text-weight-semibold has-text-left p-3 m-2"
+          class="notification has-background-white-bis has-text-weight-semibold has-text-left is-size-7 p-3 m-2"
           v-if="medicationRecord.value.note !== ''"
         >
           {{ medicationRecord.value.note }}
