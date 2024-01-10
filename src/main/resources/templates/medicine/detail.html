@@ -110,14 +110,14 @@
                         <span class="has-text-weight-semibold pl-1">回</span>
                       </span>
                     </p>
-                    <p
-                      class="is-flex is-justify-content-space-between mb-3"
+                    <div
+                      class="columns m-0"
                       th:if="*{!timingOptions.isEmpty()}"
                     >
-                      <span class="has-text-weight-semibold">
+                      <p class="column has-text-left has-text-weight-semibold p-0">
                         服用するタイミング
-                      </span>
-                      <span>
+                      </p>
+                      <p class="column has-text-right p-0">
                         <span
                           th:each="timing, status:*{timingOptions}"
                           th:remove="tag"
@@ -130,11 +130,11 @@
                             class="has-text-weight-semibold"
                             th:if="${__${status.size}__ != __${status.count}__}"
                           >
-                            /
+                            / 
                           </span>
                         </span>
-                      </span>
-                    </p>
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div class="block" th:if="*{!precautions.isBlank()}">
