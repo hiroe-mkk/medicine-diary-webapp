@@ -11,6 +11,7 @@ spring:
           github:
             clientId: ${GITHUB_CLIENT_ID}
             clientSecret: ${GITHUB_CLIENT_SECRET}
+            redirectUri: ${WEB_ENDPOINT}/login/oauth2/code/github
           line:
             clientId: ${LINE_CLIENT_ID}
             clientSecret: ${LINE_CLIENT_SECRET}
