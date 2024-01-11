@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/medicineDetail.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="medicineDetail" th:object="${medicine}" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
+      <div class="container is-max-desktop p-3">
+        <div class="content has-text-centered mb-3">
+          <p class="icon-text has-text-grey-dark is-size-4">
+            <strong th:text="*{medicineName}"></strong>
+            <span
+              class="icon mx-1"
+              th:if="${isParticipatingInSharedGroup} and *{!isPublic}"
+            >
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <span
+              class="icon fas fa-lg has-text-link is-clickable ml-2"
+              @click="isMenuModalActive = true"
+              th:if="${isAvailableMedicine}"
+            >
+              <i class="fa-solid fa-ellipsis"></i>
+            </span>
+          </p>
+        </div>
+
+        <div class="notification has-background-white py-3 px-5">
+          <div class="columns p-3">
+            <div class="column p-3 is-two-fifths">
+              <changeable-image
+                ref="changeableImage"
+                th:attr="image=*{medicineImageURL}, csrf=${_csrf.token}, execute-root-path='/api/medicines/__*{medicineId}__/image'"
+                image-name="お薬画像"
+                :no-image="noMedicineImage"
+                th:if="*{medicineImageURL!=null}"
+              ></changeable-image>
+              <changeable-image
+                ref="changeableImage"
+                th:attr="csrf=${_csrf.token}, execute-root-path='/api/medicines/__*{medicineId}__/image'"
+                image-name="お薬画像"
+                :no-image="noMedicineImage"
+                th:if="*{medicineImageURL==null}"
+              ></changeable-image>
+            </div>
+            <div
+              class="column p-3 is-flex is-flex-direction-column is-justify-content-space-between"
+            >
+              <div class="content">
+                <div
+                  class="block border-bottom pb-3 px-4"
+                  th:if="*{!effects.isEmpty()}"
+                >
+                  <p
+                    class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
+                  >
+                    効能
+                  </p>
+                  <span th:each="effect, status:*{effects.values}">
+                    <span
+                      class="has-text-weight-semibold"
+                      th:text=" ${effect}"
+                    ></span>
+                    <span
+                      class="has-text-weight-bold"
+                      th:if="${__${status.size}__ != __${status.count}__}"
+                    >
+                      　/　
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="block pb-3 px-4"
+                  :class="{ 'border-bottom': isInventoryManagementEnabled }"
+                >
+                  <p
+                    class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
+                  >
+                    用法・用量
+                  </p>
+                  <div
+                    th:object="${medicine.dosageAndAdministration}"
+                    th:remove="tag"
+                  >
+                    <p class="is-flex is-justify-content-space-between mb-0">
+                      <span class="has-text-weight-semibold">
+                        1回あたりの服用量
+                      </span>
+                      <span>
+                        <strong class="is-size-4">[[*{dose}]]</strong>
+                        <span class="has-text-weight-semibold pl-1"
+                          >[[*{doseUnit}]]</span
+                        >
+                      </span>
+                    </p>
+                    <p class="is-flex is-justify-content-space-between mb-0">
+                      <span class="has-text-weight-semibold">
+                        1日あたりの服用回数
+                      </span>
+                      <span>
+                        <strong class="is-size-4">[[*{timesPerDay}]]</strong>
+                        <span class="has-text-weight-semibold pl-1">回</span>
+                      </span>
+                    </p>
+                    <div
+                      class="columns m-0"
+                      th:if="*{!timingOptions.isEmpty()}"
+                    >
+                      <p class="column has-text-left has-text-weight-semibold p-0">
+                        服用するタイミング
+                      </p>
+                      <p class="column has-text-right p-0">
+                        <span
+                          th:each="timing, status:*{timingOptions}"
+                          th:remove="tag"
+                        >
+                          <span
+                            class="has-text-weight-semibold"
+                            th:text=" ${timing.str}"
+                          ></span>
+                          <span
+                            class="has-text-weight-semibold"
+                            th:if="${__${status.size}__ != __${status.count}__}"
+                          >
+                            / 
+                          </span>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="block" th:if="*{!precautions.isBlank()}">
+                  <p
+                    class="is-size-5 has-text-weight-bold has-text-danger-dark has-text-centered mb-3"
+                  >
+                    注意事項
+                  </p>
+                  <p class="notification has-background-danger-light p-4">
+                    <span
+                      class="has-text-weight-semibold mb-1"
+                      th:text="*{precautions}"
+                    ></span>
+                  </p>
+                </div>
+                <inventory
+                  ref="inventory"
+                  @updated:is-enabled="isInventoryManagementEnabled = $event"
+                  th:attr="medicine-id=*{medicineId}, dose-unit=*{dosageAndAdministration.doseUnit}, ':remaining-quantity'=*{inventory.remainingQuantity}, ':quantity-per-package'=*{inventory.quantityPerPackage}, started-on=*{inventory.startedOn}, expiration-on=*{inventory.expirationOn}, ':unused-package'=*{inventory.unusedPackage}, csrf=${_csrf.token}"
+                  th:if="*{inventory != null}"
+                ></inventory>
+                <inventory
+                  ref="inventory"
+                  @updated:is-enabled="isInventoryManagementEnabled = $event"
+                  th:attr="medicine-id=*{medicineId}, dose-unit=*{dosageAndAdministration.doseUnit}, csrf=${_csrf.token}"
+                  th:if="*{inventory ==null}"
+                >
+                </inventory>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content pb-6">
+          <medication-records
+            th:attr="medicine-id=*{medicineId}, ':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+          ></medication-records>
+        </div>
+      </div>
+
+      <div th:if="${isAvailableMedicine}" th:remove="tag">
+        <div
+          class="bottom-fullwidth has-text-centered has-background-info-light py-4 m-0"
+        >
+          <a
+            class="button is-link is-rounded is-outlined px-5"
+            th:href="@{/medication-records/add?medicine={medicine}(medicine=*{medicineId})}"
+          >
+            <strong>服用記録を追加する</strong>
+            <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+              <i class="fa-solid fa-file-pen"></i>
+            </span>
+          </a>
+        </div>
+
+        <div class="modal" :class="{ 'is-active': isMenuModalActive }">
+          <div
+            class="modal-background"
+            @click="isMenuModalActive = false"
+          ></div>
+          <div class="modal-content is-flex is-justify-content-center">
+            <div class="content">
+              <a
+                class="button is-dark is-fullwidth is-small mb-1"
+                th:href="@{/medicines/{medicineId}/basicinfo/update(medicineId=*{medicineId})}"
+              >
+                <strong class="mx-6">基本情報を更新する</strong>
+              </a>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateMedicineImageMenuModal()"
+              >
+                <strong class="mx-6">画像を変更する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateInventoryAdjustmentModal()"
+              >
+                <strong class="mx-6" v-if="!isInventoryManagementEnabled">
+                  在庫管理を開始する
+                </strong>
+                <strong class="mx-6" v-if="isInventoryManagementEnabled">
+                  在庫を修正する
+                </strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateInventoryManagementStoppageConfirmationModal()"
+                v-if="isInventoryManagementEnabled"
+              >
+                <strong class="mx-6">在庫管理を終了する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small mb-1"
+                @click="activateDeletionConfirmationModal()"
+              >
+                <strong>お薬を削除する</strong>
+              </button>
+              <button
+                type="button"
+                class="button is-dark is-fullwidth is-small has-text-danger-dark mb-1"
+                @click="isMenuModalActive = false"
+              >
+                <strong class="mx-6">キャンセル</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="modal"
+          :class="{ 'is-active': isMedicineDeletionConfirmationModalActive }"
+        >
+          <div
+            class="modal-background"
+            @click="isMedicineDeletionConfirmationModalActive = false"
+          ></div>
+          <div class="modal-content is-flex is-justify-content-center">
+            <div class="message is-inline-block is-info">
+              <div class="message-body">
+                <div class="content">
+                  <p class="has-text-centered mb-2">
+                    <strong class="is-size-5 mb-1">
+                      このお薬を削除しますか？
+                    </strong>
+                    <br />
+                  </p>
+                  <p class="has-text-left mb-2">
+                    <small class="has-text-weight-semibold">
+                      服用記録を含む、お薬に関する全ての情報が削除されます。<br />
+                      本当に削除してよろしいですか？
+                    </small>
+                  </p>
+                  <form
+                    class="form"
+                    method="post"
+                    th:action="@{/medicines/{medicineId}/delete(medicineId=${medicine.medicineId})}"
+                  >
+                    <div class="field is-grouped is-grouped-centered p-2">
+                      <p class="control">
+                        <button class="button is-small is-rounded is-link">
+                          削除する
+                        </button>
+                      </p>
+                      <p class="control">
+                        <button
+                          type="button"
+                          class="button is-small is-rounded is-outlined is-danger"
+                          @click="isMedicineDeletionConfirmationModalActive = false"
+                        >
+                          キャンセル
+                        </button>
+                      </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

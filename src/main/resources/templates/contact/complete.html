@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+      <div class="container is-max-desktop p-3">
+        <div class="has-text-centered">
+          <p class="is-size-4 has-text-weight-bold has-text-grey-dark py-3">
+            お問い合わせ受け付け完了
+          </p>
+          <div class="message is-link is-inline-block has-text-weight-semibold">
+            <p class="message-body has-text-semibold has-text-left">
+              お問い合わせの受け付けが完了いたしました。<br />
+              ご入力いただいたメールアドレス宛に、お問い合わせ内容の確認メールを送信いたしますので、ご確認ください。<br />
+              確認メールが届かない場合は、メールアドレスが誤っているか、迷惑メールフォルダなどに振り分けられている可能性がございますので、ご確認をお願いいたします。<br />
+              お問い合わせいただき、ありがとうございました。今後ともどうぞよろしくお願いいたします。
+            </p>
+          </div>
+          <div class="block">
+            <a
+              class="is-underlined has-text-info has-text-weight-semibold"
+              th:href="@{/}"
+            >
+              ホームに戻る
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

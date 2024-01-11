@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/calendar.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="calendar" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
+      <calendar
+        th:attr="account-id=${accountId}, csrf=${_csrf.token}"
+        :is-self-calendar="true"
+      ></calendar>
+
+      <div
+        class="bottom-fullwidth has-text-centered has-background-info-light py-4 m-0"
+      >
+        <a
+          class="button is-link is-rounded is-outlined px-5"
+          th:href="@{/medication-records/add}"
+        >
+          <strong>服用記録を追加する</strong>
+          <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+            <i class="fa-solid fa-file-pen"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

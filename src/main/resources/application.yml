@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: ${PROFILES:dev}
+  servlet:
+    multipart:
+      maxFileSize: 512000 # アップロードを許可する1ファイルの最大バイト数 500KB
+      maxRequestSize: 614400 # multipart/form-data リクエストの Content-Length の最大値 600KB
+      fileSizeThreshold: 0 # アップロードされたファイルの中身を、一時ファイルとして保存するかの閾値
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    enabled: true
+    locations: classpath:db/migration
+    baselineVersion: 1
+    baselineOnMigrate: true
+
+logging:
+  config: classpath:logback/logback-spring.xml
+
+mybatis:
+  typeAliasesPackage: example.domain # XML の中でクラスを指定する際、完全修飾名の記述を省略できるようにする

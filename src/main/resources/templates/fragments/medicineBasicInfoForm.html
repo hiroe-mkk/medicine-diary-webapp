@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div th:fragment="macro(form)" th:object="${form}" th:remove="tag">
+      <div class="field is-horizontal my-3">
+        <div class="field-label is-flex is-align-items-center">
+          <label class="label has-text-grey">
+            お薬の名前
+            <span class="tag is-rounded is-danger is-light ml-2">必須</span>
+          </label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control is-expanded">
+              <input
+                class="input is-info is-rounded"
+                type="text"
+                name="medicineName"
+                th:value="*{medicineName}"
+                th:errorclass="is-danger"
+              />
+              <p
+                class="help is-danger"
+                th:if="${#fields.hasErrors('medicineName')}"
+                th:errors="*{medicineName}"
+              ></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal my-3">
+        <div class="field-label is-flex is-align-items-center">
+          <label class="label has-text-grey">用法・用量</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <div class="notification has-background-white py-3 px-5">
+                <div class="field my-3">
+                  <label class="label has-text-grey">
+                    1回当たりの服用量
+                    <span class="tag is-rounded is-danger is-light">必須</span>
+                  </label>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control mb-1">
+                        <input
+                          class="input is-info is-rounded"
+                          type="number"
+                          name="quantity"
+                          th:value="*{quantity}"
+                          min="0"
+                          step="0.001"
+                          max="10000"
+                          th:errorclass="is-danger"
+                        />
+                        <p
+                          class="help is-danger"
+                          th:if="${#fields.hasErrors('quantity')}"
+                          th:errors="*{quantity}"
+                        ></p>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <div class="control mb-1">
+                        <input
+                          class="input is-info is-rounded"
+                          type="text"
+                          list="doseUnitOptions"
+                          name="doseUnit"
+                          th:value="*{doseUnit}"
+                          placeholder="単位"
+                          th:errorclass="is-danger"
+                        />
+                        <datalist id="doseUnitOptions">
+                          <option v-for="doseUnitOption in doseUnitOptions">
+                            {{doseUnitOption}}
+                          </option>
+                        </datalist>
+                        <p
+                          class="help is-danger"
+                          th:if="${#fields.hasErrors('doseUnit')}"
+                          th:errors="*{doseUnit}"
+                        ></p>
+                      </div>
+                      <p class="help">
+                        ※錠、カプセル、g、mL、包など、お薬に合わせた単位をご入力ください。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="field my-3">
+                  <label class="label has-text-grey">
+                    1日当たりの服用回数
+                    <span class="tag is-rounded is-danger is-light ml-2"
+                      >必須</span
+                    >
+                  </label>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control has-icons-right">
+                        <input
+                          class="input is-info is-rounded"
+                          type="number"
+                          name="timesPerDay"
+                          th:value="*{timesPerDay}"
+                          min="0"
+                          step="1"
+                          th:errorclass="is-danger"
+                        />
+                        <span
+                          class="icon is-small is-right has-text-grey has-text-weight-bold"
+                        >
+                          回
+                        </span>
+                        <p
+                          class="help is-danger"
+                          th:if="${#fields.hasErrors('timesPerDay')}"
+                          th:errors="*{timesPerDay}"
+                        ></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="field my-3">
+                  <label class="label has-text-grey">服用するタイミング</label>
+                  <div class="field-body">
+                    <field class="field">
+                      <div class="control">
+                        <div class="checkbox mx-2" th:each="timing:${timings}">
+                          <input
+                            class="value checkbox"
+                            type="checkbox"
+                            name="timingOptions"
+                            th:value="${timing.name}"
+                            th:checked="*{isTimingSelected('__${timing.name}__')}"
+                            th:errorclass="is-danger"
+                          />
+                          <label
+                            class="has-text-grey"
+                            th:text="${timing.str}"
+                          ></label>
+                        </div>
+                        <p
+                          class="help is-danger"
+                          th:if="${#fields.hasErrors('timingOptions')}"
+                          th:errors="*{timingOptions}"
+                        ></p>
+                      </div>
+                    </field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal my-3">
+        <div class="field-label is-flex is-align-items-center">
+          <label class="label has-text-grey">効能</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <effects
+                th:attr="effects=*{effects}, errors=${#fields.errors('effects*')}"
+              ></effects>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal my-3">
+        <div class="field-label is-flex is-align-items-center">
+          <label class="label has-text-grey">注意事項</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control is-expanded">
+              <textarea
+                class="textarea is-info has-fixed-size"
+                rows="5"
+                name="precautions"
+                placeholder="500文字以内で入力してください。"
+                th:errorclass="is-danger"
+              >[[*{precautions}]]</textarea>
+              <p
+                class="help is-danger"
+                th:if="${#fields.hasErrors('precautions')}"
+                th:errors="*{precautions}"
+              ></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

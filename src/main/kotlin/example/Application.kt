@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.*
 
 @SpringBootApplication
 class Application {
-	companion object {
-		@JvmStatic
-		fun main(args: Array<String>) {
-			runApplication<Application>(*args)
-		}
-	}
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runApplication<Application>(*args)
+        }
+    }
 }

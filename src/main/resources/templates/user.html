@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+    <script th:src="@{/dist/js/user.bundle.js}" defer></script>
+  </head>
+
+  <body>
+    <div id="user" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
+      <div class="content m-0">
+        <div class="is-flex is-justify-content-center">
+          <figure class="image is-96x96 m-0">
+            <img
+              th:src="${user.profileImageURL}"
+              alt=""
+              class="is-rounded"
+              th:if="${user.profileImageURL != null}"
+            />
+            <img
+              :src="noProfileImage"
+              alt=""
+              class="is-rounded"
+              th:if="${user.profileImageURL == null}"
+            />
+          </figure>
+        </div>
+        <div class="icon-text is-flex is-justify-content-center">
+          <strong
+            class="is-size-5 has-text-grey-dark"
+            th:text="${user.username}"
+            th:if="${!user.username.isDefaultValue()}"
+          >
+          </strong>
+          <strong
+            class="is-size-5 has-text-grey"
+            th:if="${user.username.isDefaultValue()}"
+          >
+            ( unknown )
+          </strong>
+        </div>
+      </div>
+
+      <calendar
+        th:attr="account-id=${user.accountId}, csrf=${_csrf.token}"
+        :is-self-calendar="false"
+      ></calendar>
+    </div>
+  </body>
+</html>

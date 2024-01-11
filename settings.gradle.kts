@@ -1,1 +1,2 @@
-rootProject.name = "medicine"
+rootProject.name = "medicine-diary"
+include("frontend")
