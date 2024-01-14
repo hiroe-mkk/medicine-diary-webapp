@@ -293,6 +293,7 @@
             <idArg column="timing_option" javaType="Timing"/>
         </constructor>
     </resultMap>
+
     <resultMap id="EffectResultMap" type="String">
         <constructor>
             <idArg column="effect" javaType="String"/>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.query.medicine.JsonMedicineOverviewsMapper">
+    <select id="findAllAvailableMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medicines
+            LEFT OUTER JOIN effects USING(medicine_id)
+            LEFT OUTER JOIN timing_options USING(medicine_id)
+        WHERE
+            medicines.account_id = #{accountId}
+            OR  medicines.shared_group_id = (SELECT shared_group_id FROM members WHERE members.member = #{accountId})
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <sql id="AllColumns">
+        medicines.medicine_id AS medicine_id,
+        medicines.medicine_name AS medicine_name,
+        medicines.quantity AS quantity,
+        medicines.dose_unit AS dose_unit,
+        medicines.times_per_day AS times_per_day,
+        timing_options.timing_option AS timing_option,
+        CONCAT(medicines.medicine_image_url_endpoint, medicines.medicine_image_url_path) AS medicine_image_url,
+        effects.effect AS effect
+    </sql>
+
+    <resultMap id="JSONMedicineOverviewResultMap" type="example.application.query.medicine.JSONMedicineOverview">
+        <constructor>
+            <idArg column="medicine_id" javaType="String"/>
+            <arg column="medicine_name" javaType="String"/>
+            <arg column="medicine_image_url" javaType="String"/>
+        </constructor>
+        <id column="medicine_id"/>
+        <association column="{quantity, dose_unit, times_per_day, timing_option}" property="dosageAndAdministrationForMapping"
+                     javaType="example.application.query.medicine.JSONDosageAndAdministration" resultMap="JSONDosageAndAdministrationResultMap"/>
+        <collection column="effect" property="effectsForMapping" resultMap="EffectResultMap"/>
+    </resultMap>
+
+    <resultMap id="JSONDosageAndAdministrationResultMap" type="example.application.query.medicine.JSONDosageAndAdministration">
+        <constructor>
+            <arg column="quantity" javaType="String"/>
+            <arg column="dose_unit" javaType="String"/>
+            <arg column="times_per_day" javaType="String"/>
+        </constructor>
+        <id column="medicine_id"/>
+        <collection column="timing_option" property="timingOptionsForMapping" resultMap="TimingOptionsResultMap"/>
+    </resultMap>
+
+    <resultMap id="TimingOptionsResultMap" type="Timing">
+        <constructor>
+            <idArg column="timing_option" javaType="Timing"/>
+        </constructor>
+    </resultMap>
+
+    <!--  本来は必要ないはずだが、resultMapを経由しないと適切に値が格納されなかった  -->
+    <resultMap id="EffectResultMap" type="String">
+        <constructor>
+            <idArg column="effect" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>

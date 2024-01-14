@@ -114,19 +114,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                 .containsExactly(memberMedicine3.id, memberMedicine2.id, memberMedicine1.id)
         }
 
-        @Test
-        @DisplayName("服用可能な薬概要一覧を取得する")
-        fun findAvailableMedicineOverviews() {
-            //given:
-            val (medicine1, medicine2, medicine3) = createMedicines(MedicineOwner.create(userSession.accountId))
-
-            //when:
-            val actual = medicineService.findAvailableMedicineOverviews(userSession)
-
-            //then:
-            assertThat(actual).extracting("medicineId").containsExactly(medicine3.id, medicine2.id, medicine1.id)
-        }
-
         private fun createMedicines(medicineOwner: MedicineOwner): Triple<Medicine, Medicine, Medicine> {
             val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
             val medicine1 = testMedicineInserter.insert(owner = medicineOwner,

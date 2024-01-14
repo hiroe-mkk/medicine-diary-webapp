@@ -38,15 +38,6 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 服用可能な薬概要一覧を取得する
-     */
-    @Transactional(readOnly = true)
-    fun findAvailableMedicineOverviews(userSession: UserSession): List<MedicineOverviewDto> {
-        val medicines = medicineQueryService.findAllAvailableMedicines(userSession.accountId)
-        return convertToSortedDtoList(medicines)
-    }
-
-    /**
      * 服用可能な薬な薬か
      */
     @Transactional(readOnly = true)

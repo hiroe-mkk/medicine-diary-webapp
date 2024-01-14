@@ -1,5 +1,6 @@
 package example.presentation.controller.api.medicine
 
+import example.application.query.medicine.*
 import example.application.service.medicine.*
 import example.domain.model.medicine.*
 import example.presentation.controller.api.medicationrecord.*
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medicines")
-class MedicineOverviewsApiController(private val medicineService: MedicineService,
+class MedicineOverviewsApiController(private val jsonMedicineOverviewsQueryService: JSONMedicineOverviewsQueryService,
                                      private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用可能な薬概要一覧を取得する
@@ -20,8 +21,8 @@ class MedicineOverviewsApiController(private val medicineService: MedicineServic
     @GetMapping(params = ["available"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getAvailableMedicineOverviews(): JSONMedicineOverviewsResponse {
-        val medicines = medicineService.findAvailableMedicineOverviews(userSessionProvider.getUserSessionOrElseThrow())
-        return JSONMedicineOverviewsResponse.from(medicines)
+    fun getAvailableMedicineOverviews(): JSONMedicineOverviews {
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
+        return jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession)
     }
 }
