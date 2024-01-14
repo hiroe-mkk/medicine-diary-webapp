@@ -55,14 +55,14 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(1)
-        assertThat(actualPage1.content.size).isEqualTo(1)
-        assertThat(actualPage2.content.size).isEqualTo(0)
+        assertThat(actualPage1.number).isEqualTo(0)
         val expectedDisplayMedicationRecord = createDisplayMedicationRecord(member,
                                                                             sharedGroupMedicine,
                                                                             memberMedicationRecord,
                                                                             requesterProfile.accountId)
-        assertThat(actualPage1.content[0]).isEqualTo(expectedDisplayMedicationRecord)
-
+        assertThat(actualPage1.medicationRecords).containsExactly(expectedDisplayMedicationRecord)
+        assertThat(actualPage2.number).isEqualTo(1)
+        assertThat(actualPage2.medicationRecords).isEmpty()
     }
 
     fun createDisplayMedicationRecord(profile: Profile,

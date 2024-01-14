@@ -18,17 +18,22 @@ abstract class JSONMedicationRecordQueryService(private val medicineQueryService
      */
     fun findJSONMedicationRecordsPage(userSession: UserSession,
                                       filter: MedicationRecordFilter,
-                                      pageable: Pageable): Page<JSONMedicationRecord> {
+                                      pageable: Pageable): JSONMedicationRecords {
         val filteredAccountIds = filteredAccountIds(filter, userSession)
         val filteredMedicineIds = filteredMedicineIds(filter, userSession)
-        if (filteredMedicineIds.isEmpty()) return Page.empty()
 
-        return findFilteredMedicationRecordsPage(filteredAccountIds,
-                                                 filteredMedicineIds,
-                                                 filter.start,
-                                                 filter.end,
-                                                 pageable,
-                                                 userSession.accountId)
+        val page = if (filteredMedicineIds.isNotEmpty()) {
+            findFilteredMedicationRecordsPage(filteredAccountIds,
+                                              filteredMedicineIds,
+                                              filter.start,
+                                              filter.end,
+                                              pageable,
+                                              userSession.accountId)
+        } else {
+            Page.empty()
+        }
+
+        return JSONMedicationRecords.from(page)
     }
 
     private fun filteredMedicineIds(filter: MedicationRecordFilter,
