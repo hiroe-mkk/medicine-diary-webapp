@@ -9,12 +9,16 @@ import org.springframework.transaction.annotation.*
 @Transactional(readOnly = true)
 class MyBatisJSONMedicineOverviewsQueryService(private val jsonMedicineOverviewsMapper: JsonMedicineOverviewsMapper)
     : JSONMedicineOverviewsQueryService {
-    override fun findMedicineOverviews(userSession: UserSession): JSONOwnerBaseMedicineOverviews {
+    override fun findMedicineOverviews(userSession: UserSession,
+                                       medicineFilter: MedicineFilter?): JSONOwnerBaseMedicineOverviews {
         // TODO: 3回フェッチしているため、より効率の良い方法に変更する
         val accountId = userSession.accountId.toString()
-        val ownedMedicines = jsonMedicineOverviewsMapper.findAllOwnedMedicineOverviews(accountId)
-        val sharedGroupMedicines = jsonMedicineOverviewsMapper.findAllSharedGroupMedicineOverviews(accountId)
-        val membersMedicines = jsonMedicineOverviewsMapper.findAllMembersMedicineOverviews(accountId)
+        val ownedMedicines = jsonMedicineOverviewsMapper.findAllOwnedMedicineOverviews(accountId,
+                                                                                       medicineFilter?.effect)
+        val sharedGroupMedicines = jsonMedicineOverviewsMapper.findAllSharedGroupMedicineOverviews(accountId,
+                                                                                                   medicineFilter?.effect)
+        val membersMedicines = jsonMedicineOverviewsMapper.findAllMembersMedicineOverviews(accountId,
+                                                                                           medicineFilter?.effect)
         return JSONOwnerBaseMedicineOverviews(ownedMedicines, sharedGroupMedicines, membersMedicines)
     }
 

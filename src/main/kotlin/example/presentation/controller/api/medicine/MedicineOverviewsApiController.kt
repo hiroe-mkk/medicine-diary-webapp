@@ -21,8 +21,8 @@ class MedicineOverviewsApiController(private val jsonMedicineOverviewsQueryServi
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getMedicineOverviews(): JSONOwnerBaseMedicineOverviews {
-        return jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession())
+    fun getMedicineOverviews(medicineFilter: MedicineFilter): JSONOwnerBaseMedicineOverviews {
+        return jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession(), medicineFilter)
     }
 
     /**

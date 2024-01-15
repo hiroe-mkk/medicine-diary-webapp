@@ -25,19 +25,6 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 薬概要一覧を取得する
-     */
-    @Transactional(readOnly = true)
-    fun findMedicineOverviews(userSession: UserSession): MedicineOverviews {
-        val ownedMedicines = medicineQueryService.findAllOwnedMedicines(userSession.accountId)
-        val sharedGroupMedicines = medicineQueryService.findAllSharedGroupMedicines(userSession.accountId)
-        val membersMedicines = medicineQueryService.findAllMembersMedicines(userSession.accountId)
-        return MedicineOverviews(convertToSortedDtoList(ownedMedicines),
-                                 convertToSortedDtoList(sharedGroupMedicines),
-                                 convertToSortedDtoList(membersMedicines))
-    }
-
-    /**
      * 服用可能な薬な薬か
      */
     @Transactional(readOnly = true)

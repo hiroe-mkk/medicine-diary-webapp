@@ -87,49 +87,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     }
 
     @Nested
-    inner class GetMedicineOverviewsTest {
-        @Test
-        @DisplayName("薬概要一覧を取得する")
-        fun findMedicineOverviews() {
-            //given:
-            val memberUserAccountId = testAccountInserter.insertAccountAndProfile().first.id
-            val sharedGroupId =
-                    testSharedGroupInserter.insert(members = setOf(userSession.accountId, memberUserAccountId)).id
-            val (ownedMedicine1, ownedMedicine2, ownedMedicine3) =
-                    createMedicines(MedicineOwner.create(userSession.accountId))
-            val (sharedGroupMedicine1, sharedGroupMedicine2, sharedGroupMedicine3) =
-                    createMedicines(MedicineOwner.create(sharedGroupId))
-            val (memberMedicine1, memberMedicine2, memberMedicine3) =
-                    createMedicines(MedicineOwner.create(memberUserAccountId))
-
-            //when:
-            val actual = medicineService.findMedicineOverviews(userSession)
-
-            //then:
-            assertThat(actual.ownedMedicines).extracting("medicineId")
-                .containsExactly(ownedMedicine3.id, ownedMedicine2.id, ownedMedicine1.id)
-            assertThat(actual.sharedGroupMedicines).extracting("medicineId")
-                .containsExactly(sharedGroupMedicine3.id, sharedGroupMedicine2.id, sharedGroupMedicine1.id)
-            assertThat(actual.membersMedicines).extracting("medicineId")
-                .containsExactly(memberMedicine3.id, memberMedicine2.id, memberMedicine1.id)
-        }
-
-        private fun createMedicines(medicineOwner: MedicineOwner): Triple<Medicine, Medicine, Medicine> {
-            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-            val medicine1 = testMedicineInserter.insert(owner = medicineOwner,
-                                                        registeredAt = localDateTime,
-                                                        isPublic = true)
-            val medicine2 = testMedicineInserter.insert(owner = medicineOwner,
-                                                        registeredAt = localDateTime.plusDays(1),
-                                                        isPublic = true)
-            val medicine3 = testMedicineInserter.insert(owner = medicineOwner,
-                                                        registeredAt = localDateTime.plusDays(2),
-                                                        isPublic = true)
-            return Triple(medicine1, medicine2, medicine3)
-        }
-    }
-
-    @Nested
     inner class RegisterMedicineTest {
         @Test
         @DisplayName("薬を登録する")

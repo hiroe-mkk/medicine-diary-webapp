@@ -6,9 +6,7 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             medicines.account_id = #{accountId}
             OR  medicines.shared_group_id = (SELECT shared_group_id FROM members WHERE members.member = #{accountId})
@@ -20,11 +18,10 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             medicines.account_id = #{accountId}
+            <include refid="Filtering"/>
         ORDER BY
             registered_at DESC
     </select>
@@ -33,11 +30,10 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             medicines.shared_group_id = (SELECT shared_group_id FROM members WHERE members.member = #{accountId})
+            <include refid="Filtering"/>
         ORDER BY
             registered_at DESC
     </select>
@@ -46,9 +42,7 @@
         SELECT
             <include refid="AllColumns"/>
         FROM
-            medicines
-            LEFT OUTER JOIN effects USING(medicine_id)
-            LEFT OUTER JOIN timing_options USING(medicine_id)
+            <include refid="AllTables"/>
         WHERE
             medicines.account_id IN(
              SELECT account_id
@@ -57,6 +51,7 @@
             )
             AND NOT medicines.account_id = #{accountId}
             AND medicines.is_public = true
+            <include refid="Filtering"/>
         ORDER BY
             registered_at DESC
     </select>
@@ -70,6 +65,22 @@
         timing_options.timing_option AS timing_option,
         CONCAT(medicines.medicine_image_url_endpoint, medicines.medicine_image_url_path) AS medicine_image_url,
         effects.effect AS effect
+    </sql>
+
+    <sql id="AllTables">
+        medicines
+        LEFT OUTER JOIN effects USING(medicine_id)
+        LEFT OUTER JOIN timing_options USING(medicine_id)
+    </sql>
+
+    <sql id="Filtering">
+        <if test="effect != null and effect != ''">
+            AND medicines.medicine_id IN(
+             SELECT medicine_id
+             FROM effects
+             WHERE effect LIKE CONCAT('%', #{effect}, '%')
+            )
+        </if>
     </sql>
 
     <resultMap id="JSONMedicineOverviewResultMap" type="example.application.query.medicine.JSONMedicineOverview">

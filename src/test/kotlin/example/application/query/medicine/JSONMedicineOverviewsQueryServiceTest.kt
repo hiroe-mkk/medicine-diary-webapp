@@ -45,7 +45,8 @@ internal class JSONMedicineOverviewsQueryServiceTest(@Autowired private val json
     @DisplayName("薬概要一覧を取得する")
     fun findMedicineOverviews() {
         //when:
-        val actual = jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession)
+        val actual = jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession,
+                                                                             MedicineFilter("頭痛"))
 
         //then:
         assertThat(actual.ownedMedicines).extracting("medicineId")
