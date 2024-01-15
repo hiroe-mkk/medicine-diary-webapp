@@ -100,7 +100,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
     }
 
     @Nested
-    inner class GetViewableMedicine {
+    inner class GetViewableMedicineTest {
         @Test
         @DisplayName("所有している薬を取得する")
         fun getOwnedMedicine() {
@@ -200,7 +200,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
     }
 
     @Nested
-    inner class GetAllMedicines {
+    inner class GetAllMedicinesTest {
         private lateinit var memberAccountId: AccountId
 
         private lateinit var requesterMedicineWithPublic: Medicine
