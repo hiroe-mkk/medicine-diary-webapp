@@ -19,25 +19,53 @@ internal class MedicineOverviewsApiControllerTest(@Autowired private val mockMvc
         private const val PATH = "/api/medicines"
     }
 
-    @Test
-    @WithMockAuthenticatedAccount
-    @DisplayName("服用可能な薬概要一覧を取得する")
-    fun getAvailableMedicineOverviews() {
-        //when:
-        val actions = mockMvc.perform(get("${PATH}?available"))
+    @Nested
+    inner class GetMedicineOverviewsTest {
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("薬概要一覧を取得する")
+        fun getMedicineOverviews() {
+            //when:
+            val actions = mockMvc.perform(get(PATH))
 
-        //then:
-        actions.andExpect(status().isOk)
-            .andExpect(header().string("Content-Type", "application/json"))
+            //then:
+            actions.andExpect(status().isOk)
+                .andExpect(header().string("Content-Type", "application/json"))
+        }
+
+        @Test
+        @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
+        fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+            //when:
+            val actions = mockMvc.perform(get(PATH))
+
+            //then:
+            actions.andExpect(status().isUnauthorized)
+        }
     }
 
-    @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
-    fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
-        //when:
-        val actions = mockMvc.perform(get("${PATH}?user"))
+    @Nested
+    inner class GetAvailableMedicineOverviewsTest {
+        @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("服用可能な薬概要一覧を取得する")
+        fun getAvailableMedicineOverviews() {
+            //when:
+            val actions = mockMvc.perform(get("${PATH}?available"))
 
-        //then:
-        actions.andExpect(status().isUnauthorized)
+            //then:
+            actions.andExpect(status().isOk)
+                .andExpect(header().string("Content-Type", "application/json"))
+        }
+
+        @Test
+        @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
+        fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+            //when:
+            val actions = mockMvc.perform(get("${PATH}?available"))
+
+            //then:
+            actions.andExpect(status().isUnauthorized)
+        }
     }
 }

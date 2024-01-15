@@ -16,13 +16,24 @@ import org.springframework.web.bind.annotation.*
 class MedicineOverviewsApiController(private val jsonMedicineOverviewsQueryService: JSONMedicineOverviewsQueryService,
                                      private val userSessionProvider: UserSessionProvider) {
     /**
+     * 薬概要一覧を取得する
+     */
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    fun getMedicineOverviews(): JSONOwnerBaseMedicineOverviews {
+        return jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession())
+    }
+
+    /**
      * 服用可能な薬概要一覧を取得する
      */
     @GetMapping(params = ["available"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getAvailableMedicineOverviews(): JSONMedicineOverviews {
-        val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        return jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession)
+        return jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession())
     }
+
+    private fun userSession() = userSessionProvider.getUserSessionOrElseThrow()
 }
