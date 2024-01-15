@@ -225,10 +225,10 @@
             <arg column="registered_at" javaType="java.time.LocalDateTime"/>
         </constructor>
         <id column="medicine_id"/>
-        <association column="{timing_option_ordering, timing_option}" property="timingOptions"
-                     javaType="example.infrastructure.repository.shared.OrderedEntity" resultMap="TimingOptionOrderedEntityResultMap"/>
-        <association column="{effect_ordering, effect}" property="effects"
-                     javaType="example.infrastructure.repository.shared.OrderedEntity" resultMap="EffectOrderedEntityResultMap"/>
+        <collection column="{timing_option_ordering, timing_option}" property="timingOptionsForMapping"
+                     ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="TimingOptionOrderedEntityResultMap"/>
+        <collection column="{effect_ordering, effect}" property="effectsForMapping"
+                     ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="EffectOrderedEntityResultMap"/>
     </resultMap>
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
@@ -294,6 +294,7 @@
         </constructor>
     </resultMap>
 
+    <!--  本来は必要ないはずだが、resultMapを経由しないと適切に値が格納されなかった  -->
     <resultMap id="EffectResultMap" type="String">
         <constructor>
             <idArg column="effect" javaType="String"/>
