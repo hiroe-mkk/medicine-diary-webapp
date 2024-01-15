@@ -1,5 +1,6 @@
-package example.application.query.medicine
+package example.infrastructure.query.medicine
 
+import example.application.query.medicine.*
 import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
@@ -17,10 +18,10 @@ import org.springframework.beans.factory.annotation.*
 import java.time.*
 
 @MyBatisQueryServiceTest
-internal class JSONMedicineOverviewsQueryServiceTest(@Autowired private val jsonMedicineOverviewsQueryService: JSONMedicineOverviewsQueryService,
-                                                     @Autowired private val testAccountInserter: TestAccountInserter,
-                                                     @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                     @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private val jsonMedicineOverviewsQueryService: JSONMedicineOverviewsQueryService,
+                                                            @Autowired private val testAccountInserter: TestAccountInserter,
+                                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var userSession: UserSession
     private lateinit var sharedGroupId: SharedGroupId
     private lateinit var memberAccountId: AccountId
