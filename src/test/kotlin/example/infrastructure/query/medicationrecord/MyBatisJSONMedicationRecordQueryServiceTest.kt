@@ -60,7 +60,9 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
                                                                          sharedGroupMedicine,
                                                                          memberMedicationRecord,
                                                                          requesterProfile.accountId)
-        assertThat(actualPage1.medicationRecords).containsExactly(expectedDisplayMedicationRecord)
+        assertThat(actualPage1.medicationRecords)
+            .usingRecursiveFieldByFieldElementComparator()
+            .containsExactly(expectedDisplayMedicationRecord)
         assertThat(actualPage2.number).isEqualTo(1)
         assertThat(actualPage2.medicationRecords).isEmpty()
     }
@@ -74,8 +76,8 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
                                                       medicine.medicineName.value,
                                                       medicationRecord.dose.toString() + medicine.dosageAndAdministration.doseUnit),
                                     JSONFollowUp(medicationRecord.followUp.symptom,
-                                                 medicationRecord.followUp.beforeMedication.name,
-                                                 medicationRecord.followUp.afterMedication?.name),
+                                                 medicationRecord.followUp.beforeMedication,
+                                                 medicationRecord.followUp.afterMedication),
                                     medicationRecord.note,
                                     DateTimeFormatter.ofPattern("yyyy/MM/dd").format(medicationRecord.takenMedicineOn),
                                     DateTimeFormatter.ofPattern("HH:mm").format(medicationRecord.takenMedicineAt),

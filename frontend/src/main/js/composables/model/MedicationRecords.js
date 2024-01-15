@@ -105,37 +105,22 @@ export class MedicationRecordUtils {
   static convertConditionLevelToIcon(conditionLevel) {
     let icon;
     switch (conditionLevel) {
-      case 'GOOD':
+      case '良い':
         icon = '<i class="fa-regular fa-face-laugh-squint"></i>';
         break;
-      case 'NOT_BAD':
+      case '普通':
         icon = '<i class="fa-regular fa-face-smile"></i>';
         break;
-      case 'A_LITTLE_BAD':
+      case '少し悪い':
         icon = '<i class="fa-regular fa-face-frown"></i>';
         break;
-      case 'BAD':
+      case '悪い':
         icon = '<i class="fa-regular fa-face-sad-tear"></i>';
         break;
-      case 'VERY_BAD':
+      case 'とても悪い':
         icon = '<i class="fa-regular fa-face-dizzy"></i>';
         break;
     }
     return `<span class="icon is-small mx-1">${icon}</span>`;
-  }
-
-  static convertConditionLevelToString(conditionLevel) {
-    switch (conditionLevel) {
-      case 'GOOD':
-        return '良い';
-      case 'NOT_BAD':
-        return '普通';
-      case 'A_LITTLE_BAD':
-        return '少し悪い';
-      case 'BAD':
-        return '悪い';
-      case 'VERY_BAD':
-        return 'とても悪い';
-    }
   }
 }
