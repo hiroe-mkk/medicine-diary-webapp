@@ -34,10 +34,10 @@
             <idArg column="shared_group_id" javaType="String"/>
         </constructor>
         <id column="shared_group_id"/>
-        <collection column="{member_account_id, member_username, member_profile_image_url}"
-                    property="members" ofType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap" columnPrefix="member_"/>
-        <collection column="{invitee_account_id, invitee_username, invitee_profile_image_url}"
-                    property="invitees" ofType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap" columnPrefix="invitee_"/>
+        <collection column="{member_account_id, member_username, member_profile_image_url}" property="membersForMapping"
+                    ofType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap" columnPrefix="member_"/>
+        <collection column="{invitee_account_id, invitee_username, invitee_profile_image_url}" property="inviteesForMapping"
+                    ofType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap" columnPrefix="invitee_"/>
     </resultMap>
 
     <resultMap id="JSONUserResultMap" type="example.application.query.user.JSONUser">
