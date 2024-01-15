@@ -11,6 +11,7 @@ import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
 import org.assertj.core.api.Assertions.*
+import org.bouncycastle.asn1.x500.style.RFC4519Style.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
@@ -24,36 +25,52 @@ internal class JSONMedicineOverviewsQueryServiceTest(@Autowired private val json
     private lateinit var sharedGroupId: SharedGroupId
     private lateinit var memberAccountId: AccountId
 
+    private lateinit var ownedMedicines: List<Medicine>
+    private lateinit var sharedGroupMedicines: List<Medicine>
+    private lateinit var membersMedicines: List<Medicine>
+
     @BeforeEach
     internal fun setUp() {
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         userSession = UserSessionFactory.create(requesterAccountId)
         memberAccountId = testAccountInserter.insertAccountAndProfile().first.id
         sharedGroupId = testSharedGroupInserter.insert(members = setOf(userSession.accountId, memberAccountId)).id
+
+        ownedMedicines = createMedicines(MedicineOwner.create(userSession.accountId))
+        sharedGroupMedicines = createMedicines(MedicineOwner.create(sharedGroupId))
+        membersMedicines = createMedicines(MedicineOwner.create(memberAccountId))
+    }
+
+    @Test
+    @DisplayName("薬概要一覧を取得する")
+    fun findMedicineOverviews() {
+        //when:
+        val actual = jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession)
+
+        //then:
+        assertThat(actual.ownedMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*ownedMedicines.map { it.id.toString() }.toTypedArray())
+        assertThat(actual.sharedGroupMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*sharedGroupMedicines.map { it.id.toString() }.toTypedArray())
+        val expectMemberMedicineIds = membersMedicines.filter { it.isPublic }.map { it.id.toString() }
+        assertThat(actual.membersMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*expectMemberMedicineIds.toTypedArray())
     }
 
     @Test
     @DisplayName("服用可能な薬概要一覧を取得する")
     fun findAvailableMedicineOverviews() {
-        //given:
-        val medicineOwner1 = MedicineOwner.create(userSession.accountId)
-        val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-        val ownedMedicine1 = testMedicineInserter.insert(owner = medicineOwner1,
-                                                         registeredAt = localDateTime)
-        val ownedMedicine2 = testMedicineInserter.insert(owner = medicineOwner1,
-                                                         registeredAt = localDateTime.plusDays(1))
-        val medicineOwner2 = MedicineOwner.create(sharedGroupId)
-        val sharedGroupMedicine = testMedicineInserter.insert(owner = medicineOwner2,
-                                                              registeredAt = localDateTime.plusDays(2))
-        val medicineOwner3 = MedicineOwner.create(memberAccountId)
-        val memberMedicine = testMedicineInserter.insert(owner = medicineOwner3)
-
         //when:
         val actual = jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession)
 
         //then:
-        assertThat(actual.medicines).extracting("medicineId").containsExactly(sharedGroupMedicine.id.toString(),
-                                                                              ownedMedicine2.id.toString(),
-                                                                              ownedMedicine1.id.toString())
+        assertThat(actual.medicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*ownedMedicines.map { it.id.toString() }.toTypedArray(),
+                                       *sharedGroupMedicines.map { it.id.toString() }.toTypedArray())
+    }
+
+    private fun createMedicines(medicineOwner: MedicineOwner): List<Medicine> {
+        return listOf(testMedicineInserter.insert(owner = medicineOwner, isPublic = true),
+                      testMedicineInserter.insert(owner = medicineOwner, isPublic = false))
     }
 }

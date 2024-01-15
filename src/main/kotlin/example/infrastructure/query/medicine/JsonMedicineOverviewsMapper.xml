@@ -16,6 +16,51 @@
             registered_at DESC
     </select>
 
+    <select id="findAllOwnedMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medicines
+            LEFT OUTER JOIN effects USING(medicine_id)
+            LEFT OUTER JOIN timing_options USING(medicine_id)
+        WHERE
+            medicines.account_id = #{accountId}
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <select id="findAllSharedGroupMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medicines
+            LEFT OUTER JOIN effects USING(medicine_id)
+            LEFT OUTER JOIN timing_options USING(medicine_id)
+        WHERE
+            medicines.shared_group_id = (SELECT shared_group_id FROM members WHERE members.member = #{accountId})
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <select id="findAllMembersMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            medicines
+            LEFT OUTER JOIN effects USING(medicine_id)
+            LEFT OUTER JOIN timing_options USING(medicine_id)
+        WHERE
+            medicines.account_id IN(
+             SELECT account_id
+             FROM members
+             WHERE members.member = #{accountId}
+            )
+            AND NOT medicines.account_id = #{accountId}
+            AND medicines.is_public = true
+        ORDER BY
+            registered_at DESC
+    </select>
+
     <sql id="AllColumns">
         medicines.medicine_id AS medicine_id,
         medicines.medicine_name AS medicine_name,
