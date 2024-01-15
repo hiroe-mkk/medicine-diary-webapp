@@ -56,19 +56,19 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(1)
         assertThat(actualPage1.number).isEqualTo(0)
-        val expectedDisplayMedicationRecord = createDisplayMedicationRecord(member,
-                                                                            sharedGroupMedicine,
-                                                                            memberMedicationRecord,
-                                                                            requesterProfile.accountId)
+        val expectedDisplayMedicationRecord = createJSONMedicationRecord(member,
+                                                                         sharedGroupMedicine,
+                                                                         memberMedicationRecord,
+                                                                         requesterProfile.accountId)
         assertThat(actualPage1.medicationRecords).containsExactly(expectedDisplayMedicationRecord)
         assertThat(actualPage2.number).isEqualTo(1)
         assertThat(actualPage2.medicationRecords).isEmpty()
     }
 
-    fun createDisplayMedicationRecord(profile: Profile,
-                                      medicine: Medicine,
-                                      medicationRecord: MedicationRecord,
-                                      requester: AccountId): JSONMedicationRecord {
+    fun createJSONMedicationRecord(profile: Profile,
+                                   medicine: Medicine,
+                                   medicationRecord: MedicationRecord,
+                                   requester: AccountId): JSONMedicationRecord {
         return JSONMedicationRecord(medicationRecord.id.value,
                                     JSONTakenMedicine(medicine.id.value,
                                                       medicine.medicineName.value,

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.query.sharedgroup.JSONSharedGroupMapper">
-    <select id="findAllByAccountId" resultMap="DisplaySharedGroupResultMap">
+    <select id="findAllByAccountId" resultMap="JSONSharedGroupResultMap">
         SELECT
             members_with_profiles.shared_group_id AS shared_group_id,
             members_with_profiles.account_id AS member_account_id,
@@ -29,7 +29,7 @@
             );
     </select>
 
-    <resultMap id="DisplaySharedGroupResultMap" type="example.application.query.sharedgroup.JSONSharedGroup">
+    <resultMap id="JSONSharedGroupResultMap" type="example.application.query.sharedgroup.JSONSharedGroup">
         <constructor>
             <idArg column="shared_group_id" javaType="String"/>
         </constructor>
