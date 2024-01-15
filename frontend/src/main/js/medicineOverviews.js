@@ -1,24 +1,13 @@
 import { createApp } from 'vue';
-import noMedicineImage from '@main/images/no_medicine_image.png';
+import OwnerBaseMedicineOverviews from '@main/js/components/medicine/OwnerBaseMedicineOverviews.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 createApp({
   components: {
     'result-message': ResultMessage,
-  },
-  data() {
-    return {
-      noMedicineImage: noMedicineImage,
-      isMedicineImageModalActive: false,
-      selectedMedicineImageURL: '',
-      type: 'OWNED',
-    };
+    'medicine-overviews': OwnerBaseMedicineOverviews,
   },
   methods: {
-    activateMedicineImageModal(url) {
-      this.selectedMedicineImageURL = url;
-      this.isMedicineImageModalActive = true;
-    },
     activateResultMessage(type, message, details) {
       this.$refs.resultMessage.activate(type, message, details);
     },

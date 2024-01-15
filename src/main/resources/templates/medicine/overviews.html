@@ -13,64 +13,9 @@
     <div id="medicineOverviews" layout:fragment="content">
       <result-message ref="resultMessage"></result-message>
 
-      <div class="container is-max-desktop p-3">
-        <div class="content has-text-centered mb-3">
-          <p class="is-size-4 has-text-weight-bold has-text-grey-dark">
-            お薬一覧
-          </p>
-          <div
-            class="tabs is-toggle is-toggle-rounded is-centered is-small mb-0"
-            th:if="${isParticipatingInSharedGroup}"
-          >
-            <ul class="m-0">
-              <li
-                :class="{ 'is-active': type === 'OWNED' }"
-                @click="type = 'OWNED'"
-              >
-                <a>
-                  <small class="has-text-weight-bold">　 あなた 　</small>
-                </a>
-              </li>
-              <li
-                :class="{ 'is-active': type === 'SHARED_GROUP' }"
-                @click="type = 'SHARED_GROUP'"
-              >
-                <a>
-                  <small class="has-text-weight-bold">　　共有　　</small>
-                </a>
-              </li>
-              <li
-                :class="{ 'is-active': type === 'MEMBERS' }"
-                @click="type = 'MEMBERS'"
-              >
-                <a>
-                  <small class="has-text-weight-bold">　メンバー　</small>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="notification has-background-white p-3">
-          <div
-            v-show="type === 'OWNED'"
-            th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.ownedMedicines}, ${isParticipatingInSharedGroup})}"
-            v-clock
-          ></div>
-          <div
-            th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.sharedGroupMedicines}, ${isParticipatingInSharedGroup})}"
-            v-show="type === 'SHARED_GROUP'"
-            th:if="${isParticipatingInSharedGroup}"
-            v-clock
-          ></div>
-          <div
-            th:insert="~{fragments/medicineOverviews::macro(${medicineOverviews.membersMedicines}, ${isParticipatingInSharedGroup})}"
-            v-show="type === 'MEMBERS'"
-            th:if="${isParticipatingInSharedGroup}"
-            v-clock
-          ></div>
-        </div>
-      </div>
+      <medicine-overviews
+        th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}"
+      ></medicine-overviews>
 
       <div
         class="bottom-fullwidth has-text-centered has-background-info-light py-4 m-0"

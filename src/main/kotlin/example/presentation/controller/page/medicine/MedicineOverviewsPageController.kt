@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/medicines")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class MedicineOverviewsPageController(private val medicineService: MedicineService,
-                                      private val sharedGroupService: SharedGroupService,
+class MedicineOverviewsPageController(private val sharedGroupService: SharedGroupService,
                                       private val userSessionProvider: UserSessionProvider) {
     /**
      * 薬一覧画面を表示する
@@ -24,9 +23,8 @@ class MedicineOverviewsPageController(private val medicineService: MedicineServi
     @GetMapping
     fun displayMedicineOverviewsPage(model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val medicineOverviews = medicineService.findMedicineOverviews(userSession)
-        model.addAttribute("medicineOverviews", medicineOverviews)
-        model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
+        model.addAttribute("isParticipatingInSharedGroup",
+                           sharedGroupService.isParticipatingInSharedGroup(userSession))
 
         model.addAttribute("lastRequestedPagePath", "/medicines")
         return "medicine/overviews"
