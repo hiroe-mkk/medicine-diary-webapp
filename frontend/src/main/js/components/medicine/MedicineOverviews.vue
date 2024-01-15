@@ -20,7 +20,7 @@
         </p>
       </div>
       <div class="media-content has-text-grey-dark">
-        <span>
+        <p>
           <a
             class="has-text-link has-text-weight-bold is-underlined"
             :href="`/medicines/${medicineOverview.medicineId}`"
@@ -29,15 +29,16 @@
           <span class="icon mx-1" v-if="props.isParticipatingInSharedGroup">
             <i class="fa-solid fa-lock"></i>
           </span>
-        </span>
-        <span class="tags is-flex is-justify-content-flex-end mt-3 mb-0">
+        </p>
+        <p class="is-flex is-justify-content-flex-end mt-3 mb-0">
           <span
-            class="tag is-warning is-rounded has-text-weight-bold"
+            class="button is-rounded is-small is-link is-light has-text-weight-bold py-1 px-2"
             v-for="effect in medicineOverview.effects"
+            @click="search(effect)"
           >
-            {{ effect }}
+            {{ `# ${effect}` }}
           </span>
-        </span>
+        </p>
       </div>
     </div>
 
@@ -68,13 +69,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import noMedicineImage from '@main/images/no_medicine_image.png';
 
 const props = defineProps({
   medicineOverviews: { type: Array, default: () => [] },
   isParticipatingInSharedGroup: Boolean,
 });
+const emits = defineEmits(['searched']);
 
 const isMedicineImageModalActive = ref(false);
 const selectedMedicineImageURL = ref('');
@@ -82,5 +84,9 @@ const selectedMedicineImageURL = ref('');
 function activateMedicineImageModal(url) {
   selectedMedicineImageURL.value = url;
   isMedicineImageModalActive.value = true;
+}
+
+function search(effect) {
+  emits('searched', effect);
 }
 </script>

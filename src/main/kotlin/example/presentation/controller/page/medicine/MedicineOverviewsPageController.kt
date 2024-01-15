@@ -1,5 +1,6 @@
 package example.presentation.controller.page.medicine
 
+import example.application.query.medicine.*
 import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
 import example.domain.model.medicine.*
@@ -21,10 +22,11 @@ class MedicineOverviewsPageController(private val sharedGroupService: SharedGrou
      * 薬一覧画面を表示する
      */
     @GetMapping
-    fun displayMedicineOverviewsPage(model: Model): String {
+    fun displayMedicineOverviewsPage(medicineFilter: MedicineFilter, model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("isParticipatingInSharedGroup",
                            sharedGroupService.isParticipatingInSharedGroup(userSession))
+        model.addAttribute("medicineFilter", medicineFilter)
 
         model.addAttribute("lastRequestedPagePath", "/medicines")
         return "medicine/overviews"

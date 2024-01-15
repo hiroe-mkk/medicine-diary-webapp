@@ -35,6 +35,30 @@
       </div>
     </div>
 
+    <div class="content is-flex is-justify-content-flex-end mb-2">
+      <div class="field has-addons">
+        <div class="control">
+          <input
+            class="input is-rounded is-small"
+            type="text"
+            v-model="editingFilterEffect"
+            placeholder="症状で検索する"
+          />
+        </div>
+        <div class="control">
+          <button
+            type="button"
+            class="button is-link is-small is-rounded"
+            @click="loadMedicineOverviews(editingFilterEffect)"
+          >
+            <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div
       class="notification has-background-white p-3"
       v-show="medicineType === 'OWNED'"
@@ -42,6 +66,7 @@
       <MedicineOverviews
         :medicineOverviews="ownedMedicines.value"
         :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        @searched="loadMedicineOverviews"
       ></MedicineOverviews>
     </div>
     <div
@@ -53,6 +78,7 @@
       <MedicineOverviews
         :medicineOverviews="shredGroupMedicines.value"
         :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        @searched="loadMedicineOverviews"
       >
       </MedicineOverviews>
     </div>
@@ -63,6 +89,7 @@
       <MedicineOverviews
         :medicineOverviews="membersMedicines.value"
         :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        @searched="loadMedicineOverviews"
       >
       </MedicineOverviews>
     </div>
@@ -70,11 +97,17 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, inject } from 'vue';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import MedicineOverviews from '@main/js/components/medicine/MedicineOverviews.vue';
 
-const props = defineProps({ isParticipatingInSharedGroup: Boolean });
+const props = defineProps({
+  isParticipatingInSharedGroup: Boolean,
+  filterEffect: { type: String, default: '' },
+});
+const activateResultMessage = inject('activateResultMessage');
+
+const editingFilterEffect = ref('');
 
 const medicineType = ref('OWNED');
 const ownedMedicines = reactive({ value: undefined });
@@ -82,7 +115,15 @@ const shredGroupMedicines = reactive({ value: undefined });
 const membersMedicines = reactive({ value: undefined });
 
 onMounted(() => {
-  HttpRequestClient.submitGetRequest('/api/medicines')
+  loadMedicineOverviews(props.filterEffect);
+});
+
+function loadMedicineOverviews(effect) {
+  editingFilterEffect.value = effect;
+  const params = new URLSearchParams();
+  params.append('effect', effect);
+
+  HttpRequestClient.submitGetRequest('/api/medicines?' + params.toString())
     .then((data) => {
       ownedMedicines.value = data.ownedMedicines;
       shredGroupMedicines.value = data.shredGroupMedicines;
@@ -95,5 +136,5 @@ onMounted(() => {
         '通信状態をご確認のうえ、再度お試しください。'
       );
     });
-});
+}
 </script>

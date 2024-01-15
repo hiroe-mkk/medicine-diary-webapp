@@ -56,30 +56,8 @@
             >
               <div class="content">
                 <div
-                  class="block border-bottom pb-3 px-4"
-                  th:if="*{!effects.isEmpty()}"
-                >
-                  <p
-                    class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
-                  >
-                    効能
-                  </p>
-                  <span th:each="effect, status:*{effects.values}">
-                    <span
-                      class="has-text-weight-semibold"
-                      th:text=" ${effect}"
-                    ></span>
-                    <span
-                      class="has-text-weight-bold"
-                      th:if="${__${status.size}__ != __${status.count}__}"
-                    >
-                      　/　
-                    </span>
-                  </span>
-                </div>
-                <div
                   class="block pb-3 px-4"
-                  :class="{ 'border-bottom': isInventoryManagementEnabled }"
+                  th:classappend="${__*{!effects.isEmpty()}__ or __*{!precautions.isBlank()}__} ? border-bottom"
                 >
                   <p
                     class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
@@ -114,7 +92,9 @@
                       class="columns m-0"
                       th:if="*{!timingOptions.isEmpty()}"
                     >
-                      <p class="column has-text-left has-text-weight-semibold p-0">
+                      <p
+                        class="column has-text-left has-text-weight-semibold p-0"
+                      >
                         服用するタイミング
                       </p>
                       <p class="column has-text-right p-0">
@@ -130,12 +110,36 @@
                             class="has-text-weight-semibold"
                             th:if="${__${status.size}__ != __${status.count}__}"
                           >
-                            / 
+                            /
                           </span>
                         </span>
                       </p>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="block pb-3 px-4"
+                  th:classappend="*{!precautions.isBlank()} ? border-bottom"
+                  th:if="*{!effects.isEmpty()}"
+                >
+                  <p
+                    class="is-size-5 has-text-weight-bold has-text-info-dark has-text-centered mb-3"
+                  >
+                    効能
+                  </p>
+                  <span th:each="effect, status:*{effects.values}">
+                    <a
+                      class="has-text-info has-text-weight-bold is-underlined"
+                      th:href="@{/medicines?effect={effect}(effect=${effect})}"
+                      th:text="'# ' + ${effect}"
+                    ></a>
+                    <span
+                      class="has-text-weight-semibold px-1"
+                      th:if="${__${status.size}__ != __${status.count}__}"
+                    >
+                      /
+                    </span>
+                  </span>
                 </div>
                 <div class="block" th:if="*{!precautions.isBlank()}">
                   <p

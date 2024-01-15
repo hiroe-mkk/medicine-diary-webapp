@@ -14,7 +14,7 @@
       <result-message ref="resultMessage"></result-message>
 
       <medicine-overviews
-        th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}"
+        th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, filter-effect=${medicineFilter.effect}"
       ></medicine-overviews>
 
       <div
