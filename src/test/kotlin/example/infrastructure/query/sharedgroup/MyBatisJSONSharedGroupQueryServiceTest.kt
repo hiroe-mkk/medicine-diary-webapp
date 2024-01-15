@@ -62,8 +62,10 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val jso
             .containsExactly(requester.accountId.value)
 
         val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == requester.accountId.value }
-        assertThat(actualUser).isEqualTo(JSONUser(requester.accountId.value,
-                                                  requester.username.value,
-                                                  requester.profileImageURL?.toURL()))
+        assertThat(actualUser)
+            .usingRecursiveComparison()
+            .isEqualTo(JSONUser(requester.accountId.value,
+                                requester.username.value,
+                                requester.profileImageURL?.toURL()))
     }
 }

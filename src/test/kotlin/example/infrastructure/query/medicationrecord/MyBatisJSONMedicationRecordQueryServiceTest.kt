@@ -55,27 +55,29 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(1)
-        assertThat(actualPage1.content.size).isEqualTo(1)
-        assertThat(actualPage2.content.size).isEqualTo(0)
-        val expectedDisplayMedicationRecord = createDisplayMedicationRecord(member,
-                                                                            sharedGroupMedicine,
-                                                                            memberMedicationRecord,
-                                                                            requesterProfile.accountId)
-        assertThat(actualPage1.content[0]).isEqualTo(expectedDisplayMedicationRecord)
-
+        assertThat(actualPage1.number).isEqualTo(0)
+        val expectedDisplayMedicationRecord = createJSONMedicationRecord(member,
+                                                                         sharedGroupMedicine,
+                                                                         memberMedicationRecord,
+                                                                         requesterProfile.accountId)
+        assertThat(actualPage1.medicationRecords)
+            .usingRecursiveFieldByFieldElementComparator()
+            .containsExactly(expectedDisplayMedicationRecord)
+        assertThat(actualPage2.number).isEqualTo(1)
+        assertThat(actualPage2.medicationRecords).isEmpty()
     }
 
-    fun createDisplayMedicationRecord(profile: Profile,
-                                      medicine: Medicine,
-                                      medicationRecord: MedicationRecord,
-                                      requester: AccountId): JSONMedicationRecord {
+    fun createJSONMedicationRecord(profile: Profile,
+                                   medicine: Medicine,
+                                   medicationRecord: MedicationRecord,
+                                   requester: AccountId): JSONMedicationRecord {
         return JSONMedicationRecord(medicationRecord.id.value,
                                     JSONTakenMedicine(medicine.id.value,
                                                       medicine.medicineName.value,
                                                       medicationRecord.dose.toString() + medicine.dosageAndAdministration.doseUnit),
                                     JSONFollowUp(medicationRecord.followUp.symptom,
-                                                 medicationRecord.followUp.beforeMedication.name,
-                                                 medicationRecord.followUp.afterMedication?.name),
+                                                 medicationRecord.followUp.beforeMedication,
+                                                 medicationRecord.followUp.afterMedication),
                                     medicationRecord.note,
                                     DateTimeFormatter.ofPattern("yyyy/MM/dd").format(medicationRecord.takenMedicineOn),
                                     DateTimeFormatter.ofPattern("HH:mm").format(medicationRecord.takenMedicineAt),

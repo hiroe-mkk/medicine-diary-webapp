@@ -143,6 +143,7 @@
                           <label
                             class="has-text-grey"
                             th:text="${timing.str}"
+                            v-pre
                           ></label>
                         </div>
                         <p
@@ -188,6 +189,7 @@
                 name="precautions"
                 placeholder="500文字以内で入力してください。"
                 th:errorclass="is-danger"
+                v-pre
               >[[*{precautions}]]</textarea>
               <p
                 class="help is-danger"

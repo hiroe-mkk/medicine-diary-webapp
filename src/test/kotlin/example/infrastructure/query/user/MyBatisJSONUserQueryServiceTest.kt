@@ -30,9 +30,11 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQu
         val actual = jsonUserQueryService.findJSONUser(userSession.accountId)
 
         //then:
-        assertThat(actual).isEqualTo(JSONUser(requesterProfile.accountId.value,
-                                              requesterProfile.username.value,
-                                              requesterProfile.profileImageURL?.toURL()))
+        assertThat(actual)
+            .usingRecursiveComparison()
+            .isEqualTo(JSONUser(requesterProfile.accountId.value,
+                                requesterProfile.username.value,
+                                requesterProfile.profileImageURL?.toURL()))
     }
 
     @Test

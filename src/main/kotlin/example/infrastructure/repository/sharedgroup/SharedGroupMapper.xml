@@ -84,8 +84,8 @@
             <idArg column="shared_group_id" javaType="SharedGroupId" resultMap="SharedGroupIdResultMap"/>
         </constructor>
         <id column="shared_group_id"/>
-        <collection column="member" property="members" ofType="AccountId" resultMap="MemberResultMap"/>
-        <collection column="invitee" property="invitees" ofType="AccountId" resultMap="InviteesResultMap"/>
+        <collection column="member" property="membersForMapping" ofType="AccountId" resultMap="MemberResultMap"/>
+        <collection column="invitee" property="inviteesForMapping" ofType="AccountId" resultMap="InviteesResultMap"/>
     </resultMap>
     <resultMap id="SharedGroupIdResultMap" type="SharedGroupId">
         <constructor>

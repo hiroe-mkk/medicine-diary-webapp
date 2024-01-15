@@ -2,7 +2,12 @@ package example.application.query.sharedgroup
 
 import example.application.query.user.*
 
-data class JSONSharedGroup(val sharedGroupId: String) {
-    val members: Set<JSONUser> = mutableSetOf()
-    val invitees: Set<JSONUser> = mutableSetOf()
+class JSONSharedGroup(val sharedGroupId: String) {
+    private lateinit var membersForMapping: Set<JSONUser>
+    val members: Set<JSONUser>
+        get() = membersForMapping
+
+    private lateinit var inviteesForMapping: Set<JSONUser>
+    val invitees: Set<JSONUser>
+        get() = inviteesForMapping
 }

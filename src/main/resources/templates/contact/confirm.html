@@ -40,12 +40,12 @@
               </p>
               <p class="has-text-grey-dark pb-2">
                 <strong>お名前 *</strong><br />
-                <span>[[*{name}]]</span>
+                <span v-pre>[[*{name}]]</span>
                 <input type="text" name="name" th:value="*{name}" hidden />
               </p>
               <p class="has-text-grey-dark pb-2">
                 <strong>お問い合わせ内容 *</strong><br />
-                <span>[[*{content}]]</span>
+                <span v-pre>[[*{content}]]</span>
                 <input
                   type="text"
                   name="content"

@@ -21,7 +21,7 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     @Nested
-    inner class GetUser {
+    inner class GetUserTest {
         @Test
         @WithMockAuthenticatedAccount
         @DisplayName("ユーザーを取得する")
@@ -46,7 +46,7 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     @Nested
-    inner class GetMemberUsers {
+    inner class GetMemberUsersTest {
         @Test
         @WithMockAuthenticatedAccount
         @DisplayName("メンバーユーザー一覧を取得する")
@@ -71,7 +71,7 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     @Nested
-    inner class GetUsersByKeyword {
+    inner class GetUsersByKeywordTest {
         private val keyword = "username"
 
         @Test
