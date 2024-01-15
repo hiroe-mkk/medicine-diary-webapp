@@ -18,6 +18,7 @@
           <p
             class="is-size-4 has-text-weight-bold has-text-grey-dark"
             th:text="${title}"
+            v-pre
           ></p>
         </div>
         <form
@@ -258,6 +259,7 @@
                       name="note"
                       placeholder="500文字以内で入力してください。"
                       th:errorclass="is-danger"
+                      v-pre
                     >[[*{note}]]</textarea>
                     <p
                       class="help is-danger"

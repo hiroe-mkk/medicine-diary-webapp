@@ -16,7 +16,7 @@
       <div class="container is-max-desktop p-3">
         <div class="content has-text-centered mb-3">
           <p class="icon-text has-text-grey-dark is-size-4">
-            <strong th:text="*{medicineName}"></strong>
+            <strong th:text="*{medicineName}" v-pre></strong>
             <span
               class="icon mx-1"
               th:if="${isParticipatingInSharedGroup} and *{!isPublic}"
@@ -74,9 +74,9 @@
                       </span>
                       <span>
                         <strong class="is-size-4">[[*{dose}]]</strong>
-                        <span class="has-text-weight-semibold pl-1"
-                          >[[*{doseUnit}]]</span
-                        >
+                        <span class="has-text-weight-semibold pl-1" v-pre>
+                          [[*{doseUnit}]]
+                        </span>
                       </span>
                     </p>
                     <p class="is-flex is-justify-content-space-between mb-0">
@@ -132,6 +132,7 @@
                       class="has-text-info has-text-weight-bold is-underlined"
                       th:href="@{/medicines?effect={effect}(effect=${effect})}"
                       th:text="'# ' + ${effect}"
+                      v-pre
                     ></a>
                     <span
                       class="has-text-weight-semibold px-1"
@@ -151,6 +152,7 @@
                     <span
                       class="has-text-weight-semibold mb-1"
                       th:text="*{precautions}"
+                      v-pre
                     ></span>
                   </p>
                 </div>
