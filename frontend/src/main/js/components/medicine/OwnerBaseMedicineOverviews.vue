@@ -76,7 +76,7 @@
       "
     >
       <MedicineOverviews
-        :medicineOverviews="shredGroupMedicines.value"
+        :medicineOverviews="sharedGroupMedicines.value"
         :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
         @searched="loadMedicineOverviews"
       >
@@ -111,7 +111,7 @@ const editingFilterEffect = ref('');
 
 const medicineType = ref('OWNED');
 const ownedMedicines = reactive({ value: undefined });
-const shredGroupMedicines = reactive({ value: undefined });
+const sharedGroupMedicines = reactive({ value: undefined });
 const membersMedicines = reactive({ value: undefined });
 
 onMounted(() => {
@@ -126,7 +126,7 @@ function loadMedicineOverviews(effect) {
   HttpRequestClient.submitGetRequest('/api/medicines?' + params.toString())
     .then((data) => {
       ownedMedicines.value = data.ownedMedicines;
-      shredGroupMedicines.value = data.shredGroupMedicines;
+      sharedGroupMedicines.value = data.sharedGroupMedicines;
       membersMedicines.value = data.membersMedicines;
     })
     .catch(() => {
