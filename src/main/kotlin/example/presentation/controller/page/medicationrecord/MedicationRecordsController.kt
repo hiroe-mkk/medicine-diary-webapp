@@ -20,7 +20,7 @@ class MedicationRecordsController(private val sharedGroupService: SharedGroupSer
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
 
-        model.addAttribute("lastRequestedPagePath", "/medicines")
+        model.addAttribute("lastRequestedPagePath", "/medication-records")
         return "medicationrecord/list"
     }
 }
