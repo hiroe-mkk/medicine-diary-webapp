@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class MedicationRecordsControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class MedicationRecordsPageControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
         private const val PATH = "/medication-records"
     }
