@@ -6,7 +6,7 @@
 
   <body>
     <div th:fragment="macro" th:remove="tag">
-      <div class="content mb-0">
+      <div class="content is-hidden-mobile mb-0">
         <a class="is-size-7 has-text-link" th:href="@{/agreement}">
           利用規約
         </a>
@@ -15,7 +15,30 @@
           お問い合わせ
         </a>
         <span>｜</span>
+        <a class="is-size-7 has-text-link" th:href="@{/about}">
+          お薬日記について
+        </a>
+        <span>｜</span>
         <a class="is-size-7 has-text-link" th:href="@{/notice}">お知らせ</a>
+      </div>
+      <div class="content is-hidden-tablet mb-0">
+        <p class="mb-1">
+          <a class="is-size-7 has-text-link" th:href="@{/agreement}">
+            利用規約
+          </a>
+          <span>｜</span>
+          <a class="is-size-7 has-text-link" th:href="@{/contact}">
+            お問い合わせ
+          </a>
+          <span>｜</span>
+        </p>
+        <p class="mb-1">
+          <a class="is-size-7 has-text-link" th:href="@{/about}">
+            お薬日記について
+          </a>
+          <span>｜</span>
+          <a class="is-size-7 has-text-link" th:href="@{/notice}">お知らせ</a>
+        </p>
       </div>
     </div>
   </body>

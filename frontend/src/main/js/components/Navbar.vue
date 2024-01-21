@@ -54,12 +54,6 @@
                 <strong class="px-2">設定</strong>
               </span>
             </a>
-            <a class="navbar-item" href="/about">
-              <span class="has-text-link-dark pl-3 pr-0">
-                <i class="fa-regular fa-circle-question"></i>
-                <strong class="px-2">お薬日記とは？</strong>
-              </span>
-            </a>
           </div>
         </div>
 
@@ -109,15 +103,6 @@
           <a class="has-text-link-dark" href="/setting">
             <i class="fa-solid fa-gear"></i>
             <strong class="px-2">設定</strong>
-          </a>
-        </div>
-        <div
-          class="navbar-item is-hidden-desktop py-1 px-5 mb-2"
-          v-if="props.isAuthenticated"
-        >
-          <a class="has-text-link-dark" href="/about">
-            <i class="fa-regular fa-circle-question"></i>
-            <strong class="px-2">お薬日記とは？</strong>
           </a>
         </div>
 
