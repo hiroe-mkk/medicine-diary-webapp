@@ -26,9 +26,6 @@
             :href="`/medicines/${medicineOverview.medicineId}`"
             >{{ medicineOverview.medicineName }}</a
           >
-          <span class="icon mx-1" v-if="props.isParticipatingInSharedGroup">
-            <i class="fa-solid fa-lock"></i>
-          </span>
         </p>
         <p class="is-flex is-justify-content-flex-end mt-3 mb-0">
           <span
