@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div th:fragment="macro" th:remove="tag">
+      <div class="content mb-0">
+        <a class="is-size-7 has-text-link" th:href="@{/agreement}">
+          利用規約
+        </a>
+        <span>｜</span>
+        <a class="is-size-7 has-text-link" th:href="@{/contact}">
+          お問い合わせ
+        </a>
+        <span>｜</span>
+        <a class="is-size-7 has-text-link" th:href="@{/notice}">お知らせ</a>
+      </div>
+    </div>
+  </body>
+</html>
