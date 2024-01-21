@@ -32,7 +32,7 @@
         </p>
         <p class="is-flex is-justify-content-flex-end mt-3 mb-0">
           <span
-            class="button is-rounded is-small is-link is-light has-text-weight-bold py-1 px-2"
+            class="button is-rounded is-small is-link is-light has-text-weight-bold py-1 px-2 mx-1"
             v-for="effect in medicineOverview.effects"
             @click="search(effect)"
           >
