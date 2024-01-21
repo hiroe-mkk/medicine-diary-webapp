@@ -6,7 +6,7 @@
 
   <body>
     <div th:fragment="macro" th:remove="tag">
-      <div class="content has-text-left p-3 my-3">
+      <div class="content has-text-left p-3 mt-4 mb-6">
         <div class="tile is-ancestor">
           <div class="tile is-9 is-vertical is-parent">
             <div class="tile is-child is-hidden-tablet">
@@ -28,22 +28,22 @@
               </strong>
             </div>
             <div class="tile is-child px-2">
-              <span class="block has-text-weight-semibold">
-                日々のお薬や体調の記録は、より適切な治療法を見つけるカギとなります。<br />
-              </span>
-              <span class="block has-text-weight-semibold">
+              <p class="block has-text-weight-semibold">
+                日々のお薬や体調の記録は、より適切な治療法を見つけるカギとなります。
+              </p>
+              <p class="block has-text-weight-semibold">
                 でも、手書きは手間がかかって管理も面倒ですよね。<br />
                 『
-                <strong class="is-size-5 has-text-info-dark"> お薬日記</strong>
+                <strong class="is-size-5 has-text-info-dark">お薬日記</strong>
                 』なら、お薬を服用したときにサクッと入力するだけ！<br />
                 いつでもどこでも手軽に記録が確認できます。
-              </span>
-              <span class="block has-text-weight-semibold">
+              </p>
+              <p class="block has-text-weight-semibold">
                 カンタン操作で、健康状態をらくらく見える化する 『
-                <strong class="is-size-5 has-text-info-dark"> お薬日記 </strong>
+                <strong class="is-size-5 has-text-info-dark">お薬日記</strong>
                 』 。<br />
                 あなたも始めてみませんか？
-              </span>
+              </p>
             </div>
           </div>
           <div class="tile is-parent">
@@ -61,8 +61,11 @@
         </div>
       </div>
       <div class="content p-3">
-        <p class="my-5 has-text-left">
-          <strong class="underline-marker is-size-4 has-text-link">
+        <p class="my-5 has-text-centered">
+          <strong class="underline-marker is-size-4 has-text-link is-hidden-tablet">
+            お薬日記でできること
+          </strong>
+          <strong class="underline-marker is-size-3 has-text-link is-hidden-mobile">
             お薬日記でできること
           </strong>
         </p>
@@ -77,7 +80,7 @@
                   />
                 </figure>
               </div>
-              <strong class="underline-marker has-text-link">
+              <strong class="underline-marker has-text-link is-size-5">
                 お薬情報を簡単登録
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
@@ -96,7 +99,7 @@
                   />
                 </figure>
               </div>
-              <strong class="underline-marker has-text-link">
+              <strong class="underline-marker has-text-link is-size-5">
                 在庫を管理
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
@@ -117,7 +120,7 @@
                   />
                 </figure>
               </div>
-              <strong class="underline-marker has-text-link">
+              <strong class="underline-marker has-text-link is-size-5">
                 服用したお薬を記録
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
@@ -136,7 +139,7 @@
                   />
                 </figure>
               </div>
-              <strong class="underline-marker has-text-link">
+              <strong class="underline-marker has-text-link is-size-5">
                 カレンダーでお薬を服用した日を確認
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">
@@ -157,7 +160,7 @@
                   />
                 </figure>
               </div>
-              <strong class="underline-marker has-text-link">
+              <strong class="underline-marker has-text-link is-size-5">
                 家族やパートナーと情報共有
               </strong>
               <p class="is-size-7 has-text-weight-semibold has-text-left p-3">

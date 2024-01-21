@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/medication-records")
 @SessionAttributes(value = ["lastRequestedPagePath"])
-class MedicationRecordsController(private val sharedGroupService: SharedGroupService,
-                                  private val userSessionProvider: UserSessionProvider) {
+class MedicationRecordsPageController(private val sharedGroupService: SharedGroupService,
+                                      private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用記録一覧画面を表示する
      */
@@ -20,7 +20,7 @@ class MedicationRecordsController(private val sharedGroupService: SharedGroupSer
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
 
-        model.addAttribute("lastRequestedPagePath", "/medicines")
+        model.addAttribute("lastRequestedPagePath", "/medication-records")
         return "medicationrecord/list"
     }
 }
