@@ -7,7 +7,8 @@ import example.infrastructure.repository.shared.*
 class JSONMedicineOverview(val medicineId: String,
                            val medicineName: String,
                            @JsonInclude(JsonInclude.Include.NON_NULL)
-                           val medicineImageURL: String?) {
+                           val medicineImageURL: String?,
+                           val isPublic: Boolean) {
     private lateinit var dosageAndAdministrationForMapping: JSONDosageAndAdministration
     val dosageAndAdministration: JSONDosageAndAdministration
         get() = dosageAndAdministrationForMapping
@@ -20,8 +21,9 @@ class JSONMedicineOverview(val medicineId: String,
     constructor(medicineId: String,
                 medicineName: String,
                 medicineImageURL: String?,
+                isPublic: Boolean,
                 dosageAndAdministrationForMapping: JSONDosageAndAdministration,
-                effectsForMapping: List<String>) : this(medicineId, medicineName, medicineImageURL) {
+                effectsForMapping: List<String>) : this(medicineId, medicineName, medicineImageURL, isPublic) {
         this.dosageAndAdministrationForMapping = dosageAndAdministrationForMapping
         this.effectsForMapping = effectsForMapping
     }

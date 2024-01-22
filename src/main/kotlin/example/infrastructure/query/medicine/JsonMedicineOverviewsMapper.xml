@@ -64,6 +64,7 @@
         medicines.times_per_day AS times_per_day,
         timing_options.timing_option AS timing_option,
         CONCAT(medicines.medicine_image_url_endpoint, medicines.medicine_image_url_path) AS medicine_image_url,
+        medicines.is_public AS is_public,
         effects.effect AS effect
     </sql>
 
@@ -88,6 +89,7 @@
             <idArg column="medicine_id" javaType="String"/>
             <arg column="medicine_name" javaType="String"/>
             <arg column="medicine_image_url" javaType="String"/>
+            <arg column="is_public" javaType="_boolean"/>
         </constructor>
         <id column="medicine_id"/>
         <association column="{quantity, dose_unit, times_per_day, timing_option}" property="dosageAndAdministrationForMapping"

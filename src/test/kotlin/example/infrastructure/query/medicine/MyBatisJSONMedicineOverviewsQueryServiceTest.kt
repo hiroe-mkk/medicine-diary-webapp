@@ -89,6 +89,7 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
         return JSONMedicineOverview(medicine.id.toString(),
                                     medicine.medicineName.toString(),
                                     medicine.medicineImageURL?.toString(),
+                                    medicine.isPublic,
                                     jsonDosageAndAdministration,
                                     medicine.effects.values)
     }
