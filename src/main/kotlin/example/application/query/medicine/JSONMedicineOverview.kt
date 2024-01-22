@@ -15,4 +15,14 @@ class JSONMedicineOverview(val medicineId: String,
     private lateinit var effectsForMapping: List<String>
     val effects: List<String>
         get() = effectsForMapping
+
+    // テスト用コンストラクタ
+    constructor(medicineId: String,
+                medicineName: String,
+                medicineImageURL: String?,
+                dosageAndAdministrationForMapping: JSONDosageAndAdministration,
+                effectsForMapping: List<String>) : this(medicineId, medicineName, medicineImageURL) {
+        this.dosageAndAdministrationForMapping = dosageAndAdministrationForMapping
+        this.effectsForMapping = effectsForMapping
+    }
 }
