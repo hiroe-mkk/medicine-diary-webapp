@@ -24,8 +24,11 @@
           <a
             class="has-text-link has-text-weight-bold is-underlined"
             :href="`/medicines/${medicineOverview.medicineId}`"
-            >{{ medicineOverview.medicineName }}</a
-          >
+            >{{ medicineOverview.medicineName }}
+          </a>
+          <span class="icon mx-1" v-if="props.isParticipatingInSharedGroup && !medicineOverview.isPublic">
+            <i class="fa-solid fa-lock"></i>
+          </span>
         </p>
         <p class="is-flex is-justify-content-flex-end mt-3 mb-0">
           <span
