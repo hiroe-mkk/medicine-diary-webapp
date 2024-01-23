@@ -65,13 +65,20 @@
         timing_options.timing_option AS timing_option,
         CONCAT(medicines.medicine_image_url_endpoint, medicines.medicine_image_url_path) AS medicine_image_url,
         medicines.is_public AS is_public,
-        effects.effect AS effect
+        effects.effect AS effect,
+        inventories.medicine_id AS medicine_id,
+        inventories.remaining_quantity AS remaining_quantity,
+        inventories.quantity_per_package AS quantity_per_package,
+        DATE_FORMAT(inventories.started_on, '%Y/%m/%d') AS started_on,
+        DATE_FORMAT(inventories.expiration_on, '%Y/%m/%d') AS expiration_on,
+        inventories.unused_package AS unused_package
     </sql>
 
     <sql id="AllTables">
         medicines
         LEFT OUTER JOIN effects USING(medicine_id)
         LEFT OUTER JOIN timing_options USING(medicine_id)
+        LEFT OUTER JOIN inventories USING(medicine_id)
     </sql>
 
     <sql id="Filtering">
@@ -94,6 +101,8 @@
         <id column="medicine_id"/>
         <association column="{quantity, dose_unit, times_per_day, timing_option}" property="dosageAndAdministrationForMapping"
                      javaType="example.application.query.medicine.JSONDosageAndAdministration" resultMap="JSONDosageAndAdministrationResultMap"/>
+        <association column="{remaining_quantity, quantity_per_package, started_on, expiration_on, unused_package}" property="inventoryForMapping"
+                     javaType="example.application.query.medicine.JSONInventory" resultMap="JSONInventoryResultMap"/>
         <collection column="effect" property="effectsForMapping" resultMap="EffectResultMap"/>
     </resultMap>
 
@@ -117,6 +126,16 @@
     <resultMap id="EffectResultMap" type="String">
         <constructor>
             <idArg column="effect" javaType="String"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="JSONInventoryResultMap" type="example.application.query.medicine.JSONInventory">
+        <constructor>
+            <idArg column="remaining_quantity" javaType="_double"/>
+            <idArg column="quantity_per_package" javaType="_double"/>
+            <idArg column="started_on" javaType="String"/>
+            <idArg column="expiration_on" javaType="String"/>
+            <idArg column="unused_package" javaType="_int"/>
         </constructor>
     </resultMap>
 </mapper>
