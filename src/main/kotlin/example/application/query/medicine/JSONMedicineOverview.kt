@@ -22,9 +22,9 @@ class JSONMedicineOverview(val medicineId: String,
                 medicineName: String,
                 medicineImageURL: String?,
                 isPublic: Boolean,
-                dosageAndAdministrationForMapping: JSONDosageAndAdministration,
-                effectsForMapping: List<String>) : this(medicineId, medicineName, medicineImageURL, isPublic) {
-        this.dosageAndAdministrationForMapping = dosageAndAdministrationForMapping
-        this.effectsForMapping = effectsForMapping
+                dosageAndAdministration: JSONDosageAndAdministration,
+                effects: List<String>) : this(medicineId, medicineName, medicineImageURL, isPublic) {
+        this.dosageAndAdministrationForMapping = dosageAndAdministration
+        this.effectsForMapping = effects
     }
 }

@@ -10,8 +10,11 @@ class JSONDosageAndAdministration(val quantity: String,
         get() = timingOptionsForMapping.map { it.str }
 
     // テスト用コンストラクタ
-    constructor(quantity: String, doseUnit: String, timesPerDay: String, timingOptionsForMapping: List<Timing>)
+    constructor(quantity: String,
+                doseUnit: String,
+                timesPerDay: String,
+                timingOptions: List<Timing>)
             : this(quantity, doseUnit, timesPerDay) {
-        this.timingOptionsForMapping = timingOptionsForMapping
+        this.timingOptionsForMapping = timingOptions
     }
 }
