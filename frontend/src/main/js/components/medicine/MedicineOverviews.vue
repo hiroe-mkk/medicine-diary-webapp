@@ -26,9 +26,20 @@
             :href="`/medicines/${medicineOverview.medicineId}`"
             >{{ medicineOverview.medicineName }}
           </a>
-          <span class="icon mx-1" v-if="props.isParticipatingInSharedGroup && !medicineOverview.isPublic">
+          <span
+            class="icon mx-1"
+            v-if="
+              props.isParticipatingInSharedGroup && !medicineOverview.isPublic
+            "
+          >
             <i class="fa-solid fa-lock"></i>
           </span>
+        </p>
+        <p class="help is-danger" v-if="isExpirationNear(medicineOverview)">
+          ※ 有効期限が近づいています。
+        </p>
+        <p class="help is-danger" v-if="isExpiration(medicineOverview)">
+          ※ 有効期限が切れています。
         </p>
         <p class="is-flex is-justify-content-flex-end mt-3 mb-0">
           <span
@@ -80,6 +91,24 @@ const emits = defineEmits(['searched']);
 
 const isMedicineImageModalActive = ref(false);
 const selectedMedicineImageURL = ref('');
+
+function isExpirationNear(medicineOverview) {
+  if (medicineOverview.inventory === undefined) return false;
+
+  const expiration = new Date(medicineOverview.inventory.expirationOn);
+  var oneWeekAgoExpiration = new Date(expiration);
+  oneWeekAgoExpiration.setDate(oneWeekAgoExpiration.getDate() - 7);
+  const today = new Date();
+  return oneWeekAgoExpiration <= today && today < expiration;
+}
+
+function isExpiration(medicineOverview) {
+  if (medicineOverview.inventory === undefined) return false;
+
+  const expiration = new Date(medicineOverview.inventory.expirationOn);
+  const today = new Date();
+  return expiration <= today;
+}
 
 function activateMedicineImageModal(url) {
   selectedMedicineImageURL.value = url;
