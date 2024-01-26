@@ -22,7 +22,7 @@
       <div class="media-content has-text-grey-dark">
         <p>
           <a
-            class="has-text-link has-text-weight-bold is-underlined"
+            class="has-text-info has-text-weight-bold is-underlined"
             :href="`/medicines/${medicineOverview.medicineId}`"
             >{{ medicineOverview.medicineName }}
           </a>
