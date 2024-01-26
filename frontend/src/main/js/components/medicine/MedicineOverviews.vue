@@ -35,6 +35,9 @@
             <i class="fa-solid fa-lock"></i>
           </span>
         </p>
+        <p class="help is-danger" v-if="isInventoryLow(medicineOverview)">
+          ※ 在庫が残りわずかです。
+        </p>
         <p class="help is-danger" v-if="isExpirationNear(medicineOverview)">
           ※ 有効期限が近づいています。
         </p>
@@ -91,6 +94,19 @@ const emits = defineEmits(['searched']);
 
 const isMedicineImageModalActive = ref(false);
 const selectedMedicineImageURL = ref('');
+
+function isInventoryLow(medicineOverview) {
+  if (
+    medicineOverview.inventory === undefined ||
+    medicineOverview.inventory.unusedPackage !== 0
+  )
+    return false;
+
+  const lowInventoryBorder =
+    medicineOverview.dosageAndAdministration.quantity * 3;
+
+  return medicineOverview.inventory.remainingQuantity <= lowInventoryBorder;
+}
 
 function isExpirationNear(medicineOverview) {
   if (medicineOverview.inventory === undefined) return false;
