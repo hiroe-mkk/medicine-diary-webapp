@@ -11,13 +11,24 @@
         @click="activateUsingPackageModal()"
       >
         <div
-          class="tile is-child notification has-background-success-light has-text-right py-2 px-4"
+          class="tile is-child notification has-text-right py-2 px-4"
+          :class="{
+            'has-background-success-light':
+              !isExpirationNear() && !isRemainingQuantityLow(),
+            'has-background-danger-light':
+              isExpirationNear() || isRemainingQuantityLow(),
+          }"
         >
           <p class="has-text-weight-semibold has-text-centered mb-2">使用中</p>
           <p class="m-0">
+            <strong
+              class="is-size-4"
+              :class="{ 'has-text-danger': isRemainingQuantityLow() }"
+            >
+              {{ inventory.value.remainingQuantity }}
+            </strong>
             <strong class="is-size-4">
-              {{ inventory.value.remainingQuantity }} /
-              {{ inventory.value.quantityPerPackage }}
+               / {{ inventory.value.quantityPerPackage }}
             </strong>
             <span class="has-text-weight-semibold pl-1">
               {{ props.doseUnit }}
@@ -37,6 +48,7 @@
           </p>
           <p
             class="m-0"
+            :class="{ 'has-text-danger': isExpirationNear() }"
             v-if="
               inventory.value.expirationOn !== undefined &&
               inventory.value.expirationOn !== ''
@@ -54,11 +66,18 @@
         @click="activateUnusedPackageModal()"
       >
         <div
-          class="tile is-child notification has-background-success-light is-flex is-flex-direction-column is-justify-content-space-between has-text-right py-2 px-4"
+          class="tile is-child notification is-flex is-flex-direction-column is-justify-content-space-between has-text-right py-2 px-4"
+          :class="{
+            'has-background-success-light': !isNoUnusedPackages(),
+            'has-background-danger-light': isNoUnusedPackages(),
+          }"
         >
           <p class="has-text-weight-semibold has-text-centered mb-2">未使用</p>
           <p>
-            <strong class="is-size-4">
+            <strong
+              class="is-size-3"
+              :class="{ 'has-text-danger': isNoUnusedPackages() }"
+            >
               {{ inventory.value.unusedPackage }}
             </strong>
             <span class="has-text-weight-semibold pl-1">個</span>
@@ -555,6 +574,7 @@ import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 
 const props = defineProps({
   medicineId: String,
+  dose: Number,
   doseUnit: String,
   remainingQuantity: Number,
   quantityPerPackage: Number,
@@ -591,6 +611,30 @@ onMounted(() => {
   }
   emits('updated:is-enabled', inventory.value !== undefined);
 });
+
+function isRemainingQuantityLow() {
+  if (inventory.value === undefined || inventory.value.unusedPackage !== 0)
+    return false;
+
+  const lowInventoryBorder = props.dose * 3;
+  return inventory.value.remainingQuantity <= lowInventoryBorder;
+}
+
+function isNoUnusedPackages() {
+  if (inventory.value === undefined) return false;
+
+  return inventory.value.unusedPackage === 0;
+}
+
+function isExpirationNear() {
+  if (inventory.value === undefined) return false;
+
+  const expiration = new Date(inventory.value.expirationOn);
+  const today = new Date();
+  var oneWeekAgoExpiration = new Date(expiration);
+  oneWeekAgoExpiration.setDate(oneWeekAgoExpiration.getDate() - 7);
+  return oneWeekAgoExpiration <= today;
+}
 
 function adjustInventory() {
   const form = new URLSearchParams();
