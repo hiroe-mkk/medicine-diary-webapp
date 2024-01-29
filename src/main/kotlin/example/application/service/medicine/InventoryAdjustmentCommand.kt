@@ -9,8 +9,8 @@ import java.time.*
 /**
  * 在庫の修正に利用される Command クラス
  */
-data class InventoryAdjustmentCommand(@field:NotNull(message = "※使用中パッケージの残量を入力してください。")
-                                      @field:MedicineQuantity
+data class InventoryAdjustmentCommand(@field:Digits(integer = 4, fraction = 3)
+                                      @field:PositiveOrZero
                                       val remainingQuantity: Double?,
                                       @field:NotNull(message = "※1パッケージあたりの内容量を入力してください。")
                                       @field:MedicineQuantity
