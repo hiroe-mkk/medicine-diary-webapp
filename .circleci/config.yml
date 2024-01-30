@@ -14,7 +14,7 @@ jobs:
       - run:
           command: |
             docker compose up --build -d
-            docker compose exec -T app bash -c "chmod +x ./gradlew && ./gradlew test"
+            docker compose exec -T app bash -c "chmod +x ./gradlew && ./gradlew test --info"
   build-app:
     docker:
       - image: cimg/openjdk:17.0.8

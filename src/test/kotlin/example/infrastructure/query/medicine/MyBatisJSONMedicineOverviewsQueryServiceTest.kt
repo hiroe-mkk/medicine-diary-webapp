@@ -16,6 +16,7 @@ import org.bouncycastle.asn1.x500.style.RFC4519Style.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import java.time.*
+import java.time.format.*
 
 @MyBatisQueryServiceTest
 internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private val jsonMedicineOverviewsQueryService: JSONMedicineOverviewsQueryService,
@@ -74,5 +75,30 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
     private fun createMedicines(medicineOwner: MedicineOwner): List<Medicine> {
         return listOf(testMedicineInserter.insert(owner = medicineOwner, isPublic = true),
                       testMedicineInserter.insert(owner = medicineOwner, isPublic = false))
+    }
+
+    private fun createJSONMedicineOverview(medicine: Medicine): JSONMedicineOverview {
+        val jsonDosageAndAdministration =
+                JSONDosageAndAdministration(medicine.dosageAndAdministration.dose.quantity.toString(),
+                                            medicine.dosageAndAdministration.doseUnit,
+                                            medicine.dosageAndAdministration.timesPerDay.toString(),
+                                            medicine.dosageAndAdministration.timingOptions)
+        val jsonInventory = medicine.inventory?.let {
+            val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+            val startedOn = it.startedOn?.let { startedOn -> dateTimeFormatter.format(startedOn) }
+            val expirationOn = it.expirationOn?.let { expirationOn -> dateTimeFormatter.format(expirationOn) }
+            JSONInventory(it.remainingQuantity,
+                          it.quantityPerPackage,
+                          startedOn,
+                          expirationOn,
+                          it.unusedPackage)
+        }
+        return JSONMedicineOverview(medicine.id.toString(),
+                                    medicine.medicineName.toString(),
+                                    medicine.medicineImageURL?.toString(),
+                                    medicine.isPublic,
+                                    jsonDosageAndAdministration,
+                                    medicine.effects.values,
+                                    jsonInventory)
     }
 }

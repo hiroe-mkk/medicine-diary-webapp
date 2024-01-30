@@ -62,7 +62,7 @@
           <span class="has-text-grey-dark has-text-weight-semibold">お薬</span>
           <span>
             <a
-              class="is-underlined has-text-link has-text-weight-bold"
+              class="is-underlined has-text-info has-text-weight-bold"
               :href="`/medicines/${medicationRecord.value.takenMedicine.medicineId}`"
             >
               {{ medicationRecord.value.takenMedicine.medicineName }}
