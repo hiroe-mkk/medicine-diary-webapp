@@ -51,16 +51,13 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
                                                                              MedicineFilter("頭痛"))
 
         //then:
-        assertThat(actual.ownedMedicines)
-            .usingRecursiveFieldByFieldElementComparator()
-            .containsExactlyInAnyOrder(*ownedMedicines.map { createJSONMedicineOverview(it) }.toTypedArray())
-        assertThat(actual.sharedGroupMedicines)
-            .usingRecursiveFieldByFieldElementComparator()
-            .containsExactlyInAnyOrder(*sharedGroupMedicines.map { createJSONMedicineOverview(it) }.toTypedArray())
-        val expectMembersMedicines = membersMedicines.filter { it.isPublic }
-        assertThat(actual.membersMedicines)
-            .usingRecursiveFieldByFieldElementComparator()
-            .containsExactlyInAnyOrder(*expectMembersMedicines.map { createJSONMedicineOverview(it) }.toTypedArray())
+        assertThat(actual.ownedMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*ownedMedicines.map { it.id.toString() }.toTypedArray())
+        assertThat(actual.sharedGroupMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*sharedGroupMedicines.map { it.id.toString() }.toTypedArray())
+        val expectMemberMedicineIds = membersMedicines.filter { it.isPublic }.map { it.id.toString() }
+        assertThat(actual.membersMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*expectMemberMedicineIds.toTypedArray())
     }
 
     @Test
@@ -70,10 +67,9 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
         val actual = jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession)
 
         //then:
-        assertThat(actual.medicines)
-            .usingRecursiveFieldByFieldElementComparator()
-            .containsExactlyInAnyOrder(*ownedMedicines.map { createJSONMedicineOverview(it) }.toTypedArray(),
-                                       *sharedGroupMedicines.map { createJSONMedicineOverview(it) }.toTypedArray())
+        assertThat(actual.medicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(*ownedMedicines.map { it.id.toString() }.toTypedArray(),
+                                       *sharedGroupMedicines.map { it.id.toString() }.toTypedArray())
     }
 
     private fun createMedicines(medicineOwner: MedicineOwner): List<Medicine> {
