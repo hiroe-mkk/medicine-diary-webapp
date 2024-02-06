@@ -17,7 +17,7 @@ class AuthenticationSuccessHandlerImpl : AuthenticationSuccessHandler {
                                          response: HttpServletResponse,
                                          authentication: Authentication?) {
         val account = authentication?.principal as? AuthenticatedAccount
-        logger.info("ACCOUNT_ID #{} authenticationSuccess", account?.id)
+        logger.info("Authentication Success ACCOUNT_ID=[{}] IP_ADDRESS=[{}]", account?.id, request.remoteAddr)
 
         val redirectResolver = RedirectResolver(request, response)
         redirectResolver.addFlashAttribute("resultMessage",

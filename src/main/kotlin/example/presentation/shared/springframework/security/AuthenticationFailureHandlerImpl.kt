@@ -16,7 +16,7 @@ class AuthenticationFailureHandlerImpl : AuthenticationFailureHandler {
     override fun onAuthenticationFailure(request: HttpServletRequest,
                                          response: HttpServletResponse,
                                          exception: AuthenticationException?) {
-        logger.info("authenticationFailure") //TODO: ログに含める情報を見直す
+        logger.info("Authentication Failure IP_ADDRESS=[{}]", request.remoteAddr)
 
         val redirectResolver = RedirectResolver(request, response)
         redirectResolver.addFlashAttribute("resultMessage",

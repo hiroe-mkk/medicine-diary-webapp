@@ -13,7 +13,7 @@ import java.text.*
  */
 @Component
 class ExceptionLoggingFilter : GenericFilterBean() {
-    private var applicationLogger: Logger = LoggerFactory.getLogger(this::javaClass.name)
+    private var applicationLogger: Logger = LoggerFactory.getLogger(javaClass.name)
 
     override fun doFilter(servletRequest: ServletRequest, servletResponse: ServletResponse, filterChain: FilterChain) {
         try {
@@ -35,7 +35,7 @@ class ExceptionLoggingFilter : GenericFilterBean() {
     }
 
     private fun message(ex: Exception): String? {
-        return MessageFormat.format(String.format("[{0}] {1}"),
+        return MessageFormat.format(String.format("{0} {1}"),
                                     ex.javaClass.simpleName,
                                     if (StringUtils.hasText(ex.message)) ex.message else "UNDEFINED-MESSAGE")
     }
