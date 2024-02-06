@@ -4,8 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  mode: 'development',
-  devtool: 'eval-cheap-module-source-map',
+  mode: 'production',
   entry: {
     vendor: ['vue'],
     style: './src/main/css/style.css',
@@ -30,6 +29,7 @@ module.exports = {
   },
   plugins: [
     new Webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'), // Vue.js を本番モードに設定する
       __VUE_OPTIONS_API__: true, // オプションAPIサポートの有効化
       __VUE_PROD_DEVTOOLS__: false, //　本番環境での開発ツールのサポートを無効化
     }),
