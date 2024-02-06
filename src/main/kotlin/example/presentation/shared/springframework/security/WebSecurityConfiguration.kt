@@ -72,7 +72,5 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder? {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }
