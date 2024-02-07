@@ -6,7 +6,9 @@ import jakarta.servlet.http.*
 import org.slf4j.*
 import org.springframework.security.core.*
 import org.springframework.security.web.authentication.*
+import org.springframework.stereotype.*
 
+@Component
 class AuthenticationSuccessHandlerImpl : AuthenticationSuccessHandler {
     private val logger = LoggerFactory.getLogger(AuthenticationSuccessHandlerImpl::class.java)
 

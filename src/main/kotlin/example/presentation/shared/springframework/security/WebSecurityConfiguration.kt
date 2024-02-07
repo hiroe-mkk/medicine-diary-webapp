@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.*
 import org.springframework.security.provisioning.*
 import org.springframework.security.web.*
 import org.springframework.security.web.authentication.*
+import org.springframework.security.web.authentication.logout.*
 
 @Configuration
 @EnableWebSecurity
@@ -30,32 +31,36 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
     @Order(1)
     fun actuatorFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.securityMatcher("/actuator/**")
-            .httpBasic {
-                it.realmName("Actuator and Admin Realm")
-            }.authorizeHttpRequests {
+            .authorizeHttpRequests {
                 it.requestMatchers("/actuator/health").permitAll()
                     .requestMatchers("/actuator/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
+            }.httpBasic {
+                it.realmName("Actuator and Admin Realm")
             }
         return http.build()
     }
 
     @Bean
     @Order(2)
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.oauth2Login {
-            it.userInfoEndpoint { oidcUserAccountService }
-                .successHandler(AuthenticationSuccessHandlerImpl())
-                .failureHandler(AuthenticationFailureHandlerImpl())
-        }.authorizeHttpRequests {
+    fun filterChain(http: HttpSecurity,
+                    authenticationSuccessHandler: AuthenticationSuccessHandler,
+                    authenticationFailureHandler: AuthenticationFailureHandler,
+                    authenticationEntryPoint: AuthenticationEntryPoint,
+                    logoutSuccessHandler: LogoutSuccessHandler): SecurityFilterChain {
+        http.authorizeHttpRequests {
             it.requestMatchers(toStaticResources().atCommonLocations()).permitAll() // 静的リソース
                 .requestMatchers("/dist/**").permitAll() // frontend サブプロジェクトのビルド成果物が格納されているディレクトリ
                 .requestMatchers("/", "/about", "/agreement", "/contact", "/notice", "/login").permitAll()
                 .anyRequest().authenticated()
+        }.oauth2Login {
+            it.userInfoEndpoint { oidcUserAccountService }
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
         }.exceptionHandling {
-            it.authenticationEntryPoint(AuthenticationEntryPointImpl())
+            it.authenticationEntryPoint(authenticationEntryPoint)
         }.logout {
-            it.logoutSuccessHandler(LogoutSuccessHandlerImpl())
+            it.logoutSuccessHandler(logoutSuccessHandler)
         }
         return http.build()
     }
