@@ -6,57 +6,12 @@
   width: 100%;
 }
 
-[v-clock] {
-  display: none;
-}
-
 .underline-marker {
   background: linear-gradient(transparent 75%, #ffea99 0%);
   display: inline;
   padding: 2px 5px;
 }
 
-.circle-button {
-  display: inline-block;
-  text-decoration: none;
-  background: #3273dc;
-  color: #fff;
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  border-radius: 50%;
-  text-align: center;
-  overflow: hidden;
-  transition: 0.4s;
-  font-size: 10px;
-}
-
-.circle-button:hover {
-  background: #215fc4;
-}
-
-.circle-button .blinking-text {
-  position: absolute;
-  top: 0rem;
-  right: 0em;
-}
-
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.blinking-text {
-  animation: blink 5s infinite;
-}
-
-.border-bottom {
-  border-bottom: 1px solid #999;
+[v-clock] {
+  display: none;
 }
