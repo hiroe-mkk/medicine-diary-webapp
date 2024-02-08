@@ -10,7 +10,7 @@ import kotlin.reflect.*
 @Target(AnnotationTarget.FIELD)
 @Constraint(validatedBy = [FileType.Validator::class])
 annotation class FileType(val value: Array<String>,
-                          val message: String = "※アップロードできない形式のファイルが指定されています。",
+                          val message: String = "※画像形式のファイルをアップロードしてください。",
                           val groups: Array<KClass<out Any>> = [],
                           val payload: Array<KClass<out Payload>> = []) {
     class Validator : ConstraintValidator<FileType, MultipartFile> {
