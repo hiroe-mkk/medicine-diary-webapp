@@ -175,10 +175,18 @@ function activateTrimmingModal() {
 
 function fileSelected(event) {
   const file = event.target.files[0];
-  if (!file) return;
-
-  imageTrimmingManager.setFile(file, trimmingContainer.value);
   event.target.value = ''; // 続けて同じファイルが選択された場合に change イベントを発火させるために必要
+
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    activateResultMessage(
+      'ERROR',
+      'アップロードに失敗しました。',
+      '画像形式のファイルを選択してください。'
+    );
+  } else {
+    imageTrimmingManager.setFile(file, trimmingContainer.value);
+  }
 }
 
 async function submitForm() {
@@ -192,10 +200,7 @@ async function submitForm() {
       image.value = URL.createObjectURL(result);
       isTrimmingModalActive.value = false;
       isMenuModalActive.value = false;
-      activateResultMessage(
-        'INFO',
-        `${props.imageName}の変更が完了しました。`
-      );
+      activateResultMessage('INFO', `${props.imageName}の変更が完了しました。`);
     })
     .catch((error) => {
       if (error instanceof HttpRequestFailedError) {

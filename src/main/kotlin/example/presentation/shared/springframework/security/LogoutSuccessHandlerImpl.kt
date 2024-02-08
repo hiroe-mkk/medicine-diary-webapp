@@ -6,7 +6,9 @@ import jakarta.servlet.http.*
 import org.slf4j.*
 import org.springframework.security.core.*
 import org.springframework.security.web.authentication.logout.*
+import org.springframework.stereotype.*
 
+@Component
 class LogoutSuccessHandlerImpl : LogoutSuccessHandler {
     private val logger = LoggerFactory.getLogger(LogoutSuccessHandlerImpl::class.java)
 

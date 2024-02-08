@@ -24,7 +24,7 @@
         WHERE
             account_id != #{accountId}
             AND username != ''
-            AND username LIKE CONCAT('%', #{keyword}, '%')
+            AND username LIKE CONCAT('%', REPLACE(REPLACE(#{keyword}, '!', '!!'), '%', '!%'), '%') ESCAPE '!'
         ORDER BY
             username_size ASC
         LIMIT 100

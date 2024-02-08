@@ -6,7 +6,9 @@ import jakarta.servlet.http.*
 import org.slf4j.*
 import org.springframework.security.core.*
 import org.springframework.security.web.authentication.*
+import org.springframework.stereotype.*
 
+@Component
 class AuthenticationFailureHandlerImpl : AuthenticationFailureHandler {
     private val logger = LoggerFactory.getLogger(AuthenticationFailureHandlerImpl::class.java)
 
@@ -16,7 +18,7 @@ class AuthenticationFailureHandlerImpl : AuthenticationFailureHandler {
     override fun onAuthenticationFailure(request: HttpServletRequest,
                                          response: HttpServletResponse,
                                          exception: AuthenticationException?) {
-        logger.info("authenticationFailure") //TODO: ログに含める情報を見直す
+        logger.info("Authentication Failure IP_ADDRESS=[{}]", request.remoteAddr)
 
         val redirectResolver = RedirectResolver(request, response)
         redirectResolver.addFlashAttribute("resultMessage",

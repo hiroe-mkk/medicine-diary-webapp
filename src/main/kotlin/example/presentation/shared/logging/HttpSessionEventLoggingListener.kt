@@ -15,60 +15,50 @@ class HttpSessionEventLoggingListener : HttpSessionListener,
 
     override fun sessionWillPassivate(sessionEvent: HttpSessionEvent) {
         if (logger.isDebugEnabled) {
-            logger.debug("SESSION_ID #{} sessionWillPassivate: {}",
-                         sessionEvent.session.id,
-                         sessionEvent.source)
+            logger.debug("Session Will Passivate SESSION_ID=[{}] -> {}",
+                         sessionEvent.session.id, sessionEvent.source)
         }
     }
 
     override fun sessionDidActivate(sessionEvent: HttpSessionEvent) {
         if (logger.isDebugEnabled) {
-            logger.debug("SESSION_ID #{} sessionDidActivate: {}",
-                         sessionEvent.session.id,
-                         sessionEvent.source)
+            logger.debug("Session Did Activate SESSION_ID=[{}] -> {}",
+                         sessionEvent.session.id, sessionEvent.source)
         }
     }
 
     override fun attributeAdded(sessionEvent: HttpSessionBindingEvent) {
         if (logger.isDebugEnabled) {
-            logger.debug("SESSION_ID #{} attributeAdded: {}={}",
-                         *arrayOf(sessionEvent.session.id,
-                                  sessionEvent.name,
-                                  sessionEvent.value))
+            logger.debug("Attribute Added SESSION_ID=[{}] -> {}={}",
+                         sessionEvent.session.id, sessionEvent.name, sessionEvent.value)
         }
     }
 
     override fun attributeRemoved(sessionEvent: HttpSessionBindingEvent) {
         if (logger.isDebugEnabled) {
-            logger.debug("SESSION_ID #{} attributeRemoved: {}={}",
-                         *arrayOf(sessionEvent.session.id,
-                                  sessionEvent.name,
-                                  sessionEvent.value))
+            logger.debug("Attribute Removed SESSION_ID=[{}] -> {}={}",
+                         sessionEvent.session.id, sessionEvent.name, sessionEvent.value)
         }
     }
 
     override fun attributeReplaced(sessionEvent: HttpSessionBindingEvent) {
         if (logger.isTraceEnabled) {
-            logger.trace("SESSION_ID #{} attributeReplaced: {}={}",
-                         *arrayOf(sessionEvent.session.id,
-                                  sessionEvent.name,
-                                  sessionEvent.value))
+            logger.trace("Attribute Replaced SESSION_ID=[{}] -> {}={}",
+                         *arrayOf(sessionEvent.session.id, sessionEvent.name, sessionEvent.value))
         }
     }
 
     override fun sessionCreated(sessionEvent: HttpSessionEvent) {
         if (logger.isDebugEnabled) {
-            logger.debug("SESSION_ID #{} sessionCreated: {}",
-                         sessionEvent.session.id,
-                         sessionEvent.source)
+            logger.debug("Session Created SESSION_ID=[{}] -> {}",
+                         sessionEvent.session.id, sessionEvent.source)
         }
     }
 
     override fun sessionDestroyed(sessionEvent: HttpSessionEvent) {
         if (logger.isDebugEnabled) {
-            logger.debug("SESSION_ID #{} sessionDestroyed: {}",
-                         sessionEvent.session.id,
-                         sessionEvent.source)
+            logger.debug("Session Destroyed SESSION_ID=[{}] -> {}",
+                         sessionEvent.session.id, sessionEvent.source)
         }
     }
 }

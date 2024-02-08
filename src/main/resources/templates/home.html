@@ -22,9 +22,9 @@
       href="https://use.fontawesome.com/releases/v6.4.2/css/all.css"
     />
     <script th:src="@{/dist/js/vendor.bundle.js}" defer></script>
-    <script th:src="@{/dist/js/home.bundle.js}" defer></script>
+    <link th:href="@{/dist/css/vendor.bundle.css}" rel="stylesheet" />
 
-    <link rel="stylesheet" th:href="@{/dist/css/style.bundle.css}" />
+    <script th:src="@{/dist/js/home.bundle.js}" defer></script>
   </head>
 
   <body>
@@ -222,7 +222,7 @@
 
     <div id="home" sec:authorize="!isAuthenticated()">
       <div class="hero is-large">
-        <header id="header" class="hero-head">
+        <header class="hero-head">
           <navbar
             th:attr="':is-authenticated'=${#authorization.expression('isAuthenticated()')}, csrf=${_csrf.token}"
           ></navbar>
@@ -230,10 +230,6 @@
             ref="resultMessage"
             th:attr="type=${resultMessage.type}, message=${resultMessage.message}, details=${resultMessage.details}?:''"
             th:if="${resultMessage!=null}"
-          ></result-message>
-          <result-message
-            ref="resultMessage"
-            th:if="${resultMessage==null}"
           ></result-message>
         </header>
         <main

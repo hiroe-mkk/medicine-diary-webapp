@@ -86,7 +86,7 @@
             AND medicines.medicine_id IN(
              SELECT medicine_id
              FROM effects
-             WHERE effect LIKE CONCAT('%', #{effect}, '%')
+             WHERE effect LIKE CONCAT('%', REPLACE(REPLACE(#{effect}, '!', '!!'), '%', '!%'), '%') ESCAPE '!'
             )
         </if>
     </sql>
