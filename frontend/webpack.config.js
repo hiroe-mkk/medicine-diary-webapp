@@ -73,7 +73,7 @@ module.exports = {
     // モジュールを解決する際は node_modules から検索する
     modules: ['node_modules'],
     alias: {
-      vue$: 'vue/dist/vue.esm-bundler.js',
+      vue$: 'vue/dist/vue.esm-browser.prod.js',
       '@main': path.resolve(__dirname, 'src/main/'),
     },
   },
