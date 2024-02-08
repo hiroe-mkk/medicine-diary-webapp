@@ -15,6 +15,7 @@ class MyBatisJSONUserQueryService(private val jsonUserMapper: JSONUserMapper) : 
     }
 
     override fun findJSONUsersByKeyword(keyword: String, userSession: UserSession): JSONUsers {
+        if (keyword.isBlank()) return JSONUsers(emptyList())
         return JSONUsers(jsonUserMapper.findManyByKeyword(keyword, userSession.accountId.value))
     }
 
