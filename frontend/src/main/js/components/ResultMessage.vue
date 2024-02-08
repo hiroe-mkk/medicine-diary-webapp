@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="modal" :class="{ 'is-active': isDetailsMessageActive }">
+  <div class="details-message modal" :class="{ 'is-active': isDetailsMessageActive }">
     <div class="modal-background" @click="isDetailsMessageActive = false"></div>
     <div class="modal-content is-flex is-justify-content-center">
       <div class="message is-inline-block" :class="notificationMessage.color">
@@ -81,6 +81,10 @@ function activate(type, message, details) {
   position: fixed;
   top: 4rem;
   right: 0.5rem;
-  z-index: 20;
+  z-index: 9999;
+}
+
+.details-message {
+  z-index: 9999;
 }
 </style>
