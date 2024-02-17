@@ -1,14 +1,12 @@
 package example.presentation.controller.api.medicationrecord
 
 import example.application.query.medicationrecord.*
-import example.domain.model.medicine.*
 import example.presentation.shared.usersession.*
 import org.springframework.data.domain.*
 import org.springframework.data.web.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
-import java.time.*
 
 @Controller
 @RequestMapping("/api/medication-records")

@@ -5,18 +5,14 @@ import example.application.service.medicine.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.shared.message.*
-import example.presentation.shared.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
-import jakarta.servlet.http.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
 import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.bind.support.*
 import org.springframework.web.servlet.mvc.support.*
-import java.net.*
 import java.time.*
 
 @Controller

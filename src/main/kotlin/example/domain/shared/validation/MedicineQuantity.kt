@@ -1,6 +1,5 @@
 package example.domain.shared.validation
 
-import example.domain.model.medicine.*
 import jakarta.validation.*
 import jakarta.validation.constraints.*
 import kotlin.reflect.*

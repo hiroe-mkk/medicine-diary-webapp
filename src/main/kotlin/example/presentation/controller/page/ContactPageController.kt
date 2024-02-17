@@ -1,9 +1,6 @@
 package example.presentation.controller.page
 
 import example.application.service.contact.*
-import example.application.service.medicine.*
-import example.domain.model.contact.*
-import example.domain.shared.message.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
 import org.springframework.validation.*

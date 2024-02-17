@@ -1,12 +1,7 @@
 package example.presentation.controller.api.medicine
 
 import example.application.query.medicine.*
-import example.application.service.medicine.*
-import example.domain.model.medicine.*
-import example.presentation.controller.api.medicationrecord.*
 import example.presentation.shared.usersession.*
-import org.springframework.data.domain.*
-import org.springframework.data.web.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*

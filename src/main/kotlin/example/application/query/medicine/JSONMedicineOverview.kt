@@ -1,8 +1,6 @@
 package example.application.query.medicine
 
 import com.fasterxml.jackson.annotation.*
-import example.domain.model.medicine.*
-import example.infrastructure.repository.shared.*
 
 class JSONMedicineOverview(val medicineId: String,
                            val medicineName: String,

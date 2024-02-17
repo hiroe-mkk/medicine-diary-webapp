@@ -3,7 +3,6 @@ package example.presentation.controller.page.medicine
 import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
 import example.domain.model.medicine.*
-import example.presentation.shared.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*

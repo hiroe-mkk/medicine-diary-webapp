@@ -1,7 +1,6 @@
 package example.presentation.controller.page.account
 
 import example.application.service.account.*
-import example.domain.model.medicine.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
 import jakarta.servlet.http.*

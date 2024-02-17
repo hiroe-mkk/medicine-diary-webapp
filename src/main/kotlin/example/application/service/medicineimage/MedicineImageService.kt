@@ -36,7 +36,7 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
      */
     fun deleteMedicineImage(medicineId: MedicineId, userSession: UserSession) {
         val medicine = medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
-        if (medicine?.medicineImageURL == null) return
+        if (medicine.medicineImageURL == null) return
 
         medicineImageStorage.delete(medicine.medicineImageURL!!)
         medicine.deleteMedicineImage()

@@ -1,10 +1,7 @@
 package example.presentation.controller.page
 
 import example.application.query.user.*
-import example.application.service.sharedgroup.*
 import example.domain.model.account.*
-import example.domain.model.medicine.*
-import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
@@ -23,7 +20,7 @@ class UserPageController(private val userQueryService: UserQueryService,
         model.addAttribute("user", userQueryService.findMemberUser(accountId,
                                                                    userSessionProvider.getUserSessionOrElseThrow()))
 
-        model.addAttribute("lastRequestedPagePath", "/users/${accountId}");
+        model.addAttribute("lastRequestedPagePath", "/users/${accountId}")
         return "user"
     }
 }

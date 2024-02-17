@@ -1,26 +1,16 @@
 package example.presentation.controller.api.profile
 
 import example.application.service.account.*
-import example.domain.model.account.*
 import example.presentation.shared.usersession.*
-import example.testhelper.factory.*
-import example.testhelper.springframework.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
 import net.bytebuddy.utility.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import org.springframework.http.*
-import org.springframework.mock.web.*
-import org.springframework.security.test.web.servlet.request.*
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.web.multipart.*
-import java.io.*
 
 @ControllerTest
 internal class UsernameChangeApiControllerTest(@Autowired private val mockMvc: MockMvc,

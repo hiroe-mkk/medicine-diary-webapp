@@ -2,7 +2,6 @@ package example.presentation.controller.page.medicationrecord
 
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.presentation.controller.api.medicationrecord.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
@@ -10,12 +9,9 @@ import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import org.springframework.security.test.web.servlet.request.*
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
@@ -81,7 +77,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         private val symptom: String = "頭痛"
         private val beforeMedication: ConditionLevel = ConditionLevel.A_LITTLE_BAD
         private val afterMedication: ConditionLevel = ConditionLevel.GOOD
-        private val note: String = "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"
+        private val note: String =
+                "それほど酷い頭痛ではなかったけれど、早めに飲んでおいたらいつもより早めに治った気がする。"
         private val takenMedicineOn: String = "2020-01-02"
         private val takenMedicineAt: String = "10:00"
         private val onsetEffectAt: String = "10:30"

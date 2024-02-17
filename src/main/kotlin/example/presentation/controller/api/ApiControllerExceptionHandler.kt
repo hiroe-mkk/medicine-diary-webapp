@@ -1,6 +1,5 @@
 package example.presentation.controller.api
 
-import example.application.service.account.*
 import example.domain.shared.exception.*
 import example.presentation.shared.usersession.*
 import jakarta.servlet.http.*
@@ -10,7 +9,6 @@ import org.springframework.security.web.authentication.logout.*
 import org.springframework.stereotype.*
 import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.context.request.*
 
 @Component
 @ControllerAdvice("example.presentation.controller.api")

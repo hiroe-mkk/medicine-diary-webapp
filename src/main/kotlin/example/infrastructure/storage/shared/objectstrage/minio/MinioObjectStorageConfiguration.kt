@@ -1,6 +1,5 @@
 package example.infrastructure.storage.shared.objectstrage.minio
 
-import example.infrastructure.storage.shared.objectstrage.s3.*
 import io.minio.*
 import org.springframework.boot.context.properties.*
 import org.springframework.context.annotation.*

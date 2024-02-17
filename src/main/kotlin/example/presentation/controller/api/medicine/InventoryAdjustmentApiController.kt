@@ -1,7 +1,6 @@
 package example.presentation.controller.api.medicine
 
 import example.application.service.medicine.*
-import example.application.shared.command.*
 import example.domain.model.medicine.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*

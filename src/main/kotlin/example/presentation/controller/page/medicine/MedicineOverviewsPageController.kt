@@ -1,14 +1,8 @@
 package example.presentation.controller.page.medicine
 
 import example.application.query.medicine.*
-import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
-import example.domain.model.medicine.*
-import example.domain.model.sharedgroup.*
-import example.presentation.shared.*
-import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
-import jakarta.servlet.http.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
 import org.springframework.web.bind.annotation.*

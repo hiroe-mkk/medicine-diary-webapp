@@ -42,8 +42,8 @@ class TraceLoggingInterceptor : HandlerInterceptor {
         if (modelAndView == null) {
             logger.trace(format, className(handler), methodName(handler), handlingTime)
         } else {
-            val view = modelAndView?.view ?: modelAndView?.viewName
-            val model = modelAndView?.model
+            val view = modelAndView.view ?: modelAndView.viewName
+            val model = modelAndView.model
             logger.trace("$format -> view={}, model={}",
                          className(handler), methodName(handler), handlingTime, view, model)
         }

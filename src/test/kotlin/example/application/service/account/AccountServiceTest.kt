@@ -1,16 +1,13 @@
 package example.application.service.account
 
-import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
-import io.mockk.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*

@@ -2,14 +2,11 @@ package example.domain.model.medicine
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
-import example.domain.shared.type.*
 import example.testhelper.factory.*
-import org.assertj.core.api.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.params.*
 import org.junit.jupiter.params.provider.*
-import java.time.*
 
 internal class MedicineTest {
     private val medicineName: MedicineName = MedicineName("ロキソニンSプレミアム")

@@ -3,12 +3,8 @@ package example.presentation.controller.page
 import example.testhelper.springframework.autoconfigure.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import org.springframework.boot.test.autoconfigure.web.servlet.*
-import org.springframework.boot.test.context.*
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest

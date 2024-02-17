@@ -7,7 +7,6 @@ import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import example.testhelper.inserter.*
 import org.springframework.context.annotation.*
-import org.springframework.stereotype.*
 
 /**
  * TestDataInserter の AutoConfiguration を有効にするアノテーション

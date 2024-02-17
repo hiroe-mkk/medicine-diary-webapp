@@ -1,20 +1,12 @@
 package example.presentation.controller.page.medicine
 
-import example.domain.model.account.*
-import example.domain.model.medicine.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
-import io.mockk.*
 import org.junit.jupiter.api.*
-import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.*
-import org.springframework.boot.test.mock.mockito.*
-import org.springframework.security.test.web.servlet.request.*
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
@@ -78,7 +70,7 @@ internal class MedicineRegistrationControllerTest(@Autowired private val mockMvc
                                               .param("isOwnedBySharedGroup", isOwnedBySharedGroup))
 
             //then:
-            val medicineId = actions.andReturn().modelAndView?.model?.get("medicineId");
+            val medicineId = actions.andReturn().modelAndView?.model?.get("medicineId")
             actions.andExpect(status().isFound)
                 .andExpect(redirectedUrl("/medicines/${medicineId}"))
         }

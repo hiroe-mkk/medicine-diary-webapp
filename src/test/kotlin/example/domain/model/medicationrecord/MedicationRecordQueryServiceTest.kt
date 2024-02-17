@@ -1,11 +1,7 @@
 package example.domain.model.medicationrecord
 
-import example.application.service.medicationrecord.*
-import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
-import example.domain.model.sharedgroup.*
-import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*

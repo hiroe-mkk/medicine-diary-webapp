@@ -5,8 +5,6 @@ import example.domain.model.account.profile.*
 import example.presentation.shared.springframework.security.oauth2.*
 import example.presentation.shared.springframework.security.oauth2.oidc.*
 import example.testhelper.factory.*
-import net.bytebuddy.utility.*
-import org.apache.coyote.http11.Constants.*
 import org.springframework.boot.test.context.*
 import org.springframework.security.core.authority.*
 import org.springframework.security.core.context.*

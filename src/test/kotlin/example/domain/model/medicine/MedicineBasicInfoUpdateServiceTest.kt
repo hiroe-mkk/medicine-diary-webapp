@@ -2,8 +2,6 @@ package example.domain.model.medicine
 
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
-import example.domain.model.medicine.medicineimage.*
-import example.domain.shared.type.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -25,7 +23,8 @@ internal class MedicineBasicInfoUpdateServiceTest(@Autowired private val medicin
                                                                                               3,
                                                                                               listOf(Timing.AS_NEEDED))
     private val newEffects: Effects = Effects(listOf("頭痛", "解熱", "肩こり"))
-    private val newPrecautions: String = "服用間隔は4時間以上開けること。再度症状があらわれた場合には3回目を服用してもよい。"
+    private val newPrecautions: String =
+            "服用間隔は4時間以上開けること。再度症状があらわれた場合には3回目を服用してもよい。"
     private val newIsPublic = false
 
     @BeforeEach

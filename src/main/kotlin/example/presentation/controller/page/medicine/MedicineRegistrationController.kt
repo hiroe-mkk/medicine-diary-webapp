@@ -2,8 +2,6 @@ package example.presentation.controller.page.medicine
 
 import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
-import example.application.shared.usersession.*
-import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*

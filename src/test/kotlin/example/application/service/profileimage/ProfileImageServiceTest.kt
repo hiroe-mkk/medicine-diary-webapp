@@ -1,16 +1,11 @@
 package example.application.service.profileimage
 
-import example.application.service.account.*
-import example.application.service.profile.*
-import example.application.shared.usersession.*
-import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import io.mockk.*
-import io.mockk.impl.annotations.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*

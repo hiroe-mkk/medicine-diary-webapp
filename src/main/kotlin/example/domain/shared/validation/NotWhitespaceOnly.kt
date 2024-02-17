@@ -1,7 +1,6 @@
 package example.domain.shared.validation
 
 import jakarta.validation.*
-import org.springframework.web.multipart.*
 import kotlin.reflect.*
 
 /**

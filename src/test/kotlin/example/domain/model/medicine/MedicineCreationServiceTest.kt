@@ -1,8 +1,6 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
-import example.domain.model.sharedgroup.*
-import example.domain.shared.type.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*

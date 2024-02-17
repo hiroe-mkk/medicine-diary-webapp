@@ -1,10 +1,6 @@
 package example.presentation.controller.api.profile
 
-import example.application.service.*
-import example.application.service.account.*
 import example.application.service.profile.*
-import example.application.service.profileimage.*
-import example.application.shared.command.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*

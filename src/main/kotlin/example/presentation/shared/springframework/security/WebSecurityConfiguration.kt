@@ -1,15 +1,12 @@
 package example.presentation.shared.springframework.security
 
 import example.presentation.shared.springframework.security.oauth2.oidc.*
-import jakarta.servlet.http.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest.*
 import org.springframework.context.annotation.*
 import org.springframework.core.annotation.*
-import org.springframework.http.*
 import org.springframework.security.config.annotation.web.builders.*
 import org.springframework.security.config.annotation.web.configuration.*
-import org.springframework.security.config.web.server.ServerHttpSecurity.*
 import org.springframework.security.core.userdetails.*
 import org.springframework.security.crypto.bcrypt.*
 import org.springframework.security.crypto.password.*

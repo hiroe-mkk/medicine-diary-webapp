@@ -1,22 +1,13 @@
 package example.application.service.profile
 
-import com.ninjasquad.springmockk.*
-import example.application.service.account.*
 import example.application.shared.usersession.*
-import example.domain.model.account.*
 import example.domain.model.account.profile.*
-import example.domain.model.account.profile.profileimage.*
-import example.infrastructure.storage.shared.objectstrage.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
-import io.mockk.*
-import io.mockk.impl.annotations.*
-import org.assertj.core.api.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import java.util.*
 
 @MyBatisRepositoryTest
 internal class ProfileServiceTest(@Autowired private val profileRepository: ProfileRepository,

@@ -1,6 +1,5 @@
 package example.presentation.controller.page
 
-import example.presentation.shared.session.*
 import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
 

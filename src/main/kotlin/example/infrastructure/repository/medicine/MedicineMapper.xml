@@ -226,9 +226,9 @@
         </constructor>
         <id column="medicine_id"/>
         <collection column="{timing_option_ordering, timing_option}" property="timingOptionsForMapping"
-                     ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="TimingOptionOrderedEntityResultMap"/>
+                    ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="TimingOptionOrderedEntityResultMap"/>
         <collection column="{effect_ordering, effect}" property="effectsForMapping"
-                     ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="EffectOrderedEntityResultMap"/>
+                    ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="EffectOrderedEntityResultMap"/>
     </resultMap>
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>

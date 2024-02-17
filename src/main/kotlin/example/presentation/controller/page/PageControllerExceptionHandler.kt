@@ -1,8 +1,6 @@
 package example.presentation.controller.page
 
-import example.application.service.account.*
 import example.domain.shared.exception.*
-import example.presentation.controller.api.*
 import example.presentation.shared.usersession.*
 import jakarta.servlet.http.*
 import org.springframework.http.*
@@ -11,7 +9,6 @@ import org.springframework.security.web.authentication.logout.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.*
 
 @Component
 @ControllerAdvice("example.presentation.controller.page")

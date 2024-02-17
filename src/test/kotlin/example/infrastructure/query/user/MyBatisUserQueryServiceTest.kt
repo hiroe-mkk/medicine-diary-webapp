@@ -2,10 +2,7 @@ package example.infrastructure.query.user
 
 import example.application.query.user.*
 import example.application.service.account.*
-import example.application.service.medicine.*
 import example.application.shared.usersession.*
-import example.domain.model.account.*
-import example.domain.model.account.profile.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

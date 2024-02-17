@@ -2,14 +2,10 @@ package example.presentation.controller.api.sharedgroup
 
 import example.application.service.sharedgroup.*
 import example.domain.model.account.*
-import example.domain.model.sharedgroup.*
-import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
-import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/api/shared-group/share")

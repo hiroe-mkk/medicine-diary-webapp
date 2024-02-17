@@ -1,7 +1,6 @@
 package example.presentation.controller.page.medicationrecord
 
 import example.application.service.sharedgroup.*
-import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*

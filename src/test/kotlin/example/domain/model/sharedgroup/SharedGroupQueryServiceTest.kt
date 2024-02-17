@@ -1,6 +1,5 @@
 package example.domain.model.sharedgroup
 
-import example.application.service.sharedgroup.*
 import example.domain.model.account.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

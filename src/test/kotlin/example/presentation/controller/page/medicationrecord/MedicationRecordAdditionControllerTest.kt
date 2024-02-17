@@ -1,26 +1,18 @@
 package example.presentation.controller.page.medicationrecord
 
-import example.application.service.medicationrecord.*
-import example.application.service.medicationrecord.MedicationRecordEditCommand.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.presentation.controller.page.medicine.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
-import org.bouncycastle.asn1.x500.style.RFC4519Style.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import org.springframework.security.test.web.servlet.request.*
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import java.time.*
 
 @ControllerTest
 internal class MedicationRecordAdditionControllerTest(@Autowired private val mockMvc: MockMvc,

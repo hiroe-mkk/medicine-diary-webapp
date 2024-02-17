@@ -2,8 +2,6 @@ package example.presentation.controller.page
 
 import example.application.service.profile.*
 import example.application.service.sharedgroup.*
-import example.presentation.shared.*
-import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
