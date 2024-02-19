@@ -32,7 +32,7 @@ class MyBatisJSONMedicationRecordQueryService(private val jsonMedicationRecordMa
                                                                                                 medicineIdValues,
                                                                                                 startedDate,
                                                                                                 endDate,
-                                                                                                pageable.pageSize,
+                                                                                                if (pageable.pageSize <= 100) pageable.pageSize else 100,
                                                                                                 pageable.offset,
                                                                                                 requester.value)
         return PageImpl(content, pageable, total)
