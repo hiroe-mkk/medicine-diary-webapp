@@ -1,6 +1,5 @@
 package example.presentation.shared.springframework.security
 
-import example.presentation.shared.springframework.security.oauth2.oidc.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest.*
 import org.springframework.context.annotation.*
@@ -10,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.*
 import org.springframework.security.core.userdetails.*
 import org.springframework.security.crypto.bcrypt.*
 import org.springframework.security.crypto.password.*
+import org.springframework.security.oauth2.client.oidc.userinfo.*
+import org.springframework.security.oauth2.client.userinfo.*
+import org.springframework.security.oauth2.core.user.*
 import org.springframework.security.provisioning.*
 import org.springframework.security.web.*
 import org.springframework.security.web.authentication.*
@@ -17,7 +19,7 @@ import org.springframework.security.web.authentication.logout.*
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccountService) {
+class WebSecurityConfiguration {
     @Value("\${application.admin.username}")
     lateinit var adminUsername: String
 
@@ -44,14 +46,20 @@ class WebSecurityConfiguration(private val oidcUserAccountService: OidcUserAccou
                     authenticationSuccessHandler: AuthenticationSuccessHandler,
                     authenticationFailureHandler: AuthenticationFailureHandler,
                     authenticationEntryPoint: AuthenticationEntryPoint,
-                    logoutSuccessHandler: LogoutSuccessHandler): SecurityFilterChain {
+                    logoutSuccessHandler: LogoutSuccessHandler,
+                    oAuth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
+                    oidcUserService: OidcUserService): SecurityFilterChain {
         http.authorizeHttpRequests {
             it.requestMatchers(toStaticResources().atCommonLocations()).permitAll() // 静的リソース
                 .requestMatchers("/dist/**").permitAll() // frontend サブプロジェクトのビルド成果物が格納されているディレクトリ
                 .requestMatchers("/", "/about", "/agreement", "/contact", "/notice", "/login").permitAll()
                 .anyRequest().authenticated()
         }.oauth2Login {
-            it.userInfoEndpoint { oidcUserAccountService }
+            it.userInfoEndpoint { endpointConfig ->
+                endpointConfig
+                    .oidcUserService(oidcUserService)
+                    .userService(oAuth2UserService)
+            }
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
         }.exceptionHandling {
