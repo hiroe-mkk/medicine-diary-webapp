@@ -25,7 +25,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 服用可能な薬な薬か
+     * 服用可能な薬か
      */
     @Transactional(readOnly = true)
     fun isAvailableMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
