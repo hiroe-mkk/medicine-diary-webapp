@@ -99,7 +99,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 在庫管理をやめる
      */
     fun stopInventoryManagement(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = findAvailableMedicineOrElseThrowException(medicineId, userSession)
+        val medicine = medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
         medicine.stopInventoryManagement()
         medicineRepository.save(medicine)
     }

@@ -159,21 +159,5 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
             val foundMedicine = medicineRepository.findById(medicine.id)
             assertThat(foundMedicine?.inventory).isNull()
         }
-
-        @Test
-        @DisplayName("服用可能な薬が見つからなかった場合、在庫管理の終了に失敗する")
-        fun availableMedicineNotFound_stoppingInventoryManagementFails() {
-            //given:
-            val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(user1AccountId))
-
-            //when:
-            val target: () -> Unit = {
-                medicineService.stopInventoryManagement(medicine.id, userSession)
-            }
-
-            //then:
-            val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(medicine.id)
-        }
     }
 }
