@@ -2,13 +2,13 @@ package example.infrastructure.repository.account
 
 import example.domain.model.account.*
 import example.domain.shared.exception.*
+import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
-import java.util.*
 
 @Repository
 class MyBatisAccountRepository(private val accountMapper: AccountMapper) : AccountRepository {
     override fun createAccountId(): AccountId {
-        return AccountId(UUID.randomUUID().toString())
+        return AccountId(EntityIdHelper.generate())
     }
 
     override fun findById(accountId: AccountId): Account? {

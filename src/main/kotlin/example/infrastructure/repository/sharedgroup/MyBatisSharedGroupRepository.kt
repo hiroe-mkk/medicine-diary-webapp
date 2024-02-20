@@ -2,13 +2,13 @@ package example.infrastructure.repository.sharedgroup
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
+import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
-import java.util.*
 
 @Repository
 class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMapper) : SharedGroupRepository {
     override fun createSharedGroupId(): SharedGroupId {
-        return SharedGroupId(UUID.randomUUID().toString())
+        return SharedGroupId(EntityIdHelper.generate())
     }
 
     override fun findById(sharedGroupId: SharedGroupId): SharedGroup? {

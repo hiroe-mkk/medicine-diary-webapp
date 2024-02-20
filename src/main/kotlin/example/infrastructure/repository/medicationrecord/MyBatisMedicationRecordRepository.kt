@@ -3,14 +3,14 @@ package example.infrastructure.repository.medicationrecord
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
-import java.util.*
 
 @Component
 class MyBatisMedicationRecordRepository(private val medicationRecordMapper: MedicationRecordMapper) :
         MedicationRecordRepository {
     override fun createMedicationRecordId(): MedicationRecordId {
-        return MedicationRecordId(UUID.randomUUID().toString())
+        return MedicationRecordId(EntityIdHelper.generate())
     }
 
     override fun findById(medicationRecordId: MedicationRecordId): MedicationRecord? {

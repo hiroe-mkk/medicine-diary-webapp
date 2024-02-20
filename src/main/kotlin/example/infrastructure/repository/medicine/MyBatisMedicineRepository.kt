@@ -5,12 +5,11 @@ import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import example.infrastructure.repository.shared.*
 import org.springframework.stereotype.*
-import java.util.*
 
 @Repository
 class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : MedicineRepository {
     override fun createMedicineId(): MedicineId {
-        return MedicineId(UUID.randomUUID().toString())
+        return MedicineId(EntityIdHelper.generate())
     }
 
     override fun findById(medicineId: MedicineId): Medicine? {
