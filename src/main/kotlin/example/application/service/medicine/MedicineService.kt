@@ -116,8 +116,4 @@ class MedicineService(private val medicineRepository: MedicineRepository,
         return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
-
-    private fun convertToSortedDtoList(medicines: Set<Medicine>): List<MedicineOverviewDto> {
-        return medicines.sortedByDescending { it.registeredAt }.map { MedicineOverviewDto.from(it) }
-    }
 }
