@@ -96,7 +96,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
-     * 在庫管理をやめる
+     * 在庫管理を終了する
      */
     fun stopInventoryManagement(medicineId: MedicineId, userSession: UserSession) {
         val medicine = medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
