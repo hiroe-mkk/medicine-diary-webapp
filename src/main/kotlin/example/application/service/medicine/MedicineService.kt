@@ -25,6 +25,14 @@ class MedicineService(private val medicineRepository: MedicineRepository,
     }
 
     /**
+     * 有効な薬 ID か
+     */
+    @Transactional(readOnly = true)
+    fun isValidMedicineId(medicineId: MedicineId): Boolean {
+        return medicineRepository.isValidMedicineId(medicineId)
+    }
+
+    /**
      * 服用可能な薬か
      */
     @Transactional(readOnly = true)

@@ -27,6 +27,13 @@ class ApiControllerExceptionHandler(private val bindErrorResponseFactory: BindEr
         return JSONErrorResponse.create(ex)
     }
 
+    @ExceptionHandler(InvalidEntityIdException::class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    fun handleInvalidEntityIdException(ex: InvalidEntityIdException): JSONErrorResponse {
+        return JSONErrorResponse.create(ex)
+    }
+
     @ExceptionHandler(DomainException::class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     @ResponseBody

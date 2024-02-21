@@ -6,6 +6,8 @@ import example.domain.model.sharedgroup.*
 interface MedicineRepository {
     fun createMedicineId(): MedicineId
 
+    fun isValidMedicineId(medicineId: MedicineId): Boolean
+
     fun findById(medicineId: MedicineId): Medicine?
 
     fun findByOwner(accountId: AccountId): Set<Medicine>

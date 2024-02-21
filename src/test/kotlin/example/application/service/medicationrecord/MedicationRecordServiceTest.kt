@@ -4,6 +4,7 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -70,16 +71,16 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
         @DisplayName("薬が見つからなかった場合、服用記録の追加に失敗する")
         fun medicineNotFound_addingMedicationRecordFails() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
             val command =
-                    TestMedicationRecordFactory.createCompletedAdditionCommand(takenMedicine = badMedicineId.value)
+                    TestMedicationRecordFactory.createCompletedAdditionCommand(takenMedicine = nonexistentMedicineId.value)
 
             //when:
             val target: () -> Unit = { medicationRecordService.addMedicationRecord(command, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(nonexistentMedicineId)
         }
     }
 
@@ -135,9 +136,10 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
         @DisplayName("薬が見つからなかった場合、服用記録の修正に失敗する")
         fun medicineNotFound_modifyingMedicationRecordFails() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
+
             val command =
-                    TestMedicationRecordFactory.createCompletedModificationCommand(takenMedicine = badMedicineId.value)
+                    TestMedicationRecordFactory.createCompletedModificationCommand(takenMedicine = nonexistentMedicineId.value)
 
             //when:
             val target: () -> Unit =
@@ -145,7 +147,7 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-            assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+            assertThat(medicineNotFoundException.medicineId).isEqualTo(nonexistentMedicineId)
         }
     }
 

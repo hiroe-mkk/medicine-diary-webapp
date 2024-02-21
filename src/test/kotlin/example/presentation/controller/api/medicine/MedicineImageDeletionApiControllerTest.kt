@@ -1,6 +1,7 @@
 package example.presentation.controller.api.medicine
 
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -41,10 +42,10 @@ internal class MedicineImageDeletionApiControllerTest(@Autowired private val moc
     @DisplayName("薬が見つからなかった場合、ステータスコード204のレスポンスを返す")
     fun medicineNotFound_returnsResponseWithStatus204() {
         //given:
-        val badMedicineId = MedicineId("NonexistentId")
+        val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
         //when:
-        val actions = mockMvc.perform(post(PATH, badMedicineId)
+        val actions = mockMvc.perform(post(PATH, nonexistentMedicineId)
                                           .with(csrf()))
 
         //then:
@@ -52,10 +53,25 @@ internal class MedicineImageDeletionApiControllerTest(@Autowired private val moc
     }
 
     @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("無効な形式の薬IDの場合、ステータスコード400のレスポンスを返す")
+    fun invalidMedicineId_returnsResponseWithStatus400() {
+        //given:
+        val invalidMedicineId = MedicineId("invalidMedicineId")
+
+        //when:
+        val actions = mockMvc.perform(post(PATH, invalidMedicineId)
+                                          .with(csrf()))
+
+        //then:
+        actions.andExpect(status().isBadRequest)
+    }
+
+    @Test
     @DisplayName("未認証ユーザからリクエストされた場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val medicineId = MedicineId("medicineId")
+        val medicineId = MedicineId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(post(PATH, medicineId)

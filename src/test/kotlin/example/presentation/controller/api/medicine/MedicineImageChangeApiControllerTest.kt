@@ -1,6 +1,7 @@
 package example.presentation.controller.api.medicine
 
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
@@ -47,7 +48,7 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
     @DisplayName("バリデーションエラーが発生した場合、ステータスコード400のレスポンスを返す")
     fun validationErrorOccurs_returnsResponseWithStatus400() {
         //given:
-        val medicineId = MedicineId("medicineId")
+        val medicineId = MedicineId(EntityIdHelper.generate())
         val invalidMultipartFile = TestImageFactory.createMultipartFile(type = MediaType.IMAGE_PNG) as MockMultipartFile
 
         //when:
@@ -66,10 +67,10 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
     @DisplayName("薬が見つからなかった場合、ステータスコード404のレスポンスを返す")
     fun medicineNotFound_returnsResponseWithStatus404() {
         //then:
-        val badMedicineId = MedicineId("NonexistentId")
+        val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
         //when:
-        val actions = mockMvc.perform(multipart(PATH, badMedicineId)
+        val actions = mockMvc.perform(multipart(PATH, nonexistentMedicineId)
                                           .file(multipartFile)
                                           .with(csrf()))
 
@@ -78,10 +79,27 @@ internal class MedicineImageChangeApiControllerTest(@Autowired private val mockM
     }
 
     @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("無効な形式の薬IDの場合、ステータスコード400のレスポンスを返す")
+    fun invalidMedicineId_returnsResponseWithStatus400() {
+        //given:
+        val invalidMedicineId = MedicineId("invalidMedicineId")
+
+        //when:
+        val actions = mockMvc.perform(multipart(PATH, invalidMedicineId)
+                                          .file(multipartFile)
+                                          .with(csrf()))
+
+        //then:
+        actions.andExpect(status().isBadRequest)
+    }
+
+
+    @Test
     @DisplayName("未認証ユーザからリクエストされた場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val medicineId = MedicineId("medicineId")
+        val medicineId = MedicineId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(multipart(PATH, medicineId)

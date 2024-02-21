@@ -1,6 +1,7 @@
 package example.domain.model.medicine
 
 import example.domain.model.account.*
+import example.infrastructure.repository.shared.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -81,10 +82,10 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
         @DisplayName("薬が見つからなかった場合、薬の取得に失敗する")
         fun medicineNotFound_gettingMedicineFails() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
-            val actual = medicineQueryService.findAvailableMedicine(badMedicineId, requesterAccountId)
+            val actual = medicineQueryService.findAvailableMedicine(nonexistentMedicineId, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()
@@ -181,10 +182,10 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
         @DisplayName("薬が見つからなかった場合、薬の取得に失敗する")
         fun medicineNotFound_gettingMedicineFails() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
-            val actual = medicineQueryService.findViewableMedicine(badMedicineId, requesterAccountId)
+            val actual = medicineQueryService.findViewableMedicine(nonexistentMedicineId, requesterAccountId)
 
             //then:
             assertThat(actual).isNull()

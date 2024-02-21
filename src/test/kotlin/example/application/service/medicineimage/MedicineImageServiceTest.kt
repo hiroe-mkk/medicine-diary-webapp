@@ -4,6 +4,7 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
+import example.infrastructure.repository.shared.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -74,16 +75,16 @@ internal class MedicineImageServiceTest(@Autowired private val medicineRepositor
     @DisplayName("薬が見つからなかった場合、薬画像の変更に失敗する")
     fun medicineNotFound_changingMedicineImageFails() {
         //given:
-        val badMedicineId = MedicineId("NonexistentId")
+        val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
         //when:
         val target: () -> Unit = {
-            medicineImageService.changeMedicineImage(badMedicineId, command, userSession)
+            medicineImageService.changeMedicineImage(nonexistentMedicineId, command, userSession)
         }
 
         //then:
         val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)
-        assertThat(medicineNotFoundException.medicineId).isEqualTo(badMedicineId)
+        assertThat(medicineNotFoundException.medicineId).isEqualTo(nonexistentMedicineId)
     }
 
     @Test

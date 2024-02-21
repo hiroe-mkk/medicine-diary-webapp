@@ -3,6 +3,7 @@ package example.presentation.controller.page.medicine
 import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
 import example.domain.model.medicine.*
+import example.domain.shared.exception.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
@@ -37,6 +38,8 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     @GetMapping
     fun displayMedicineBasicInfoUpdatePage(@PathVariable medicineId: MedicineId,
                                            model: Model): String {
+        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+
         val command = medicineService.getUpdateMedicineBasicInfoEditCommand(medicineId,
                                                                             userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
@@ -51,6 +54,7 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
                                 @ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                                 bindingResult: BindingResult,
                                 redirectAttributes: RedirectAttributes): String {
+        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
         if (bindingResult.hasErrors()) return "medicine/form"
 
         medicineService.updateMedicineBasicInfo(medicineId,

@@ -2,6 +2,7 @@ package example.presentation.controller.page.medicationrecord
 
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
@@ -169,13 +170,13 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         fun medicineNotFound_redirectToLastRequestedPage() {
             //given:
             val medicationRecordId = MedicationRecordId("medicationRecordId")
-            val badMedicineId = "NonexistentId"
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
             val actions = mockMvc.perform(post(PATH, medicationRecordId)
                                               .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine"))
                                               .with(csrf())
-                                              .param("takenMedicine", badMedicineId)
+                                              .param("takenMedicine", nonexistentMedicineId.toString())
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)

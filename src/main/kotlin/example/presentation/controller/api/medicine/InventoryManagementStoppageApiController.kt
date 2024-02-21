@@ -2,6 +2,7 @@ package example.presentation.controller.api.medicine
 
 import example.application.service.medicine.*
 import example.domain.model.medicine.*
+import example.domain.shared.exception.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
@@ -17,6 +18,8 @@ class InventoryManagementStoppageApiController(private val medicineService: Medi
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun stopInventoryManagement(@PathVariable medicineId: MedicineId) {
+        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+
         medicineService.stopInventoryManagement(medicineId,
                                                 userSessionProvider.getUserSessionOrElseThrow())
     }

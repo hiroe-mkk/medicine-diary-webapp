@@ -3,6 +3,7 @@ package example.presentation.controller.page.medicine
 import example.application.service.medicine.*
 import example.application.service.sharedgroup.*
 import example.domain.model.medicine.*
+import example.domain.shared.exception.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
@@ -22,6 +23,8 @@ class MedicineDetailPageController(private val medicineService: MedicineService,
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId,
                                   model: Model,
                                   lastRequestedPagePath: LastRequestedPagePath?): String {
+        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
         model.addAttribute("isParticipatingInSharedGroup",

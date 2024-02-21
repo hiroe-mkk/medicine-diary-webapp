@@ -2,10 +2,11 @@ package example.testhelper.factory
 
 import example.application.service.medicationrecord.*
 import example.domain.model.medicationrecord.*
+import example.infrastructure.repository.shared.*
 import java.time.*
 
 object TestMedicationRecordFactory {
-    fun createCompletedAdditionCommand(takenMedicine: String = "testMedicineId",
+    fun createCompletedAdditionCommand(takenMedicine: String = EntityIdHelper.generate(),
                                        quantity: Double? = 1.0,
                                        symptom: String = "頭痛",
                                        beforeMedication: ConditionLevel = ConditionLevel.A_LITTLE_BAD,
@@ -28,7 +29,7 @@ object TestMedicationRecordFactory {
                                            onsetEffectAt)
     }
 
-    fun createCompletedModificationCommand(takenMedicine: String = "testMedicineId",
+    fun createCompletedModificationCommand(takenMedicine: String = EntityIdHelper.generate(),
                                            quantity: Double? = 2.0,
                                            symptom: String = "頭痛",
                                            beforeMedication: ConditionLevel = ConditionLevel.A_LITTLE_BAD,

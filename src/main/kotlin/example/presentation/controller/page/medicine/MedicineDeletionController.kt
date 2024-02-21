@@ -2,6 +2,7 @@ package example.presentation.controller.page.medicine
 
 import example.application.service.medicine.*
 import example.domain.model.medicine.*
+import example.domain.shared.exception.*
 import example.domain.shared.message.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
@@ -18,6 +19,8 @@ class MedicineDeletionController(private val medicineService: MedicineService,
     @PostMapping
     fun deleteMedicine(@PathVariable medicineId: MedicineId,
                        redirectAttributes: RedirectAttributes): String {
+        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+
         medicineService.deleteMedicine(medicineId,
                                        userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",

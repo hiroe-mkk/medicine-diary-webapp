@@ -5,10 +5,11 @@ import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
+import example.infrastructure.repository.shared.*
 import java.time.*
 
 object TestMedicineFactory {
-    fun createMedicine(medicineId: MedicineId = MedicineId("medicineId"),
+    fun createMedicine(medicineId: MedicineId = MedicineId(EntityIdHelper.generate()),
                        owner: MedicineOwner = MedicineOwner.create(AccountId("testAccountId")),
                        medicineName: MedicineName = MedicineName("ロキソニンS"),
                        dosageAndAdministration: DosageAndAdministration = DosageAndAdministration(Dose(1.0),

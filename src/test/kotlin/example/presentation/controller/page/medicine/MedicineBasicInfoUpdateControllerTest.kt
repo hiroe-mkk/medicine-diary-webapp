@@ -1,6 +1,7 @@
 package example.presentation.controller.page.medicine
 
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -43,10 +44,10 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicineNotFound_displayNotFoundErrorPage() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
-            val actions = mockMvc.perform(get(PATH, badMedicineId))
+            val actions = mockMvc.perform(get(PATH, nonexistentMedicineId))
 
             //then:
             actions.andExpect(status().isNotFound)
@@ -54,10 +55,25 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         }
 
         @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("無効な形式の薬IDの場合、NotFoundエラー画面を表示する")
+        fun invalidMedicineId_displayNotFoundErrorPage() {
+            //given:
+            val invalidMedicineId = MedicineId("invalidMedicineId")
+
+            //when:
+            val actions = mockMvc.perform(get(PATH, invalidMedicineId))
+
+            //then:
+            actions.andExpect(status().isBadRequest)
+                .andExpect(view().name("error/notFoundError"))
+        }
+
+        @Test
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectsToHomePage() {
             //given:
-            val medicineId = MedicineId("medicineId")
+            val medicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
             val actions = mockMvc.perform(get(PATH, medicineId))
@@ -136,10 +152,10 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicineNotFound_displayNotFoundErrorPage() {
             //given:
-            val badMedicineId = MedicineId("NonexistentId")
+            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
-            val actions = mockMvc.perform(post(PATH, badMedicineId)
+            val actions = mockMvc.perform(post(PATH, nonexistentMedicineId)
                                               .with(csrf())
                                               .param("medicineName", medicineName)
                                               .param("quantity", quantity.toString())
@@ -157,10 +173,35 @@ internal class MedicineBasicInfoUpdateControllerTest(@Autowired private val mock
         }
 
         @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("無効な形式の薬IDの場合、NotFoundエラー画面を表示する")
+        fun invalidMedicineId_displayNotFoundErrorPage() {
+            //given:
+            val invalidMedicineId = MedicineId("invalidMedicineId")
+
+            //when:
+            val actions = mockMvc.perform(post(PATH, invalidMedicineId)
+                                              .with(csrf())
+                                              .param("medicineName", medicineName)
+                                              .param("quantity", quantity.toString())
+                                              .param("doseUnit", doseUnit)
+                                              .param("timesPerDay", timesPerDay.toString())
+                                              .param("timingOptions", timingOptions[0].name)
+                                              .param("effects", effects[0])
+                                              .param("effects", effects[1])
+                                              .param("effects", effects[2])
+                                              .param("precautions", precautions))
+
+            //then:
+            actions.andExpect(status().isBadRequest)
+                .andExpect(view().name("error/notFoundError"))
+        }
+
+        @Test
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectToHomePage() {
             //given:
-            val medicineId = MedicineId("medicineId")
+            val medicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
             val actions = mockMvc.perform(post(PATH, medicineId)

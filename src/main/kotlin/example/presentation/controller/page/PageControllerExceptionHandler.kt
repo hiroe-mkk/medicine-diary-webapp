@@ -19,6 +19,13 @@ class PageControllerExceptionHandler {
         return "error/notFoundError"
     }
 
+    @ExceptionHandler(InvalidEntityIdException::class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    fun handleInvalidEntityIdException(ex: InvalidEntityIdException): String {
+        // リソースが見つからなかった場合と同じ画面を返す
+        return "error/notFoundError"
+    }
+
     @ExceptionHandler(DomainException::class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     fun handleBusinessException(ex: DomainException, model: Model): String {
