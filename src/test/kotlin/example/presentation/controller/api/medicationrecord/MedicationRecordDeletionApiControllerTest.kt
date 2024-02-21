@@ -2,6 +2,7 @@ package example.presentation.controller.api.medicationrecord
 
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
+import example.infrastructure.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -44,10 +45,10 @@ internal class MedicationRecordDeletionApiControllerTest(@Autowired private val 
     @DisplayName("服用記録が見つからなかった場合、ステータスコード204のレスポンスを返す")
     fun medicationRecordNotFound_returnsResponseWithStatus404() {
         //then:
-        val badMedicationRecordId = MedicationRecordId("NonexistentId")
+        val nonexistentMedicationRecordId = MedicationRecordId(EntityIdHelper.generate())
 
         //when:
-        val actions = mockMvc.perform(post(PATH, badMedicationRecordId)
+        val actions = mockMvc.perform(post(PATH, nonexistentMedicationRecordId)
                                           .with(csrf()))
 
         //then:
@@ -55,10 +56,25 @@ internal class MedicationRecordDeletionApiControllerTest(@Autowired private val 
     }
 
     @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("無効な形式の服用記録IDの場合、ステータスコード400のレスポンスを返す")
+    fun invalidMedicationRecordId_returnsResponseWithStatus400() {
+        //given:
+        val invalidMedicationRecordId = MedicationRecordId("invalidMedicationRecordId")
+
+        //when:
+        val actions = mockMvc.perform(post(PATH, invalidMedicationRecordId)
+                                          .with(csrf()))
+
+        //then:
+        actions.andExpect(status().isBadRequest)
+    }
+
+    @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val medicationRecordId = MedicationRecordId("medicationRecordId")
+        val medicationRecordId = MedicationRecordId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(post(PATH, medicationRecordId)

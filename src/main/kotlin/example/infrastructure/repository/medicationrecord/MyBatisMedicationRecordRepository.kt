@@ -13,6 +13,10 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
         return MedicationRecordId(EntityIdHelper.generate())
     }
 
+    override fun isValidMedicationRecordId(medicationRecordId: MedicationRecordId): Boolean {
+        return EntityIdHelper.isValid(medicationRecordId)
+    }
+
     override fun findById(medicationRecordId: MedicationRecordId): MedicationRecord? {
         return medicationRecordMapper.findOneByMedicationRecordId(medicationRecordId.value)
     }

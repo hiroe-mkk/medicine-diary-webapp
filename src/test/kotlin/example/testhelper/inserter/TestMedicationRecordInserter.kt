@@ -8,14 +8,12 @@ import java.time.*
 
 @TestComponent
 class TestMedicationRecordInserter(private val medicationRecordRepository: MedicationRecordRepository) {
-    private var num: Int = 1
-
     /**
      * テスト用の服用記録を生成して、リポジトリに保存する
      */
     fun insert(accountId: AccountId,
                takenMedicine: MedicineId,
-               medicationRecordId: MedicationRecordId = MedicationRecordId("testMedicationRecordId${num++}"),
+               medicationRecordId: MedicationRecordId = medicationRecordRepository.createMedicationRecordId(),
                dose: Dose = Dose(1.0),
                followUp: FollowUp = FollowUp("頭痛", ConditionLevel.A_LITTLE_BAD, null),
                note: String = "",

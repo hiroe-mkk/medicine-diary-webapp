@@ -15,6 +15,14 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
                               private val medicationRecordQueryService: MedicationRecordQueryService,
                               private val medicineQueryService: MedicineQueryService) {
     /**
+     * 有効な服用記録 ID か
+     */
+    @Transactional(readOnly = true)
+    fun isValidMedicationRecordId(medicationRecordId: MedicationRecordId): Boolean {
+        return medicationRecordRepository.isValidMedicationRecordId(medicationRecordId)
+    }
+
+    /**
      * 追加用の服用記録編集コマンドを取得する
      */
     @Transactional(readOnly = true)

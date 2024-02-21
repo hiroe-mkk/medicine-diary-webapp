@@ -3,6 +3,7 @@ package example.presentation.controller.page.medicationrecord
 import example.application.service.medicationrecord.*
 import example.application.service.medicine.*
 import example.domain.model.medicationrecord.*
+import example.domain.shared.exception.*
 import example.domain.shared.message.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
@@ -34,6 +35,9 @@ class MedicationRecordModificationController(private val medicationRecordService
     @GetMapping
     fun displayMedicationRecordModificationPage(@PathVariable medicationRecordId: MedicationRecordId,
                                                 model: Model): String {
+        if (!medicationRecordService.isValidMedicationRecordId(medicationRecordId))
+            throw InvalidEntityIdException(medicationRecordId)
+
         val command = medicationRecordService.getModificationEditCommand(medicationRecordId,
                                                                          userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
@@ -49,6 +53,8 @@ class MedicationRecordModificationController(private val medicationRecordService
                                bindingResult: BindingResult,
                                redirectAttributes: RedirectAttributes,
                                lastRequestedPagePath: LastRequestedPagePath?): String {
+        if (!medicationRecordService.isValidMedicationRecordId(medicationRecordId))
+            throw InvalidEntityIdException(medicationRecordId)
         if (bindingResult.hasErrors()) return "medicationrecord/form"
 
         try {

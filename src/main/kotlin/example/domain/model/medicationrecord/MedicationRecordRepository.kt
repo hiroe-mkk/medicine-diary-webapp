@@ -6,6 +6,8 @@ import example.domain.model.medicine.*
 interface MedicationRecordRepository {
     fun createMedicationRecordId(): MedicationRecordId
 
+    fun isValidMedicationRecordId(medicationRecordId: MedicationRecordId): Boolean
+
     fun findById(medicationRecordId: MedicationRecordId): MedicationRecord?
 
     fun findByTakenMedicine(medicineId: MedicineId): Set<MedicationRecord>

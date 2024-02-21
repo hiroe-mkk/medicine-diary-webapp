@@ -94,13 +94,15 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         @DisplayName("バリデーションエラーが発生した場合、服用記録追加画面を再表示する")
         fun validationErrorOccurs_redisplayMedicationRecordAdditionPage() {
             //given:
-            val invalidMedicineId = ""
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
+            val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
+            val invalidQuantity = -1
 
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("takenMedicine", invalidMedicineId)
-                                              .param("quantity", quantity.toString())
+                                              .param("takenMedicine", medicine.id.value)
+                                              .param("quantity", invalidQuantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)
                                               .param("note", note)
@@ -141,12 +143,12 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectToHomePage() {
             //given:
-            val medicineId = "medicineId"
+            val medicineId = MedicineId(EntityIdHelper.generate())
 
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("takenMedicine", medicineId)
+                                              .param("takenMedicine", medicineId.toString())
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)

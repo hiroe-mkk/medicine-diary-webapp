@@ -121,15 +121,18 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
         @DisplayName("服用記録が見つからなかった場合、服用記録の修正に失敗する")
         fun medicationRecordNotFound_modifyingMedicationRecordFails() {
             //given:
-            val badMedicationRecordId = MedicationRecordId("NonexistentId")
+            val nonexistentMedicationRecordId = MedicationRecordId(EntityIdHelper.generate())
 
             //when:
-            val target: () -> Unit =
-                    { medicationRecordService.modifyMedicationRecord(badMedicationRecordId, command, userSession) }
+            val target: () -> Unit = {
+                medicationRecordService.modifyMedicationRecord(nonexistentMedicationRecordId,
+                                                               command,
+                                                               userSession)
+            }
 
             //then:
             val medicationRecordNotFoundException = assertThrows<MedicationRecordNotFoundException>(target)
-            assertThat(medicationRecordNotFoundException.medicationRecordId).isEqualTo(badMedicationRecordId)
+            assertThat(medicationRecordNotFoundException.medicationRecordId).isEqualTo(nonexistentMedicationRecordId)
         }
 
         @Test
