@@ -2,6 +2,7 @@ package example.presentation.controller.api.sharedgroup
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
+import example.infrastructure.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -40,8 +41,8 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.value)
-                                          .param("accountId", user1AccountId.value))
+                                          .param("sharedGroupId", sharedGroup.id.toString())
+                                          .param("accountId", user1AccountId.toString()))
 
         //then:
         actions.andExpect(status().isNoContent)
@@ -58,8 +59,8 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.value)
-                                          .param("accountId", user1AccountId.value))
+                                          .param("sharedGroupId", sharedGroup.id.toString())
+                                          .param("accountId", user1AccountId.toString()))
 
         //then:
         actions.andExpect(status().isConflict)
@@ -89,13 +90,13 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId, user1AccountId))
-        val badAccountId = AccountId("NonexistentId")
+        val nonexistentAccountId = AccountId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.value)
-                                          .param("accountId", badAccountId.value))
+                                          .param("sharedGroupId", sharedGroup.id.toString())
+                                          .param("accountId", nonexistentAccountId.toString()))
 
         //then:
         actions.andExpect(status().isConflict)
@@ -110,8 +111,8 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroupId.value)
-                                          .param("accountId", user1AccountId.value))
+                                          .param("sharedGroupId", sharedGroupId.toString())
+                                          .param("accountId", user1AccountId.toString()))
 
         //then:
         actions.andExpect(status().isUnauthorized)

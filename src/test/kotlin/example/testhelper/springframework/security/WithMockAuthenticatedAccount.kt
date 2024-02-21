@@ -20,7 +20,7 @@ import java.time.*
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
 @WithSecurityContext(factory = WithMockAuthenticatedAccount.TestOAuth2UserAccountFactory::class)
-annotation class WithMockAuthenticatedAccount(val accountId: String = "testAccountId") {
+annotation class WithMockAuthenticatedAccount(val accountId: String = "6ccd780c-baba-1026-9564-5b8c656024db") {
     @TestComponent
     class TestOAuth2UserAccountFactory(private val accountRepository: AccountRepository,
                                        private val profileRepository: ProfileRepository)

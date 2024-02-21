@@ -11,6 +11,10 @@ class MyBatisAccountRepository(private val accountMapper: AccountMapper) : Accou
         return AccountId(EntityIdHelper.generate())
     }
 
+    override fun isValidAccountId(accountId: AccountId): Boolean {
+        return EntityIdHelper.isValid(accountId)
+    }
+
     override fun findById(accountId: AccountId): Account? {
         val accountResultEntity = accountMapper.findOneAccountByAccountId(accountId.value) ?: return null
         return accountResultEntity.toAccount(findCredential(accountResultEntity))

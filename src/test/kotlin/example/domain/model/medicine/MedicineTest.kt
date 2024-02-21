@@ -2,6 +2,7 @@ package example.domain.model.medicine
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
+import example.infrastructure.repository.shared.*
 import example.testhelper.factory.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
@@ -22,7 +23,7 @@ internal class MedicineTest {
     @DisplayName("所有する薬の基本情報を変更する")
     fun changeOwnedMedicineBasicInfo(isPublic: Boolean) {
         //given:
-        val owner = MedicineOwner.create(AccountId("testAccountId"))
+        val owner = MedicineOwner.create(AccountId(EntityIdHelper.generate()))
         val medicine = TestMedicineFactory.createMedicine(owner = owner)
 
         //when:

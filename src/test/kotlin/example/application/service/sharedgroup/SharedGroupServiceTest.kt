@@ -4,6 +4,7 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.sharedgroup.*
+import example.infrastructure.repository.shared.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -97,11 +98,11 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         @DisplayName("アカウントが見つからなかった場合、共有に失敗する")
         fun accountNotFound_sharingFails() {
             //given:
-            val badAccountId = AccountId("NonexistentId")
+            val nonexistentAccountId = AccountId(EntityIdHelper.generate())
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.share(badAccountId, userSession)
+                sharedGroupService.share(nonexistentAccountId, userSession)
             }
 
             //then:
@@ -147,13 +148,13 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         @DisplayName("アカウントが見つからなかった場合、共有グループへの招待に失敗する")
         fun accountNotFound_invitingToSharedGroupFails() {
             //given:
-            val badAccountId = AccountId("NonexistentId")
+            val nonexistentAccountId = AccountId(EntityIdHelper.generate())
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId,
                                                                              createAccount().id))
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(sharedGroup.id, badAccountId, userSession)
+                sharedGroupService.inviteToSharedGroup(sharedGroup.id, nonexistentAccountId, userSession)
             }
 
             //then:

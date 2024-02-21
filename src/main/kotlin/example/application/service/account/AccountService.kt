@@ -46,4 +46,12 @@ class AccountService(private val accountRepository: AccountRepository,
         profileRepository.deleteByAccountId(account.id)
         accountRepository.deleteById(account.id)
     }
+
+    /**
+     * 有効なアカウント ID か
+     */
+    @Transactional(readOnly = true)
+    fun isValidAccountId(accountId: AccountId): Boolean {
+        return accountRepository.isValidAccountId(accountId)
+    }
 }

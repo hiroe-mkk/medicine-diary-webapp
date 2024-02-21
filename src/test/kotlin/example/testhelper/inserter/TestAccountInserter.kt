@@ -3,6 +3,7 @@ package example.testhelper.inserter
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
+import example.infrastructure.repository.shared.*
 import org.springframework.boot.test.context.*
 
 @TestComponent
@@ -13,7 +14,7 @@ class TestAccountInserter(private val accountRepository: AccountRepository,
     /**
      * テスト用のアカウントとプロフィールを生成して、リポジトリに保存する
      */
-    fun insertAccountAndProfile(id: AccountId = AccountId("testAccountId$num"),
+    fun insertAccountAndProfile(id: AccountId = AccountId(EntityIdHelper.generate()),
                                 credential: Credential = OAuth2Credential(IdP.GITHUB,
                                                                           "testSubject${num++}"),
                                 username: Username = Username("testUsername"),

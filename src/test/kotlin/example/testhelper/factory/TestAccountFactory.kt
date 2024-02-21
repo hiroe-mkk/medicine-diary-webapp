@@ -3,9 +3,10 @@ package example.testhelper.factory
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
+import example.infrastructure.repository.shared.*
 
 object TestAccountFactory {
-    fun create(id: AccountId = AccountId("testAccountId"),
+    fun create(id: AccountId = AccountId(EntityIdHelper.generate()),
                credential: Credential = OAuth2Credential(IdP.GITHUB, "testSubject"),
                username: Username = Username("testUsername"),
                profileImageURL: ProfileImageURL? = null): Pair<Account, Profile> {
