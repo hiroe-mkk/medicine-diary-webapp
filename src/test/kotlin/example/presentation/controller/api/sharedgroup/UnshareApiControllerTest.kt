@@ -1,7 +1,6 @@
 package example.presentation.controller.api.sharedgroup
 
 import example.domain.model.account.*
-import example.domain.model.sharedgroup.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -35,7 +34,7 @@ internal class UnshareApiControllerTest(@Autowired private val mockMvc: MockMvc,
     fun unshareSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId))
+        testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(post(PATH)
@@ -49,9 +48,6 @@ internal class UnshareApiControllerTest(@Autowired private val mockMvc: MockMvc,
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループが見つからなかった場合、ステータスコード204のレスポンスを返す")
     fun sharedGroupNotFound_returnsResponseWithStatus204() {
-        //given:
-        val badSharedGroupId = SharedGroupId("NonexistentId")
-
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf()))
@@ -63,9 +59,6 @@ internal class UnshareApiControllerTest(@Autowired private val mockMvc: MockMvc,
     @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
-        //given:
-        val sharedGroupId = SharedGroupId("sharedGroupId")
-
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf()))

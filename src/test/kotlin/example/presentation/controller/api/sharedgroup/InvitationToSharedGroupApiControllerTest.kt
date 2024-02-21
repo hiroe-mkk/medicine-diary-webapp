@@ -71,13 +71,13 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
     @DisplayName("共有グループが見つからなかった場合、ステータスコード409のレスポンスを返す")
     fun sharedGroupNotFound_returnsResponseWithStatus404() {
         //given:
-        val badSharedGroupId = SharedGroupId("NonexistentId")
+        val nonexistentSharedGroupId = SharedGroupId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", badSharedGroupId.value)
-                                          .param("accountId", user1AccountId.value))
+                                          .param("sharedGroupId", nonexistentSharedGroupId.toString())
+                                          .param("accountId", user1AccountId.toString()))
 
         //then:
         actions.andExpect(status().isConflict)
@@ -106,7 +106,7 @@ internal class InvitationToSharedGroupApiControllerTest(@Autowired private val m
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val sharedGroupId = SharedGroupId("sharedGroupId")
+        val sharedGroupId = SharedGroupId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(post(PATH)

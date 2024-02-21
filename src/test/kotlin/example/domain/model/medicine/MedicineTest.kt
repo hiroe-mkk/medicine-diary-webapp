@@ -38,7 +38,7 @@ internal class MedicineTest {
     @DisplayName("共有グループの薬の基本情報を変更する")
     fun changeSharedGroupMedicineBasicInfo(isPublic: Boolean) {
         //given:
-        val owner = MedicineOwner.create(SharedGroupId("testSharedGroupId"))
+        val owner = MedicineOwner.create(SharedGroupId(EntityIdHelper.generate()))
         val medicine = TestMedicineFactory.createMedicine(owner = owner)
 
         //when:

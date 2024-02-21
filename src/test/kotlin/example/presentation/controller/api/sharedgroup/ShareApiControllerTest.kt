@@ -80,7 +80,7 @@ internal class ShareApiControllerTest(@Autowired private val mockMvc: MockMvc,
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val sharedGroupId = SharedGroupId("sharedGroupId")
+        val sharedGroupId = SharedGroupId(EntityIdHelper.generate())
 
         //when:
         val actions = mockMvc.perform(post(PATH)
