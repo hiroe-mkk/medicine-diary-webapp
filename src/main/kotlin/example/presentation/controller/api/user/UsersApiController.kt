@@ -28,6 +28,8 @@ class UsersApiController(private val jsonUserQueryService: JSONUserQueryService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsers {
+        if (keyword?.length ?: 0 > 30) return JSONUsers(emptyList())
+
         return jsonUserQueryService.findJSONUsersByKeyword(keyword ?: "",
                                                            userSessionProvider.getUserSessionOrElseThrow())
     }
