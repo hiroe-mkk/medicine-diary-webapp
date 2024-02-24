@@ -6,7 +6,6 @@
 >
   <head>
     <meta charset="UTF-8" th:remove="tag" />
-    <script th:src="@{/dist/js/sharedGroupManagement.bundle.js}" defer></script>
   </head>
 
   <body>
@@ -27,6 +26,8 @@
           th:attr="csrf=${_csrf.token}"
         ></shared-group-management>
       </div>
+
+      <script th:src="@{/dist/js/sharedGroupManagement.bundle.js}"></script>
     </div>
   </body>
 </html>
