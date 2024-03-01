@@ -3,7 +3,6 @@ package example.presentation.controller.page.medicationrecord
 import example.application.service.medicationrecord.*
 import example.application.service.medicine.*
 import example.domain.model.medicationrecord.*
-import example.domain.model.medicine.*
 import example.domain.shared.message.*
 import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
@@ -13,7 +12,6 @@ import org.springframework.validation.*
 import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.*
-import java.time.*
 
 @Controller
 @RequestMapping("/medication-records/add")
@@ -33,11 +31,10 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
      * 服用記録追加画面を表示する
      */
     @GetMapping
-    fun displayMedicationRecordAdditionPage(@RequestParam(name = "medicine", required = false) medicineId: MedicineId?,
-                                            @RequestParam(name = "date", required = false) date: LocalDate?,
+    fun displayMedicationRecordAdditionPage(@Validated form: MedicationRecordAdditionFormInitialValue,
                                             model: Model): String {
-        val command = medicationRecordService.getAdditionMedicationRecordEditCommand(medicineId,
-                                                                                     date,
+        val command = medicationRecordService.getAdditionMedicationRecordEditCommand(form.validatedMedicine,
+                                                                                     form.date,
                                                                                      userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"

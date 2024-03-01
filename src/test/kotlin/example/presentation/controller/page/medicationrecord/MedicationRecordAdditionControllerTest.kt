@@ -42,6 +42,18 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         }
 
         @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("バリデーションエラーが発生した場合、ステータスコード400のレスポンスを返す")
+        fun validationErrorOccurs_returnsResponseWithStatus400() {
+            //when:
+            val actions = mockMvc.perform(get(PATH)
+                                              .param("medicine", "invalidMedicineId"))
+
+            //then:
+            actions.andExpect(status().isBadRequest)
+        }
+
+        @Test
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectsToHomePage() {
             //when:
