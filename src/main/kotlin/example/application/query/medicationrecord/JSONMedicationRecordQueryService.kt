@@ -39,18 +39,18 @@ abstract class JSONMedicationRecordQueryService(private val medicineQueryService
     private fun filteredMedicineIds(filter: MedicationRecordFilter,
                                     userSession: UserSession): Collection<MedicineId> {
         val medicineIds = medicineQueryService.findAllViewableMedicines(userSession.accountId).map { it.id }
-        if (filter.medicine == null) return medicineIds
+        if (filter.validatedMedicine == null) return medicineIds
 
-        return if (medicineIds.contains(filter.medicine)) listOf(filter.medicine) else emptyList()
+        return if (medicineIds.contains(filter.validatedMedicine)) listOf(filter.validatedMedicine) else emptyList()
     }
 
     private fun filteredAccountIds(filter: MedicationRecordFilter,
                                    userSession: UserSession): Collection<AccountId> {
         val accountIds = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)?.members
                          ?: listOf(userSession.accountId)
-        if (filter.account == null) return accountIds
+        if (filter.validatedAccount == null) return accountIds
 
-        return if (accountIds.contains(filter.account)) listOf(filter.account) else emptyList()
+        return if (accountIds.contains(filter.validatedAccount)) listOf(filter.validatedAccount) else emptyList()
     }
 
     abstract fun findFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,

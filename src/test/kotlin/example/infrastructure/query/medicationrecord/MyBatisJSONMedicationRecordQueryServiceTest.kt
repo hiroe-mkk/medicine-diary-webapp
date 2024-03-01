@@ -36,8 +36,8 @@ internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private va
         val requesterMedicationRecord = testMedicationRecordInserter.insert(requesterProfile.accountId,
                                                                             sharedGroupMedicine.id)
         val memberMedicationRecord = testMedicationRecordInserter.insert(member.accountId, sharedGroupMedicine.id)
-        val filter = MedicationRecordFilter(sharedGroupMedicine.id,
-                                            member.accountId,
+        val filter = MedicationRecordFilter(sharedGroupMedicine.id.toString(),
+                                            member.accountId.toString(),
                                             null, null)
 
         //when:

@@ -43,6 +43,18 @@ internal class MedicationRecordApiControllerTest(@Autowired private val mockMvc:
     }
 
     @Test
+    @WithMockAuthenticatedAccount
+    @DisplayName("バリデーションエラーが発生した場合、ステータスコード400のレスポンスを返す")
+    fun validationErrorOccurs_returnsResponseWithStatus400() {
+        //when:
+        val actions = mockMvc.perform(get(PATH)
+                                          .param("medicine", "invalidMedicineId"))
+
+        //then:
+        actions.andExpect(status().isBadRequest)
+    }
+
+    @Test
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //when:

@@ -6,6 +6,7 @@ import org.springframework.data.domain.*
 import org.springframework.data.web.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
@@ -18,7 +19,7 @@ class MedicationRecordApiController(private val jsonMedicationRecordQueryService
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getMedicationRecords(medicationRecordFilter: MedicationRecordFilter,
+    fun getMedicationRecords(@Validated medicationRecordFilter: MedicationRecordFilter,
                              @PageableDefault(page = 0,
                                               size = 10) pageable: Pageable): JSONMedicationRecords {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
