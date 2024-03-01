@@ -33,8 +33,8 @@ internal class MedicationRecordApiControllerTest(@Autowired private val mockMvc:
 
         //when:
         val actions = mockMvc.perform(get(PATH)
-                                          .param("medicineid", medicine.id.value)
-                                          .param("accountid", userSession.accountId.value)
+                                          .param("medicine", medicine.id.value)
+                                          .param("account", userSession.accountId.value)
                                           .param("start", medicine.registeredAt.toLocalDate().toString()))
 
         //then:

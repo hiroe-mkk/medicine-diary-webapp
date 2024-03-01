@@ -90,9 +90,9 @@ export class Filter {
   createParams() {
     const params = new URLSearchParams();
     if (this.medicineId !== undefined)
-      params.append('medicineid', this.medicineId);
+      params.append('medicine', this.medicineId);
     if (this.accountId !== undefined)
-      params.append('accountid', this.accountId);
+      params.append('account', this.accountId);
     if (this.start !== undefined) params.append('start', this.start);
     if (this.end !== undefined) params.append('end', this.end);
     params.append('size', this.sizePerPage);
