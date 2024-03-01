@@ -4,6 +4,7 @@ import example.application.query.medicine.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
@@ -16,7 +17,7 @@ class MedicineOverviewsApiController(private val jsonMedicineOverviewsQueryServi
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getMedicineOverviews(medicineFilter: MedicineFilter): JSONOwnerBaseMedicineOverviews {
+    fun getMedicineOverviews(@Validated medicineFilter: MedicineFilter): JSONOwnerBaseMedicineOverviews {
         return jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession(), medicineFilter)
     }
 

@@ -1,3 +1,5 @@
 package example.application.query.medicine
 
-data class MedicineFilter(val effect: String?)
+import jakarta.validation.constraints.*
+
+data class MedicineFilter(@field:Size(max = 30) val effect: String?)
