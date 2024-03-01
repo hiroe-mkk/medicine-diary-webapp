@@ -2,8 +2,10 @@ package example.presentation.controller.api.user
 
 import example.application.query.user.*
 import example.presentation.shared.usersession.*
+import jakarta.validation.constraints.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
+import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
@@ -27,10 +29,8 @@ class UsersApiController(private val jsonUserQueryService: JSONUserQueryService,
     @GetMapping(params = ["keyword"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getUsersByKeyword(@RequestParam(name = "keyword", required = false) keyword: String?): JSONUsers {
-        if (keyword?.length ?: 0 > 30) return JSONUsers(emptyList())
-
-        return jsonUserQueryService.findJSONUsersByKeyword(keyword ?: "",
+    fun getUsersByKeyword(@Validated keywordFilter: KeywordFilter): JSONUsers {
+        return jsonUserQueryService.findJSONUsersByKeyword(keywordFilter.keyword,
                                                            userSessionProvider.getUserSessionOrElseThrow())
     }
 
