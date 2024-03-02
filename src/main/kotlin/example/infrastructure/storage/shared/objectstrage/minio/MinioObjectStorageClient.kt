@@ -47,5 +47,5 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
         urls.forEach { remove(it) }
     }
 
-    private fun convertToObjectName(URL: URL): String = URL.path.substring(1)
+    private fun convertToObjectName(url: URL): String = url.path.substring(1)
 }
