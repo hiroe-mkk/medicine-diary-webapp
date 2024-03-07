@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: ${PROFILES:dev}
+    active: ${PROFILES:dev-container}
   servlet:
     multipart:
       maxFileSize: 512000 # アップロードを許可する1ファイルの最大バイト数 500KB

@@ -1,8 +1,9 @@
-# コンテナの jdk で起動する (18080) 場合
+# 開発環境用
+
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/medicine_diary
+    url: jdbc:mysql://${devEnv.servers.mysql.host}:${devEnv.servers.mysql.port}/medicine_diary
     username: root
     password: root
   security:
@@ -12,21 +13,21 @@ spring:
           github:
             clientId: ${GITHUB_CLIENT_ID}
             clientSecret: ${GITHUB_CLIENT_SECRET}
-            redirectUri: http://localhost:18080/login/oauth2/code/github
+            redirectUri: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}/login/oauth2/code/github
           line:
             clientId: ${LINE_CLIENT_ID}
             clientSecret: ${LINE_CLIENT_SECRET}
             provider: line
             scope: profile
             authorizationGrantType: authorization_code
-            redirectUri: http://localhost:18080/login/oauth2/code/line
+            redirectUri: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}/login/oauth2/code/line
           yahoo:
             clientId: ${YAHOO_CLIENT_ID}
             clientSecret: ${YAHOO_CLIENT_SECRET}
             provider: yahoo
             scope: openid
             authorizationGrantType: authorization_code
-            redirectUri: http://localhost:18080/login/oauth2/code/yahoo
+            redirectUri: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}/login/oauth2/code/yahoo
         provider:
           line:
             authorizationUri: https://access.line.me/oauth2/v2.1/authorize
@@ -38,8 +39,8 @@ spring:
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
   mail:
-    host: minio
-    port: 1025
+    host: ${devEnv.servers.minio.host}
+    port: ${devEnv.servers.minio.port}
     properties:
       mail:
         smtp:
@@ -72,26 +73,21 @@ logging:
   level:
     root: INFO
     org.springframework: WARN
-    org.springframework.web.servlet: INFO
-    org.springframework.jdbc.core.JdbcTemplate: DEBUG
-    org.springframework.jdbc.datasource.DataSourceTransactionManager: DEBUG
-    example: DEBUG
-    example.presentation.shared.logging.HttpSessionEventLoggingListener: DEBUG
-    example.presentation.shared.logging.TraceLoggingInterceptor: TRACE
-    example.presentation.shared.logging.ExceptionLoggingFilter: INFO
+    org.springframework.web: DEBUG
+    sql: DEBUG
+    example.configuration.logging.TraceLoggingInterceptor: TRACE
 
 minio:
   user: root
   password: root-password
-  endpoint: http://mailhog:9000
-  bucketName: medicine-diary
-
+  endpoint: http://${devEnv.servers.minio.host}:${devEnv.servers.minio.port}
+  bucketName: progress-management
 
 application:
   name: お薬日記
   endpoint:
-    web: http://localhost:18080
-    image: http://localhost:19000/medicine-diary
+    web: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}
+    image: http://${devEnv.servers.minio.host}:${devEnv.servers.minio.port}/medicine-diary
   emailAddress: application@example.co.jp
   admin:
     username: admin

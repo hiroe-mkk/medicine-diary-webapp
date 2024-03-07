@@ -6,7 +6,7 @@ import io.minio.*
 import org.springframework.context.annotation.*
 import org.springframework.stereotype.*
 
-@Profile("local", "dev")
+@Profile("dev-local", "dev-container")
 @Component
 class MinioObjectStorageClient(private val minioProperties: MinioProperties,
                                private val minioClient: MinioClient) : ObjectStorageClient {

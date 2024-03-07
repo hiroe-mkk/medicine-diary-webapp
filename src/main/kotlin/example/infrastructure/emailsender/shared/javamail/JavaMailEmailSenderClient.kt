@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.*
 import org.springframework.stereotype.*
 import java.nio.charset.*
 
-@Profile("local", "dev")
+@Profile("dev-local", "dev-container")
 @Component
 class JavaMailEmailSenderClient(private val applicationProperties: ApplicationProperties,
                                 private val javaMailSender: JavaMailSender) : EmailSenderClient {

@@ -4,7 +4,7 @@ import io.minio.*
 import org.springframework.boot.context.properties.*
 import org.springframework.context.annotation.*
 
-@Profile("local", "dev")
+@Profile("dev-local", "dev-container")
 @Configuration
 @EnableConfigurationProperties(MinioProperties::class)
 class MinioObjectStorageConfiguration(private val minioProperties: MinioProperties) {

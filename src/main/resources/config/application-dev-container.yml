@@ -1,0 +1,18 @@
+# Docker コンテナの JDK で起動する (18080) 場合
+
+spring:
+  config:
+    import: "application-dev.yml"
+
+
+devEnv:
+  servers:
+    app:
+      host: localhost
+      port: 18080
+    mysql:
+      host: mysql
+      port: 3306
+    minio:
+      host: minio
+      port: 9000

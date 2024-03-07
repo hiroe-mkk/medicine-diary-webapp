@@ -1,0 +1,18 @@
+# ローカルの JDK で起動する (8080) 場合
+
+spring:
+  config:
+    import: "application-dev.yml"
+
+
+devEnv:
+  servers:
+    app:
+      host: localhost
+      port: 8080
+    mysql:
+      host: localhost
+      port: 13306
+    minio:
+      host: localhost
+      port: 19000
