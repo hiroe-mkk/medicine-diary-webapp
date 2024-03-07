@@ -1,7 +1,7 @@
 package example.application.service.medicine
 
+import example.application.shared.exception.*
 import example.domain.model.medicine.*
-import example.domain.shared.exception.*
 
 /**
  * 薬が見つからなかったことを示す例外

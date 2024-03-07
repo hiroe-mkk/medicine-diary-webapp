@@ -1,7 +1,7 @@
 package example.application.service.medicationrecord
 
+import example.application.shared.exception.*
 import example.domain.model.medicationrecord.*
-import example.domain.shared.exception.*
 
 /**
  * 服用記録が見つからなかったことを示す例外

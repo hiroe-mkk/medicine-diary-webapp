@@ -1,5 +1,5 @@
+import example.application.shared.exception.*
 import example.domain.model.sharedgroup.*
-import example.domain.shared.exception.*
 
 /**
  * 共有グループが見つからなかったことを示す例外

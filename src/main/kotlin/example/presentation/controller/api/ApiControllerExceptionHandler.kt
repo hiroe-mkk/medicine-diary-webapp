@@ -1,5 +1,6 @@
 package example.presentation.controller.api
 
+import example.application.shared.exception.*
 import example.domain.shared.exception.*
 import example.presentation.shared.usersession.*
 import jakarta.servlet.http.*

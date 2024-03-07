@@ -1,7 +1,7 @@
 package example.application.service.account
 
+import example.application.shared.exception.*
 import example.domain.model.account.*
-import example.domain.shared.exception.*
 
 /**
  * アカウントが見つからなかったことを示す例外

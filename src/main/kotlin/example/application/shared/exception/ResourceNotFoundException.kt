@@ -1,5 +1,6 @@
-package example.domain.shared.exception
+package example.application.shared.exception
 
+import example.domain.shared.exception.*
 import example.domain.shared.message.*
 import example.domain.shared.type.*
 
