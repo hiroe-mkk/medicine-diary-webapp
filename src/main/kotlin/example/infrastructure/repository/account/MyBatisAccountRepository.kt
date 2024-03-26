@@ -25,7 +25,7 @@ class MyBatisAccountRepository(private val accountMapper: AccountMapper) : Accou
             "OAuth2" -> accountMapper.findOneOauth2CredentialByAccountId(accountResultEntity.accountId.value)
             else     -> null
         }
-        return result ?: throw AssertionFailException("クレデンシャルの取得に失敗しました。")
+        return result ?: throw AssertionFailException("Unsupported credentialType.")
     }
 
     override fun findByCredential(credential: Credential): Account? {
