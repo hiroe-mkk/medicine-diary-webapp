@@ -1,3 +1,5 @@
+package example.application.service.sharedgroup
+
 import example.application.shared.exception.*
 import example.domain.model.sharedgroup.*
 
