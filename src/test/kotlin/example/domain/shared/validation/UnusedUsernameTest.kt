@@ -16,9 +16,11 @@ import org.springframework.validation.*
 internal class UnusedUsernameTest(@Autowired private val validator: Validator,
                                   @Autowired private val testAccountInserter: TestAccountInserter) {
     @TestConfiguration
-    class Configuration(@Autowired private val profileRepository: ProfileRepository) {
+    class Configuration {
         @Bean
-        fun profileDomainService(): UsernameChangeValidationService = UsernameChangeValidationService(profileRepository)
+        fun profileDomainService(profileRepository: ProfileRepository): UsernameChangeValidationService {
+            return UsernameChangeValidationService(profileRepository)
+        }
     }
 
     @Test

@@ -18,20 +18,16 @@ import org.springframework.context.annotation.*
 @MyBatisRepositoryTest
 @Import(MyBatisQueryServiceTest.Configuration::class)
 annotation class MyBatisQueryServiceTest {
-    class Configuration(private val jsonMedicineOverviewsMapper: JsonMedicineOverviewsMapper,
-                        private val jsonMedicationRecordMapper: JSONMedicationRecordMapper,
-                        private val jsonSharedGroupMapper: JSONSharedGroupMapper,
-                        private val userMapper: UserMapper,
-                        private val jsonUserMapper: JSONUserMapper,
-                        private val medicineRepository: MedicineRepository,
-                        private val sharedGroupRepository: SharedGroupRepository) {
+    class Configuration {
         @Bean
-        fun medicineOverviewsQueryService(): JSONMedicineOverviewsQueryService {
+        fun medicineOverviewsQueryService(jsonMedicineOverviewsMapper: JsonMedicineOverviewsMapper): JSONMedicineOverviewsQueryService {
             return MyBatisJSONMedicineOverviewsQueryService(jsonMedicineOverviewsMapper)
         }
 
         @Bean
-        fun medicationRecordQueryService(): JSONMedicationRecordQueryService {
+        fun medicationRecordQueryService(jsonMedicationRecordMapper: JSONMedicationRecordMapper,
+                                         medicineRepository: MedicineRepository,
+                                         sharedGroupRepository: SharedGroupRepository): JSONMedicationRecordQueryService {
             val medicineQueryService = MedicineQueryService(medicineRepository, sharedGroupRepository)
             val sharedGroupQueryService = SharedGroupQueryService(sharedGroupRepository)
             return MyBatisJSONMedicationRecordQueryService(jsonMedicationRecordMapper,
@@ -40,13 +36,17 @@ annotation class MyBatisQueryServiceTest {
         }
 
         @Bean
-        fun sharedGroupQueryService(): JSONSharedGroupQueryService =
+        fun sharedGroupQueryService(jsonSharedGroupMapper: JSONSharedGroupMapper): JSONSharedGroupQueryService =
                 MyBatisJSONSharedGroupQueryService(jsonSharedGroupMapper)
 
         @Bean
-        fun userQueryService(): UserQueryService = MyBatisUserQueryService(userMapper)
+        fun userQueryService(userMapper: UserMapper): UserQueryService {
+            return MyBatisUserQueryService(userMapper)
+        }
 
         @Bean
-        fun jsonUserQueryService(): JSONUserQueryService = MyBatisJSONUserQueryService(jsonUserMapper)
+        fun jsonUserQueryService(jsonUserMapper: JSONUserMapper): JSONUserQueryService {
+            return MyBatisJSONUserQueryService(jsonUserMapper)
+        }
     }
 }

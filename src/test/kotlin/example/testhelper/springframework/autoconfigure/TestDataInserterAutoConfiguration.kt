@@ -13,22 +13,25 @@ import org.springframework.context.annotation.*
  * TestDataInserter の AutoConfiguration を有効にするアノテーション
  */
 @TestConfiguration
-class TestDataInserterAutoConfiguration(private val accountRepository: AccountRepository,
-                                        private val profileRepository: ProfileRepository,
-                                        private val medicineRepository: MedicineRepository,
-                                        private val medicationRecordRepository: MedicationRecordRepository,
-                                        private val sharedGroupRepository: SharedGroupRepository) {
+class TestDataInserterAutoConfiguration {
     @Bean
-    fun testAccountInserter(): TestAccountInserter = TestAccountInserter(accountRepository, profileRepository)
+    fun testAccountInserter(accountRepository: AccountRepository,
+                            profileRepository: ProfileRepository): TestAccountInserter {
+        return TestAccountInserter(accountRepository, profileRepository)
+    }
 
     @Bean
-    fun testMedicineInserter(): TestMedicineInserter = TestMedicineInserter(medicineRepository)
+    fun testMedicineInserter(medicineRepository: MedicineRepository): TestMedicineInserter {
+        return TestMedicineInserter(medicineRepository)
+    }
 
     @Bean
-    fun testMedicationRecordInserter(): TestMedicationRecordInserter {
+    fun testMedicationRecordInserter(medicationRecordRepository: MedicationRecordRepository): TestMedicationRecordInserter {
         return TestMedicationRecordInserter(medicationRecordRepository)
     }
 
     @Bean
-    fun testSharedGroupInserter(): TestSharedGroupInserter = TestSharedGroupInserter(sharedGroupRepository)
+    fun testSharedGroupInserter(sharedGroupRepository: SharedGroupRepository): TestSharedGroupInserter {
+        return TestSharedGroupInserter(sharedGroupRepository)
+    }
 }

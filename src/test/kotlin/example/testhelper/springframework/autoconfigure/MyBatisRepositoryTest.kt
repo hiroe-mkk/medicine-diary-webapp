@@ -21,26 +21,26 @@ import org.springframework.context.annotation.*
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 組み込みデータベースへの置き換えを無効化する
 @Import(MyBatisRepositoryTest.Configuration::class, TestDataInserterAutoConfiguration::class)
 annotation class MyBatisRepositoryTest {
-    class Configuration(private val accountMapper: AccountMapper,
-                        private val profileMapper: ProfileMapper,
-                        private val medicineMapper: MedicineMapper,
-                        private val medicationRecordMapper: MedicationRecordMapper,
-                        private val sharedGroupMapper: SharedGroupMapper) {
+    class Configuration {
         @Bean
-        fun accountRepository(): AccountRepository = MyBatisAccountRepository(accountMapper)
+        fun accountRepository(accountMapper: AccountMapper): AccountRepository = MyBatisAccountRepository(accountMapper)
 
         @Bean
-        fun profileRepository(): ProfileRepository = MyBatisProfileRepository(profileMapper)
+        fun profileRepository(profileMapper: ProfileMapper): ProfileRepository = MyBatisProfileRepository(profileMapper)
 
         @Bean
-        fun medicineRepository(): MedicineRepository = MyBatisMedicineRepository(medicineMapper)
+        fun medicineRepository(medicineMapper: MedicineMapper): MedicineRepository {
+            return MyBatisMedicineRepository(medicineMapper)
+        }
 
         @Bean
-        fun medicationRecordRepository(): MedicationRecordRepository {
+        fun medicationRecordRepository(medicationRecordMapper: MedicationRecordMapper): MedicationRecordRepository {
             return MyBatisMedicationRecordRepository(medicationRecordMapper)
         }
 
         @Bean
-        fun sharedGroupRepository(): SharedGroupRepository = MyBatisSharedGroupRepository(sharedGroupMapper)
+        fun sharedGroupRepository(sharedGroupMapper: SharedGroupMapper): SharedGroupRepository {
+            return MyBatisSharedGroupRepository(sharedGroupMapper)
+        }
     }
 }

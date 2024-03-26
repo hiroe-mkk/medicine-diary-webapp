@@ -12,14 +12,14 @@ import org.springframework.context.annotation.*
  */
 @Import(EnableObjectStorageAutoConfiguration.Configuration::class)
 annotation class EnableObjectStorageAutoConfiguration {
-    class Configuration(private val objectStorageClient: ObjectStorageClient) {
+    class Configuration {
         @Bean
-        fun medicineImageStorage(): MedicineImageStorage {
+        fun medicineImageStorage(objectStorageClient: ObjectStorageClient): MedicineImageStorage {
             return ObjectStorageMedicineImageStorage(objectStorageClient)
         }
 
         @Bean
-        fun profileImageStorage(): ProfileImageStorage {
+        fun profileImageStorage(objectStorageClient: ObjectStorageClient): ProfileImageStorage {
             return ObjectStorageProfileImageStorage(objectStorageClient)
         }
     }

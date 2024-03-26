@@ -8,9 +8,9 @@ import org.springframework.context.annotation.*
 @Profile("dev-local", "dev-container")
 @Configuration
 @EnableConfigurationProperties(MinioProperties::class)
-class DevConfiguration(private val minioProperties: MinioProperties) {
+class DevConfiguration {
     @Bean
-    fun minioClient(): MinioClient {
+    fun minioClient(minioProperties: MinioProperties): MinioClient {
         return MinioClient.builder()
             .endpoint(minioProperties.endpoint)
             .credentials(minioProperties.user, minioProperties.password)
