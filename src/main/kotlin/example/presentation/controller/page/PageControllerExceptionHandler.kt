@@ -43,7 +43,7 @@ class PageControllerExceptionHandler {
         return "error/messageNotificationError"
     }
 
-    @ExceptionHandler(UserSessionNotFoundException::class)
+    @ExceptionHandler(MissingUserSessionException::class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     fun handleUserSessionNotFoundException(httpServletRequest: HttpServletRequest,
                                            httpServletResponse: HttpServletResponse): String {

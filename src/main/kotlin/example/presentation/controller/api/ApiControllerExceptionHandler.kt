@@ -49,7 +49,7 @@ class ApiControllerExceptionHandler(private val bindErrorResponseFactory: BindEr
         return JSONErrorResponse.create(ex)
     }
 
-    @ExceptionHandler(UserSessionNotFoundException::class)
+    @ExceptionHandler(MissingUserSessionException::class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     @ResponseBody
     fun handleUserSessionNotFoundException(httpServletRequest: HttpServletRequest,
