@@ -77,11 +77,7 @@ logging:
     sql: DEBUG
     example.configuration.logging.TraceLoggingInterceptor: TRACE
 
-minio:
-  user: root
-  password: root-password
-  endpoint: http://${devEnv.servers.minio.host}:${devEnv.servers.minio.port}
-  bucketName: progress-management
+
 
 application:
   name: お薬日記
@@ -92,3 +88,11 @@ application:
   admin:
     username: admin
     password: password
+
+infrastructure:
+  storage:
+    minio:
+      user: root
+      password: root-password
+      endpoint: http://${devEnv.servers.minio.host}:${devEnv.servers.minio.port}
+      bucketName: progress-management
