@@ -3,7 +3,6 @@ package example.presentation.controller.page.medicationrecord
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.infrastructure.repository.shared.*
-import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -14,6 +13,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
 
 @ControllerTest
 internal class MedicationRecordAdditionControllerTest(@Autowired private val mockMvc: MockMvc,
@@ -82,10 +82,12 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
             //given:
             val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
+            mockMvc.perform(get("/medicines"))
+                .andExpect(status().isOk())
+                .andReturn()
 
             //when:
             val actions = mockMvc.perform(post(PATH)
-                                              .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine"))
                                               .with(csrf())
                                               .param("takenMedicine", medicine.id.value)
                                               .param("quantity", quantity.toString())
@@ -98,7 +100,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
 
             //then:
             actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/medicine"))
+                .andExpect(redirectedUrl("/medicines"))
         }
 
         @Test
@@ -132,10 +134,12 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         fun medicineNotFound_redirectToLastRequestedPage() {
             //given:
             val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
+            mockMvc.perform(get("/medicines"))
+                .andExpect(status().isOk())
+                .andReturn()
 
             //when:
             val actions = mockMvc.perform(post(PATH)
-                                              .sessionAttr("lastRequestedPagePath", LastRequestedPagePath("/medicine"))
                                               .with(csrf())
                                               .param("takenMedicine", nonexistentMedicineId.toString())
                                               .param("quantity", quantity.toString())
@@ -148,7 +152,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
 
             //then:
             actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/medicine"))
+                .andExpect(redirectedUrl("/medicines"))
         }
 
         @Test

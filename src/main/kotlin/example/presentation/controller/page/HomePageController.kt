@@ -2,6 +2,7 @@ package example.presentation.controller.page
 
 import example.application.service.profile.*
 import example.application.service.sharedgroup.*
+import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
@@ -9,10 +10,10 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = ["lastRequestedPagePath"])
 class HomePageController(private val profileService: ProfileService,
                          private val sharedGroupService: SharedGroupService,
-                         private val userSessionProvider: UserSessionProvider) {
+                         private val userSessionProvider: UserSessionProvider,
+                         private val lastRequestedPage: LastRequestedPage) {
     /**
      * ホーム画面を表示する
      */
@@ -25,7 +26,7 @@ class HomePageController(private val profileService: ProfileService,
                                sharedGroupService.isParticipatingInSharedGroup(userSession))
         }
 
-        model.addAttribute("lastRequestedPagePath", "/")
+        lastRequestedPage.path = "/"
         return "home"
     }
 }

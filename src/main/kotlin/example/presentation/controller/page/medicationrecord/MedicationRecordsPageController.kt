@@ -1,6 +1,7 @@
 package example.presentation.controller.page.medicationrecord
 
 import example.application.service.sharedgroup.*
+import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
@@ -8,9 +9,9 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/medication-records")
-@SessionAttributes(value = ["lastRequestedPagePath"])
 class MedicationRecordsPageController(private val sharedGroupService: SharedGroupService,
-                                      private val userSessionProvider: UserSessionProvider) {
+                                      private val userSessionProvider: UserSessionProvider,
+                                      private val lastRequestedPage: LastRequestedPage) {
     /**
      * 服用記録一覧画面を表示する
      */
@@ -19,7 +20,7 @@ class MedicationRecordsPageController(private val sharedGroupService: SharedGrou
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
 
-        model.addAttribute("lastRequestedPagePath", "/medication-records")
+        lastRequestedPage.path = "/medication-records"
         return "medicationrecord/list"
     }
 }

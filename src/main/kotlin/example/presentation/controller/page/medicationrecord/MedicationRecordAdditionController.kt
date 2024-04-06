@@ -15,9 +15,9 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/medication-records/add")
-@SessionAttributes(value = ["lastRequestedPagePath"])
 class MedicationRecordAdditionController(private val medicationRecordService: MedicationRecordService,
-                                         private val userSessionProvider: UserSessionProvider) {
+                                         private val userSessionProvider: UserSessionProvider,
+                                         private val lastRequestedPage: LastRequestedPage) {
     @ModelAttribute("conditionLevels")
     fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.values()
 
@@ -46,8 +46,7 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
     @PostMapping
     fun addMedicationRecord(@ModelAttribute("form") @Validated medicationRecordEditCommand: MedicationRecordEditCommand,
                             bindingResult: BindingResult,
-                            redirectAttributes: RedirectAttributes,
-                            lastRequestedPagePath: LastRequestedPagePath?): String {
+                            redirectAttributes: RedirectAttributes): String {
         if (bindingResult.hasErrors()) return "medicationrecord/form"
 
         try {
@@ -60,7 +59,6 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
                                                  ResultMessage.error("服用記録の追加に失敗しました。"))
         }
 
-        val redirectPath = lastRequestedPagePath?.value ?: "/"
-        return "redirect:$redirectPath"
+        return "redirect:${lastRequestedPage.path}"
     }
 }

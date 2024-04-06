@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/medicines/{medicineId}")
-@SessionAttributes(value = ["lastRequestedPagePath"])
 class MedicineDetailPageController(private val medicineService: MedicineService,
                                    private val sharedGroupService: SharedGroupService,
-                                   private val userSessionProvider: UserSessionProvider) {
+                                   private val userSessionProvider: UserSessionProvider,
+                                   private val lastRequestedPage: LastRequestedPage) {
     /**
      * 薬詳細画面を表示する
      */
     @GetMapping
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId,
-                                  model: Model,
-                                  lastRequestedPagePath: LastRequestedPagePath?): String {
+                                  model: Model): String {
         if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
@@ -31,7 +30,7 @@ class MedicineDetailPageController(private val medicineService: MedicineService,
                            sharedGroupService.isParticipatingInSharedGroup(userSession))
         model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
 
-        model.addAttribute("lastRequestedPagePath", "/medicines/${medicineId}")
+        lastRequestedPage.path = "/medicines/${medicineId}"
         return "medicine/detail"
     }
 }

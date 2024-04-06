@@ -2,6 +2,7 @@ package example.presentation.controller.page.medicine
 
 import example.application.query.medicine.*
 import example.application.service.sharedgroup.*
+import example.presentation.shared.session.*
 import example.presentation.shared.usersession.*
 import org.springframework.stereotype.*
 import org.springframework.ui.*
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/medicines")
-@SessionAttributes(value = ["lastRequestedPagePath"])
 class MedicineOverviewsPageController(private val sharedGroupService: SharedGroupService,
-                                      private val userSessionProvider: UserSessionProvider) {
+                                      private val userSessionProvider: UserSessionProvider,
+                                      private val lastRequestedPage: LastRequestedPage) {
     /**
      * 薬一覧画面を表示する
      */
@@ -22,7 +23,7 @@ class MedicineOverviewsPageController(private val sharedGroupService: SharedGrou
                            sharedGroupService.isParticipatingInSharedGroup(userSession))
         model.addAttribute("medicineFilter", medicineFilter)
 
-        model.addAttribute("lastRequestedPagePath", "/medicines")
+        lastRequestedPage.path = "/medicines"
         return "medicine/overviews"
     }
 }
