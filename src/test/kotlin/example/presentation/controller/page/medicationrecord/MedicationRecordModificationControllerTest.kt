@@ -54,6 +54,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
 
             //then:
             actions.andExpect(status().isNotFound)
+                .andExpect(view().name("error/notFoundError"))
         }
 
         @Test
@@ -130,7 +131,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("バリデーションエラーが発生した場合、薬登録画面を再表示する")
+        @DisplayName("バリデーションエラーが発生した場合、服用記録修正画面を再表示する")
         fun validationErrorOccurs_redisplayMedicationRecordModificationPage() {
             //given:
             val userSession = userSessionProvider.getUserSessionOrElseThrow()
@@ -180,11 +181,12 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
 
             //then:
             actions.andExpect(status().isNotFound)
+                .andExpect(view().name("error/notFoundError"))
         }
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("薬が見つからなかった場合、最後にリクエストされた画面にリダイレクトする")
+        @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicineNotFound_redirectToLastRequestedPage() {
             //given:
             val medicationRecordId = MedicationRecordId(EntityIdHelper.generate())
@@ -207,8 +209,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("onsetEffectAt", onsetEffectAt))
 
             //then:
-            actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/medicines"))
+            actions.andExpect(status().isNotFound)
+                .andExpect(view().name("error/notFoundError"))
         }
 
         @Test

@@ -1,7 +1,6 @@
 package example.presentation.controller.page.medicationrecord
 
 import example.application.service.medicationrecord.*
-import example.application.service.medicine.*
 import example.domain.model.medicationrecord.*
 import example.domain.shared.message.*
 import example.presentation.shared.session.*
@@ -49,15 +48,10 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
                             redirectAttributes: RedirectAttributes): String {
         if (bindingResult.hasErrors()) return "medicationrecord/form"
 
-        try {
-            medicationRecordService.addMedicationRecord(medicationRecordEditCommand,
-                                                        userSessionProvider.getUserSessionOrElseThrow())
-            redirectAttributes.addFlashAttribute("resultMessage",
-                                                 ResultMessage.info("服用記録の追加が完了しました。"))
-        } catch (ex: MedicineNotFoundException) {
-            redirectAttributes.addFlashAttribute("resultMessage",
-                                                 ResultMessage.error("服用記録の追加に失敗しました。"))
-        }
+        medicationRecordService.addMedicationRecord(medicationRecordEditCommand,
+                                                    userSessionProvider.getUserSessionOrElseThrow())
+        redirectAttributes.addFlashAttribute("resultMessage",
+                                             ResultMessage.info("服用記録の追加が完了しました。"))
 
         return "redirect:${lastRequestedPage.path}"
     }

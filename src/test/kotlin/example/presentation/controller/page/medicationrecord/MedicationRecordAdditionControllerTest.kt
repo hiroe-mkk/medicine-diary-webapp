@@ -130,7 +130,7 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("薬が見つからなかった場合、最後にリクエストされた画面にリダイレクトする")
+        @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicineNotFound_redirectToLastRequestedPage() {
             //given:
             val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
@@ -151,8 +151,8 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
                                               .param("symptomOnsetAt", symptomOnsetAt))
 
             //then:
-            actions.andExpect(status().isFound)
-                .andExpect(redirectedUrl("/medicines"))
+            actions.andExpect(status().isNotFound)
+                .andExpect(view().name("error/notFoundError"))
         }
 
         @Test
