@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@8.2.1
+  aws-ecr: circleci/aws-ecr@9.1.0
   aws-ecs: circleci/aws-ecs@3.2.0
 
 jobs:
@@ -15,50 +15,34 @@ jobs:
           command: |
             docker compose up --build -d
             docker compose exec -T app bash -c "chmod +x ./gradlew && ./gradlew test --info"
-  build-app:
+
+  build-and-push-image:
     docker:
       - image: cimg/openjdk:17.0.8
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           command: |
             chmod +x ./gradlew
-            ./gradlew bootJar
-      - persist_to_workspace:
-          root: ~/repo
-          paths:
-            - .
-  build-and-push-image:
-    docker:
-      - image: cimg/base:2023.09
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - attach_workspace:
-          at: ~/repo
-      - aws-ecr/build-and-push-image:
+            ./gradlew bootBuildImage --imageName=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${AWS_RESOURCE_NAME_PREFIX}:${CIRCLE_SHA1}
+      - aws-ecr/ecr_login:
+          region: "${AWS_REGION}"
+      - aws-ecr/push_image:
+          region: "${AWS_REGION}"
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
-          no-output-timeout: 20m
-          path: ~/repo
-          build-path: ~/repo
 
 workflows:
   version: 2.1
   test-build:
     jobs:
       - test-app
-      - build-app:
-          requires:
-            - test-app
-          filters:
-            branches:
-              only:
-                - main
       - build-and-push-image:
           requires:
-            - build-app
+            - test-app
           filters:
             branches:
               only:
