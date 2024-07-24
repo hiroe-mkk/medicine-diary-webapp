@@ -29,7 +29,12 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
             append("${contactForm.content}\n")
             append("--------------------------------------------------")
         }
-        emailSenderClient.send(Email(header, body))
+
+        try {
+            emailSenderClient.send(Email(header, body))
+        } catch (exception: EmailSendException) {
+            throw ContactFailedException(contactForm, exception);
+        }
     }
 
     private fun sendToClient(contactForm: ContactForm) {
@@ -60,6 +65,11 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
             append("■ 配信：${applicationProperties.name}\n")
             append(applicationProperties.endpoint.web)
         }
-        emailSenderClient.send(Email(header, body))
+
+        try {
+            emailSenderClient.send(Email(header, body))
+        } catch (exception: EmailSendException) {
+            throw ContactFailedException(contactForm, exception);
+        }
     }
 }
