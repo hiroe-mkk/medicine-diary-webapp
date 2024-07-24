@@ -84,7 +84,10 @@ application:
   endpoint:
     web: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}
     image: http://${devEnv.servers.minio.host}:${devEnv.servers.minio.port}/medicine-diary
-  emailAddress: application@example.co.jp
+  emailAddress:
+    contact:
+      sender: application@example.co.jp
+      handler: contact-handler@example.co.jp
   admin:
     username: admin
     password: password

@@ -9,15 +9,14 @@ import org.springframework.stereotype.*
 
 @Profile("prod")
 @Component
-class SesEmailSenderClient(private val sesProperties: SesProperties,
-                           private val amazonSimpleEmailService: AmazonSimpleEmailService) : EmailSenderClient {
+class SesEmailSenderClient(private val amazonSimpleEmailService: AmazonSimpleEmailService) : EmailSenderClient {
     override fun send(email: Email) {
         val request: SendEmailRequest = SendEmailRequest()
-            .withDestination(Destination().withToAddresses(email.header.to.toString()))
+            .withDestination(Destination().withToAddresses(email.header.to))
             .withMessage(Message()
                              .withBody(Body().withText(Content().withCharset("UTF-8").withData(email.body)))
                              .withSubject(Content().withCharset("UTF-8").withData(email.header.subject)))
-            .withSource(sesProperties.address)
+            .withSource(email.header.from)
         amazonSimpleEmailService.sendEmail(request)
     }
 }

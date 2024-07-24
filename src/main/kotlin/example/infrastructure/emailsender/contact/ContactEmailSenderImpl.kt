@@ -1,7 +1,6 @@
 package example.infrastructure.emailsender.contact
 
 import example.domain.model.contact.*
-import example.domain.shared.type.*
 import example.infrastructure.emailsender.shared.*
 import example.infrastructure.shared.*
 import org.springframework.stereotype.*
@@ -15,7 +14,9 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
     }
 
     private fun sendToAdmin(contactForm: ContactForm) {
-        val header = Email.Header(EmailAddress(applicationProperties.emailAddress), "お問い合わせを受け付けました")
+        val header = Email.Header(applicationProperties.emailAddress.contact.sender,
+                                  applicationProperties.emailAddress.contact.handler,
+                                  "お問い合わせを受け付けました")
         val body = buildString {
             append("下記の通りお問い合わせを受け付けましたので、対応をお願いします。\n\n\n")
 
@@ -32,7 +33,8 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
     }
 
     private fun sendToClient(contactForm: ContactForm) {
-        val header = Email.Header(contactForm.emailAddress,
+        val header = Email.Header(applicationProperties.emailAddress.contact.sender,
+                                  contactForm.emailAddress.toString(),
                                   "【${applicationProperties.name}】 お問い合わせ受け付け完了のお知らせ")
         val body = buildString {
             append("この度は、お問い合わせいただき、誠にありがとうございます。\n")
