@@ -31,10 +31,9 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
     }
 
     private fun sendToClient(contactForm: ContactForm) {
-        val header = Email.Header(contactForm.emailAddress, "【${applicationProperties.name}】")
+        val header = Email.Header(contactForm.emailAddress,
+                                  "【${applicationProperties.name}】 お問い合わせ受け付け完了のお知らせ")
         val body = buildString {
-            append("お問い合わせ受け付け完了のお知らせ\n\n\n\n")
-
             append("この度は、お問い合わせいただき、誠にありがとうございます。\n")
             append("下記の通りお問い合わせを受け付けました。\n\n")
 
