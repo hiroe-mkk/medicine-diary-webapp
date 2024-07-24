@@ -16,3 +16,6 @@ devEnv:
     minio:
       host: localhost
       port: 19000
+    mailhog:
+      host: localhost
+      port: 11025

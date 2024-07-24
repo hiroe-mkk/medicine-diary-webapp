@@ -39,8 +39,8 @@ spring:
             tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
             jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
   mail:
-    host: ${devEnv.servers.minio.host}
-    port: ${devEnv.servers.minio.port}
+    host: ${devEnv.servers.mailhog.host}
+    port: ${devEnv.servers.mailhog.port}
     properties:
       mail:
         smtp:

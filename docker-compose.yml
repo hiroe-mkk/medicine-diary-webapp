@@ -41,6 +41,7 @@ services:
       exit 0;"
   mailhog:
     image: mailhog/mailhog:v1.0.1
+    container_name: mailhog-medicine-diary
     ports:
       - '11025:1025'
       - '18025:8025' # 管理ダッシュボード用

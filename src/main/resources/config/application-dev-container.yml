@@ -16,3 +16,6 @@ devEnv:
     minio:
       host: minio
       port: 9000
+    mailhog:
+      host: mailhog
+      port: 1025
