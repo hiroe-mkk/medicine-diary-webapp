@@ -7,7 +7,7 @@ import org.springframework.context.annotation.*
 
 @Profile("dev-local", "dev-container")
 @Configuration
-@EnableConfigurationProperties(MinioProperties::class)
+@EnableConfigurationProperties(MinioProperties::class, ApplicationProperties::class)
 class DevConfiguration {
     @Bean
     fun minioClient(minioProperties: MinioProperties): MinioClient {

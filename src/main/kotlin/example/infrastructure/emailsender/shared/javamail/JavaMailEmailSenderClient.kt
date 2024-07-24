@@ -1,6 +1,7 @@
 package example.infrastructure.emailsender.shared.javamail
 
 import example.infrastructure.emailsender.shared.*
+import example.infrastructure.shared.*
 import org.springframework.context.annotation.*
 import org.springframework.mail.javamail.*
 import org.springframework.stereotype.*

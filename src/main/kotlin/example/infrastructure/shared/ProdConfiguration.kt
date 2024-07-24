@@ -9,7 +9,7 @@ import org.springframework.context.annotation.*
 
 @Profile("prod")
 @Configuration
-@EnableConfigurationProperties(S3Properties::class, SesProperties::class)
+@EnableConfigurationProperties(S3Properties::class, SesProperties::class, ApplicationProperties::class)
 class ProdConfiguration {
     @Bean
     fun amazonS3(): AmazonS3 = AmazonS3ClientBuilder.defaultClient()

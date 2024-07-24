@@ -1,4 +1,4 @@
-package example.infrastructure.emailsender.shared
+package example.infrastructure.shared
 
 import org.springframework.boot.context.properties.*
 

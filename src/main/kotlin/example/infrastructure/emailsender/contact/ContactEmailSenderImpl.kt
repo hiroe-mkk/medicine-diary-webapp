@@ -3,6 +3,7 @@ package example.infrastructure.emailsender.contact
 import example.domain.model.contact.*
 import example.domain.shared.type.*
 import example.infrastructure.emailsender.shared.*
+import example.infrastructure.shared.*
 import org.springframework.stereotype.*
 
 @Component
