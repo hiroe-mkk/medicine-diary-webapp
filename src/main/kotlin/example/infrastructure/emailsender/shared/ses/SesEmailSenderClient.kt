@@ -10,8 +10,8 @@ import org.springframework.stereotype.*
 
 @Profile("prod")
 @Component
-class SesEmailSenderClient(private val amazonSimpleEmailService: AmazonSimpleEmailService) : EmailSenderClient {
-    private val logger = LoggerFactory.getLogger(SesEmailSenderClient::class.java)
+class SESEmailSenderClient(private val amazonSimpleEmailService: AmazonSimpleEmailService) : EmailSenderClient {
+    private val logger = LoggerFactory.getLogger(SESEmailSenderClient::class.java)
 
     override fun send(email: Email) {
 
