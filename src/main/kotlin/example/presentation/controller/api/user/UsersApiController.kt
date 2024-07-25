@@ -2,7 +2,6 @@ package example.presentation.controller.api.user
 
 import example.application.query.user.*
 import example.presentation.shared.usersession.*
-import jakarta.validation.constraints.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.validation.annotation.*

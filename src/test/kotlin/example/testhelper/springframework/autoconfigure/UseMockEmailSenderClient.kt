@@ -1,6 +1,6 @@
 package example.testhelper.springframework.autoconfigure
 
-import example.infrastructure.emailsender.shared.*
+import example.infrastructure.email.shared.*
 import io.mockk.*
 import org.springframework.context.annotation.*
 

@@ -36,7 +36,7 @@ annotation class MyBatisQueryServiceTest {
         }
 
         @Bean
-        fun sharedGroupQueryService(jsonSharedGroupMapper: JSONSharedGroupMapper): JSONSharedGroupQueryService =
+        fun sharedGroupQueryService(jsonSharedGroupMapper: example.infrastructure.db.query.sharedgroup.JSONSharedGroupMapper): JSONSharedGroupQueryService =
                 MyBatisJSONSharedGroupQueryService(jsonSharedGroupMapper)
 
         @Bean

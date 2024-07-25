@@ -1,6 +1,6 @@
 package example.infrastructure.shared
 
-import example.infrastructure.storage.shared.objectstrage.minio.MinioProperties
+import example.infrastructure.objectstorage.shared.minio.MinioProperties
 import io.minio.*
 import org.springframework.boot.context.properties.*
 import org.springframework.context.annotation.*
