@@ -2,7 +2,7 @@ package example.testhelper.factory
 
 import example.application.service.medicationrecord.*
 import example.domain.model.medicationrecord.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import java.time.*
 
 object TestMedicationRecordFactory {

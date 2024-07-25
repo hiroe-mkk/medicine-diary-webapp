@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="example.infrastructure.repository.medicine.MedicineMapper">
+<mapper namespace="example.infrastructure.db.repository.medicine.MedicineMapper">
     <select id="findOneByMedicineId" resultMap="MedicineResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
@@ -209,7 +209,7 @@
         LEFT OUTER JOIN timing_options USING(medicine_id)
     </sql>
 
-    <resultMap id="MedicineResultEntityResultMap" type="example.infrastructure.repository.medicine.MedicineResultEntity">
+    <resultMap id="MedicineResultEntityResultMap" type="example.infrastructure.db.repository.medicine.MedicineResultEntity">
         <constructor>
             <idArg column="medicine_id" javaType="MedicineId" resultMap="MedicineIdResultMap"/>
             <arg column="{account_id, shared_group_id}" javaType="MedicineOwner" resultMap="MedicineOwnerResultMap"/>
@@ -226,9 +226,9 @@
         </constructor>
         <id column="medicine_id"/>
         <collection column="{timing_option_ordering, timing_option}" property="timingOptionsForMapping"
-                    ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="TimingOptionOrderedEntityResultMap"/>
+                    ofType="example.infrastructure.db.repository.shared.OrderedEntity" resultMap="TimingOptionOrderedEntityResultMap"/>
         <collection column="{effect_ordering, effect}" property="effectsForMapping"
-                    ofType="example.infrastructure.repository.shared.OrderedEntity" resultMap="EffectOrderedEntityResultMap"/>
+                    ofType="example.infrastructure.db.repository.shared.OrderedEntity" resultMap="EffectOrderedEntityResultMap"/>
     </resultMap>
     <resultMap id="MedicineIdResultMap" type="MedicineId">
         <constructor>
@@ -276,13 +276,13 @@
             <idArg column="unused_package" javaType="_int"/>
         </constructor>
     </resultMap>
-    <resultMap id="TimingOptionOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">
+    <resultMap id="TimingOptionOrderedEntityResultMap" type="example.infrastructure.db.repository.shared.OrderedEntity">
         <constructor>
             <idArg column="timing_option_ordering" javaType="_int"/>
             <arg column="timing_option" resultMap="TimingResultMap"/>
         </constructor>
     </resultMap>
-    <resultMap id="EffectOrderedEntityResultMap" type="example.infrastructure.repository.shared.OrderedEntity">
+    <resultMap id="EffectOrderedEntityResultMap" type="example.infrastructure.db.repository.shared.OrderedEntity">
         <constructor>
             <idArg column="effect_ordering" javaType="_int"/>
             <arg column="effect" resultMap="EffectResultMap"/>

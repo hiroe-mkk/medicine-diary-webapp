@@ -10,7 +10,7 @@ internal class OrderedEntitiesConverterTest {
         val source = listOf("a", "b", "c", "d", "e")
 
         //when:
-        val actual = example.infrastructure.db.repository.shared.OrderedEntitiesConverter.convert(source)
+        val actual = OrderedEntitiesConverter.convert(source)
 
         //then:
         val expected = arrayOf(OrderedEntity(0, "a"),
@@ -31,7 +31,7 @@ internal class OrderedEntitiesConverterTest {
                                     OrderedEntity(4, "e"))
 
         //when:
-        val actual = example.infrastructure.db.repository.shared.OrderedEntitiesConverter.restore(orderedEntities)
+        val actual = OrderedEntitiesConverter.restore(orderedEntities)
 
         //then:
         val expected = arrayOf("a", "b", "c", "d", "e")

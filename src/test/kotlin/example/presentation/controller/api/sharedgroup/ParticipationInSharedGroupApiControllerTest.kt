@@ -2,7 +2,7 @@ package example.presentation.controller.api.sharedgroup
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

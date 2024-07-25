@@ -2,7 +2,7 @@ package example.testhelper.inserter
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import org.springframework.boot.test.context.*
 
 @TestComponent

@@ -4,7 +4,7 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

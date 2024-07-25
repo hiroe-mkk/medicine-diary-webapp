@@ -3,7 +3,7 @@ package example.infrastructure.db.repository.medicationrecord
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import org.springframework.stereotype.*
 
 @Component

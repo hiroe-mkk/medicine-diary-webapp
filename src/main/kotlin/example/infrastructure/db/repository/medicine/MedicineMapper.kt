@@ -1,7 +1,7 @@
 package example.infrastructure.db.repository.medicine
 
 import example.domain.model.medicine.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import org.apache.ibatis.annotations.*
 import java.time.*
 

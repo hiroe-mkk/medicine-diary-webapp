@@ -2,7 +2,7 @@ package example.domain.model.medicine
 
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.testhelper.factory.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*

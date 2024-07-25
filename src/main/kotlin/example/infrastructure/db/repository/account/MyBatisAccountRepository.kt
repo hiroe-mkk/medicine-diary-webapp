@@ -2,7 +2,7 @@ package example.infrastructure.db.repository.account
 
 import example.domain.model.account.*
 import example.domain.shared.exception.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import org.springframework.stereotype.*
 
 @Repository

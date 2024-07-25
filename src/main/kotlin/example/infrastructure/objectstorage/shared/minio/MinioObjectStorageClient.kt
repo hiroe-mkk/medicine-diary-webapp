@@ -3,6 +3,7 @@ package example.infrastructure.objectstorage.shared.minio
 import example.domain.shared.type.*
 import example.infrastructure.objectstorage.shared.*
 import io.minio.*
+import io.minio.messages.*
 import org.springframework.context.annotation.*
 import org.springframework.stereotype.*
 
@@ -44,7 +45,13 @@ class MinioObjectStorageClient(private val minioProperties: MinioProperties,
     }
 
     override fun removeAll(urls: Collection<URL>) {
-        urls.forEach { remove(it) }
+        val deleteObjects = urls
+            .map { DeleteObject(convertToObjectName(it)) }
+            .toList()
+        minioClient.removeObjects(RemoveObjectsArgs.builder()
+                                      .bucket(minioProperties.bucketName)
+                                      .objects(deleteObjects)
+                                      .build())
     }
 
     private fun convertToObjectName(url: URL): String = url.path.substring(1)

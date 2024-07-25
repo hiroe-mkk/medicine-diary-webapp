@@ -2,7 +2,7 @@ package example.infrastructure.db.repository.medicine
 
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import java.time.*
 
 class MedicineResultEntity(val medicineId: MedicineId,
@@ -21,11 +21,12 @@ class MedicineResultEntity(val medicineId: MedicineId,
         get() = DosageAndAdministration(dose,
                                         doseUnit,
                                         timesPerDay,
-                                        example.infrastructure.db.repository.shared.OrderedEntitiesConverter.restore(timingOptionsForMapping))
+                                        OrderedEntitiesConverter.restore(
+                                                timingOptionsForMapping))
 
     private lateinit var effectsForMapping: List<OrderedEntity<String>>
     val effects: Effects
-        get() = Effects(example.infrastructure.db.repository.shared.OrderedEntitiesConverter.restore(effectsForMapping))
+        get() = Effects(OrderedEntitiesConverter.restore(effectsForMapping))
 
     fun toMedicine(): Medicine {
         return Medicine(medicineId,

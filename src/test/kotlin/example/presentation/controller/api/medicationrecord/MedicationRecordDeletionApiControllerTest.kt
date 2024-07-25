@@ -2,7 +2,7 @@ package example.presentation.controller.api.medicationrecord
 
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

@@ -3,7 +3,7 @@ package example.infrastructure.db.repository.medicine
 import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import org.springframework.stereotype.*
 
 @Repository
@@ -69,7 +69,8 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         if (timingOptions.isEmpty()) return
 
         medicineMapper.insertAllTimingOptions(medicine.id.value,
-                                              example.infrastructure.db.repository.shared.OrderedEntitiesConverter.convert(timingOptions))
+                                              OrderedEntitiesConverter.convert(
+                                                      timingOptions))
     }
 
     private fun upsertAllEffects(medicine: Medicine) {
@@ -78,7 +79,8 @@ class MyBatisMedicineRepository(private val medicineMapper: MedicineMapper) : Me
         if (effects.isEmpty()) return
 
         medicineMapper.insertAllEffects(medicine.id.value,
-                                        example.infrastructure.db.repository.shared.OrderedEntitiesConverter.convert(effects))
+                                        OrderedEntitiesConverter.convert(
+                                                effects))
     }
 
     override fun deleteById(medicineId: MedicineId) {
