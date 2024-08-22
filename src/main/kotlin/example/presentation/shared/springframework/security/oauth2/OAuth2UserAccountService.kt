@@ -10,14 +10,11 @@ import org.springframework.stereotype.*
 class OAuth2UserAccountService(private val accountService: AccountService) : DefaultOAuth2UserService() {
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val oauth2User = super.loadUser(userRequest)
-        val credential = OAuth2Credential(extractIdP(userRequest), extractSubject(oauth2User))
-        val account = accountService.findOrElseCreateAccount(credential)
+
+        val idP = IdP.from(userRequest.clientRegistration.registrationId)
+        val oAuth2Credential = OAuth2Credential(idP, oauth2User.name)
+        val account = accountService.findOrElseCreateAccount(oAuth2Credential)
+
         return OAuth2UserAccount(account.id, oauth2User)
-    }
-
-    private fun extractSubject(oAuth2User: OAuth2User): String = oAuth2User.attributes["id"].toString()
-
-    private fun extractIdP(userRequest: OAuth2UserRequest): IdP {
-        return IdP.from(userRequest.clientRegistration.registrationId)
     }
 }
