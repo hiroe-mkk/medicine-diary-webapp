@@ -45,6 +45,17 @@ services:
     ports:
       - '11025:1025'
       - '18025:8025' # 管理ダッシュボード用
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    container_name: keycloak-medicine-diary
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - '28080:8080' # 管理ダッシュボード用
+    volumes:
+      - ./docker/keycloak/data/import:/opt/keycloak/data/import
+    command: start-dev  --import-realm # 開発モードで起動
   app:
     image: openjdk:17-jdk-slim-bullseye
     container_name: app-medicine-diary
@@ -52,6 +63,7 @@ services:
       - mysql
       - minio
       - mailhog
+      - keycloak
     ports:
       - '18080:8080'
     tty: true

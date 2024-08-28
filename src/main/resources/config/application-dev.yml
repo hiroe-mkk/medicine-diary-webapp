@@ -11,33 +11,42 @@ spring:
       client:
         registration:
           github:
-            clientId: ${GITHUB_CLIENT_ID}
-            clientSecret: ${GITHUB_CLIENT_SECRET}
+            clientId: medicine-diary
+            clientSecret: I3kFhXGHEKZXU6us66PpKb0ENOX8oNdA
+            provider: github
+            scope: openid,profile,email  # 実際には user
+            authorizationGrantType: authorization_code
             redirectUri: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}/login/oauth2/code/github
           line:
-            clientId: ${LINE_CLIENT_ID}
-            clientSecret: ${LINE_CLIENT_SECRET}
+            clientId: medicine-diary
+            clientSecret: qBHk3VCgCevdPcqJO53tMOgJTnYhIydh
             provider: line
-            scope: profile
+            scope: openid # 実際には profile
             authorizationGrantType: authorization_code
             redirectUri: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}/login/oauth2/code/line
           yahoo:
-            clientId: ${YAHOO_CLIENT_ID}
-            clientSecret: ${YAHOO_CLIENT_SECRET}
+            clientId: medicine-diary
+            clientSecret: MhHrygJIsxdrIsBPCrIHbXXzwa25IUt4
             provider: yahoo
             scope: openid
             authorizationGrantType: authorization_code
             redirectUri: http://${devEnv.servers.app.host}:${devEnv.servers.app.port}/login/oauth2/code/yahoo
         provider:
+          github:
+            authorizationUri: http://${devEnv.servers.keycloak.authorizationUri.hostPort}/realms/mock-github/protocol/openid-connect/auth
+            tokenUri: http://${devEnv.servers.keycloak.tokenUri.hostPort}/realms/mock-github/protocol/openid-connect/token
+            jwkSetUri: http://${devEnv.servers.keycloak.jwkSetUri.hostPort}/realms/mock-github/protocol/openid-connect/certs
+            # 以下はデフォルト値を変更するために必要
+            userInfoUri: http://${devEnv.servers.keycloak.userInfoUri.hostPort}/realms/mock-github/protocol/openid-connect/userinfo
+            userNameAttribute: sub
           line:
-            authorizationUri: https://access.line.me/oauth2/v2.1/authorize
-            tokenUri: https://api.line.me/oauth2/v2.1/token
-            userInfoUri: https://api.line.me/v2/profile
-            userNameAttribute: userId
+            authorizationUri: http://${devEnv.servers.keycloak.authorizationUri.hostPort}/realms/mock-line/protocol/openid-connect/auth
+            tokenUri: http://${devEnv.servers.keycloak.tokenUri.hostPort}/realms/mock-line/protocol/openid-connect/token
+            jwkSetUri: http://${devEnv.servers.keycloak.jwkSetUri.hostPort}/realms/mock-line/protocol/openid-connect/certs
           yahoo:
-            authorizationUri: https://auth.login.yahoo.co.jp/yconnect/v2/authorization
-            tokenUri: https://auth.login.yahoo.co.jp/yconnect/v2/token
-            jwkSetUri: https://auth.login.yahoo.co.jp/yconnect/v2/jwks
+            authorizationUri: http://${devEnv.servers.keycloak.authorizationUri.hostPort}/realms/mock-yahoo/protocol/openid-connect/auth
+            tokenUri: http://${devEnv.servers.keycloak.tokenUri.hostPort}/realms/mock-yahoo/protocol/openid-connect/token
+            jwkSetUri: http://${devEnv.servers.keycloak.jwkSetUri.hostPort}/realms/mock-yahoo/protocol/openid-connect/certs
   mail:
     host: ${devEnv.servers.mailhog.host}
     port: ${devEnv.servers.mailhog.port}
