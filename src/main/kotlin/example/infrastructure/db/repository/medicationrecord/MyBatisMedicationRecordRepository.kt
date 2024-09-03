@@ -21,16 +21,16 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
         return medicationRecordMapper.findOneByMedicationRecordId(medicationRecordId.value)
     }
 
-    override fun findByTakenMedicine(takenMedicine: MedicineId): Set<MedicationRecord> {
-        return medicationRecordMapper.findAllByMedicineId(takenMedicine.value)
+    override fun findByTakenMedicine(medicineId: MedicineId): Set<MedicationRecord> {
+        return medicationRecordMapper.findAllByMedicineId(medicineId.value)
     }
 
-    override fun findByTakenMedicineAndRecorder(takenMedicine: MedicineId, recorder: AccountId): Set<MedicationRecord> {
-        return medicationRecordMapper.findAllByMedicineIdAndAccountId(takenMedicine.value, recorder.value)
+    override fun findByTakenMedicineAndRecorder(medicineId: MedicineId, recorder: AccountId): Set<MedicationRecord> {
+        return medicationRecordMapper.findAllByMedicineIdAndAccountId(medicineId.value, recorder.value)
     }
 
     override fun save(medicationRecord: MedicationRecord) {
-        medicationRecordMapper.upsert(example.infrastructure.db.repository.medicationrecord.MedicationRecordSaveEntity(
+        medicationRecordMapper.upsert(MedicationRecordSaveEntity(
                 medicationRecord.id.value,
                 medicationRecord.recorder.value,
                 medicationRecord.takenMedicine.value,
@@ -48,7 +48,7 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
     override fun saveAll(medicationRecords: Collection<MedicationRecord>) {
         if (medicationRecords.isEmpty()) return
         medicationRecordMapper.upsertAll(medicationRecords.map {
-            example.infrastructure.db.repository.medicationrecord.MedicationRecordSaveEntity(it.id.value,
+            MedicationRecordSaveEntity(it.id.value,
                                                                                              it.recorder.value,
                                                                                              it.takenMedicine.value,
                                                                                              it.dose.quantity,

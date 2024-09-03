@@ -13,8 +13,7 @@ object PathMatcher { // TODO: より分かりやすいクラス名がないか�
     }
 
     private fun isPathMatch(path: String, pathPattern: String): Boolean {
-        val pathPattern = PathPatternParser().parse(pathPattern)
         val pathContainer = PathContainer.parsePath(path)
-        return pathPattern.matches(pathContainer)
+        return PathPatternParser().parse(pathPattern).matches(pathContainer)
     }
 }

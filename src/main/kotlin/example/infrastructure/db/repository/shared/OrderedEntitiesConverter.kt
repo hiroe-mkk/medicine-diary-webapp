@@ -1,8 +1,8 @@
 package example.infrastructure.db.repository.shared
 
 object OrderedEntitiesConverter {
-    fun <E> convert(source: List<E>): Collection<OrderedEntity<E>> {
-        return source.mapIndexed { index, source -> OrderedEntity(index, source) }
+    fun <E> convert(sources: List<E>): Collection<OrderedEntity<E>> {
+        return sources.mapIndexed { index, source -> OrderedEntity(index, source) }
     }
 
     fun <E> restore(orderingEntities: Collection<OrderedEntity<E>>): List<E> {
