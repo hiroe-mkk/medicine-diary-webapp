@@ -3,7 +3,7 @@ package example.testhelper.factory
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.account.profile.profileimage.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 
 object TestAccountFactory {
     fun create(id: AccountId = AccountId(EntityIdHelper.generate()),

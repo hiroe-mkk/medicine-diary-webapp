@@ -1,12 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.*
+import org.springframework.boot.gradle.tasks.bundling.*
 import org.springframework.boot.gradle.tasks.run.*
 
 plugins {
-    id("org.springframework.boot") version "3.1.3"
-    id("io.spring.dependency-management") version "1.1.3"
+    kotlin("jvm") version "1.9.25"
+    kotlin("plugin.spring") version "1.9.25"
+    id("org.springframework.boot") version "3.3.3"
+    id("io.spring.dependency-management") version "1.1.6"
     id("org.flywaydb.flyway") version "9.21.0"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
 }
 
 java {
@@ -22,10 +23,6 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.529"))
-}
-
-dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
@@ -37,7 +34,7 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 
     // AWS
-    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.529"))
+    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.770"))
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("com.amazonaws:aws-java-sdk-ses")
 
@@ -50,17 +47,17 @@ dependencies {
     // データベース
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
-    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2")
-    implementation("io.minio:minio:8.5.4")
+    implementation("io.minio:minio:8.5.12")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
+    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
 
     // バリデータ
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // テンプレートエンジン
-    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1")
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     // メール
@@ -85,4 +82,8 @@ tasks.withType<BootRun> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<BootBuildImage> {
+    imageName.set("medicine-diary-prod")
 }

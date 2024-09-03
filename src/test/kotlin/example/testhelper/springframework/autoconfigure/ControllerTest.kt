@@ -1,15 +1,12 @@
 package example.testhelper.springframework.autoconfigure
 
-import example.presentation.shared.session.*
 import org.springframework.beans.factory.config.*
 import org.springframework.boot.test.autoconfigure.jdbc.*
 import org.springframework.boot.test.autoconfigure.web.servlet.*
 import org.springframework.boot.test.context.*
 import org.springframework.context.annotation.*
-import org.springframework.context.annotation.Scope
 import org.springframework.context.support.*
 import org.springframework.transaction.annotation.*
-import org.springframework.web.context.*
 
 /**
  * Controller クラスをテストする場合に利用可能なアノテーション

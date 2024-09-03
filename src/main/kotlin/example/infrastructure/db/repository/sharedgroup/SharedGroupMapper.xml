@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.db.repository.sharedgroup.SharedGroupMapper">
+    <select id="findOneBySharedGroupId" resultMap="SharedGroupResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            members
+            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+        WHERE
+            members.shared_group_id = #{sharedGroupId};
+    </select>
+
+    <select id="findOneByMember" resultMap="SharedGroupResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            members
+            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+        WHERE
+            members.shared_group_id IN(
+             SELECT shared_group_id
+             FROM members
+             WHERE members.member = #{accountId}
+            );
+    </select>
+
+    <select id="findAllByInvitee" resultMap="SharedGroupResultEntityResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            members
+            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+        WHERE
+            invitees.shared_group_id IN(
+             SELECT shared_group_id
+             FROM invitees
+             WHERE invitees.invitee = #{accountId}
+            );
+    </select>
+
+    <insert id="insertAllMembers">
+        INSERT INTO members(
+            shared_group_id,
+            member
+        )VALUES
+            <foreach collection="members" item="item" separator=",">
+                (#{sharedGroupId}, #{item})
+            </foreach>
+        ;
+    </insert>
+
+    <insert id="insertAllInvitees">
+        INSERT INTO invitees(
+            shared_group_id,
+            invitee
+        )VALUES
+            <foreach collection="invitees" item="item" separator=",">
+                (#{sharedGroupId}, #{item})
+            </foreach>
+        ;
+    </insert>
+
+    <delete id="deleteAllMembers">
+        DELETE FROM members
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
+
+    <delete id="deleteAllInvitees">
+        DELETE FROM invitees
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
+
+
+    <sql id="AllColumns">
+        members.shared_group_id AS shared_group_id,
+        members.member AS member,
+        invitees.invitee AS invitee
+    </sql>
+
+    <resultMap id="SharedGroupResultEntityResultMap" type="example.infrastructure.db.repository.sharedgroup.SharedGroupResultEntity">
+        <constructor>
+            <idArg column="shared_group_id" javaType="SharedGroupId" resultMap="SharedGroupIdResultMap"/>
+        </constructor>
+        <id column="shared_group_id"/>
+        <collection column="member" property="membersForMapping" ofType="AccountId" resultMap="MemberResultMap"/>
+        <collection column="invitee" property="inviteesForMapping" ofType="AccountId" resultMap="InviteesResultMap"/>
+    </resultMap>
+    <resultMap id="SharedGroupIdResultMap" type="SharedGroupId">
+        <constructor>
+            <idArg column="shared_group_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="MemberResultMap" type="AccountId">
+        <constructor>
+            <idArg column="member" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="InviteesResultMap" type="AccountId">
+        <constructor>
+            <idArg column="invitee" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>

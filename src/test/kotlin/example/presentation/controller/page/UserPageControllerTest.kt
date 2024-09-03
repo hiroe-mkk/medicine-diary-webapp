@@ -1,7 +1,7 @@
 package example.presentation.controller.page
 
 import example.domain.model.account.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

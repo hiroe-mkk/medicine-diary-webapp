@@ -16,3 +16,15 @@ devEnv:
     minio:
       host: localhost
       port: 19000
+    mailhog:
+      host: localhost
+      port: 11025
+    keycloak:
+      authorizationUri:
+        hostPort: 'localhost:28080'
+      tokenUri:
+        hostPort: 'localhost:28080'
+      jwkSetUri:
+        hostPort: 'localhost:28080'
+      userInfoUri:
+        hostPort: 'localhost:28080'

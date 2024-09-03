@@ -4,7 +4,7 @@ import example.application.service.medicine.*
 import example.application.shared.usersession.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*

@@ -1,7 +1,7 @@
 package example.presentation.controller.api.medicine
 
 import example.domain.model.medicine.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*

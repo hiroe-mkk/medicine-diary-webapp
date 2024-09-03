@@ -2,9 +2,9 @@ package example.testhelper.springframework.autoconfigure
 
 import example.domain.model.account.profile.profileimage.*
 import example.domain.model.medicine.medicineimage.*
-import example.infrastructure.storage.medicineimage.*
-import example.infrastructure.storage.profileimage.*
-import example.infrastructure.storage.shared.objectstrage.*
+import example.infrastructure.objectstorage.medicineimage.*
+import example.infrastructure.objectstorage.profileimage.*
+import example.infrastructure.objectstorage.shared.*
 import org.springframework.context.annotation.*
 
 /**

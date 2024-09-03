@@ -5,11 +5,11 @@ import example.domain.model.account.profile.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.repository.account.*
-import example.infrastructure.repository.medicationrecord.*
-import example.infrastructure.repository.medicine.*
-import example.infrastructure.repository.profile.*
-import example.infrastructure.repository.sharedgroup.*
+import example.infrastructure.db.repository.account.*
+import example.infrastructure.db.repository.medicationrecord.*
+import example.infrastructure.db.repository.medicine.*
+import example.infrastructure.db.repository.profile.*
+import example.infrastructure.db.repository.sharedgroup.*
 import org.mybatis.spring.boot.test.autoconfigure.*
 import org.springframework.boot.test.autoconfigure.jdbc.*
 import org.springframework.context.annotation.*

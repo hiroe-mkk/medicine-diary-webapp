@@ -69,7 +69,10 @@ application:
   endpoint:
     web: ${WEB_ENDPOINT}
     image: ${IMAGE_ENDPOINT}
-  emailAddress: ${SES_VERIFIED_ADDRESS}
+  emailAddress:
+    contact:
+      sender: ${SES_VERIFIED_ADDRESS}
+      handler: ${SES_VERIFIED_ADDRESS}
   admin:
     username: ${ADMIN_USERNAME:admin}
     password: ${ADMIN_PASSWORD}
@@ -79,6 +82,3 @@ infrastructure:
     s3:
       endpoint: ${S3_ENDPOINT}
       bucketName: ${S3_BUCKET}
-  emailsender:
-    ses:
-      address: ${SES_VERIFIED_ADDRESS}

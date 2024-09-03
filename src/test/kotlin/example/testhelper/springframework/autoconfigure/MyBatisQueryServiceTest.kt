@@ -6,10 +6,10 @@ import example.application.query.sharedgroup.*
 import example.application.query.user.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
-import example.infrastructure.query.medicationrecord.*
-import example.infrastructure.query.medicine.*
-import example.infrastructure.query.sharedgroup.*
-import example.infrastructure.query.user.*
+import example.infrastructure.db.query.medicationrecord.*
+import example.infrastructure.db.query.medicine.*
+import example.infrastructure.db.query.sharedgroup.*
+import example.infrastructure.db.query.user.*
 import org.springframework.context.annotation.*
 
 /**
@@ -36,7 +36,7 @@ annotation class MyBatisQueryServiceTest {
         }
 
         @Bean
-        fun sharedGroupQueryService(jsonSharedGroupMapper: JSONSharedGroupMapper): JSONSharedGroupQueryService =
+        fun sharedGroupQueryService(jsonSharedGroupMapper: example.infrastructure.db.query.sharedgroup.JSONSharedGroupMapper): JSONSharedGroupQueryService =
                 MyBatisJSONSharedGroupQueryService(jsonSharedGroupMapper)
 
         @Bean

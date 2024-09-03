@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.db.repository.account.AccountMapper">
+    <select id="findOneAccountByAccountId" resultMap="AccountResultMap">
+        SELECT
+            account_id,
+            credential_type
+        FROM
+            accounts
+        WHERE
+            account_id = #{accountId};
+    </select>
+    <select id="findOneAccountIdByOAuth2Credential" resultType="AccountId">
+        SELECT
+            account_id
+        FROM
+            oauth2_credentials
+        WHERE
+            id_p = #{idP}
+            AND subject = #{subject};
+    </select>
+
+    <select id="findOneOauth2CredentialByAccountId" resultMap="Oauth2CredentialResultMap">
+        SELECT
+            id_p,
+            subject
+        FROM
+            oauth2_credentials
+        WHERE
+            account_id = #{accountId};
+    </select>
+
+    <insert id="insertAccount">
+        INSERT INTO accounts(
+            account_id,
+            credential_type
+        )VALUES(
+            #{accountId},
+            #{credentialType}
+        );
+    </insert>
+    <insert id="insertOauth2Credential">
+        INSERT INTO oauth2_credentials(
+            account_id,
+            id_p,
+            subject
+        )VALUES(
+            #{accountId},
+            #{idP},
+            #{subject}
+        );
+    </insert>
+
+    <delete id="deleteAccount">
+        DELETE FROM accounts
+        WHERE account_id = #{accountId};
+    </delete>
+    <delete id="deleteOauth2Credential">
+        DELETE FROM oauth2_credentials
+        WHERE account_id = #{accountId};
+    </delete>
+
+    <resultMap id="AccountResultMap" type="example.infrastructure.db.repository.account.AccountResultEntity">
+        <constructor>
+            <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="credential_type" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="AccountIdResultMap" type="AccountId">
+        <constructor>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="Oauth2CredentialResultMap" type="Oauth2Credential">
+        <constructor>
+            <idArg column="id_p" javaType="IdP"/>
+            <idArg column="subject" javaType="String"/>
+        </constructor>
+    </resultMap>
+</mapper>

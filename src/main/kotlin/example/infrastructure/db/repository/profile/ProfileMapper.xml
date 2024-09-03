@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.db.repository.profile.ProfileMapper">
+    <select id="findOneByAccountId" resultMap="ProfileResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            profiles
+        WHERE
+            account_id = #{accountId};
+    </select>
+
+    <select id="findOneByUsername" resultMap="ProfileResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            profiles
+        WHERE
+            username = #{username};
+    </select>
+
+    <insert id="upsertProfile">
+        INSERT INTO profiles(
+            <include refid="AllColumns"/>
+        )VALUES(
+            #{accountId},
+            #{username},
+            #{profileImageURLEndpoint, jdbcType=VARCHAR},
+            #{profileImageURLPath, jdbcType=VARCHAR}
+        )ON DUPLICATE KEY UPDATE
+            username = VALUES(username),
+            profile_image_url_endpoint = VALUES(profile_image_url_endpoint),
+            profile_image_url_path = VALUES(profile_image_url_path);
+    </insert>
+
+    <delete id="deleteProfile">
+        DELETE FROM profiles
+        WHERE account_id = #{accountId};
+    </delete>
+
+
+    <sql id="AllColumns">
+        account_id,
+        username,
+        profile_image_url_endpoint,
+        profile_image_url_path
+    </sql>
+
+    <resultMap id="ProfileResultMap" type="Profile">
+        <constructor>
+            <idArg column="account_id" javaType="AccountId" resultMap="AccountIdResultMap"/>
+            <arg column="username" javaType="Username" resultMap="UsernameResultMap"/>
+            <arg column="{profile_image_url_endpoint, profile_image_url_path}" javaType="ProfileImageURL" resultMap="ProfileImageURLResultMap"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="AccountIdResultMap" type="AccountId">
+        <constructor>
+            <idArg column="account_id" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="UsernameResultMap" type="Username">
+        <constructor>
+            <idArg column="username" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="ProfileImageURLResultMap" type="ProfileImageURL">
+        <constructor>
+            <idArg column="profile_image_url_endpoint" javaType="String"></idArg>
+            <idArg column="profile_image_url_path" javaType="String"></idArg>
+        </constructor>
+    </resultMap>
+</mapper>

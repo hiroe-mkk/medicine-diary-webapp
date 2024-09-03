@@ -5,7 +5,7 @@ import example.application.service.medicine.MedicineBasicInfoEditCommand.*
 import example.domain.model.account.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
-import example.infrastructure.repository.shared.*
+import example.infrastructure.db.repository.shared.*
 import java.time.*
 
 object TestMedicineFactory {

@@ -1,6 +1,6 @@
 package example.testhelper.springframework.autoconfigure
 
-import example.infrastructure.storage.shared.objectstrage.*
+import example.infrastructure.objectstorage.shared.*
 import io.mockk.*
 import org.springframework.context.annotation.*
 
