@@ -23,7 +23,8 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         return sharedGroupMapper.findAllByInvitee(accountId.value).map { it.toSharedGroup() }.toSet()
     }
 
-    override fun save(sharedGroup: SharedGroup) {
+    override fun save(sharedGroup: SharedGroup) { // TODO: 他の方法を考える
+        sharedGroupMapper.insertSharedGroup(sharedGroup.id.value)
         upsertAllMembers(sharedGroup)
         upsertAllInvitees(sharedGroup)
     }
@@ -47,5 +48,6 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
     override fun deleteById(sharedGroupId: SharedGroupId) {
         sharedGroupMapper.deleteAllMembers(sharedGroupId.value)
         sharedGroupMapper.deleteAllInvitees(sharedGroupId.value)
+        sharedGroupMapper.deleteSharedGroup(sharedGroupId.value)
     }
 }

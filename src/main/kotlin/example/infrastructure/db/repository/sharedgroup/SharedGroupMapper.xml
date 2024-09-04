@@ -40,6 +40,14 @@
             );
     </select>
 
+    <insert id="insertSharedGroup">
+        INSERT IGNORE INTO sharedgroups(
+            shared_group_id
+        )VALUES(
+            #{sharedGroupId}
+        );
+    </insert>
+
     <insert id="insertAllMembers">
         INSERT INTO members(
             shared_group_id,
@@ -61,6 +69,11 @@
             </foreach>
         ;
     </insert>
+
+    <delete id="deleteSharedGroup">
+        DELETE FROM sharedgroups
+        WHERE shared_group_id = #{sharedGroupId};
+    </delete>
 
     <delete id="deleteAllMembers">
         DELETE FROM members
