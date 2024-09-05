@@ -65,17 +65,6 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 共有グループへの招待を取り消す
-     */
-    fun cancelInvitationToSharedGroup(sharedGroupId: SharedGroupId, invitee: AccountId, userSession: UserSession) {
-        val sharedGroup = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)
-                              ?.let { if (it.id == sharedGroupId) it else null } ?: return
-
-        sharedGroup.cancelInvitation(invitee)
-        sharedGroupRepository.save(sharedGroup)
-    }
-
-    /**
      * 共有グループから脱退する
      */
     fun leaveSharedGroup(userSession: UserSession) {

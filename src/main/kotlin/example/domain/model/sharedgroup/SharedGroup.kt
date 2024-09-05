@@ -38,10 +38,6 @@ class SharedGroup(val id: SharedGroupId,
         invitees -= invitee
     }
 
-    fun cancelInvitation(invitee: AccountId) {
-        invitees -= invitee
-    }
-
     fun join(invitee: AccountId) {
         if (!isInvited(invitee)) throw ParticipationInSharedGroupException("招待されていない共有グループへの参加はできません。")
 

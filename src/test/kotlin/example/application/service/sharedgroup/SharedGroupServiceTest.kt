@@ -265,25 +265,5 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
         }
     }
 
-    @Nested
-    inner class CancelInvitationToSharedGroupTest {
-        @Test
-        @DisplayName("共有グループへの招待を取り消す")
-        fun cancelInvitation() {
-            //given:
-            val members = setOf(userSession.accountId, createAccount().id)
-            val sharedGroup = testSharedGroupInserter.insert(members = members,
-                                                             invitees = setOf(user1AccountId))
-
-            //when:
-            sharedGroupService.cancelInvitationToSharedGroup(sharedGroup.id, user1AccountId, userSession)
-
-            //then:
-            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
-            assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
-            assertThat(foundSharedGroup?.invitees).isEmpty()
-        }
-    }
-
     private fun createAccount() = testAccountInserter.insertAccountAndProfile().first
 }
