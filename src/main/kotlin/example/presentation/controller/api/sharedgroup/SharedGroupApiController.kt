@@ -16,7 +16,7 @@ class SharedGroupApiController(private val jsonSharedGroupQueryService: JSONShar
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun sharedGroup(): JSONSharedGroups {
+    fun getSharedGroup(): JSONSharedGroups {
         return jsonSharedGroupQueryService.findJSONSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 }

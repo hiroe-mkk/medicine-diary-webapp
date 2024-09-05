@@ -27,7 +27,7 @@
             ></div>
             <medicine-owner
               th:attr="':is-owned-by-shared-group'=${form.isOwnedBySharedGroup}, ':is-public'=${form.isPublic}"
-              th:if="${isParticipatingInSharedGroup}"
+              th:if="${isJoinedSharedGroup}"
             ></medicine-owner>
           </div>
           <div class="field is-grouped is-grouped-centered my-3">

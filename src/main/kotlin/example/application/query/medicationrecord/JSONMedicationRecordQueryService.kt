@@ -46,7 +46,7 @@ abstract class JSONMedicationRecordQueryService(private val medicineQueryService
 
     private fun filteredAccountIds(filter: MedicationRecordFilter,
                                    userSession: UserSession): Collection<AccountId> {
-        val accountIds = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)?.members
+        val accountIds = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)?.members
                          ?: listOf(userSession.accountId)
         if (filter.validatedAccount == null) return accountIds
 

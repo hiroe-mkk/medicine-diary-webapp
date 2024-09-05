@@ -11,7 +11,7 @@
         <a
           class="image is-64x64 m-0"
           :href="`/users/${member.accountId}`"
-          v-if="props.isParticipating"
+          v-if="props.isJoined"
         >
           <img
             class="is-rounded"
@@ -26,7 +26,7 @@
             v-if="member.profileImageURL === undefined"
           />
         </a>
-        <figure class="image is-64x64 m-0" v-if="!props.isParticipating">
+        <figure class="image is-64x64 m-0" v-if="!props.isJoined">
           <img
             class="is-rounded"
             :src="member.profileImageURL"
@@ -54,7 +54,7 @@
       <div class="is-flex is-justify-content-center">
         <figure
           class="image is-64x64 is-clickable m-0"
-          v-if="props.isParticipating"
+          v-if="props.isJoined"
           @click="
             selectedInvitee = invitee;
             isInvitationCancellationConfirmationModalActive = true;
@@ -73,7 +73,7 @@
             v-if="invitee.profileImageURL === undefined"
           />
         </figure>
-        <figure class="image is-64x64 m-0" v-if="!props.isParticipating">
+        <figure class="image is-64x64 m-0" v-if="!props.isJoined">
           <img
             class="is-rounded"
             :src="invitee.profileImageURL"
@@ -150,7 +150,7 @@ import {
 
 const props = defineProps({
   sharedGroup: Object,
-  isParticipating: Boolean,
+  isJoined: Boolean,
   csrf: String,
 });
 const emits = defineEmits(['update']);

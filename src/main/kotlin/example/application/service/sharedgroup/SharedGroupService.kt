@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.*
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val accountRepository: AccountRepository,
                          private val sharedGroupQueryService: SharedGroupQueryService,
-                         private val sharedGroupParticipationService: SharedGroupParticipationService,
+                         private val sharedGroupJoinService: SharedGroupJoinService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
      * 共有グループを作る
      */
     fun createSharedGroup(invitee: AccountId, userSession: UserSession): SharedGroupId {
         accountRepository.findById(invitee) ?: throw ShareException("ユーザーが見つかりませんでした。")
-        sharedGroupParticipationService.requireSharePossible(userSession.accountId)
+        sharedGroupJoinService.requireSharePossible(userSession.accountId)
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
 
@@ -32,24 +32,24 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, invitee: AccountId, userSession: UserSession) {
         accountRepository.findById(invitee) ?: throw InvitationToSharedGroupException("ユーザーが見つかりませんでした。")
-        val participatingSharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)
-                                           ?.let { if (it.id == sharedGroupId) it else null }
-                                       ?: throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
+        val joinedSharedGroup = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)
+                                    ?.let { if (it.id == sharedGroupId) it else null }
+                                ?: throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
 
-        participatingSharedGroup.invite(invitee, userSession.accountId)
-        sharedGroupRepository.save(participatingSharedGroup)
+        joinedSharedGroup.invite(invitee, userSession.accountId)
+        sharedGroupRepository.save(joinedSharedGroup)
     }
 
     /**
      * 共有グループに参加する
      */
-    fun participateInSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+    fun joinSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val invitedSharedGroup = sharedGroupQueryService.findInvitedSharedGroups(userSession.accountId)
                                      .find { it.id == sharedGroupId }
                                  ?: throw ParticipationInSharedGroupException("招待されていない共有グループへの参加はできません")
-        sharedGroupParticipationService.requireParticipationPossible(userSession.accountId)
+        sharedGroupJoinService.requireJoinPossible(userSession.accountId)
 
-        invitedSharedGroup.participateIn(userSession.accountId)
+        invitedSharedGroup.join(userSession.accountId)
         sharedGroupRepository.save(invitedSharedGroup)
     }
 
@@ -68,7 +68,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループへの招待を取り消す
      */
     fun cancelInvitationToSharedGroup(sharedGroupId: SharedGroupId, invitee: AccountId, userSession: UserSession) {
-        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(userSession.accountId)
+        val sharedGroup = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)
                               ?.let { if (it.id == sharedGroupId) it else null } ?: return
 
         sharedGroup.cancelInvitation(invitee)
@@ -85,7 +85,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループに参加しているか
      */
-    fun isParticipatingInSharedGroup(userSession: UserSession): Boolean {
-        return sharedGroupQueryService.isParticipatingInSharedGroup(userSession.accountId)
+    fun isJoinedSharedGroup(userSession: UserSession): Boolean {
+        return sharedGroupQueryService.isJoinedSharedGroup(userSession.accountId)
     }
 }

@@ -14,11 +14,11 @@
         <div class="is-flex is-align-items-end is-justify-content-center">
           <SharedGroup
             :sharedGroup="invitedSharedGroup"
-            :isParticipating="false"
+            :isJoined="false"
             :csrf="props.csrf"
           ></SharedGroup>
         </div>
-        <p class="help" v-if="participatingSharedGroup.value !== undefined">
+        <p class="help" v-if="joinedSharedGroup.value !== undefined">
           ※参加できる共有グループは1つまでです。<br />
           　この共有グループに参加するには、現在参加している共有グループから脱退して、再度お試しください。
         </p>
@@ -27,8 +27,8 @@
             <button
               type="button"
               class="button is-small is-rounded is-outlined is-link"
-              @click="participateIn(invitedSharedGroup.sharedGroupId)"
-              :disabled="participatingSharedGroup.value !== undefined"
+              @click="join(invitedSharedGroup.sharedGroupId)"
+              :disabled="joinedSharedGroup.value !== undefined"
             >
               参加する
             </button>
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <div class="content" v-if="participatingSharedGroup.value === undefined">
+  <div class="content" v-if="joinedSharedGroup.value === undefined">
     <div class="notification is-white py-5 px-6">
       <div class="block">
         <p>
@@ -97,7 +97,7 @@
     ></UserSearch>
   </div>
 
-  <div v-if="participatingSharedGroup.value !== undefined">
+  <div v-if="joinedSharedGroup.value !== undefined">
     <div class="notification is-white is-inline-block py-4 px-6">
       <p
         class="has-text-weight-semibold has-text-grey-dark pb-4"
@@ -106,8 +106,8 @@
         現在参加している共有グループ
       </p>
       <SharedGroup
-        :sharedGroup="participatingSharedGroup.value"
-        :isParticipating="true"
+        :sharedGroup="joinedSharedGroup.value"
+        :isJoined="true"
         :csrf="props.csrf"
         @update="loadSharedGroup()"
       ></SharedGroup>
@@ -139,7 +139,7 @@
 
     <UserSearch
       ref="userSearch"
-      :sharedGroupId="participatingSharedGroup.value.sharedGroupId"
+      :sharedGroupId="joinedSharedGroup.value.sharedGroupId"
       :csrf="props.csrf"
       @update="loadSharedGroup()"
     >
@@ -200,7 +200,7 @@ import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
 const props = defineProps({ csrf: String });
 const activateResultMessage = inject('activateResultMessage');
 
-const participatingSharedGroup = reactive({ value: undefined });
+const joinedSharedGroup = reactive({ value: undefined });
 const invitedSharedGroups = reactive([]);
 
 const isLeaveSharedGroupConfirmationModalActive = ref(false);
@@ -211,12 +211,12 @@ onMounted(async () => {
 });
 
 function loadSharedGroup() {
-  participatingSharedGroup.value = undefined;
+  joinedSharedGroup.value = undefined;
   invitedSharedGroups.splice(0, invitedSharedGroups.length);
 
   HttpRequestClient.submitGetRequest('/api/shared-group')
     .then((data) => {
-      participatingSharedGroup.value = data.participatingSharedGroup;
+      joinedSharedGroup.value = data.joinedSharedGroup;
       invitedSharedGroups.push(...data.invitedSharedGroups);
     })
     .catch(() => {
@@ -224,12 +224,12 @@ function loadSharedGroup() {
     });
 }
 
-function participateIn(sharedGroupId) {
+function join(sharedGroupId) {
   const form = new FormData();
   form.set('_csrf', props.csrf);
   form.set('sharedGroupId', sharedGroupId);
 
-  HttpRequestClient.submitPostRequest('/api/shared-group/participate', form)
+  HttpRequestClient.submitPostRequest('/api/shared-group/join', form)
     .then(() => {
       activateResultMessage('INFO', `共有グループに参加しました。`);
       loadSharedGroup();

@@ -18,7 +18,7 @@ class MedicationRecordsPageController(private val sharedGroupService: SharedGrou
     @GetMapping
     fun displayMedicationRecordsPage(model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        model.addAttribute("isParticipatingInSharedGroup", sharedGroupService.isParticipatingInSharedGroup(userSession))
+        model.addAttribute("isJoinedSharedGroup", sharedGroupService.isJoinedSharedGroup(userSession))
 
         lastRequestedPage.path = "/medication-records"
         return "medicationrecord/list"

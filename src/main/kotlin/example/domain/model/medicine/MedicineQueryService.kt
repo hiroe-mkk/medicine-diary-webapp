@@ -12,12 +12,12 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
     }
 
     fun findAllSharedGroupMedicines(accountId: AccountId): Set<Medicine> {
-        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
+        val sharedGroup = findJoinedSharedGroup(accountId) ?: return emptySet()
         return medicineRepository.findByOwner(sharedGroup.id)
     }
 
     fun findAllMembersMedicines(accountId: AccountId): Set<Medicine> {
-        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return emptySet()
+        val sharedGroup = findJoinedSharedGroup(accountId) ?: return emptySet()
         val members = sharedGroup.members - accountId
         return medicineRepository.findByOwners(members).filter { it.isPublic }.toSet()
     }
@@ -26,7 +26,7 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
         val medicine = medicineRepository.findById(medicineId) ?: return null
         if (medicine.isOwnedBy(accountId)) return medicine
 
-        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return null
+        val sharedGroup = findJoinedSharedGroup(accountId) ?: return null
         return if (medicine.isOwnedBy(sharedGroup.id)) medicine else null
     }
 
@@ -44,7 +44,7 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
         val medicine = medicineRepository.findById(medicineId) ?: return null
         if (medicine.isOwnedBy(accountId)) return medicine
 
-        val sharedGroup = findParticipatingSharedGroup(accountId) ?: return null
+        val sharedGroup = findJoinedSharedGroup(accountId) ?: return null
         if (medicine.isOwnedBy(sharedGroup.id)) return medicine
 
         return if (medicine.isPublic && sharedGroup.members.contains(medicine.owner.accountId)) medicine else null
@@ -61,5 +61,5 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
         return findViewableMedicine(medicineId, accountId) != null
     }
 
-    private fun findParticipatingSharedGroup(accountId: AccountId) = sharedGroupRepository.findByMember(accountId)
+    private fun findJoinedSharedGroup(accountId: AccountId) = sharedGroupRepository.findByMember(accountId)
 }

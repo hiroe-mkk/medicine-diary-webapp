@@ -12,22 +12,22 @@ class MyBatisJSONSharedGroupQueryService(private val jsonSharedGroupMapper: exam
     : JSONSharedGroupQueryService {
     override fun findJSONSharedGroup(userSession: UserSession): JSONSharedGroups {
         val sharedGroups = jsonSharedGroupMapper.findAllByAccountId(userSession.accountId.value)
-        val participatingSharedGroup = extractingParticipatingSharedGroup(sharedGroups, userSession)
-        val invitedSharedGroup = invitedSharedGroups(participatingSharedGroup, sharedGroups)
-        return JSONSharedGroups(participatingSharedGroup, invitedSharedGroup)
+        val joinedSharedGroup = extractingJoinedSharedGroup(sharedGroups, userSession)
+        val invitedSharedGroup = invitedSharedGroups(joinedSharedGroup, sharedGroups)
+        return JSONSharedGroups(joinedSharedGroup, invitedSharedGroup)
     }
 
-    private fun extractingParticipatingSharedGroup(sharedGroups: Collection<JSONSharedGroup>,
-                                                   userSession: UserSession): JSONSharedGroup? {
+    private fun extractingJoinedSharedGroup(sharedGroups: Collection<JSONSharedGroup>,
+                                            userSession: UserSession): JSONSharedGroup? {
         return sharedGroups.find { it.members.map { AccountId(it.accountId) }.contains(userSession.accountId) }
     }
 
-    private fun invitedSharedGroups(participatingSharedGroup: JSONSharedGroup?,
+    private fun invitedSharedGroups(joinedSharedGroup: JSONSharedGroup?,
                                     sharedGroups: Collection<JSONSharedGroup>): Set<JSONSharedGroup> {
-        return if (participatingSharedGroup == null) {
+        return if (joinedSharedGroup == null) {
             sharedGroups.toSet()
         } else {
-            (sharedGroups - participatingSharedGroup).toSet()
+            (sharedGroups - joinedSharedGroup).toSet()
         }
     }
 }

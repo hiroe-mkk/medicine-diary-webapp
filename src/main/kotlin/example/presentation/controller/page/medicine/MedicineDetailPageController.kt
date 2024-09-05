@@ -26,8 +26,8 @@ class MedicineDetailPageController(private val medicineService: MedicineService,
 
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
-        model.addAttribute("isParticipatingInSharedGroup",
-                           sharedGroupService.isParticipatingInSharedGroup(userSession))
+        model.addAttribute("isJoinedSharedGroup",
+                           sharedGroupService.isJoinedSharedGroup(userSession))
         model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
 
         lastRequestedPage.path = "/medicines/${medicineId}"

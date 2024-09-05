@@ -49,7 +49,7 @@ class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepo
     }
 
     private fun leaveSharedGroup(accountId: AccountId) {
-        val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(accountId) ?: return
+        val sharedGroup = sharedGroupQueryService.findJoinedSharedGroup(accountId) ?: return
         sharedGroup.leave(accountId)
         if (sharedGroup.shouldDelete()) {
             medicineDeletionService.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)

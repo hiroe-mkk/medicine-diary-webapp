@@ -21,7 +21,7 @@
 
       <FilteredMedicationRecords
         ref="filteredMedicationRecords"
-        :displayRecorder="props.isParticipatingInSharedGroup"
+        :displayRecorder="props.isJoinedSharedGroup"
         :isAllowLoadMore="false"
         :isShowAppendButton="false"
         :elements="['medicine', 'dateTime']"
@@ -37,7 +37,7 @@ import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   csrf: String,
 });
 const activateResultMessage = inject('activateResultMessage');

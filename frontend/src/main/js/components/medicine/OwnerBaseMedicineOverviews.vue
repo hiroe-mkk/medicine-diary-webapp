@@ -4,7 +4,7 @@
       <p class="is-size-4 has-text-weight-bold has-text-grey-dark">お薬一覧</p>
       <div
         class="tabs is-toggle is-toggle-rounded is-centered is-small mb-0"
-        v-if="isParticipatingInSharedGroup"
+        v-if="isJoinedSharedGroup"
       >
         <ul class="m-0">
           <li
@@ -65,30 +65,30 @@
     >
       <MedicineOverviews
         :medicineOverviews="ownedMedicines.value"
-        :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        :isJoinedSharedGroup="props.isJoinedSharedGroup"
         @searched="loadMedicineOverviews"
       ></MedicineOverviews>
     </div>
     <div
       class="notification has-background-white p-3"
       v-show="
-        props.isParticipatingInSharedGroup && medicineType === 'SHARED_GROUP'
+        props.isJoinedSharedGroup && medicineType === 'SHARED_GROUP'
       "
     >
       <MedicineOverviews
         :medicineOverviews="sharedGroupMedicines.value"
-        :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        :isJoinedSharedGroup="props.isJoinedSharedGroup"
         @searched="loadMedicineOverviews"
       >
       </MedicineOverviews>
     </div>
     <div
       class="notification has-background-white p-3"
-      v-show="props.isParticipatingInSharedGroup && medicineType === 'MEMBERS'"
+      v-show="props.isJoinedSharedGroup && medicineType === 'MEMBERS'"
     >
       <MedicineOverviews
         :medicineOverviews="membersMedicines.value"
-        :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        :isJoinedSharedGroup="props.isJoinedSharedGroup"
         @searched="loadMedicineOverviews"
       >
       </MedicineOverviews>
@@ -102,7 +102,7 @@ import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import MedicineOverviews from '@main/js/components/medicine/MedicineOverviews.vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   filterEffect: { type: String, default: '' },
 });
 const activateResultMessage = inject('activateResultMessage');

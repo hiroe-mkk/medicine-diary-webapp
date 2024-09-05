@@ -91,7 +91,7 @@
                   </div>
                   <div
                     class="has-text-left py-3"
-                    th:if="${isParticipatingInSharedGroup}"
+                    th:if="${isJoinedSharedGroup}"
                   >
                     <a
                       class="has-text-weight-bold has-text-link"
@@ -207,7 +207,7 @@
               </div>
             </div>
             <medication-records
-              th:attr="':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+              th:attr="':is-joined-shared-group'=${isJoinedSharedGroup}, csrf=${_csrf.token}"
             ></medication-records>
           </div>
         </main>

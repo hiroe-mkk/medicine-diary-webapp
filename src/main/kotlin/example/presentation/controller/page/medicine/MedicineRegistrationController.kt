@@ -20,9 +20,9 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
     @ModelAttribute("timings")
     fun timings(): Array<Timing> = Timing.values()
 
-    @ModelAttribute("isParticipatingInSharedGroup")
-    fun isParticipatingInSharedGroup(): Boolean {
-        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
+    @ModelAttribute("isJoinedSharedGroup")
+    fun isJoinedSharedGroup(): Boolean {
+        return sharedGroupService.isJoinedSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 
     @ModelAttribute("title")

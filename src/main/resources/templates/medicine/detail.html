@@ -18,7 +18,7 @@
             <strong th:text="*{medicineName}" v-pre></strong>
             <span
               class="icon mx-1"
-              th:if="${isParticipatingInSharedGroup} and *{!isPublic}"
+              th:if="${isJoinedSharedGroup} and *{!isPublic}"
             >
               <i class="fa-solid fa-lock"></i>
             </span>
@@ -175,7 +175,7 @@
 
         <div class="content pb-6">
           <medication-records
-            th:attr="medicine-id=*{medicineId}, ':is-participating-in-shared-group'=${isParticipatingInSharedGroup}, csrf=${_csrf.token}"
+            th:attr="medicine-id=*{medicineId}, ':is-joined-shared-group'=${isJoinedSharedGroup}, csrf=${_csrf.token}"
           ></medication-records>
         </div>
       </div>

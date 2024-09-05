@@ -147,7 +147,7 @@ import {
 import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   displayRecorder: Boolean,
   isAllowLoadMore: Boolean,
   isShowAppendButton: Boolean,

@@ -66,7 +66,7 @@
     <div class="notification has-background-white py-3 px-5">
       <FilteredMedicationRecords
         ref="filteredMedicationRecords"
-        :displayRecorder="props.isParticipatingInSharedGroup"
+        :displayRecorder="props.isJoinedSharedGroup"
         :isAllowLoadMore="true"
         :isShowAppendButton="false"
         :elements="['medicine', 'dateTime']"
@@ -83,7 +83,7 @@ import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   csrf: String,
 });
 const activateResultMessage = inject('activateResultMessage');
@@ -106,7 +106,7 @@ onMounted(() => {
       );
     });
 
-  if (props.isParticipatingInSharedGroup) {
+  if (props.isJoinedSharedGroup) {
     HttpRequestClient.submitGetRequest('/api/users?members')
       .then((data) => {
         members.push(...data.users);

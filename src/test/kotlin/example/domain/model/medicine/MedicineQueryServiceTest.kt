@@ -66,7 +66,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
 
         @Test
         @DisplayName("参加していない共有グループが所有する薬の場合、薬の取得に失敗する")
-        fun medicineOwnedByNonParticipatingSharedGroup_gettingMedicineFails() {
+        fun medicineOwnedByUnjoinedSharedGroup_gettingMedicineFails() {
             //given:
             val sharedGroupId = testSharedGroupInserter.insert(members = setOf(user1AccountId)).id
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
@@ -136,7 +136,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
 
         @Test
         @DisplayName("参加していない共有グループが所有する薬の場合、薬の取得に失敗する")
-        fun medicineOwnedByNonParticipatingSharedGroup_gettingMedicineFails() {
+        fun medicineOwnedByUnjoinedSharedGroup_gettingMedicineFails() {
             //given:
             val sharedGroupId = testSharedGroupInserter.insert(members = setOf(user1AccountId)).id
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(sharedGroupId))
@@ -205,15 +205,15 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
         private lateinit var memberMedicineWithPublic: Medicine
         private lateinit var memberMedicineWithPrivate: Medicine
 
-        private lateinit var participatingSharedGroupMedicine: Medicine
-        private lateinit var nonParticipatingSharedGroupMedicine: Medicine
+        private lateinit var joinedSharedGroupMedicine: Medicine
+        private lateinit var unjoinedSharedGroupMedicine: Medicine
 
         @BeforeEach
         internal fun setUp() {
             memberAccountId = testAccountInserter.insertAccountAndProfile().first.id
 
-            val participatingSharedGroupId = createSharedGroup(requesterAccountId, memberAccountId)
-            val nonParticipatingSharedGroupId = createSharedGroup(user1AccountId)
+            val joinedSharedGroupId = createSharedGroup(requesterAccountId, memberAccountId)
+            val unjoinedSharedGroupId = createSharedGroup(user1AccountId)
 
             requesterMedicineWithPublic =
                     testMedicineInserter.insert(owner = MedicineOwner.create(requesterAccountId), isPublic = true)
@@ -227,10 +227,10 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
                     testMedicineInserter.insert(owner = MedicineOwner.create(memberAccountId), isPublic = true)
             memberMedicineWithPrivate =
                     testMedicineInserter.insert(owner = MedicineOwner.create(memberAccountId), isPublic = false)
-            participatingSharedGroupMedicine =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(participatingSharedGroupId))
-            nonParticipatingSharedGroupMedicine =
-                    testMedicineInserter.insert(owner = MedicineOwner.create(nonParticipatingSharedGroupId))
+            joinedSharedGroupMedicine =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(joinedSharedGroupId))
+            unjoinedSharedGroupMedicine =
+                    testMedicineInserter.insert(owner = MedicineOwner.create(unjoinedSharedGroupId))
         }
 
         @Test
@@ -254,7 +254,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
             //then:
             assertThat(actual)
                 .extracting("id")
-                .containsExactlyInAnyOrder(participatingSharedGroupMedicine.id)
+                .containsExactlyInAnyOrder(joinedSharedGroupMedicine.id)
         }
 
         @Test
@@ -268,7 +268,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
                 .extracting("id")
                 .containsExactlyInAnyOrder(requesterMedicineWithPublic.id,
                                            requesterMedicineWithPrivate.id,
-                                           participatingSharedGroupMedicine.id)
+                                           joinedSharedGroupMedicine.id)
         }
 
         @Test
@@ -295,7 +295,7 @@ internal class MedicineQueryServiceTest(@Autowired private val medicineQueryServ
                 .containsExactlyInAnyOrder(requesterMedicineWithPublic.id,
                                            requesterMedicineWithPrivate.id,
                                            memberMedicineWithPublic.id,
-                                           participatingSharedGroupMedicine.id)
+                                           joinedSharedGroupMedicine.id)
         }
 
         private fun createSharedGroup(vararg accountId: AccountId) =

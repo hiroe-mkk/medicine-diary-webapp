@@ -19,7 +19,7 @@ class SharedGroup(val id: SharedGroupId,
         }
     }
 
-    fun isParticipatingIn(accountId: AccountId): Boolean = members.contains(accountId)
+    fun isJoined(accountId: AccountId): Boolean = members.contains(accountId)
 
     fun isInvited(accountId: AccountId): Boolean = invitees.contains(accountId)
 
@@ -28,8 +28,8 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun invite(invitee: AccountId, inviter: AccountId) {
-        if (!isParticipatingIn(inviter)) throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
-        if (isParticipatingIn(invitee)) throw InvitationToSharedGroupException("既に共有グループに参加しているユーザーです。")
+        if (!isJoined(inviter)) throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
+        if (isJoined(invitee)) throw InvitationToSharedGroupException("既に共有グループに参加しているユーザーです。")
 
         invitees += invitee
     }
@@ -42,7 +42,7 @@ class SharedGroup(val id: SharedGroupId,
         invitees -= invitee
     }
 
-    fun participateIn(invitee: AccountId) {
+    fun join(invitee: AccountId) {
         if (!isInvited(invitee)) throw ParticipationInSharedGroupException("招待されていない共有グループへの参加はできません。")
 
         invitees -= invitee

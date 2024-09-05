@@ -29,7 +29,7 @@
           <span
             class="icon mx-1"
             v-if="
-              props.isParticipatingInSharedGroup && !medicineOverview.isPublic
+              props.isJoinedSharedGroup && !medicineOverview.isPublic
             "
           >
             <i class="fa-solid fa-lock"></i>
@@ -88,7 +88,7 @@ import noMedicineImage from '@main/images/no_medicine_image.png';
 
 const props = defineProps({
   medicineOverviews: { type: Array, default: () => [] },
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
 });
 const emits = defineEmits(['searched']);
 

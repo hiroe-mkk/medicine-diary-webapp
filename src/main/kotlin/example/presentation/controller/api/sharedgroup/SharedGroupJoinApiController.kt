@@ -8,15 +8,15 @@ import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/api/shared-group/participate")
-class ParticipationInSharedGroupApiController(private val sharedGroupService: SharedGroupService,
-                                              private val userSessionProvider: UserSessionProvider) {
+@RequestMapping("/api/shared-group/join")
+class SharedGroupJoinApiController(private val sharedGroupService: SharedGroupService,
+                                   private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループに参加する
      */
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun participateInSharedGroup(sharedGroupId: SharedGroupId) {
-        sharedGroupService.participateInSharedGroup(sharedGroupId, userSessionProvider.getUserSessionOrElseThrow())
+    fun joinSharedGroup(sharedGroupId: SharedGroupId) {
+        sharedGroupService.joinSharedGroup(sharedGroupId, userSessionProvider.getUserSessionOrElseThrow())
     }
 }

@@ -21,12 +21,12 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val jso
         val userSession = UserSessionFactory.create(requester.accountId)
 
         // 参加している共有グループ
-        val (_, member1OfParticipatingSharedGroup) = testAccountInserter.insertAccountAndProfile()
-        val (_, member2OfParticipatingSharedGroup) = testAccountInserter.insertAccountAndProfile()
-        val participatingSharedGroup =
+        val (_, member1OfJoinedSharedGroup) = testAccountInserter.insertAccountAndProfile()
+        val (_, member2OfJoinedSharedGroup) = testAccountInserter.insertAccountAndProfile()
+        val joinedSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requester.accountId,
-                                                               member1OfParticipatingSharedGroup.accountId,
-                                                               member2OfParticipatingSharedGroup.accountId),
+                                                               member1OfJoinedSharedGroup.accountId,
+                                                               member2OfJoinedSharedGroup.accountId),
                                                invitees = emptySet())
 
         // 招待された共有グループ
@@ -38,13 +38,13 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val jso
         val actual = jsonSharedGroupQueryService.findJSONSharedGroup(userSession)
 
         //then:
-        assertThat(actual.participatingSharedGroup?.sharedGroupId).isEqualTo(participatingSharedGroup.id.value)
-        assertThat(actual.participatingSharedGroup?.members)
+        assertThat(actual.joinedSharedGroup?.sharedGroupId).isEqualTo(joinedSharedGroup.id.value)
+        assertThat(actual.joinedSharedGroup?.members)
             .extracting("accountId")
             .containsExactlyInAnyOrder(requester.accountId.value,
-                                       member1OfParticipatingSharedGroup.accountId.value,
-                                       member2OfParticipatingSharedGroup.accountId.value)
-        assertThat(actual.participatingSharedGroup?.invitees).isEmpty()
+                                       member1OfJoinedSharedGroup.accountId.value,
+                                       member2OfJoinedSharedGroup.accountId.value)
+        assertThat(actual.joinedSharedGroup?.invitees).isEmpty()
 
 
         assertThat(actual.invitedSharedGroups)
@@ -57,7 +57,7 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val jso
             .extracting("accountId")
             .containsExactly(requester.accountId.value)
 
-        val actualUser = actual.participatingSharedGroup!!.members.find { it.accountId == requester.accountId.value }
+        val actualUser = actual.joinedSharedGroup!!.members.find { it.accountId == requester.accountId.value }
         assertThat(actualUser)
             .usingRecursiveComparison()
             .isEqualTo(JSONUser(requester.accountId.value,

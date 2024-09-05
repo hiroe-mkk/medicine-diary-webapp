@@ -32,7 +32,7 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     @DisplayName("共有グループから脱退し、全ての招待を拒否する")
     fun leaveSharedGroupAndRejectAllInvitation() {
         //given:
-        val participatingSharedGroup =
+        val joinedSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]),
                                                invitees = setOf(userAccountIds[1]))
         val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(userAccountIds[1]),
@@ -42,9 +42,9 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
         sharedGroupLeaveService.leaveAndRejectAllInvitation(requesterAccountId)
 
         //then:
-        val foundParticipatedSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
-        assertThat(foundParticipatedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[0])
-        assertThat(foundParticipatedSharedGroup?.invitees).containsExactlyInAnyOrder(userAccountIds[1])
+        val foundLeftSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)
+        assertThat(foundLeftSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[0])
+        assertThat(foundLeftSharedGroup?.invitees).containsExactlyInAnyOrder(userAccountIds[1])
         val foundInvitedSharedGroup = sharedGroupRepository.findById(invitedSharedGroup.id)
         assertThat(foundInvitedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[1])
         assertThat(foundInvitedSharedGroup?.invitees).isEmpty()
@@ -54,16 +54,16 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     @DisplayName("薬を複製し、共有グループから脱退する")
     fun leaveAndCloneMedicines() {
         //given:
-        val participatingSharedGroup =
+        val joinedSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
-        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(participatingSharedGroup.id))
+        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(joinedSharedGroup.id))
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
         sharedGroupLeaveService.leaveAndCloneMedicines(requesterAccountId)
 
         //then:
-        val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
+        val foundSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)
         assertThat(foundSharedGroup?.members).containsExactly(userAccountIds[0])
         val foundSharedGroupMedicine = medicineRepository.findById(sharedGroupMedicine.id)
         assertThat(foundSharedGroupMedicine).usingRecursiveComparison().isEqualTo(sharedGroupMedicine)
@@ -80,15 +80,15 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     @DisplayName("共有グループから脱退するとメンバー数が0になる場合、共有グループは削除される")
     fun membersEmptyAfterLeaveSharedGroup_sharedGroupIsDeleted() {
         //given:
-        val participatingSharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId),
-                                                                      invitees = setOf(userAccountIds[0]))
-        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(participatingSharedGroup.id))
+        val joinedSharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId),
+                                                               invitees = setOf(userAccountIds[0]))
+        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(joinedSharedGroup.id))
 
         //when:
         sharedGroupLeaveService.leaveAndCloneMedicines(requesterAccountId)
 
         //then:
-        val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
+        val foundSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)
         assertThat(foundSharedGroup).isNull()
         val foundSharedGroupMedicine = medicineRepository.findById(sharedGroupMedicine.id)
         assertThat(foundSharedGroupMedicine).isNull()

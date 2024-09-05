@@ -7,7 +7,7 @@
     <div class="notification has-background-white py-3 px-5">
       <FilteredMedicationRecords
         ref="filteredMedicationRecords"
-        :displayRecorder="props.isParticipatingInSharedGroup"
+        :displayRecorder="props.isJoinedSharedGroup"
         :isAllowLoadMore="true"
         :isShowAppendButton="false"
         :elements="['symptom', 'dateTime']"
@@ -24,7 +24,7 @@ import FilteredMedicationRecords from '@main/js/components/medicationrecord/Filt
 
 const props = defineProps({
   medicineId: String,
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   csrf: String,
 });
 const activateResultMessage = inject('activateResultMessage');

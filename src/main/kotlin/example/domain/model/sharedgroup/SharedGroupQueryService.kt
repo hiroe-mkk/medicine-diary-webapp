@@ -5,7 +5,7 @@ import org.springframework.stereotype.*
 
 @Component
 class SharedGroupQueryService(private val sharedGroupRepository: SharedGroupRepository) {
-    fun findParticipatingSharedGroup(accountId: AccountId): SharedGroup? {
+    fun findJoinedSharedGroup(accountId: AccountId): SharedGroup? {
         return sharedGroupRepository.findByMember(accountId)
     }
 
@@ -13,7 +13,7 @@ class SharedGroupQueryService(private val sharedGroupRepository: SharedGroupRepo
         return sharedGroupRepository.findByInvitee(accountId)
     }
 
-    fun isParticipatingInSharedGroup(accountId: AccountId): Boolean {
-        return findParticipatingSharedGroup(accountId) != null
+    fun isJoinedSharedGroup(accountId: AccountId): Boolean {
+        return findJoinedSharedGroup(accountId) != null
     }
 }

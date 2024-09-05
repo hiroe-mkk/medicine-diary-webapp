@@ -21,9 +21,9 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     @ModelAttribute("timings")
     fun timings(): Array<Timing> = Timing.values()
 
-    @ModelAttribute("isParticipatingInSharedGroup")
-    fun isParticipatingInSharedGroup(): Boolean {
-        return sharedGroupService.isParticipatingInSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
+    @ModelAttribute("isJoinedSharedGroup")
+    fun isJoinedSharedGroup(): Boolean {
+        return sharedGroupService.isJoinedSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 
     @ModelAttribute("title")

@@ -21,15 +21,15 @@ internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupQue
     }
 
     @Nested
-    inner class GetParticipatingSharedGroupTest {
+    inner class GetJoinedSharedGroupTest {
         @Test
         @DisplayName("参加している共有グループを取得する")
-        fun getParticipatingSharedGroup() {
+        fun getJoinedSharedGroup() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId))
 
             //when:
-            val actual = sharedGroupQueryService.findParticipatingSharedGroup(requesterAccountId)
+            val actual = sharedGroupQueryService.findJoinedSharedGroup(requesterAccountId)
 
             //then:
             assertThat(actual).usingRecursiveComparison().isEqualTo(sharedGroup)
@@ -37,12 +37,12 @@ internal class SharedGroupQueryServiceTest(@Autowired private val sharedGroupQue
 
         @Test
         @DisplayName("参加していない共有グループの場合、共有グループの取得に失敗する")
-        fun notParticipatingInSharedGroup_gettingSharedGroupFails() {
+        fun unjoinedSharedGroup_gettingSharedGroupFails() {
             //given:
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId))
 
             //when:
-            val actual = sharedGroupQueryService.findParticipatingSharedGroup(requesterAccountId)
+            val actual = sharedGroupQueryService.findJoinedSharedGroup(requesterAccountId)
 
             //then:
             assertThat(actual).isNull()

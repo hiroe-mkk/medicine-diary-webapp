@@ -18,9 +18,9 @@ annotation class EnableDomainServiceAutoConfiguration {
                 SharedGroupQueryService(sharedGroupRepository)
 
         @Bean
-        fun sharedGroupParticipationService(sharedGroupQueryService: SharedGroupQueryService,
-                                            profileRepository: ProfileRepository): SharedGroupParticipationService {
-            return SharedGroupParticipationService(sharedGroupQueryService, profileRepository)
+        fun sharedGroupJoinService(sharedGroupQueryService: SharedGroupQueryService,
+                                   profileRepository: ProfileRepository): SharedGroupJoinService {
+            return SharedGroupJoinService(sharedGroupQueryService, profileRepository)
         }
 
         @Bean
