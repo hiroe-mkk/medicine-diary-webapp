@@ -84,7 +84,7 @@
         class="button is-link is-rounded is-outlined"
         @click="activateUserSearchModal()"
       >
-        <strong>共有する</strong>
+        <strong>共有グループをつくる</strong>
         <span class="icon fas fa-lg is-flex is-align-items-center mr-0">
           <i class="fa-solid fa-user-plus"></i>
         </span>

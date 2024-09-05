@@ -15,12 +15,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class ShareApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                      @Autowired private val testAccountInserter: TestAccountInserter,
-                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                      @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class SharedGroupCreationApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                    @Autowired private val testAccountInserter: TestAccountInserter,
+                                                    @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                    @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/api/shared-group/share"
+        private const val PATH = "/api/shared-group/create"
     }
 
     private lateinit var user1AccountId: AccountId
@@ -32,8 +32,8 @@ internal class ShareApiControllerTest(@Autowired private val mockMvc: MockMvc,
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有に成功した場合、ステータスコード204のレスポンスを返す")
-    fun shareSucceeds_returnsResponseWithStatus204() {
+    @DisplayName("共有グループの作成に成功した場合、ステータスコード204のレスポンスを返す")
+    fun createSharedGroupSucceeds_returnsResponseWithStatus204() {
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
@@ -45,8 +45,8 @@ internal class ShareApiControllerTest(@Autowired private val mockMvc: MockMvc,
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有に失敗した場合、ステータスコード209のレスポンスを返す")
-    fun shareFails_returnsResponseWithStatus209() {
+    @DisplayName("共有グループの作成に失敗した場合、ステータスコード209のレスポンスを返す")
+    fun createSharedGroupFails_returnsResponseWithStatus209() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         testSharedGroupInserter.insert(members = setOf(userSession.accountId))

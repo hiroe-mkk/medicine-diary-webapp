@@ -99,7 +99,7 @@
                   @click="selected()"
                 >
                   {{
-                    props.sharedGroupId === undefined ? '共有する' : '招待する'
+                    props.sharedGroupId === undefined ? '共有グループをつくる' : '共有グループに招待する'
                   }}
                 </button>
               </p>
@@ -177,7 +177,7 @@ function selected(user) {
 
   const path =
     props.sharedGroupId === undefined
-      ? '/api/shared-group/share'
+      ? '/api/shared-group/create'
       : '/api/shared-group/invite';
   const message =
     props.sharedGroupId === undefined
