@@ -28,8 +28,8 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun invite(invitee: AccountId, inviter: AccountId) {
-        if (!isJoined(inviter)) throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
-        if (isJoined(invitee)) throw InvitationToSharedGroupException("既に共有グループに参加しているユーザーです。")
+        if (!isJoined(inviter)) throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
+        if (isJoined(invitee)) throw SharedGroupInviteFailedException("既に共有グループに参加しているユーザーです。")
 
         invitees += invitee
     }
@@ -39,7 +39,7 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun join(invitee: AccountId) {
-        if (!isInvited(invitee)) throw ParticipationInSharedGroupException("招待されていない共有グループへの参加はできません。")
+        if (!isInvited(invitee)) throw SharedGroupJoinFailedException("招待されていない共有グループへの参加はできません。")
 
         invitees -= invitee
         members += invitee

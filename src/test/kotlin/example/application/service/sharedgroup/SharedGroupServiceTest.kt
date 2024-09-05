@@ -61,7 +61,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.createSharedGroup(user1AccountId, userSession) }
 
             //then:
-            assertThrows<ShareException>(target)
+            assertThrows<SharedGroupCreationFailedException>(target)
         }
 
         @Test
@@ -76,7 +76,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.createSharedGroup(user1AccountId, userSession) }
 
             //then:
-            assertThrows<ShareException>(target)
+            assertThrows<SharedGroupCreationFailedException>(target)
         }
 
         @Test
@@ -91,7 +91,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<ShareException>(target)
+            assertThrows<SharedGroupCreationFailedException>(target)
         }
 
         @Test
@@ -106,7 +106,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<ShareException>(target)
+            assertThrows<SharedGroupCreationFailedException>(target)
         }
     }
 
@@ -141,7 +141,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<InvitationToSharedGroupException>(target)
+            assertThrows<SharedGroupInviteFailedException>(target)
         }
 
         @Test
@@ -158,7 +158,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<InvitationToSharedGroupException>(target)
+            assertThrows<SharedGroupInviteFailedException>(target)
         }
 
         @Test
@@ -174,7 +174,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             }
 
             //then:
-            assertThrows<InvitationToSharedGroupException>(target)
+            assertThrows<SharedGroupInviteFailedException>(target)
         }
     }
 
@@ -207,7 +207,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.joinSharedGroup(sharedGroup.id, userSession) }
 
             //then:
-            assertThrows<ParticipationInSharedGroupException>(target)
+            assertThrows<SharedGroupJoinFailedException>(target)
         }
 
         @Test
@@ -223,7 +223,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.joinSharedGroup(sharedGroup.id, userSession) }
 
             //then:
-            assertThrows<ParticipationInSharedGroupException>(target)
+            assertThrows<SharedGroupJoinFailedException>(target)
         }
 
         @Test
@@ -241,7 +241,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.joinSharedGroup(sharedGroup.id, userSession) }
 
             //then:
-            assertThrows<ParticipationInSharedGroupException>(target)
+            assertThrows<SharedGroupJoinFailedException>(target)
         }
     }
 

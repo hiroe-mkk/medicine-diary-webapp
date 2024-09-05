@@ -8,13 +8,13 @@ import org.springframework.stereotype.*
 class SharedGroupJoinService(private val sharedGroupQueryService: SharedGroupQueryService,
                              private val profileRepository: ProfileRepository) {
     fun requireSharePossible(accountId: AccountId) {
-        if (isJoinedSharedGroup(accountId)) throw ShareException("参加できる共有グループは1つまでです。")
-        if (isUsernameDefaultValue(accountId)) throw ShareException("ユーザー名が設定されていません。")
+        if (isJoinedSharedGroup(accountId)) throw SharedGroupCreationFailedException("参加できる共有グループは1つまでです。")
+        if (isUsernameDefaultValue(accountId)) throw SharedGroupCreationFailedException("ユーザー名が設定されていません。")
     }
 
     fun requireJoinPossible(invitee: AccountId) {
-        if (isJoinedSharedGroup(invitee)) throw ParticipationInSharedGroupException("参加できる共有グループは1つまでです。")
-        if (isUsernameDefaultValue(invitee)) throw ParticipationInSharedGroupException("ユーザー名が設定されていません。")
+        if (isJoinedSharedGroup(invitee)) throw SharedGroupJoinFailedException("参加できる共有グループは1つまでです。")
+        if (isUsernameDefaultValue(invitee)) throw SharedGroupJoinFailedException("ユーザー名が設定されていません。")
     }
 
     private fun isJoinedSharedGroup(accountId: AccountId): Boolean {

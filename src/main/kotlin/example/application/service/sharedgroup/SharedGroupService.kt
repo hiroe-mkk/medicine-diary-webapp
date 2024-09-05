@@ -17,7 +17,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループを作る
      */
     fun createSharedGroup(invitee: AccountId, userSession: UserSession): SharedGroupId {
-        accountRepository.findById(invitee) ?: throw ShareException("ユーザーが見つかりませんでした。")
+        accountRepository.findById(invitee)
+        ?: throw SharedGroupCreationFailedException("ユーザーが見つかりませんでした。")
         sharedGroupJoinService.requireSharePossible(userSession.accountId)
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
@@ -31,10 +32,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに招待する
      */
     fun inviteToSharedGroup(sharedGroupId: SharedGroupId, invitee: AccountId, userSession: UserSession) {
-        accountRepository.findById(invitee) ?: throw InvitationToSharedGroupException("ユーザーが見つかりませんでした。")
+        accountRepository.findById(invitee) ?: throw SharedGroupInviteFailedException("ユーザーが見つかりませんでした。")
         val joinedSharedGroup = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)
                                     ?.let { if (it.id == sharedGroupId) it else null }
-                                ?: throw InvitationToSharedGroupException("参加していない共有グループへの招待はできません。")
+                                ?: throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
 
         joinedSharedGroup.invite(invitee, userSession.accountId)
         sharedGroupRepository.save(joinedSharedGroup)
@@ -46,7 +47,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     fun joinSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
         val invitedSharedGroup = sharedGroupQueryService.findInvitedSharedGroups(userSession.accountId)
                                      .find { it.id == sharedGroupId }
-                                 ?: throw ParticipationInSharedGroupException("招待されていない共有グループへの参加はできません")
+                                 ?: throw SharedGroupJoinFailedException("招待されていない共有グループへの参加はできません")
         sharedGroupJoinService.requireJoinPossible(userSession.accountId)
 
         invitedSharedGroup.join(userSession.accountId)
