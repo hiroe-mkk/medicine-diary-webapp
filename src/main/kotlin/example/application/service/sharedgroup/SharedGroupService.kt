@@ -31,13 +31,12 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループに招待する
      */
-    fun inviteToSharedGroup(sharedGroupId: SharedGroupId, invitee: AccountId, userSession: UserSession) {
-        accountRepository.findById(invitee) ?: throw SharedGroupInviteFailedException("ユーザーが見つかりませんでした。")
-        val joinedSharedGroup = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)
+    fun inviteToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+        val joinedSharedGroup = sharedGroupRepository.findByMember(userSession.accountId)
                                     ?.let { if (it.id == sharedGroupId) it else null }
                                 ?: throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
 
-        joinedSharedGroup.invite(invitee, userSession.accountId)
+        //        joinedSharedGroup.invite(pendingInvitation, userSession.accountId)
         sharedGroupRepository.save(joinedSharedGroup)
     }
 

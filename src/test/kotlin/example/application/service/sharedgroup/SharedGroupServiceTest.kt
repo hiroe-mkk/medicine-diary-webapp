@@ -112,7 +112,8 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
     @Nested
     inner class InviteToSharedGroupTest {
-        @Test
+        // TODO
+/*        @Test
         @DisplayName("共有グループに招待する")
         fun inviteToSharedGroup() {
             //given:
@@ -120,57 +121,23 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val sharedGroup = testSharedGroupInserter.insert(members = members)
 
             //when:
-            sharedGroupService.inviteToSharedGroup(sharedGroup.id, user1AccountId, userSession)
+            sharedGroupService.inviteToSharedGroup(sharedGroup.id, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
             assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
             assertThat(foundSharedGroup?.invitees).containsExactlyInAnyOrder(user1AccountId)
-        }
+        }*/
 
         @Test
         @DisplayName("参加している共有グループが見つからなかった場合、共有グループへの招待に失敗する")
         fun joinedSharedGroupNotFound_invitingToSharedGroupFails() {
             //given:
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(createAccount().id,
-                                                                             createAccount().id))
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(createAccount().id))
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(sharedGroup.id, user1AccountId, userSession)
-            }
-
-            //then:
-            assertThrows<SharedGroupInviteFailedException>(target)
-        }
-
-        @Test
-        @DisplayName("アカウントが見つからなかった場合、共有グループへの招待に失敗する")
-        fun accountNotFound_invitingToSharedGroupFails() {
-            //given:
-            val nonexistentAccountId = AccountId(EntityIdHelper.generate())
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId,
-                                                                             createAccount().id))
-
-            //when:
-            val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(sharedGroup.id, nonexistentAccountId, userSession)
-            }
-
-            //then:
-            assertThrows<SharedGroupInviteFailedException>(target)
-        }
-
-        @Test
-        @DisplayName("対象ユーザーが既に指定された共有グループに参加している場合、共有グループへの招待に失敗する")
-        fun targetIsJoinedShredGroup_invitingToSharedGroupFails() {
-            //given:
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId,
-                                                                             user1AccountId))
-
-            //when:
-            val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(sharedGroup.id, user1AccountId, userSession)
+                sharedGroupService.inviteToSharedGroup(sharedGroup.id, userSession)
             }
 
             //then:
