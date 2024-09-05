@@ -18,14 +18,14 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                       @Autowired private val accountRepository: AccountRepository,
                                       @Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                       @Autowired private val sharedGroupParticipationService: SharedGroupParticipationService,
-                                      @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
+                                      @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
     private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
                                                                             accountRepository,
                                                                             sharedGroupQueryService,
                                                                             sharedGroupParticipationService,
-                                                                            sharedGroupUnshareService)
+                                                                            sharedGroupLeaveService)
 
     private lateinit var userSession: UserSession
     private lateinit var user1AccountId: AccountId

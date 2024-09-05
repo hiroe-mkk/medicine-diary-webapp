@@ -10,14 +10,14 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
-internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
-                                             @Autowired private val medicineRepository: MedicineRepository,
-                                             @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                                             @Autowired private val sharedGroupUnshareService: SharedGroupUnshareService,
-                                             @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                             @Autowired private val testAccountInserter: TestAccountInserter,
-                                             @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                             @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
+internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                           @Autowired private val medicineRepository: MedicineRepository,
+                                           @Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                           @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
+                                           @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                           @Autowired private val testAccountInserter: TestAccountInserter,
+                                           @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                           @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
     private lateinit var userAccountIds: List<AccountId>
 
@@ -29,8 +29,8 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
     }
 
     @Test
-    @DisplayName("全ての招待を拒否し、共有を停止する")
-    fun rejectAllInvitationAndUnshare() {
+    @DisplayName("共有グループから脱退し、全ての招待を拒否する")
+    fun leaveSharedGroupAndRejectAllInvitation() {
         //given:
         val participatingSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]),
@@ -39,7 +39,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
                                                                 invitees = setOf(requesterAccountId))
 
         //when:
-        sharedGroupUnshareService.rejectAllInvitationAndUnshare(requesterAccountId)
+        sharedGroupLeaveService.leaveAndRejectAllInvitation(requesterAccountId)
 
         //then:
         val foundParticipatedSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
@@ -51,8 +51,8 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
     }
 
     @Test
-    @DisplayName("薬を複製し、共有を停止する")
-    fun cloneSharedGroupMedicinesAndUnshare() {
+    @DisplayName("薬を複製し、共有グループから脱退する")
+    fun leaveAndCloneMedicines() {
         //given:
         val participatingSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
@@ -60,7 +60,7 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
-        sharedGroupUnshareService.cloneSharedGroupMedicinesAndUnshare(requesterAccountId)
+        sharedGroupLeaveService.leaveAndCloneMedicines(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
@@ -77,15 +77,15 @@ internal class SharedGroupUnshareServiceTest(@Autowired private val sharedGroupR
     }
 
     @Test
-    @DisplayName("共有を停止するとメンバー数が0になる場合、共有グループは削除される")
-    fun membersEmptyAfterUnshare_sharedGroupIsDeleted() {
+    @DisplayName("共有グループから脱退するとメンバー数が0になる場合、共有グループは削除される")
+    fun membersEmptyAfterLeaveSharedGroup_sharedGroupIsDeleted() {
         //given:
         val participatingSharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId),
                                                                       invitees = setOf(userAccountIds[0]))
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(participatingSharedGroup.id))
 
         //when:
-        sharedGroupUnshareService.cloneSharedGroupMedicinesAndUnshare(requesterAccountId)
+        sharedGroupLeaveService.leaveAndCloneMedicines(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)

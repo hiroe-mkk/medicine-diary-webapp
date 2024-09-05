@@ -24,22 +24,22 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun sharedGroupUnshareService(sharedGroupRepository: SharedGroupRepository,
-                                      medicineRepository: MedicineRepository,
-                                      medicineImageStorage: MedicineImageStorage,
-                                      medicationRecordRepository: MedicationRecordRepository,
-                                      medicineQueryService: MedicineQueryService,
-                                      medicineDeletionService: MedicineDeletionService,
-                                      sharedGroupQueryService: SharedGroupQueryService,
-                                      medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupUnshareService {
-            return SharedGroupUnshareService(sharedGroupRepository,
-                                             medicineRepository,
-                                             medicineImageStorage,
-                                             medicationRecordRepository,
-                                             sharedGroupQueryService,
-                                             medicineQueryService,
-                                             medicineOwnerCreationService,
-                                             medicineDeletionService)
+        fun sharedGroupLeaveService(sharedGroupRepository: SharedGroupRepository,
+                                    medicineRepository: MedicineRepository,
+                                    medicineImageStorage: MedicineImageStorage,
+                                    medicationRecordRepository: MedicationRecordRepository,
+                                    medicineQueryService: MedicineQueryService,
+                                    medicineDeletionService: MedicineDeletionService,
+                                    sharedGroupQueryService: SharedGroupQueryService,
+                                    medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupLeaveService {
+            return SharedGroupLeaveService(sharedGroupRepository,
+                                           medicineRepository,
+                                           medicineImageStorage,
+                                           medicationRecordRepository,
+                                           sharedGroupQueryService,
+                                           medicineQueryService,
+                                           medicineOwnerCreationService,
+                                           medicineDeletionService)
         }
 
         @Bean

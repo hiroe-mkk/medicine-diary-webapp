@@ -12,7 +12,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
                          private val accountRepository: AccountRepository,
                          private val sharedGroupQueryService: SharedGroupQueryService,
                          private val sharedGroupParticipationService: SharedGroupParticipationService,
-                         private val sharedGroupUnshareService: SharedGroupUnshareService) {
+                         private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
      * 共有グループを作る
      */
@@ -75,10 +75,10 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
-     * 共有を停止する
+     * 共有グループから脱退する
      */
-    fun unshare(userSession: UserSession) {
-        return sharedGroupUnshareService.cloneSharedGroupMedicinesAndUnshare(userSession.accountId)
+    fun leaveSharedGroup(userSession: UserSession) {
+        return sharedGroupLeaveService.leaveAndCloneMedicines(userSession.accountId)
     }
 
     /**

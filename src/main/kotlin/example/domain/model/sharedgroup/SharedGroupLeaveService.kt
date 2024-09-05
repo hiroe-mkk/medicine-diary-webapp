@@ -7,15 +7,15 @@ import example.domain.model.medicine.medicineimage.*
 import org.springframework.stereotype.*
 
 @Component
-class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRepository,
-                                private val medicineRepository: MedicineRepository,
-                                private val medicineImageStorage: MedicineImageStorage,
-                                private val medicationRecordRepository: MedicationRecordRepository,
-                                private val sharedGroupQueryService: SharedGroupQueryService,
-                                private val medicineQueryService: MedicineQueryService,
-                                private val medicineOwnerCreationService: MedicineOwnerCreationService,
-                                private val medicineDeletionService: MedicineDeletionService) {
-    fun cloneSharedGroupMedicinesAndUnshare(accountId: AccountId) {
+class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepository,
+                              private val medicineRepository: MedicineRepository,
+                              private val medicineImageStorage: MedicineImageStorage,
+                              private val medicationRecordRepository: MedicationRecordRepository,
+                              private val sharedGroupQueryService: SharedGroupQueryService,
+                              private val medicineQueryService: MedicineQueryService,
+                              private val medicineOwnerCreationService: MedicineOwnerCreationService,
+                              private val medicineDeletionService: MedicineDeletionService) {
+    fun leaveAndCloneMedicines(accountId: AccountId) {
         val sharedGroupMedicines = medicineQueryService.findAllSharedGroupMedicines(accountId)
         sharedGroupMedicines.forEach { sharedGroupMedicine ->
             val newMedicineOwner = medicineOwnerCreationService.createAccountOwner(accountId)
@@ -35,22 +35,22 @@ class SharedGroupUnshareService(private val sharedGroupRepository: SharedGroupRe
             medicationRecordRepository.saveAll(medicationRecords)
         }
 
-        unshare(accountId)
+        leaveSharedGroup(accountId)
     }
 
-    fun rejectAllInvitationAndUnshare(accountId: AccountId) {
+    fun leaveAndRejectAllInvitation(accountId: AccountId) {
         val invitedSharedGroups = sharedGroupQueryService.findInvitedSharedGroups(accountId)
         invitedSharedGroups.forEach {
             it.rejectInvitation(accountId)
             sharedGroupRepository.save(it)
         }
 
-        unshare(accountId)
+        leaveSharedGroup(accountId)
     }
 
-    private fun unshare(accountId: AccountId) {
+    private fun leaveSharedGroup(accountId: AccountId) {
         val sharedGroup = sharedGroupQueryService.findParticipatingSharedGroup(accountId) ?: return
-        sharedGroup.unshare(accountId)
+        sharedGroup.leave(accountId)
         if (sharedGroup.shouldDelete()) {
             medicineDeletionService.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)
             sharedGroupRepository.deleteById(sharedGroup.id)

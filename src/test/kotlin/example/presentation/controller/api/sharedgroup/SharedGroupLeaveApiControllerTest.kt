@@ -13,12 +13,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class UnshareApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                        @Autowired private val testAccountInserter: TestAccountInserter,
-                                        @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                        @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class SharedGroupLeaveApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                 @Autowired private val testAccountInserter: TestAccountInserter,
+                                                 @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                                 @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
-        private const val PATH = "/api/shared-group/unshare"
+        private const val PATH = "/api/shared-group/leave"
     }
 
     private lateinit var user1AccountId: AccountId
@@ -30,8 +30,8 @@ internal class UnshareApiControllerTest(@Autowired private val mockMvc: MockMvc,
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有停止に成功した場合、ステータスコード204のレスポンスを返す")
-    fun unshareSucceeds_returnsResponseWithStatus204() {
+    @DisplayName("共有グループからの脱退に成功した場合、ステータスコード204のレスポンスを返す")
+    fun sharedGroupLeaveSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId))
