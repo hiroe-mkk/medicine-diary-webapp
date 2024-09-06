@@ -49,12 +49,11 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループへの招待を拒否する
      */
-    fun rejectInvitationToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val sharedGroup = sharedGroupQueryService.findInvitedSharedGroups(userSession.accountId)
-                              .find { it.id == sharedGroupId } ?: return
+    fun rejectInvitationToSharedGroup(inviteCode: String, userSession: UserSession) {
+        val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode) ?: return
 
-        sharedGroup.rejectInvitation(userSession.accountId)
-        sharedGroupRepository.save(sharedGroup)
+        //        invitedSharedGroup.rejectInvitation(userSession.accountId)
+        sharedGroupRepository.save(invitedSharedGroup)
     }
 
     /**

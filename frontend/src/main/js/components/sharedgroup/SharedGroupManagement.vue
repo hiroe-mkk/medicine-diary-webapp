@@ -27,7 +27,7 @@
             <button
               type="button"
               class="button is-small is-rounded is-outlined is-link"
-              @click="join(invitedSharedGroup.sharedGroupId)"
+              @click="join()"
               :disabled="joinedSharedGroup.value !== undefined"
             >
               参加する
@@ -224,10 +224,11 @@ function loadSharedGroup() {
     });
 }
 
-function join(sharedGroupId) {
+function join() {
   const form = new FormData();
   form.set('_csrf', props.csrf);
-  form.set('sharedGroupId', sharedGroupId);
+  // TODO
+  form.set('code', 'invitedCode');
 
   HttpRequestClient.submitPostRequest('/api/shared-group/join', form)
     .then(() => {
