@@ -1,5 +1,5 @@
 <template>
-  <div class="content" v-if="joinedSharedGroup.id === undefined">
+  <div class="content" v-if="joinedSharedGroupId === undefined">
     <div class="notification is-white py-5 px-6">
       <div class="block">
         <p>
@@ -42,16 +42,13 @@
     </div>
   </div>
 
-  <div v-if="joinedSharedGroup.id !== undefined">
+  <div v-if="joinedSharedGroupId !== undefined">
     <div class="notification is-white is-inline-block py-4 px-6">
       <p class="has-text-weight-semibold has-text-grey-dark pb-4">
         現在参加している共有グループ
       </p>
-      <SharedGroup
-        :sharedGroupMembers="joinedSharedGroup.members"
-        :isJoined="true"
-        :csrf="props.csrf"
-      ></SharedGroup>
+      <Members :joinedSharedGroupId="joinedSharedGroupId"></Members>
+
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">
           <span class="button is-small is-rounded is-outlined is-link">
@@ -122,12 +119,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, inject } from 'vue';
+import { ref, inject } from 'vue';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
-import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
+import Members from '@main/js/components/sharedgroup/Members.vue';
 
 const props = defineProps({
   joinedSharedGroupId: { type: String, default: undefined },
@@ -135,26 +132,9 @@ const props = defineProps({
 });
 const activateResultMessage = inject('activateResultMessage');
 
-const joinedSharedGroup = reactive({
-  id: props.joinedSharedGroupId,
-  members: [],
-});
+const joinedSharedGroupId = ref(props.joinedSharedGroupId);
 
 const isLeaveSharedGroupConfirmationModalActive = ref(false);
-
-onMounted(async () => {
-  if (joinedSharedGroup.id === undefined) return;
-
-  HttpRequestClient.submitGetRequest(
-    `/api/users?sharedGroupId=${joinedSharedGroup.id}`
-  )
-    .then((data) => {
-      joinedSharedGroup.members = data.users;
-    })
-    .catch(() => {
-      handleError(error);
-    });
-});
 
 function leaveSharedGroup() {
   const form = new FormData();
@@ -164,8 +144,7 @@ function leaveSharedGroup() {
     .then(() => {
       activateResultMessage('INFO', `共有グループから脱退しました。`);
       isLeaveSharedGroupConfirmationModalActive.value = false;
-      joinedSharedGroup.id = undefined;
-      joinedSharedGroup.members = [];
+      joinedSharedGroupId.value = undefined;
     })
     .catch((error) => {
       if (error instanceof HttpRequestFailedError) {
