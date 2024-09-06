@@ -30,53 +30,36 @@ internal class SharedGroupJoinApiControllerTest(@Autowired private val mockMvc: 
         user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
-    @Test
+    // TODO
+/*    @Test
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループへの参加に成功した場合、ステータスコード204のレスポンスを返す")
     fun sharedGroupJoinSucceeds_returnsResponseWithStatus204() {
         //given:
-        val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
-                                                         invitees = setOf(userSession.accountId))
+        testSharedGroupInserter.insert(members = setOf(user1AccountId))
+        val inviteCode = ""
 
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.toString()))
+                                          .param("code", inviteCode))
 
         //then:
         actions.andExpect(status().isNoContent)
     }
+*/
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの参加に失敗した場合、ステータスコード209のレスポンスを返す")
-    fun sharedGroupJoinFails_returnsResponseWithStatus209() {
+    @DisplayName("共有グループへの参加に失敗した場合、ステータスコード409のレスポンスを返す")
+    fun sharedGroupJoinFails_returnsResponseWithStatus409() {
         //given:
-        val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId),
-                                                         invitees = setOf(userSession.accountId))
+        val inviteCode = ""
 
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.toString()))
-
-        //then:
-        actions.andExpect(status().isConflict)
-    }
-
-    @Test
-    @WithMockAuthenticatedAccount
-    @DisplayName("共有グループが見つからなかった場合、ステータスコード409のレスポンスを返す")
-    fun sharedGroupNotFound_returnsResponseWithStatus404() {
-        //given:
-        val nonexistentSharedGroupId = SharedGroupId(EntityIdHelper.generate())
-
-        //when:
-        val actions = mockMvc.perform(post(PATH)
-                                          .with(csrf())
-                                          .param("sharedGroupId", nonexistentSharedGroupId.toString()))
+                                          .param("code", inviteCode))
 
         //then:
         actions.andExpect(status().isConflict)

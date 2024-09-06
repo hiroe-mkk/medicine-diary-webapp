@@ -7,6 +7,8 @@ interface SharedGroupRepository {
 
     fun findById(sharedGroupId: SharedGroupId): SharedGroup?
 
+    fun findByInviteCode(inviteCode: String): SharedGroup?
+
     fun findByMember(accountId: AccountId): SharedGroup?
 
     fun findByInvitee(accountId: AccountId): Set<SharedGroup>

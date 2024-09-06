@@ -15,6 +15,11 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         return sharedGroupMapper.findOneBySharedGroupId(sharedGroupId.value)?.toSharedGroup()
     }
 
+    override fun findByInviteCode(inviteCode: String): SharedGroup? {
+        // TODO
+        return null
+    }
+
     override fun findByMember(accountId: AccountId): SharedGroup? {
         return sharedGroupMapper.findOneByMember(accountId.value)?.toSharedGroup()
     }

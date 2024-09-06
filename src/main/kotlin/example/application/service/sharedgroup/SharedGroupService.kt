@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val sharedGroupQueryService: SharedGroupQueryService,
-                         private val sharedGroupJoinService: SharedGroupJoinService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
      * 共有グループを作る
@@ -38,13 +37,12 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループに参加する
      */
-    fun joinSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
-        val invitedSharedGroup = sharedGroupQueryService.findInvitedSharedGroups(userSession.accountId)
-                                     .find { it.id == sharedGroupId }
-                                 ?: throw SharedGroupJoinFailedException("招待されていない共有グループへの参加はできません")
-        sharedGroupJoinService.requireJoinPossible(userSession.accountId)
+    fun joinSharedGroup(inviteCode: String, userSession: UserSession) {
+        if (isJoinedSharedGroup(userSession)) throw SharedGroupJoinFailedException("参加できる共有グループは1つまでです。")
+        val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode)
+                                 ?: throw SharedGroupJoinFailedException("現在、このグループからは招待されていません。")
 
-        invitedSharedGroup.join(userSession.accountId)
+        //        invitedSharedGroup.join(userSession.accountId)
         sharedGroupRepository.save(invitedSharedGroup)
     }
 

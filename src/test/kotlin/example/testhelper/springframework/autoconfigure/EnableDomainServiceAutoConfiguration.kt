@@ -1,6 +1,5 @@
 package example.testhelper.springframework.autoconfigure
 
-import example.domain.model.account.profile.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
@@ -16,12 +15,6 @@ annotation class EnableDomainServiceAutoConfiguration {
         @Bean
         fun sharedGroupQueryService(sharedGroupRepository: SharedGroupRepository): SharedGroupQueryService =
                 SharedGroupQueryService(sharedGroupRepository)
-
-        @Bean
-        fun sharedGroupJoinService(sharedGroupQueryService: SharedGroupQueryService,
-                                   profileRepository: ProfileRepository): SharedGroupJoinService {
-            return SharedGroupJoinService(sharedGroupQueryService, profileRepository)
-        }
 
         @Bean
         fun sharedGroupLeaveService(sharedGroupRepository: SharedGroupRepository,
