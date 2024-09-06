@@ -51,7 +51,7 @@
       </div>
       <a
         class="panel-block has-background-white is-flex is-justify-content-space-between is-clickable"
-        href="/shared-group/management"
+        href="/shared-group"
       >
         <span class="icon-text">
           <span class="icon has-text-link ml-3">
