@@ -1,5 +1,7 @@
 package example.presentation.controller.api.sharedgroup
 
+import example.presentation.shared.usersession.*
+import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
 import org.junit.jupiter.api.*
@@ -9,7 +11,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class SharedGroupApiControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class SharedGroupApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                            @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                            @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/shared-group"
     }
@@ -18,6 +22,10 @@ internal class SharedGroupApiControllerTest(@Autowired private val mockMvc: Mock
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループを取得する")
     fun getSharedGroup() {
+        //given:
+        val userSession = userSessionProvider.getUserSessionOrElseThrow()
+        testSharedGroupInserter.insert(members = setOf(userSession.accountId))
+
         //when:
         val actions = mockMvc.perform(get(PATH))
 

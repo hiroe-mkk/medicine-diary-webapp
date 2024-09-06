@@ -1,17 +1,20 @@
 package example.domain.model.sharedgroup
 
 import example.domain.model.account.*
+import java.time.*
 
 /**
  * 共有グループ
  */
 class SharedGroup(val id: SharedGroupId,
                   members: Set<AccountId>,
-                  invitees: Set<AccountId>) {
+                  pendingInvitations: Set<PendingInvitation>) {
     var members: Set<AccountId> = members
         private set
-    var invitees: Set<AccountId> = invitees
+    var pendingInvitations: Set<PendingInvitation> = pendingInvitations
         private set
+
+    fun isJoined(accountId: AccountId): Boolean = members.contains(accountId)
 
     companion object {
         fun create(id: SharedGroupId, accountId: AccountId): SharedGroup {
@@ -19,33 +22,35 @@ class SharedGroup(val id: SharedGroupId,
         }
     }
 
-    fun isJoined(accountId: AccountId): Boolean = members.contains(accountId)
-
-    fun isInvited(accountId: AccountId): Boolean = invitees.contains(accountId)
-
     fun shouldDelete(): Boolean {
         return members.isEmpty()
     }
 
-    fun invite(invitee: AccountId, inviter: AccountId) {
-        if (!isJoined(inviter)) throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
-        if (isJoined(invitee)) throw SharedGroupInviteFailedException("既に共有グループに参加しているユーザーです。")
+    fun invite(pendingInvitation: PendingInvitation, requester: AccountId) {
+        if (!isJoined(requester)) throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
 
-        invitees += invitee
+        pendingInvitations += pendingInvitation
     }
 
-    fun rejectInvitation(invitee: AccountId) {
-        invitees -= invitee
+    fun reject(inviteCode: String) {
+        val pendingInvitation = pendingInvitations.find { it.inviteCode == inviteCode } ?: return
+
+        pendingInvitations -= pendingInvitation
     }
 
-    fun join(invitee: AccountId) {
-        if (!isInvited(invitee)) throw SharedGroupJoinFailedException("招待されていない共有グループへの参加はできません。")
+    fun join(inviteCode: String, requester: AccountId, date: LocalDate) {
+        if (isJoined(requester)) throw SharedGroupJoinFailedException("現在、このグループに参加中です。")
 
-        invitees -= invitee
-        members += invitee
+        val pendingInvitation = pendingInvitations.find { it.inviteCode == inviteCode }
+        if (pendingInvitation == null || !pendingInvitation.isValid(date)) {
+            throw SharedGroupJoinFailedException("現在、このグループからは招待されていません。")
+        }
+
+        pendingInvitations -= pendingInvitation
+        members += requester
     }
 
-    fun leave(member: AccountId) {
-        members -= member
+    fun leave(requester: AccountId) {
+        members -= requester
     }
 }

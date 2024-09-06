@@ -3,6 +3,7 @@ package example.domain.model.sharedgroup
 import example.domain.model.account.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
+import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
@@ -29,30 +30,23 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     }
 
     @Test
-    @DisplayName("共有グループから脱退し、全ての招待を拒否する")
-    fun leaveSharedGroupAndRejectAllInvitation() {
+    @DisplayName("共有グループから脱退する")
+    fun leaveSharedGroup() {
         //given:
-        val joinedSharedGroup =
-                testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]),
-                                               invitees = setOf(userAccountIds[1]))
-        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(userAccountIds[1]),
-                                                                invitees = setOf(requesterAccountId))
+        val participatingSharedGroup =
+                testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
 
         //when:
-        sharedGroupLeaveService.leaveAndRejectAllInvitation(requesterAccountId)
+        sharedGroupLeaveService.leaveSharedGroup(requesterAccountId)
 
         //then:
-        val foundLeftSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)
-        assertThat(foundLeftSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[0])
-        assertThat(foundLeftSharedGroup?.invitees).containsExactlyInAnyOrder(userAccountIds[1])
-        val foundInvitedSharedGroup = sharedGroupRepository.findById(invitedSharedGroup.id)
-        assertThat(foundInvitedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[1])
-        assertThat(foundInvitedSharedGroup?.invitees).isEmpty()
+        val foundParticipatedSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
+        assertThat(foundParticipatedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[0])
     }
 
     @Test
     @DisplayName("薬を複製し、共有グループから脱退する")
-    fun leaveAndCloneMedicines() {
+    fun leaveSharedGroupAndCloneMedicines() {
         //given:
         val joinedSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
@@ -60,7 +54,7 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
-        sharedGroupLeaveService.leaveAndCloneMedicines(requesterAccountId)
+        sharedGroupLeaveService.leaveSharedGroupAndCloneMedicines(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)
@@ -81,11 +75,12 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     fun membersEmptyAfterLeaveSharedGroup_sharedGroupIsDeleted() {
         //given:
         val joinedSharedGroup = testSharedGroupInserter.insert(members = setOf(requesterAccountId),
-                                                               invitees = setOf(userAccountIds[0]))
+                                                               pendingInvitations = setOf(
+                                                                       SharedGroupFactory.createPendingInvitation()))
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(joinedSharedGroup.id))
 
         //when:
-        sharedGroupLeaveService.leaveAndCloneMedicines(requesterAccountId)
+        sharedGroupLeaveService.leaveSharedGroupAndCloneMedicines(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)

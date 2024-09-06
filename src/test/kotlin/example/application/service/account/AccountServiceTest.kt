@@ -73,7 +73,8 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         val userSession = UserSessionFactory.create(requesterAccountId)
         testSharedGroupInserter.insert(members = setOf(requesterAccountId))
         testSharedGroupInserter.insert(members = setOf(testAccountInserter.insertAccountAndProfile().first.id),
-                                       invitees = setOf(requesterAccountId))
+                                       pendingInvitations = setOf(
+                                               SharedGroupFactory.createPendingInvitation()))
         val medicine = testMedicineInserter.insert(MedicineOwner.create(requesterAccountId))
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
@@ -88,8 +89,6 @@ internal class AccountServiceTest(@Autowired private val accountRepository: Acco
         assertThat(foundProfile).isNull()
         val foundJoinedSharedGroup = sharedGroupRepository.findByMember(requesterAccountId)
         assertThat(foundJoinedSharedGroup).isNull()
-        val foundInvitedSharedGroup = sharedGroupRepository.findByInvitee(requesterAccountId)
-        assertThat(foundInvitedSharedGroup).isEmpty()
         val foundMedicine = medicineRepository.findById(medicine.id)
         assertThat(foundMedicine).isNull()
         val foundMedicationRecord = medicationRecordRepository.findById(medicationRecord.id)

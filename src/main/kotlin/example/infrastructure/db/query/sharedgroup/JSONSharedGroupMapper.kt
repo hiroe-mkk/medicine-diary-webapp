@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.*
 
 @Mapper
 interface JSONSharedGroupMapper {
-    fun findAllByAccountId(accountId: String): Set<JSONSharedGroup>
+    fun findOneByMember(accountId: String): JSONSharedGroup
 }

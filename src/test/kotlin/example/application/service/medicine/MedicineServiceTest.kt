@@ -7,22 +7,19 @@ import example.domain.shared.type.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
-import io.mockk.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import java.time.*
 
 @DomainLayerTest
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
+                                   @Autowired private val localDateTimeProvider: LocalDateTimeProvider,
                                    @Autowired private val medicineQueryService: MedicineQueryService,
                                    @Autowired private val medicineCreationService: MedicineCreationService,
                                    @Autowired private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
                                    @Autowired private val medicineDeletionService: MedicineDeletionService,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
-                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                   @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
-    private val localDateTimeProvider: LocalDateTimeProvider = mockk()
+                                   @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val medicineService: MedicineService = MedicineService(medicineRepository,
                                                                    localDateTimeProvider,
                                                                    medicineQueryService,
@@ -87,8 +84,6 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
         fun registerMedicine() {
             //given:
             val command = TestMedicineFactory.createCompletedRegistrationMedicineBasicInfoEditCommand()
-            val localDateTime = LocalDateTime.of(2020, 1, 1, 0, 0)
-            every { localDateTimeProvider.now() } returns localDateTime
 
             //when:
             val medicineId = medicineService.registerMedicine(command, userSession)
@@ -104,7 +99,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                     null,
                                     command.isPublic,
                                     null,
-                                    localDateTime)
+                                    localDateTimeProvider.now())
             assertThat(foundMedicine).usingRecursiveComparison().isEqualTo(expected)
         }
     }

@@ -4,7 +4,7 @@ import example.application.shared.usersession.*
 
 interface JSONSharedGroupQueryService {
     /**
-     * 共有グループ一覧を取得する
+     * 参加している共有グループを取得する
      */
-    fun findJSONSharedGroup(userSession: UserSession): JSONSharedGroups
+    fun findJSONJoinedSharedGroup(userSession: UserSession): JSONSharedGroup
 }

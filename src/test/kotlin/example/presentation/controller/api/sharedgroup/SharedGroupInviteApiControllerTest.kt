@@ -1,9 +1,9 @@
 package example.presentation.controller.api.sharedgroup
 
-import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
+import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
@@ -16,28 +16,21 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
 internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                  @Autowired private val testAccountInserter: TestAccountInserter,
                                                   @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                   @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/shared-group/invite"
     }
 
-    private lateinit var user1AccountId: AccountId
-
-    @BeforeEach
-    internal fun setUp() {
-        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
-    }
-
-    // TODO
-/*    @Test
+    @Test
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループへの招待に成功した場合、ステータスコード204のレスポンスを返す")
     fun sharedGroupInviteSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId))
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId),
+                                                         pendingInvitations = setOf(
+                                                                 SharedGroupFactory.createPendingInvitation()))
 
         //when:
         val actions = mockMvc.perform(post(PATH)
@@ -46,7 +39,7 @@ internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc
 
         //then:
         actions.andExpect(status().isNoContent)
-    }*/
+    }
 
     @Test
     @WithMockAuthenticatedAccount

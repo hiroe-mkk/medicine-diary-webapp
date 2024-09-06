@@ -1,6 +1,5 @@
 package example.presentation.controller.api.sharedgroup
 
-import example.domain.model.account.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -14,18 +13,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
 internal class SharedGroupLeaveApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                 @Autowired private val testAccountInserter: TestAccountInserter,
                                                  @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                                  @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/shared-group/leave"
-    }
-
-    private lateinit var user1AccountId: AccountId
-
-    @BeforeEach
-    internal fun setUp() {
-        user1AccountId = testAccountInserter.insertAccountAndProfile().first.id
     }
 
     @Test
@@ -34,7 +25,7 @@ internal class SharedGroupLeaveApiControllerTest(@Autowired private val mockMvc:
     fun sharedGroupLeaveSucceeds_returnsResponseWithStatus204() {
         //given:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        testSharedGroupInserter.insert(members = setOf(user1AccountId, userSession.accountId))
+        testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
         //when:
         val actions = mockMvc.perform(post(PATH)

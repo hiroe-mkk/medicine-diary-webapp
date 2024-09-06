@@ -1,5 +1,5 @@
 <template>
-  <div class="content" v-if="invitedSharedGroups.length !== 0">
+  <!-- <div class="content" v-if="invitedSharedGroups.length !== 0">
     <div
       class="message is-link is-inline-block"
       v-for="invitedSharedGroup in invitedSharedGroups"
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="content" v-if="joinedSharedGroup.value === undefined">
     <div class="notification is-white py-5 px-6">
@@ -99,10 +99,7 @@
 
   <div v-if="joinedSharedGroup.value !== undefined">
     <div class="notification is-white is-inline-block py-4 px-6">
-      <p
-        class="has-text-weight-semibold has-text-grey-dark pb-4"
-        v-if="invitedSharedGroups.length !== 0"
-      >
+      <p class="has-text-weight-semibold has-text-grey-dark pb-4">
         現在参加している共有グループ
       </p>
       <SharedGroup
@@ -157,7 +154,9 @@
           <div class="message-body">
             <div class="content">
               <p class="has-text-centered mb-2">
-                <strong class="is-size-5 mb-1"> ほんとうに共有グループから脱退してよろしいですか？ </strong>
+                <strong class="is-size-5 mb-1">
+                  ほんとうに共有グループから脱退してよろしいですか？
+                </strong>
                 <br />
               </p>
               <div class="field is-grouped is-grouped-centered p-2">
@@ -201,7 +200,6 @@ const props = defineProps({ csrf: String });
 const activateResultMessage = inject('activateResultMessage');
 
 const joinedSharedGroup = reactive({ value: undefined });
-const invitedSharedGroups = reactive([]);
 
 const isLeaveSharedGroupConfirmationModalActive = ref(false);
 const userSearch = ref(null);
@@ -212,12 +210,10 @@ onMounted(async () => {
 
 function loadSharedGroup() {
   joinedSharedGroup.value = undefined;
-  invitedSharedGroups.splice(0, invitedSharedGroups.length);
 
   HttpRequestClient.submitGetRequest('/api/shared-group')
     .then((data) => {
       joinedSharedGroup.value = data.joinedSharedGroup;
-      invitedSharedGroups.push(...data.invitedSharedGroups);
     })
     .catch(() => {
       handleError(error);
@@ -247,10 +243,7 @@ function reject(sharedGroupId) {
 
   HttpRequestClient.submitPostRequest('/api/shared-group/reject', form)
     .then(() => {
-      activateResultMessage(
-        'INFO',
-        `共有グループへの招待を拒否しました。`
-      );
+      activateResultMessage('INFO', `共有グループへの招待を拒否しました。`);
       loadSharedGroup();
     })
     .catch((error) => {

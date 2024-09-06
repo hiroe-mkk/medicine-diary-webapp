@@ -4,7 +4,10 @@ import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
+import example.domain.shared.type.*
+import io.mockk.*
 import org.springframework.context.annotation.*
+import java.time.*
 
 /**
  * ドメインサービスの AutoConfiguration を有効にするアノテーション
@@ -36,11 +39,6 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineOwnerCreationService(sharedGroupRepository: SharedGroupRepository): MedicineOwnerCreationService {
-            return MedicineOwnerCreationService(sharedGroupRepository)
-        }
-
-        @Bean
         fun medicineCreationService(medicineOwnerCreationService: MedicineOwnerCreationService): MedicineCreationService {
             return MedicineCreationService(medicineOwnerCreationService)
         }
@@ -59,6 +57,11 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
+        fun medicineOwnerCreationService(sharedGroupRepository: SharedGroupRepository): MedicineOwnerCreationService {
+            return MedicineOwnerCreationService(sharedGroupRepository)
+        }
+
+        @Bean
         fun medicineDeletionService(medicineRepository: MedicineRepository,
                                     medicationRecordRepository: MedicationRecordRepository,
                                     medicineImageStorage: MedicineImageStorage,
@@ -72,6 +75,14 @@ annotation class EnableDomainServiceAutoConfiguration {
         @Bean
         fun medicationRecordQueryService(medicationRecordRepository: MedicationRecordRepository): MedicationRecordQueryService {
             return MedicationRecordQueryService(medicationRecordRepository)
+        }
+
+        @Bean
+        fun localDateTimeProvider(): LocalDateTimeProvider {
+            val localDateTimeProvider: LocalDateTimeProvider = mockk();
+            every { localDateTimeProvider.now() } returns LocalDateTime.of(2020, 1, 1, 0, 0)
+            every { localDateTimeProvider.today() } returns LocalDate.of(2020, 1, 1)
+            return localDateTimeProvider
         }
     }
 }

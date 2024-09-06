@@ -7,15 +7,13 @@ import org.springframework.boot.test.context.*
 
 @TestComponent
 class TestSharedGroupInserter(private val sharedGroupRepository: SharedGroupRepository) {
-    private var num: Int = 1
-
     /**
      * テスト用の共有グループを生成して、リポジトリに追加する
      */
     fun insert(sharedGroupId: SharedGroupId = SharedGroupId(EntityIdHelper.generate()),
                members: Set<AccountId> = emptySet(),
-               invitees: Set<AccountId> = emptySet()): SharedGroup {
-        val sharedGroup = SharedGroup(sharedGroupId, members, invitees)
+               pendingInvitations: Set<PendingInvitation> = emptySet()): SharedGroup {
+        val sharedGroup = SharedGroup(sharedGroupId, members, pendingInvitations)
         sharedGroupRepository.save(sharedGroup)
         return sharedGroup
     }

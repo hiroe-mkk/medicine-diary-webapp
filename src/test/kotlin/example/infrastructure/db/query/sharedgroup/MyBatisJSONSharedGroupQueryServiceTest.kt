@@ -19,45 +19,25 @@ internal class MyBatisJSONSharedGroupQueryServiceTest(@Autowired private val jso
         //given:
         val requester = testAccountInserter.insertAccountAndProfile().second
         val userSession = UserSessionFactory.create(requester.accountId)
-
-        // 参加している共有グループ
         val (_, member1OfJoinedSharedGroup) = testAccountInserter.insertAccountAndProfile()
         val (_, member2OfJoinedSharedGroup) = testAccountInserter.insertAccountAndProfile()
         val joinedSharedGroup =
                 testSharedGroupInserter.insert(members = setOf(requester.accountId,
                                                                member1OfJoinedSharedGroup.accountId,
                                                                member2OfJoinedSharedGroup.accountId),
-                                               invitees = emptySet())
-
-        // 招待された共有グループ
-        val (_, member1OfInvitedSharedGroup) = testAccountInserter.insertAccountAndProfile()
-        val invitedSharedGroup = testSharedGroupInserter.insert(members = setOf(member1OfInvitedSharedGroup.accountId),
-                                                                invitees = setOf(userSession.accountId))
+                                               pendingInvitations = emptySet())
 
         //when:
-        val actual = jsonSharedGroupQueryService.findJSONSharedGroup(userSession)
+        val actual = jsonSharedGroupQueryService.findJSONJoinedSharedGroup(userSession)
 
         //then:
-        assertThat(actual.joinedSharedGroup?.sharedGroupId).isEqualTo(joinedSharedGroup.id.value)
-        assertThat(actual.joinedSharedGroup?.members)
+        assertThat(actual.sharedGroupId).isEqualTo(joinedSharedGroup.id.value)
+        assertThat(actual.members)
             .extracting("accountId")
             .containsExactlyInAnyOrder(requester.accountId.value,
                                        member1OfJoinedSharedGroup.accountId.value,
                                        member2OfJoinedSharedGroup.accountId.value)
-        assertThat(actual.joinedSharedGroup?.invitees).isEmpty()
-
-
-        assertThat(actual.invitedSharedGroups)
-            .extracting("sharedGroupId")
-            .containsExactly(invitedSharedGroup.id.value)
-        assertThat(actual.invitedSharedGroups.first().members)
-            .extracting("accountId")
-            .containsExactlyInAnyOrder(member1OfInvitedSharedGroup.accountId.value)
-        assertThat(actual.invitedSharedGroups.first().invitees)
-            .extracting("accountId")
-            .containsExactly(requester.accountId.value)
-
-        val actualUser = actual.joinedSharedGroup!!.members.find { it.accountId == requester.accountId.value }
+        val actualUser = actual.members.find { it.accountId == requester.accountId.value }
         assertThat(actualUser)
             .usingRecursiveComparison()
             .isEqualTo(JSONUser(requester.accountId.value,

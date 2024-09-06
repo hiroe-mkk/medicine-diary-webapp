@@ -2,30 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.db.query.sharedgroup.JSONSharedGroupMapper">
-    <select id="findAllByAccountId" resultMap="JSONSharedGroupResultMap">
+    <select id="findOneByMember" resultMap="JSONSharedGroupResultMap">
         SELECT
             members_with_profiles.shared_group_id AS shared_group_id,
             members_with_profiles.account_id AS member_account_id,
             members_with_profiles.username AS member_username,
-            CONCAT(members_with_profiles.profile_image_url_endpoint, members_with_profiles.profile_image_url_path) AS member_profile_image_url,
-            invitees_with_profiles.account_id AS invitee_account_id,
-            invitees_with_profiles.username AS invitee_username,
-            CONCAT(invitees_with_profiles.profile_image_url_endpoint, invitees_with_profiles.profile_image_url_path) AS invitee_profile_image_url
+            CONCAT(members_with_profiles.profile_image_url_endpoint, members_with_profiles.profile_image_url_path) AS member_profile_image_url
         FROM
             (SELECT * FROM members LEFT OUTER JOIN profiles ON members.member = profiles.account_id) AS members_with_profiles
-            LEFT OUTER JOIN
-                (SELECT * FROM invitees LEFT OUTER JOIN profiles ON invitees.invitee = profiles.account_id) AS invitees_with_profiles
-                 ON members_with_profiles.shared_group_id = invitees_with_profiles.shared_group_id
         WHERE
             members_with_profiles.shared_group_id IN(
              SELECT shared_group_id
              FROM members
              WHERE members.member = #{accountId}
-            )
-            OR invitees_with_profiles.shared_group_id IN(
-             SELECT DISTINCT shared_group_id
-             FROM invitees
-             WHERE invitees.invitee = #{accountId}
             );
     </select>
 
@@ -36,8 +25,6 @@
         <id column="shared_group_id"/>
         <collection column="{member_account_id, member_username, member_profile_image_url}" property="membersForMapping"
                     ofType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap" columnPrefix="member_"/>
-        <collection column="{invitee_account_id, invitee_username, invitee_profile_image_url}" property="inviteesForMapping"
-                    ofType="example.application.query.user.JSONUser" resultMap="JSONUserResultMap" columnPrefix="invitee_"/>
     </resultMap>
 
     <resultMap id="JSONUserResultMap" type="example.application.query.user.JSONUser">

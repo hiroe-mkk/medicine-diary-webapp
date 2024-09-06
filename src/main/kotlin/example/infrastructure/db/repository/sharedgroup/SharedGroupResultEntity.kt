@@ -8,9 +8,9 @@ class SharedGroupResultEntity(val sharedGroupId: SharedGroupId) {
     val members: Set<AccountId>
         get() = membersForMapping
 
-    private lateinit var inviteesForMapping: Set<AccountId>
-    val invitees: Set<AccountId>
-        get() = inviteesForMapping
+    private lateinit var pendingInvitationsForMapping: Set<PendingInvitation>
+    val pendingInvitations: Set<PendingInvitation>
+        get() = pendingInvitationsForMapping
 
-    fun toSharedGroup(): SharedGroup = SharedGroup(sharedGroupId, members, invitees)
+    fun toSharedGroup(): SharedGroup = SharedGroup(sharedGroupId, members, pendingInvitations)
 }

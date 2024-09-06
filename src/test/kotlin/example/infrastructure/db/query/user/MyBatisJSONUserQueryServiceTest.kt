@@ -63,7 +63,7 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQu
         testSharedGroupInserter.insert(members = setOf(requesterProfile.accountId,
                                                        member1.accountId,
                                                        member2.accountId),
-                                       invitees = setOf(invitee1.accountId))
+                                       pendingInvitations = setOf(SharedGroupFactory.createPendingInvitation()))
 
         //when:
         val actual = jsonUserQueryService.findJSONMemberUsers(userSession)

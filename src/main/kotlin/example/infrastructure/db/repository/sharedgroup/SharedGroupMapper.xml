@@ -7,7 +7,7 @@
             <include refid="AllColumns"/>
         FROM
             members
-            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+            LEFT OUTER JOIN pending_invitations ON members.shared_group_id = pending_invitations.shared_group_id
         WHERE
             members.shared_group_id = #{sharedGroupId};
     </select>
@@ -17,7 +17,7 @@
             <include refid="AllColumns"/>
         FROM
             members
-            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+            LEFT OUTER JOIN pending_invitations ON members.shared_group_id = pending_invitations.shared_group_id
         WHERE
             members.shared_group_id IN(
              SELECT shared_group_id
@@ -26,17 +26,17 @@
             );
     </select>
 
-    <select id="findAllByInvitee" resultMap="SharedGroupResultEntityResultMap">
+    <select id="findOneByInviteCode" resultMap="SharedGroupResultEntityResultMap">
         SELECT
             <include refid="AllColumns"/>
         FROM
             members
-            LEFT OUTER JOIN invitees ON members.shared_group_id = invitees.shared_group_id
+            LEFT OUTER JOIN pending_invitations ON members.shared_group_id = pending_invitations.shared_group_id
         WHERE
-            invitees.shared_group_id IN(
+            pending_invitations.shared_group_id IN(
              SELECT shared_group_id
-             FROM invitees
-             WHERE invitees.invitee = #{accountId}
+             FROM pending_invitations
+             WHERE pending_invitations.invite_code = #{inviteCode}
             );
     </select>
 
@@ -53,19 +53,22 @@
             shared_group_id,
             member
         )VALUES
-            <foreach collection="members" item="item" separator=",">
-                (#{sharedGroupId}, #{item})
+            <foreach collection="members" item="member" separator=",">
+                (#{sharedGroupId}, #{member})
             </foreach>
         ;
     </insert>
 
-    <insert id="insertAllInvitees">
-        INSERT INTO invitees(
+    <insert id="insertAllPendingInvitations">
+        INSERT INTO pending_invitations(
             shared_group_id,
-            invitee
+            invite_code,
+            invited_on
         )VALUES
-            <foreach collection="invitees" item="item" separator=",">
-                (#{sharedGroupId}, #{item})
+            <foreach collection="pendingInvitations" item="pendingInvitation" separator=",">
+                (#{sharedGroupId},
+                 #{pendingInvitation.inviteCode},
+                 #{pendingInvitation.invitedOn})
             </foreach>
         ;
     </insert>
@@ -80,8 +83,8 @@
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
-    <delete id="deleteAllInvitees">
-        DELETE FROM invitees
+    <delete id="deleteAllPendingInvitations">
+        DELETE FROM pending_invitations
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
@@ -89,7 +92,8 @@
     <sql id="AllColumns">
         members.shared_group_id AS shared_group_id,
         members.member AS member,
-        invitees.invitee AS invitee
+        pending_invitations.invite_code AS pending_invitations_invite_code,
+        pending_invitations.invited_on AS pending_invitations_invited_on
     </sql>
 
     <resultMap id="SharedGroupResultEntityResultMap" type="example.infrastructure.db.repository.sharedgroup.SharedGroupResultEntity">
@@ -98,7 +102,7 @@
         </constructor>
         <id column="shared_group_id"/>
         <collection column="member" property="membersForMapping" ofType="AccountId" resultMap="MemberResultMap"/>
-        <collection column="invitee" property="inviteesForMapping" ofType="AccountId" resultMap="InviteesResultMap"/>
+        <collection column="pendingInvitation" property="pendingInvitationsForMapping" ofType="PendingInvitation" resultMap="PendingInvitationResultMap"/>
     </resultMap>
     <resultMap id="SharedGroupIdResultMap" type="SharedGroupId">
         <constructor>
@@ -110,9 +114,10 @@
             <idArg column="member" javaType="String"/>
         </constructor>
     </resultMap>
-    <resultMap id="InviteesResultMap" type="AccountId">
+    <resultMap id="PendingInvitationResultMap" type="PendingInvitation">
         <constructor>
-            <idArg column="invitee" javaType="String"/>
+            <arg column="pending_invitations_invite_code" javaType="String"/>
+            <arg column="pending_invitations_invited_on" javaType="java.time.LocalDate"/>
         </constructor>
     </resultMap>
 </mapper>
