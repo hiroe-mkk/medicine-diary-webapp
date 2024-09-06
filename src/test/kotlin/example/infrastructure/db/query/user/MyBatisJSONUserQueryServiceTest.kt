@@ -38,22 +38,6 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQu
     }
 
     @Test
-    @DisplayName("キーワードでユーザー一覧を取得する")
-    fun getUsersByKeyword() {
-        //given:
-        val user1AccountId = testAccountInserter.insertAccountAndProfile(username = Username("user1")).first.id
-        val user2AccountId = testAccountInserter.insertAccountAndProfile(username = Username("user2")).first.id
-
-        //when:
-        val actual = jsonUserQueryService.findJSONUsersByKeyword("user", userSession)
-
-        //when:
-        assertThat(actual.users)
-            .extracting("accountId")
-            .containsExactlyInAnyOrder(user1AccountId.value, user2AccountId.value)
-    }
-
-    @Test
     @DisplayName("共有グループメンバー一覧を取得する")
     fun getSharedGroupMember() {
         //given:

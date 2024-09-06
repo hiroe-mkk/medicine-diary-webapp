@@ -15,11 +15,6 @@ class MyBatisJSONUserQueryService(private val jsonUserMapper: JSONUserMapper) : 
         return jsonUserMapper.findOneByAccountId(accountId.value) ?: throw AccountNotFoundException(accountId)
     }
 
-    override fun findJSONUsersByKeyword(keyword: String, userSession: UserSession): JSONUsers {
-        if (keyword.isBlank()) return JSONUsers(emptyList())
-        return JSONUsers(jsonUserMapper.findManyByKeyword(keyword, userSession.accountId.value))
-    }
-
     override fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId, userSession: UserSession): JSONUsers {
         return JSONUsers(jsonUserMapper.findAllBySharedGroupId(sharedGroupId.value, userSession.accountId.value))
     }

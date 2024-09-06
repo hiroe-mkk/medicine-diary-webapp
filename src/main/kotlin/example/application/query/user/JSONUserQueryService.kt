@@ -11,11 +11,6 @@ interface JSONUserQueryService {
     fun findJSONUser(accountId: AccountId): JSONUser
 
     /**
-     * キーワードでユーザー一覧を取得する
-     */
-    fun findJSONUsersByKeyword(keyword: String, userSession: UserSession): JSONUsers
-
-    /**
      * 共有グループのメンバー一覧を取得する
      */
     fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId, userSession: UserSession): JSONUsers
