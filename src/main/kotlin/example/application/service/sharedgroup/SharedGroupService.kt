@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
-                         private val sharedGroupQueryService: SharedGroupQueryService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
      * 共有グループを作る
@@ -67,6 +66,6 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに参加しているか
      */
     fun isJoinedSharedGroup(userSession: UserSession): Boolean {
-        return sharedGroupQueryService.isJoinedSharedGroup(userSession.accountId)
+        return sharedGroupRepository.findByMember(userSession.accountId) != null
     }
 }

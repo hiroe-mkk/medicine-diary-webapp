@@ -29,22 +29,22 @@ internal class SharedGroupRejectApiControllerTest(@Autowired private val mockMvc
     }
 
     // TODO
-/*    @Test
-    @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの招待の拒否に成功した場合、ステータスコード204のレスポンスを返す")
-    fun sharedGroupRejectSucceeds_returnsResponseWithStatus204() {
-        //given:
-        testSharedGroupInserter.insert(members = setOf(user1AccountId))
-        val inviteCode = ""
+    /*    @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("共有グループへの招待の拒否に成功した場合、ステータスコード204のレスポンスを返す")
+        fun sharedGroupRejectSucceeds_returnsResponseWithStatus204() {
+            //given:
+            testSharedGroupInserter.insert(members = setOf(user1AccountId))
+            val inviteCode = ""
 
-        //when:
-        val actions = mockMvc.perform(post(PATH)
-                                          .with(csrf())
-                                          .param("code", inviteCode))
+            //when:
+            val actions = mockMvc.perform(post(PATH)
+                                              .with(csrf())
+                                              .param("code", inviteCode))
 
-        //then:
-        actions.andExpect(status().isNoContent)
-    }*/
+            //then:
+            actions.andExpect(status().isNoContent)
+        }*/
 
     @Test
     @WithMockAuthenticatedAccount

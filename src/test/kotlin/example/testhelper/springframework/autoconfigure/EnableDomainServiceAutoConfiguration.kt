@@ -13,23 +13,17 @@ import org.springframework.context.annotation.*
 annotation class EnableDomainServiceAutoConfiguration {
     class Configuration {
         @Bean
-        fun sharedGroupQueryService(sharedGroupRepository: SharedGroupRepository): SharedGroupQueryService =
-                SharedGroupQueryService(sharedGroupRepository)
-
-        @Bean
         fun sharedGroupLeaveService(sharedGroupRepository: SharedGroupRepository,
                                     medicineRepository: MedicineRepository,
                                     medicineImageStorage: MedicineImageStorage,
                                     medicationRecordRepository: MedicationRecordRepository,
                                     medicineQueryService: MedicineQueryService,
                                     medicineDeletionService: MedicineDeletionService,
-                                    sharedGroupQueryService: SharedGroupQueryService,
                                     medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupLeaveService {
             return SharedGroupLeaveService(sharedGroupRepository,
                                            medicineRepository,
                                            medicineImageStorage,
                                            medicationRecordRepository,
-                                           sharedGroupQueryService,
                                            medicineQueryService,
                                            medicineOwnerCreationService,
                                            medicineDeletionService)
@@ -42,8 +36,8 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineOwnerCreationService(sharedGroupQueryService: SharedGroupQueryService): MedicineOwnerCreationService {
-            return MedicineOwnerCreationService(sharedGroupQueryService)
+        fun medicineOwnerCreationService(sharedGroupRepository: SharedGroupRepository): MedicineOwnerCreationService {
+            return MedicineOwnerCreationService(sharedGroupRepository)
         }
 
         @Bean

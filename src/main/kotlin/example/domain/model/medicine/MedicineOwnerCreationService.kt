@@ -5,9 +5,9 @@ import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 
 @Component
-class MedicineOwnerCreationService(private val sharedGroupQueryService: SharedGroupQueryService) {
+class MedicineOwnerCreationService(private val sharedGroupRepository: SharedGroupRepository) {
     fun createSharedGroupOwner(accountId: AccountId): MedicineOwner {
-        val joinedSharedGroup = sharedGroupQueryService.findJoinedSharedGroup(accountId)
+        val joinedSharedGroup = sharedGroupRepository.findByMember(accountId)
         return if (joinedSharedGroup != null) {
             MedicineOwner.create(joinedSharedGroup.id)
         } else {

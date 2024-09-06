@@ -29,15 +29,15 @@ annotation class MyBatisQueryServiceTest {
                                          medicineRepository: MedicineRepository,
                                          sharedGroupRepository: SharedGroupRepository): JSONMedicationRecordQueryService {
             val medicineQueryService = MedicineQueryService(medicineRepository, sharedGroupRepository)
-            val sharedGroupQueryService = SharedGroupQueryService(sharedGroupRepository)
             return MyBatisJSONMedicationRecordQueryService(jsonMedicationRecordMapper,
-                                                           medicineQueryService,
-                                                           sharedGroupQueryService)
+                                                           sharedGroupRepository,
+                                                           medicineQueryService)
         }
 
         @Bean
-        fun sharedGroupQueryService(jsonSharedGroupMapper: example.infrastructure.db.query.sharedgroup.JSONSharedGroupMapper): JSONSharedGroupQueryService =
-                MyBatisJSONSharedGroupQueryService(jsonSharedGroupMapper)
+        fun sharedGroupQueryService(jsonSharedGroupMapper: JSONSharedGroupMapper): JSONSharedGroupQueryService {
+            return MyBatisJSONSharedGroupQueryService(jsonSharedGroupMapper)
+        }
 
         @Bean
         fun userQueryService(userMapper: UserMapper): UserQueryService {

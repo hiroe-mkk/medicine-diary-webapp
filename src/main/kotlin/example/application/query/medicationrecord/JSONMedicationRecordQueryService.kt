@@ -10,7 +10,7 @@ import java.time.*
 
 @Component
 abstract class JSONMedicationRecordQueryService(private val medicineQueryService: MedicineQueryService,
-                                                private val sharedGroupQueryService: SharedGroupQueryService) {
+                                                private val sharedGroupRepository: SharedGroupRepository) {
     // TODO: ドメインサービスを呼び出さないように変更する
 
     /**
@@ -46,7 +46,7 @@ abstract class JSONMedicationRecordQueryService(private val medicineQueryService
 
     private fun filteredAccountIds(filter: MedicationRecordFilter,
                                    userSession: UserSession): Collection<AccountId> {
-        val accountIds = sharedGroupQueryService.findJoinedSharedGroup(userSession.accountId)?.members
+        val accountIds = sharedGroupRepository.findByMember(userSession.accountId)?.members
                          ?: listOf(userSession.accountId)
         if (filter.validatedAccount == null) return accountIds
 

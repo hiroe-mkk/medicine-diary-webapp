@@ -2,24 +2,19 @@ package example.application.service.sharedgroup
 
 import example.application.shared.usersession.*
 import example.domain.model.account.*
-import example.domain.model.account.profile.*
 import example.domain.model.sharedgroup.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
-import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
-                                      @Autowired private val profileRepository: ProfileRepository,
-                                      @Autowired private val sharedGroupQueryService: SharedGroupQueryService,
                                       @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
     private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
-                                                                            sharedGroupQueryService,
                                                                             sharedGroupLeaveService)
 
     private lateinit var userSession: UserSession

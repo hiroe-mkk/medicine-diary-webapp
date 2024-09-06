@@ -11,7 +11,6 @@ class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepo
                               private val medicineRepository: MedicineRepository,
                               private val medicineImageStorage: MedicineImageStorage,
                               private val medicationRecordRepository: MedicationRecordRepository,
-                              private val sharedGroupQueryService: SharedGroupQueryService,
                               private val medicineQueryService: MedicineQueryService,
                               private val medicineOwnerCreationService: MedicineOwnerCreationService,
                               private val medicineDeletionService: MedicineDeletionService) {
@@ -39,7 +38,7 @@ class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepo
     }
 
     fun leaveAndRejectAllInvitation(accountId: AccountId) {
-        val invitedSharedGroups = sharedGroupQueryService.findInvitedSharedGroups(accountId)
+        val invitedSharedGroups = sharedGroupRepository.findByInvitee(accountId)
         invitedSharedGroups.forEach {
             it.rejectInvitation(accountId)
             sharedGroupRepository.save(it)
@@ -49,7 +48,7 @@ class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepo
     }
 
     private fun leaveSharedGroup(accountId: AccountId) {
-        val sharedGroup = sharedGroupQueryService.findJoinedSharedGroup(accountId) ?: return
+        val sharedGroup = sharedGroupRepository.findByMember(accountId) ?: return
         sharedGroup.leave(accountId)
         if (sharedGroup.shouldDelete()) {
             medicineDeletionService.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)
