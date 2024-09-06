@@ -22,8 +22,8 @@ class HomePageController(private val profileService: ProfileService,
         val userSession = userSessionProvider.getUserSession()
         if (userSession != null) {
             model.addAttribute("profile", profileService.findProfile(userSession))
-            model.addAttribute("isJoinedSharedGroup",
-                               sharedGroupService.isJoinedSharedGroup(userSession))
+            model.addAttribute("joinedSharedGroupId",
+                               sharedGroupService.getJoinedSharedGroup(userSession))
         }
 
         lastRequestedPage.path = "/"

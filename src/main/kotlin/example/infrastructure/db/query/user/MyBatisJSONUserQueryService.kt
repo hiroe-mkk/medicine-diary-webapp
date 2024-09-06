@@ -4,6 +4,7 @@ import example.application.query.user.*
 import example.application.service.account.*
 import example.application.shared.usersession.*
 import example.domain.model.account.*
+import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
 
@@ -19,7 +20,7 @@ class MyBatisJSONUserQueryService(private val jsonUserMapper: JSONUserMapper) : 
         return JSONUsers(jsonUserMapper.findManyByKeyword(keyword, userSession.accountId.value))
     }
 
-    override fun findJSONMemberUsers(userSession: UserSession): JSONUsers {
-        return JSONUsers(jsonUserMapper.findAllMemberUsers(userSession.accountId.value))
+    override fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId, userSession: UserSession): JSONUsers {
+        return JSONUsers(jsonUserMapper.findAllBySharedGroupId(sharedGroupId.value, userSession.accountId.value))
     }
 }

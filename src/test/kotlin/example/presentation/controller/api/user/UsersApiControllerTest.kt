@@ -1,5 +1,7 @@
 package example.presentation.controller.api.user
 
+import example.presentation.shared.usersession.*
+import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import example.testhelper.springframework.security.*
 import net.bytebuddy.utility.*
@@ -10,7 +12,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
+internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                      @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/users"
     }
@@ -41,13 +45,17 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     @Nested
-    inner class GetMemberUsersTest {
+    inner class GetSharedGroupMemberTest {
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("メンバーユーザー一覧を取得する")
-        fun getMemberUsers() {
+        @DisplayName("共有グループメンバー一覧を取得する")
+        fun getSharedGroupMember() {
+            //given:
+            val userSession = userSessionProvider.getUserSessionOrElseThrow()
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId))
+
             //when:
-            val actions = mockMvc.perform(get("${PATH}?members"))
+            val actions = mockMvc.perform(get("${PATH}?sharedGroupId=${sharedGroup.id}"))
 
             //then:
             actions.andExpect(status().isOk)

@@ -5,7 +5,7 @@ import example.domain.model.account.*
 
 interface UserQueryService {
     /**
-     * メンバーユーザーを取得する
+     * 共有グループメンバーを取得する
      */
-    fun findMemberUser(accountId: AccountId, userSession: UserSession): User
+    fun findSharedGroupMember(accountId: AccountId, userSession: UserSession): User
 }

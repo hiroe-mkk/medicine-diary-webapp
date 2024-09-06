@@ -32,13 +32,21 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { onMounted, reactive } from 'vue';
+
+const props = defineProps({
+  joinedSharedGroupId: { type: String, default: undefined },
+});
 
 const members = reactive([]);
 
 onMounted(() => {
-  HttpRequestClient.submitGetRequest('/api/users?members')
+  if (props.joinedSharedGroupId === undefined) return;
+
+  HttpRequestClient.submitGetRequest(
+    `/api/users?sharedGroupId=${props.joinedSharedGroupId}`
+  )
     .then((data) => {
       members.push(...data.users);
     })

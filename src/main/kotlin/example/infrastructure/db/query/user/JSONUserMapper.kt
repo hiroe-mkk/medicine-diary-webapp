@@ -9,5 +9,5 @@ interface JSONUserMapper {
 
     fun findManyByKeyword(keyword: String, accountId: String): List<JSONUser>
 
-    fun findAllMemberUsers(accountId: String): List<JSONUser>
+    fun findAllBySharedGroupId(sharedGroupId: String, accountId: String): List<JSONUser>
 }

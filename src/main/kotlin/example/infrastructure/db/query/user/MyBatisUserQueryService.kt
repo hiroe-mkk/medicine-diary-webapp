@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.*
 @Component
 @Transactional(readOnly = true)
 class MyBatisUserQueryService(private val userMapper: UserMapper) : UserQueryService {
-    override fun findMemberUser(accountId: AccountId, userSession: UserSession): User {
-        return userMapper.findOneMemberUserByAccountId(accountId.value,
-                                                       userSession.accountId.value)
+    override fun findSharedGroupMember(accountId: AccountId, userSession: UserSession): User {
+        return userMapper.findOneSharedGroupMemberByAccountId(accountId.value,
+                                                              userSession.accountId.value)
                ?: throw AccountNotFoundException(accountId)
     }
 }

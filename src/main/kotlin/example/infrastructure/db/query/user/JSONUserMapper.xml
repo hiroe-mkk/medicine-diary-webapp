@@ -30,7 +30,7 @@
         LIMIT 100
     </select>
 
-    <select id="findAllMemberUsers" resultMap="JSONUserResultMap">
+    <select id="findAllBySharedGroupId" resultMap="JSONUserResultMap">
         SELECT
             profiles.account_id AS account_id,
             profiles.username AS username,
@@ -39,12 +39,8 @@
             members
             LEFT OUTER JOIN profiles ON members.member = profiles.account_id
         WHERE
-            members.shared_group_id IN(
-             SELECT shared_group_id
-             FROM members
-             WHERE members.member = #{accountId}
-            )
-            AND account_id != #{accountId};
+            members.shared_group_id = #{sharedGroupId}
+            AND members.member != #{accountId};
     </select>
 
     <resultMap id="JSONUserResultMap" type="example.application.query.user.JSONUser">

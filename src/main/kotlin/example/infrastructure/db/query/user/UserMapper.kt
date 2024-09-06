@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.*
 
 @Mapper
 interface UserMapper {
-    fun findOneMemberUserByAccountId(accountId: String, requester: String): User?
+    fun findOneSharedGroupMemberByAccountId(accountId: String, requester: String): User?
 }

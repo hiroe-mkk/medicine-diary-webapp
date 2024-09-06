@@ -91,7 +91,7 @@
                   </div>
                   <div
                     class="has-text-left py-3"
-                    th:if="${isJoinedSharedGroup}"
+                    th:if="${joinedSharedGroupId!=null}"
                   >
                     <a
                       class="has-text-weight-bold has-text-link"
@@ -100,7 +100,9 @@
                     >
                       共有グループメンバー
                     </a>
-                    <members></members>
+                    <members
+                      th:attr="':joined-shared-group-id'=${joinedSharedGroupId}"
+                    ></members>
                   </div>
                 </div>
               </div>
@@ -207,7 +209,7 @@
               </div>
             </div>
             <medication-records
-              th:attr="':is-joined-shared-group'=${isJoinedSharedGroup}, csrf=${_csrf.token}"
+              th:attr="':is-joined-shared-group'=${isJoinedSharedGroup!=null}, csrf=${_csrf.token}"
             ></medication-records>
           </div>
         </main>

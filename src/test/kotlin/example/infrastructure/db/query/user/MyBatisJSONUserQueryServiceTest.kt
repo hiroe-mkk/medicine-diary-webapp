@@ -54,19 +54,17 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQu
     }
 
     @Test
-    @DisplayName("メンバーユーザー一覧を取得する")
-    fun getMemberUsers() {
+    @DisplayName("共有グループメンバー一覧を取得する")
+    fun getSharedGroupMember() {
         //given:
         val (_, member1) = testAccountInserter.insertAccountAndProfile()
         val (_, member2) = testAccountInserter.insertAccountAndProfile()
-        val (_, invitee1) = testAccountInserter.insertAccountAndProfile()
-        testSharedGroupInserter.insert(members = setOf(requesterProfile.accountId,
-                                                       member1.accountId,
-                                                       member2.accountId),
-                                       pendingInvitations = setOf(SharedGroupFactory.createPendingInvitation()))
+        val sharedGroup = testSharedGroupInserter.insert(members = setOf(requesterProfile.accountId,
+                                                                         member1.accountId,
+                                                                         member2.accountId))
 
         //when:
-        val actual = jsonUserQueryService.findJSONMemberUsers(userSession)
+        val actual = jsonUserQueryService.findJSONSharedGroupMember(sharedGroup.id, userSession)
 
         //then:
         assertThat(actual.users)

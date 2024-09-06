@@ -23,8 +23,8 @@ class UserPageController(private val userQueryService: UserQueryService,
     fun displayUserPage(@PathVariable accountId: AccountId, model: Model): String {
         if (!accountService.isValidAccountId(accountId)) throw InvalidEntityIdException(accountId)
 
-        model.addAttribute("user", userQueryService.findMemberUser(accountId,
-                                                                   userSessionProvider.getUserSessionOrElseThrow()))
+        model.addAttribute("user", userQueryService.findSharedGroupMember(accountId,
+                                                                          userSessionProvider.getUserSessionOrElseThrow()))
 
         lastRequestedPage.path = "/users/${accountId}"
         return "user"

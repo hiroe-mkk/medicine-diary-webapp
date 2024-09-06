@@ -13,7 +13,12 @@
       <result-message ref="resultMessage"></result-message>
 
       <medication-records
-        th:attr="':is-joined-shared-group'=${isJoinedSharedGroup}, csrf=${_csrf.token}"
+        th:attr="':joined-shared-group-id'=${joinedSharedGroupId}, csrf=${_csrf.token}"
+        th:if="${joinedSharedGroupId!=null}"
+      ></medication-records>
+      <medication-records
+        th:attr="csrf=${_csrf.token}"
+        th:if="${joinedSharedGroupId==null}"
       ></medication-records>
 
       <div

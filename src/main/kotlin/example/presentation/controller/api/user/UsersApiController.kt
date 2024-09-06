@@ -1,6 +1,7 @@
 package example.presentation.controller.api.user
 
 import example.application.query.user.*
+import example.domain.model.sharedgroup.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
@@ -34,12 +35,14 @@ class UsersApiController(private val jsonUserQueryService: JSONUserQueryService,
     }
 
     /**
-     * メンバーユーザー一覧を取得する
+     * 共有グループのメンバー覧を取得する
      */
-    @GetMapping(params = ["members"])
+    @GetMapping(params = ["sharedGroupId"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getMemberUsers(): JSONUsers {
-        return jsonUserQueryService.findJSONMemberUsers(userSessionProvider.getUserSessionOrElseThrow())
+    fun getSharedGroupMember(@RequestParam sharedGroupId: SharedGroupId): JSONUsers {
+        // TODO: sharedGroupId の有効性チェック
+        return jsonUserQueryService.findJSONSharedGroupMember(sharedGroupId,
+                                                              userSessionProvider.getUserSessionOrElseThrow())
     }
 }

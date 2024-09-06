@@ -69,9 +69,16 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
+     * 参加している共有グループの ID を取得する
+     */
+    fun getJoinedSharedGroup(userSession: UserSession): SharedGroupId? {
+        return sharedGroupRepository.findByMember(userSession.accountId)?.id
+    }
+
+    /**
      * 共有グループに参加しているか
      */
     fun isJoinedSharedGroup(userSession: UserSession): Boolean {
-        return sharedGroupRepository.findByMember(userSession.accountId) != null
+        return getJoinedSharedGroup(userSession) != null
     }
 }
