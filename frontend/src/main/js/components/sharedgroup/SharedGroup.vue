@@ -2,7 +2,7 @@
   <div class="is-flex is-align-items-center is-justify-content-center">
     <div
       class="has-text-centered mx-2"
-      v-for="member in props.sharedGroup.members"
+      v-for="member in props.sharedGroupMembers"
     >
       <div class="is-flex is-justify-content-center">
         <a
@@ -47,7 +47,7 @@
 
 <script setup>
 const props = defineProps({
-  sharedGroup: Object,
+  sharedGroupMembers: Object,
   isJoined: Boolean,
   csrf: String,
 });

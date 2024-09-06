@@ -23,7 +23,12 @@
         </div>
 
         <shared-group-management
+          th:attr="':joined-shared-group-id'=${joinedSharedGroupId}, csrf=${_csrf.token}"
+          th:if="${joinedSharedGroupId!=null}"
+        ></shared-group-management>
+        <shared-group-management
           th:attr="csrf=${_csrf.token}"
+          th:if="${joinedSharedGroupId==null}"
         ></shared-group-management>
       </div>
 

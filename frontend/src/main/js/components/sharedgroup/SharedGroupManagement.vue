@@ -1,53 +1,5 @@
 <template>
-  <!-- <div class="content" v-if="invitedSharedGroups.length !== 0">
-    <div
-      class="message is-link is-inline-block"
-      v-for="invitedSharedGroup in invitedSharedGroups"
-    >
-      <div class="message-header is-flex is-justify-content-center">
-        <p>
-          以下の共有グループに招待されています。<br />
-          参加しますか？<br />
-        </p>
-      </div>
-      <div class="message-body has-background-white">
-        <div class="is-flex is-align-items-end is-justify-content-center">
-          <SharedGroup
-            :sharedGroup="invitedSharedGroup"
-            :isJoined="false"
-            :csrf="props.csrf"
-          ></SharedGroup>
-        </div>
-        <p class="help" v-if="joinedSharedGroup.value !== undefined">
-          ※参加できる共有グループは1つまでです。<br />
-          　この共有グループに参加するには、現在参加している共有グループから脱退して、再度お試しください。
-        </p>
-        <div class="field is-grouped is-grouped-centered p-2">
-          <p class="control">
-            <button
-              type="button"
-              class="button is-small is-rounded is-outlined is-link"
-              @click="join()"
-              :disabled="joinedSharedGroup.value !== undefined"
-            >
-              参加する
-            </button>
-          </p>
-          <p class="control">
-            <button
-              type="button"
-              class="button is-small is-rounded is-outlined is-danger"
-              @click="reject(invitedSharedGroup.sharedGroupId)"
-            >
-              拒否する
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-  <div class="content" v-if="joinedSharedGroup.value === undefined">
+  <div class="content" v-if="joinedSharedGroup.id === undefined">
     <div class="notification is-white py-5 px-6">
       <div class="block">
         <p>
@@ -80,40 +32,29 @@
           また、いつでも共有グループから脱退できるので安心してください。
         </p>
       </div>
-      <button
-        class="button is-link is-rounded is-outlined"
-        @click="activateUserSearchModal()"
-      >
+
+      <button class="button is-link is-rounded is-outlined">
         <strong>共有グループをつくる</strong>
         <span class="icon fas fa-lg is-flex is-align-items-center mr-0">
           <i class="fa-solid fa-user-plus"></i>
         </span>
       </button>
     </div>
-    <UserSearch
-      ref="userSearch"
-      :csrf="props.csrf"
-      @update="loadSharedGroup()"
-    ></UserSearch>
   </div>
 
-  <div v-if="joinedSharedGroup.value !== undefined">
+  <div v-if="joinedSharedGroup.id !== undefined">
     <div class="notification is-white is-inline-block py-4 px-6">
       <p class="has-text-weight-semibold has-text-grey-dark pb-4">
         現在参加している共有グループ
       </p>
       <SharedGroup
-        :sharedGroup="joinedSharedGroup.value"
+        :sharedGroupMembers="joinedSharedGroup.members"
         :isJoined="true"
         :csrf="props.csrf"
-        @update="loadSharedGroup()"
       ></SharedGroup>
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">
-          <span
-            class="button is-small is-rounded is-outlined is-link"
-            @click="activateUserSearchModal()"
-          >
+          <span class="button is-small is-rounded is-outlined is-link">
             <strong>ユーザーを招待する</strong>
             <span class="icon fas fa-lg is-flex is-align-items-center m-0">
               <i class="fa-solid fa-plus"></i>
@@ -134,13 +75,6 @@
       </div>
     </div>
 
-    <UserSearch
-      ref="userSearch"
-      :sharedGroupId="joinedSharedGroup.value.sharedGroupId"
-      :csrf="props.csrf"
-      @update="loadSharedGroup()"
-    >
-    </UserSearch>
     <div
       class="modal"
       :class="{ 'is-active': isLeaveSharedGroupConfirmationModalActive }"
@@ -193,63 +127,34 @@ import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
-import UserSearch from '@main/js/components/sharedgroup/UserSearch.vue';
 import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
 
-const props = defineProps({ csrf: String });
+const props = defineProps({
+  joinedSharedGroupId: { type: String, default: undefined },
+  csrf: String,
+});
 const activateResultMessage = inject('activateResultMessage');
 
-const joinedSharedGroup = reactive({ value: undefined });
-
-const isLeaveSharedGroupConfirmationModalActive = ref(false);
-const userSearch = ref(null);
-
-onMounted(async () => {
-  loadSharedGroup();
+const joinedSharedGroup = reactive({
+  id: props.joinedSharedGroupId,
+  members: [],
 });
 
-function loadSharedGroup() {
-  joinedSharedGroup.value = undefined;
+const isLeaveSharedGroupConfirmationModalActive = ref(false);
 
-  HttpRequestClient.submitGetRequest('/api/shared-group')
+onMounted(async () => {
+  if (joinedSharedGroup.id === undefined) return;
+
+  HttpRequestClient.submitGetRequest(
+    `/api/users?sharedGroupId=${joinedSharedGroup.id}`
+  )
     .then((data) => {
-      joinedSharedGroup.value = data.joinedSharedGroup;
+      joinedSharedGroup.members = data.users;
     })
     .catch(() => {
       handleError(error);
     });
-}
-
-function join() {
-  const form = new FormData();
-  form.set('_csrf', props.csrf);
-  // TODO
-  form.set('code', 'invitedCode');
-
-  HttpRequestClient.submitPostRequest('/api/shared-group/join', form)
-    .then(() => {
-      activateResultMessage('INFO', `共有グループに参加しました。`);
-      loadSharedGroup();
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-}
-
-function reject(sharedGroupId) {
-  const form = new FormData();
-  form.set('_csrf', props.csrf);
-  form.set('sharedGroupId', sharedGroupId);
-
-  HttpRequestClient.submitPostRequest('/api/shared-group/reject', form)
-    .then(() => {
-      activateResultMessage('INFO', `共有グループへの招待を拒否しました。`);
-      loadSharedGroup();
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-}
+});
 
 function leaveSharedGroup() {
   const form = new FormData();
@@ -259,44 +164,37 @@ function leaveSharedGroup() {
     .then(() => {
       activateResultMessage('INFO', `共有グループから脱退しました。`);
       isLeaveSharedGroupConfirmationModalActive.value = false;
-      loadSharedGroup();
+      joinedSharedGroup.id = undefined;
+      joinedSharedGroup.members = [];
     })
     .catch((error) => {
-      handleError(error);
-    });
-}
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status == 401) {
+          // 認証エラーが発生した場合
+          location.reload();
+          return;
+        } else if (error.status == 500) {
+          activateResultMessage(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          return;
+        } else if (error.hasMessage()) {
+          activateResultMessage(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          return;
+        }
+      }
 
-function handleError(error) {
-  if (error instanceof HttpRequestFailedError) {
-    if (error.status == 401) {
-      // 認証エラーが発生した場合
-      location.reload();
-      return;
-    } else if (error.status == 500) {
-      activateResultMessage(
-        'ERROR',
-        'システムエラーが発生しました。',
-        'お手数ですが、再度お試しください。'
-      );
-      return;
-    } else if (error.hasMessage()) {
       activateResultMessage(
         'ERROR',
         'エラーが発生しました。',
-        error.getMessage()
+        '通信状態をご確認のうえ、再度お試しください。'
       );
-      return;
-    }
-  }
-
-  activateResultMessage(
-    'ERROR',
-    'エラーが発生しました。',
-    '通信状態をご確認のうえ、再度お試しください。'
-  );
-}
-
-function activateUserSearchModal() {
-  userSearch.value.activateSearchModal();
+    });
 }
 </script>
