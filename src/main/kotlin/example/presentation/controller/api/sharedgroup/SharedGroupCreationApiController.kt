@@ -1,7 +1,6 @@
 package example.presentation.controller.api.sharedgroup
 
 import example.application.service.sharedgroup.*
-import example.domain.model.account.*
 import example.presentation.shared.usersession.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
@@ -16,7 +15,7 @@ class SharedGroupCreationApiController(private val sharedGroupService: SharedGro
      */
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun createSharedGroup(accountId: AccountId) {
-        sharedGroupService.createSharedGroup(accountId, userSessionProvider.getUserSessionOrElseThrow())
+    fun createSharedGroup() {
+        sharedGroupService.createSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 }

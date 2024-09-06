@@ -1,7 +1,6 @@
 package example.application.service.sharedgroup
 
 import example.application.shared.usersession.*
-import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 import org.springframework.transaction.annotation.*
@@ -9,21 +8,17 @@ import org.springframework.transaction.annotation.*
 @Service
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
-                         private val accountRepository: AccountRepository,
                          private val sharedGroupQueryService: SharedGroupQueryService,
                          private val sharedGroupJoinService: SharedGroupJoinService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
      * 共有グループを作る
      */
-    fun createSharedGroup(invitee: AccountId, userSession: UserSession): SharedGroupId {
-        accountRepository.findById(invitee)
-        ?: throw SharedGroupCreationFailedException("ユーザーが見つかりませんでした。")
-        sharedGroupJoinService.requireSharePossible(userSession.accountId)
+    fun createSharedGroup(userSession: UserSession): SharedGroupId {
+        if (isJoinedSharedGroup(userSession)) throw SharedGroupCreationFailedException("参加できる共有グループは1つまでです。")
 
         val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
-
-        sharedGroup.invite(invitee, userSession.accountId)
+        //        sharedGroup.invite(pendingInvitation, userSession.accountId)
         sharedGroupRepository.save(sharedGroup)
         return sharedGroup.id
     }
