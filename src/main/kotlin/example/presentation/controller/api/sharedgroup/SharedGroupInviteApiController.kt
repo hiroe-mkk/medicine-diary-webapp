@@ -2,6 +2,7 @@ package example.presentation.controller.api.sharedgroup
 
 import example.application.service.sharedgroup.*
 import example.presentation.shared.usersession.*
+import jakarta.validation.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
@@ -15,7 +16,7 @@ class SharedGroupInviteApiController(private val sharedGroupService: SharedGroup
      */
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun inviteToSharedGroup(sharedGroupInviteFormCommand: SharedGroupInviteFormCommand) {
+    fun inviteToSharedGroup(@Valid sharedGroupInviteFormCommand: SharedGroupInviteFormCommand) {
         sharedGroupService.inviteToSharedGroup(sharedGroupInviteFormCommand,
                                                userSessionProvider.getUserSessionOrElseThrow())
     }

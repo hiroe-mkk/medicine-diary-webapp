@@ -51,6 +51,24 @@ internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc
 
     @Test
     @WithMockAuthenticatedAccount
+    @DisplayName("バリデーションエラーが発生した場合、ステータスコード400のレスポンスを返す")
+    fun validationErrorOccurs_returnsResponseWithStatus400() {
+        //given:
+        val invalidEmailAddress = "user @example.co.jp"
+
+        //when:
+        val actions = mockMvc.perform(post(PATH)
+                                          .with(csrf())
+                                          .param("emailAddress", invalidEmailAddress))
+
+        //then:
+        actions.andExpect(status().isBadRequest)
+            .andExpect(header().string("Content-Type", "application/json"))
+            .andExpect(jsonPath("\$.fieldErrors.emailAddress").isNotEmpty)
+    }
+
+    @Test
+    @WithMockAuthenticatedAccount
     @DisplayName("共有グループへの招待に失敗した場合、ステータスコード409のレスポンスを返す")
     fun sharedGroupInviteFails_returnsResponseWithStatus409() {
         //given:
