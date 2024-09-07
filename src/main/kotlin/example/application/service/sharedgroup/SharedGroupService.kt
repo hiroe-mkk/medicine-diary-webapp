@@ -13,29 +13,16 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
                          private val sharedGroupInviteService: SharedGroupInviteService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
-     * 共有グループを作る
-     */
-    fun createSharedGroup(userSession: UserSession): SharedGroupId {
-        if (isJoinedSharedGroup(userSession)) throw SharedGroupCreationFailedException("参加できる共有グループは1つまでです。")
-
-        val sharedGroup = SharedGroup.create(sharedGroupRepository.createSharedGroupId(), userSession.accountId)
-        val pendingInvitation = PendingInvitation(sharedGroupRepository.createInviteCode(),
-                                                  localDateTimeProvider.today())
-        sharedGroup.invite(pendingInvitation, userSession.accountId)
-        sharedGroupRepository.save(sharedGroup)
-        return sharedGroup.id
-    }
-
-    /**
      * 共有グループに招待する
      */
-    fun inviteToSharedGroup(sharedGroupId: SharedGroupId,
-                            sharedGroupInviteFormCommand: SharedGroupInviteFormCommand,
-                            userSession: UserSession) {
-        val joinedSharedGroup = sharedGroupRepository.findByMember(userSession.accountId)
-                                    ?.let { if (it.id == sharedGroupId) it else null }
-                                ?: throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
-        sharedGroupInviteService.invite(joinedSharedGroup, sharedGroupInviteFormCommand, userSession.accountId)
+    fun inviteToSharedGroup(sharedGroupInviteFormCommand: SharedGroupInviteFormCommand,
+                            userSession: UserSession): SharedGroupId {
+        val sharedGroup = sharedGroupRepository.findByMember(userSession.accountId)
+                          ?: SharedGroup.create(sharedGroupRepository.createSharedGroupId(),
+                                                userSession.accountId)
+
+        sharedGroupInviteService.invite(sharedGroup, sharedGroupInviteFormCommand, userSession.accountId)
+        return sharedGroup.id
     }
 
     /**
