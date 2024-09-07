@@ -47,7 +47,7 @@
       <p class="has-text-weight-semibold has-text-grey-dark pb-4">
         現在参加している共有グループ
       </p>
-      <Members :joinedSharedGroupId="joinedSharedGroupId"></Members>
+      <Members :isClickable="true" :sharedGroupId="joinedSharedGroupId"></Members>
 
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">

@@ -101,7 +101,8 @@
                       共有グループメンバー
                     </a>
                     <members
-                      th:attr="':joined-shared-group-id'=${joinedSharedGroupId}"
+                      :is-clickable="true"
+                      th:attr="shared-group-id=${joinedSharedGroupId}"
                     ></members>
                   </div>
                 </div>
@@ -209,7 +210,7 @@
               </div>
             </div>
             <medication-records
-              th:attr="':is-joined-shared-group'=${isJoinedSharedGroup!=null}, csrf=${_csrf.token}"
+              th:attr="':is-joined-shared-group'=${joinedSharedGroupId!=null}, csrf=${_csrf.token}"
             ></medication-records>
           </div>
         </main>
