@@ -4,9 +4,11 @@ import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
+import example.infrastructure.email.shared.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
+import io.mockk.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
@@ -14,21 +16,30 @@ import org.springframework.beans.factory.annotation.*
 @DomainLayerTest
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                       @Autowired private val localDateTimeProvider: LocalDateTimeProvider,
+                                      @Autowired private val emailSenderClient: EmailSenderClient,
                                       @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
+                                      @Autowired private val sharedGroupInviteService: SharedGroupInviteService,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
     private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
                                                                             localDateTimeProvider,
+                                                                            sharedGroupInviteService,
                                                                             sharedGroupLeaveService)
 
     private lateinit var userSession: UserSession
     private lateinit var user1AccountId: AccountId
+    private val sharedGroupInviteFormCommand = SharedGroupInviteFormCommand("user@example.co.jp")
 
     @BeforeEach
     internal fun setUp() {
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         userSession = UserSessionFactory.create(requesterAccountId)
         user1AccountId = createAccount().id
+    }
+
+    @AfterEach
+    fun tearDown() {
+        clearMocks(emailSenderClient)
     }
 
     @Nested
@@ -68,11 +79,12 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val sharedGroup = testSharedGroupInserter.insert(members = members)
 
             //when:
-            sharedGroupService.inviteToSharedGroup(sharedGroup.id, userSession)
+            sharedGroupService.inviteToSharedGroup(sharedGroup.id, sharedGroupInviteFormCommand, userSession)
 
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
             assertThat(foundSharedGroup?.members).containsExactlyInAnyOrder(*members.toTypedArray())
+            verify(exactly = 1) { emailSenderClient.send(any()) }
         }
 
         @Test
@@ -83,7 +95,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
             //when:
             val target: () -> Unit = {
-                sharedGroupService.inviteToSharedGroup(sharedGroup.id, userSession)
+                sharedGroupService.inviteToSharedGroup(sharedGroup.id, sharedGroupInviteFormCommand, userSession)
             }
 
             //then:

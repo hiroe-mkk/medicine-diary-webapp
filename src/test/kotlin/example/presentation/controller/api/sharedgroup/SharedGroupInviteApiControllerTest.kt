@@ -22,6 +22,8 @@ internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc
         private const val PATH = "/api/shared-group/invite"
     }
 
+    private val emailAddress = "user@example.co.jp"
+
     @Test
     @WithMockAuthenticatedAccount
     @DisplayName("共有グループへの招待に成功した場合、ステータスコード204のレスポンスを返す")
@@ -35,7 +37,8 @@ internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroup.id.toString()))
+                                          .param("sharedGroupId", sharedGroup.id.toString())
+                                          .param("emailAddress", emailAddress))
 
         //then:
         actions.andExpect(status().isNoContent)
@@ -51,7 +54,8 @@ internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", nonexistentSharedGroupId.toString()))
+                                          .param("sharedGroupId", nonexistentSharedGroupId.toString())
+                                          .param("emailAddress", emailAddress))
 
         //then:
         actions.andExpect(status().isConflict)
@@ -66,7 +70,8 @@ internal class SharedGroupInviteApiControllerTest(@Autowired private val mockMvc
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
-                                          .param("sharedGroupId", sharedGroupId.toString()))
+                                          .param("sharedGroupId", sharedGroupId.toString())
+                                          .param("emailAddress", emailAddress))
 
         //then:
         actions.andExpect(status().isUnauthorized)

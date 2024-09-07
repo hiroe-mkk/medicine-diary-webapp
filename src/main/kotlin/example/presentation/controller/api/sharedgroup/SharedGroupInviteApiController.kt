@@ -16,8 +16,9 @@ class SharedGroupInviteApiController(private val sharedGroupService: SharedGroup
      */
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun inviteToSharedGroup(sharedGroupId: SharedGroupId) {
+    fun inviteToSharedGroup(sharedGroupId: SharedGroupId, sharedGroupInviteFormCommand: SharedGroupInviteFormCommand) {
         sharedGroupService.inviteToSharedGroup(sharedGroupId,
+                                               sharedGroupInviteFormCommand,
                                                userSessionProvider.getUserSessionOrElseThrow())
     }
 }

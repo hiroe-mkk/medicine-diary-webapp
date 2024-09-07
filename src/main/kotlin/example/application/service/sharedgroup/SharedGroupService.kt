@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val localDateTimeProvider: LocalDateTimeProvider,
+                         private val sharedGroupInviteService: SharedGroupInviteService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
      * 共有グループを作る
@@ -28,15 +29,13 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループに招待する
      */
-    fun inviteToSharedGroup(sharedGroupId: SharedGroupId, userSession: UserSession) {
+    fun inviteToSharedGroup(sharedGroupId: SharedGroupId,
+                            sharedGroupInviteFormCommand: SharedGroupInviteFormCommand,
+                            userSession: UserSession) {
         val joinedSharedGroup = sharedGroupRepository.findByMember(userSession.accountId)
                                     ?.let { if (it.id == sharedGroupId) it else null }
                                 ?: throw SharedGroupInviteFailedException("参加していない共有グループへの招待はできません。")
-
-        val pendingInvitation = PendingInvitation(sharedGroupRepository.createInviteCode(),
-                                                  localDateTimeProvider.today())
-        joinedSharedGroup.invite(pendingInvitation, userSession.accountId)
-        sharedGroupRepository.save(joinedSharedGroup)
+        sharedGroupInviteService.invite(joinedSharedGroup, sharedGroupInviteFormCommand, userSession.accountId)
     }
 
     /**

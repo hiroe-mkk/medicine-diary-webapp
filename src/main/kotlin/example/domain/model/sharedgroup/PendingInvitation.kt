@@ -7,8 +7,12 @@ import java.time.*
  */
 data class PendingInvitation(val inviteCode: String,
                              val invitedOn: LocalDate) {
+    companion object {
+        const val EXPIRATION_DAYS = 7
+        const val EXPIRATION_PERIOD_TEXT = "1週間"
+    }
+
     fun isValid(date: LocalDate): Boolean {
-        val expiredOn = invitedOn.plusDays(8)
-        return date.isBefore(expiredOn)
+        return date.isBefore(invitedOn.plusDays(EXPIRATION_DAYS + 1L))
     }
 }

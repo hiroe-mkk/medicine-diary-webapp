@@ -1,10 +1,13 @@
 package example.testhelper.springframework.autoconfigure
 
+import example.application.service.sharedgroup.*
+import example.domain.model.account.profile.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
+import example.infrastructure.shared.*
 import io.mockk.*
 import org.springframework.context.annotation.*
 import java.time.*
@@ -30,6 +33,19 @@ annotation class EnableDomainServiceAutoConfiguration {
                                            medicineQueryService,
                                            medicineOwnerCreationService,
                                            medicineDeletionService)
+        }
+
+        @Bean
+        fun sharedGroupInviteService(sharedGroupRepository: SharedGroupRepository,
+                                     sharedGroupInviteEmailSender: SharedGroupInviteEmailSender,
+                                     localDateTimeProvider: LocalDateTimeProvider,
+                                     profileRepository: ProfileRepository,
+                                     applicationProperties: ApplicationProperties): SharedGroupInviteService {
+            return SharedGroupInviteService(sharedGroupRepository,
+                                            sharedGroupInviteEmailSender,
+                                            localDateTimeProvider,
+                                            profileRepository,
+                                            applicationProperties)
         }
 
         @Bean
