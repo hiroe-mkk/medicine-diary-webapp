@@ -33,12 +33,15 @@
         </p>
       </div>
 
-      <button class="button is-link is-rounded is-outlined">
+      <a
+        class="button is-link is-rounded is-outlined"
+        href="/shared-group/invite"
+      >
         <strong>共有グループをつくる</strong>
         <span class="icon fas fa-lg is-flex is-align-items-center mr-0">
           <i class="fa-solid fa-user-plus"></i>
         </span>
-      </button>
+      </a>
     </div>
   </div>
 
@@ -51,12 +54,15 @@
 
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">
-          <span class="button is-small is-rounded is-outlined is-link">
+          <a
+            class="button is-small is-rounded is-outlined is-link"
+            href="/shared-group/invite"
+          >
             <strong>ユーザーを招待する</strong>
             <span class="icon fas fa-lg is-flex is-align-items-center m-0">
               <i class="fa-solid fa-plus"></i>
             </span>
-          </span>
+          </a>
         </p>
         <p class="control">
           <span

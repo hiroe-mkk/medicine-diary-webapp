@@ -12,6 +12,7 @@ module.exports = {
     setting: './src/main/js/setting.js',
     user: './src/main/js/user.js',
     sharedGroupManagement: './src/main/js/sharedGroupManagement.js',
+    sharedGroupInvite: './src/main/js/sharedGroupInvite.js',
     medicineDetail: './src/main/js/medicineDetail.js',
     medicineOverviews: './src/main/js/medicineOverviews.js',
     medicineForm: './src/main/js/medicineForm.js',
