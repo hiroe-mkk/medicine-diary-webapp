@@ -1,6 +1,9 @@
 <template>
   <div class="content m-2">
-    <div class="is-flex is-align-items-center" v-if="members.length !== 0">
+    <div
+      class="is-flex is-align-items-center is-justify-content-center"
+      v-if="members.length !== 0"
+    >
       <div class="has-text-centered mx-2" v-for="member in members">
         <div class="is-flex is-justify-content-center">
           <component

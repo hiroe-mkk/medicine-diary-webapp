@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+  </head>
+
+  <body>
+    <div id="sharedGroupJoin" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
+      <div class="container is-max-tablet" th:if="${errorMessage==null}">
+        <div
+          class="content has-text-centered"
+          th:if="${joinedSharedGroupId==null}"
+        >
+          <p class="title is-4 is-spaced">共有グループから招待されています。</p>
+
+          <div class="notification is-white is-inline-block py-4 px-6">
+            <p class="has-text-weight-semibold has-text-grey-dark">
+              参加中のメンバー
+            </p>
+            <members
+              :is-clickable="false"
+              th:attr="shared-group-id=${invitedSharedGroupId}"
+            ></members>
+          </div>
+
+          <p class="subtitle is-5 has-text-weight-bold">参加しますか？</p>
+
+          <div class="field is-grouped is-grouped-centered">
+            <form
+              class="form"
+              method="post"
+              th:action="@{/shared-group/join(code=${inviteCode})}"
+            >
+              <p class="control px-2">
+                <button
+                  class="button is-small is-rounded is-link"
+                  type="submit"
+                >
+                  参加する
+                </button>
+              </p>
+            </form>
+
+            <form
+              class="form"
+              method="post"
+              th:action="@{/shared-group/reject(code=${inviteCode})}"
+            >
+              <p class="control px-2">
+                <button
+                  class="button is-small is-rounded is-outlined is-danger"
+                  type="submit"
+                >
+                  拒否する
+                </button>
+              </p>
+            </form>
+          </div>
+        </div>
+
+        <div
+          class="content has-text-centered"
+          th:if="${joinedSharedGroupId!=null}"
+        >
+          <p class="title is-4 is-spaced">
+            参加できる共有グループは1つまでです。
+          </p>
+          <p class="subtitle has-text-danger-dark is-6">
+            この共有グループに参加するには、現在参加している共有グループから脱退後、再度お試しください。
+          </p>
+
+          <div class="block">
+            <a class="is-underlined has-text-info" th:href="@{/shared-group}">
+              共有グループ管理画面に移動する
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="container is-max-tablet" th:if="${errorMessage!=null}">
+        <div class="content has-text-centered">
+          <p class="title is-4 is-spaced" th:text="${errorMessage.message}"></p>
+          <p
+            class="subtitle has-text-danger-dark is-6"
+            th:text="${errorMessage.details}"
+          ></p>
+
+          <div class="block">
+            <a class="is-underlined has-text-info" th:href="@{/shared-group}">
+              共有グループ管理画面に移動する
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <script th:src="@{/dist/js/sharedGroupJoin.bundle.js}"></script>
+    </div>
+  </body>
+</html>

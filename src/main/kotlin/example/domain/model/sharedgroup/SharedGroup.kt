@@ -14,7 +14,18 @@ class SharedGroup(val id: SharedGroupId,
     var pendingInvitations: Set<PendingInvitation> = pendingInvitations
         private set
 
-    fun isJoined(accountId: AccountId): Boolean = members.contains(accountId)
+    private fun isJoined(accountId: AccountId): Boolean = members.contains(accountId)
+
+    private fun getPendingInvitation(inviteCode: String) = pendingInvitations.find { it.inviteCode == inviteCode }
+
+    fun validateInviteCode(inviteCode: String, requester: AccountId, date: LocalDate) {
+        if (isJoined(requester))
+            throw InvalidInvitationException(inviteCode, "すでにこのグループに参加しています。")
+        val pendingInvitation = getPendingInvitation(inviteCode)
+                                ?: throw InvalidInvitationException(inviteCode, "招待が確認できません。")
+        if (!pendingInvitation.isValid(date))
+            throw InvalidInvitationException(inviteCode, "有効期限が切れています。")
+    }
 
     companion object {
         fun create(id: SharedGroupId, accountId: AccountId): SharedGroup {
@@ -33,7 +44,7 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun reject(inviteCode: String) {
-        val pendingInvitation = pendingInvitations.find { it.inviteCode == inviteCode } ?: return
+        val pendingInvitation = getPendingInvitation(inviteCode) ?: return
 
         pendingInvitations -= pendingInvitation
     }
@@ -41,7 +52,7 @@ class SharedGroup(val id: SharedGroupId,
     fun join(inviteCode: String, requester: AccountId, date: LocalDate) {
         if (isJoined(requester)) throw SharedGroupJoinFailedException("現在、このグループに参加中です。")
 
-        val pendingInvitation = pendingInvitations.find { it.inviteCode == inviteCode }
+        val pendingInvitation = getPendingInvitation(inviteCode)
         if (pendingInvitation == null || !pendingInvitation.isValid(date)) {
             throw SharedGroupJoinFailedException("現在、このグループからは招待されていません。")
         }

@@ -55,6 +55,19 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
+     * 招待されていて、なおかつ参加可能な共有グループの ID を取得する
+     */
+    fun getJoinableInvitedSharedGroupId(inviteCode: String, userSession: UserSession): SharedGroupId {
+        val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode)
+                                 ?: throw InvalidInvitationException(inviteCode, "招待が確認できません。")
+        invitedSharedGroup.validateInviteCode(inviteCode,
+                                              userSession.accountId,
+                                              localDateTimeProvider.today())
+
+        return invitedSharedGroup.id
+    }
+
+    /**
      * 参加している共有グループの ID を取得する
      */
     fun getJoinedSharedGroup(userSession: UserSession): SharedGroupId? {

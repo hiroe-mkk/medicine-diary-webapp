@@ -47,7 +47,7 @@
         <span class="icon has-text-link m-0">
           <i class="fa-solid fa-angle-left"></i>
         </span>
-        <strong class="has-text-link">共有グループ管理画面にもどる</strong>
+        <strong class="has-text-link">共有グループ管理画面に戻る</strong>
       </a>
     </div>
   </div>
