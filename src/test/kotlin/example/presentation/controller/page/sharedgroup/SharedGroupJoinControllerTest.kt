@@ -1,4 +1,4 @@
-package example.presentation.controller.api.sharedgroup
+package example.presentation.controller.page.sharedgroup
 
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
@@ -14,12 +14,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class SharedGroupJoinApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                @Autowired private val testAccountInserter: TestAccountInserter,
-                                                @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                @Autowired private val localDateTimeProvider: LocalDateTimeProvider) {
+internal class SharedGroupJoinControllerTest(@Autowired private val mockMvc: MockMvc,
+                                             @Autowired private val testAccountInserter: TestAccountInserter,
+                                             @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                             @Autowired private val localDateTimeProvider: LocalDateTimeProvider) {
     companion object {
-        private const val PATH = "/api/shared-group/join"
+        private const val PATH = "/shared-group/join"
     }
 
     private lateinit var pendingInvitation: PendingInvitation
@@ -33,21 +33,22 @@ internal class SharedGroupJoinApiControllerTest(@Autowired private val mockMvc: 
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの参加に成功した場合、ステータスコード204のレスポンスを返す")
-    fun sharedGroupJoinSucceeds_returnsResponseWithStatus204() {
+    @DisplayName("共有グループへの参加に成功した場合、共有グループ管理画面にリダイレクトする")
+    fun sharedGroupJoinSucceeds_redirectToSharedGroupManagementPage() {
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
                                           .param("code", pendingInvitation.inviteCode))
 
         //then:
-        actions.andExpect(status().isNoContent)
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/shared-group"))
     }
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの参加に失敗した場合、ステータスコード409のレスポンスを返す")
-    fun sharedGroupJoinFails_returnsResponseWithStatus409() {
+    @DisplayName("共有グループへの参加に失敗した場合、エラー画面を表示する")
+    fun sharedGroupJoinFails_displayErrorPage() {
         //given:
         val invalidInviteCode = ""
 
@@ -58,17 +59,19 @@ internal class SharedGroupJoinApiControllerTest(@Autowired private val mockMvc: 
 
         //then:
         actions.andExpect(status().isConflict)
+            .andExpect(view().name("error/messageNotificationError"))
     }
 
     @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
-    fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
                                           .param("code", pendingInvitation.inviteCode))
 
         //then:
-        actions.andExpect(status().isUnauthorized)
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/"))
     }
 }

@@ -1,4 +1,4 @@
-package example.presentation.controller.api.sharedgroup
+package example.presentation.controller.page.sharedgroup
 
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
@@ -14,13 +14,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class SharedGroupRejectApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                  @Autowired private val testAccountInserter: TestAccountInserter,
-                                                  @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                                  @Autowired private val localDateTimeProvider: LocalDateTimeProvider) {
+internal class SharedGroupRejectControllerTest(@Autowired private val mockMvc: MockMvc,
+                                               @Autowired private val testAccountInserter: TestAccountInserter,
+                                               @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                               @Autowired private val localDateTimeProvider: LocalDateTimeProvider) {
 
     companion object {
-        private const val PATH = "/api/shared-group/reject"
+        private const val PATH = "/shared-group/reject"
     }
 
     private lateinit var pendingInvitation: PendingInvitation
@@ -42,34 +42,20 @@ internal class SharedGroupRejectApiControllerTest(@Autowired private val mockMvc
                                           .param("code", pendingInvitation.inviteCode))
 
         //then:
-        actions.andExpect(status().isNoContent)
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/shared-group"))
     }
 
     @Test
-    @WithMockAuthenticatedAccount
-    @DisplayName("共有グループへの招待の拒否に失敗した場合、ステータスコード204のレスポンスを返す")
-    fun sharedGroupRejectFails_returnsResponseWithStatus204() {
-        //given:
-        val invalidInviteCode = ""
-
-        //when:
-        val actions = mockMvc.perform(post(PATH)
-                                          .with(csrf())
-                                          .param("code", invalidInviteCode))
-
-        //then:
-        actions.andExpect(status().isNoContent)
-    }
-
-    @Test
-    @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
-    fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+    @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
+    fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //when:
         val actions = mockMvc.perform(post(PATH)
                                           .with(csrf())
                                           .param("code", pendingInvitation.inviteCode))
 
         //then:
-        actions.andExpect(status().isUnauthorized)
+        actions.andExpect(status().isFound)
+            .andExpect(redirectedUrl("/"))
     }
 }
