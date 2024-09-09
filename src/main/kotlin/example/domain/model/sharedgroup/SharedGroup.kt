@@ -50,14 +50,9 @@ class SharedGroup(val id: SharedGroupId,
     }
 
     fun join(inviteCode: String, requester: AccountId, date: LocalDate) {
-        if (isJoined(requester)) throw SharedGroupJoinFailedException("現在、このグループに参加中です。")
+        validateInviteCode(inviteCode, requester, date)
 
-        val pendingInvitation = getPendingInvitation(inviteCode)
-        if (pendingInvitation == null || !pendingInvitation.isValid(date)) {
-            throw SharedGroupJoinFailedException("現在、このグループからは招待されていません。")
-        }
-
-        pendingInvitations -= pendingInvitation
+        pendingInvitations -= getPendingInvitation(inviteCode)!!
         members += requester
     }
 

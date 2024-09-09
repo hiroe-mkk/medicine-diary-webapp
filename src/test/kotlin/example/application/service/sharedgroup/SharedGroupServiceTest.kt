@@ -125,7 +125,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             val target: () -> Unit = { sharedGroupService.joinSharedGroup(pendingInvitation.inviteCode, userSession) }
 
             //then:
-            assertThrows<SharedGroupJoinFailedException>(target)
+            assertThrows<InvalidInvitationException>(target)
         }
 
         @Test
