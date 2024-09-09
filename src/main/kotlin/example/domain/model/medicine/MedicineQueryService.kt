@@ -57,9 +57,5 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
         return ownedMedicines + sharedGroupMedicines + membersMedicines
     }
 
-    fun isViewableMedicine(medicineId: MedicineId, accountId: AccountId): Boolean {
-        return findViewableMedicine(medicineId, accountId) != null
-    }
-
     private fun findJoinedSharedGroup(accountId: AccountId) = sharedGroupRepository.findByMember(accountId)
 }
