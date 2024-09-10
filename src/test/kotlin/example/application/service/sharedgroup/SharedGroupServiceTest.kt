@@ -12,6 +12,7 @@ import io.mockk.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
+import java.time.*
 
 @DomainLayerTest
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
@@ -218,6 +219,33 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
 
             //then:
             assertThrows<InvalidInvitationException>(target)
+        }
+    }
+
+    @Nested
+    inner class DeleteTest {
+        @Test
+        fun deleteExpiredPendingInvitation() {
+            //given:
+            val today = LocalDate.now()
+            val pendingInvitationExpiredYesterday =
+                    SharedGroupFactory.createPendingInvitation(invitedOn = today.minusDays(7))
+            val pendingInvitationExpiredToday =
+                    SharedGroupFactory.createPendingInvitation(invitedOn = today.minusDays(8))
+            val pendingInvitationExpiresTomorrow =
+                    SharedGroupFactory.createPendingInvitation(invitedOn = today.minusDays(9))
+            val sharedGroup = testSharedGroupInserter.insert(members = setOf(createAccount().id),
+                                                             pendingInvitations = setOf(
+                                                                     pendingInvitationExpiredYesterday,
+                                                                     pendingInvitationExpiredToday,
+                                                                     pendingInvitationExpiresTomorrow))
+
+            //when:
+            sharedGroupService.deleteExpiredPendingInvitation()
+
+            //then:
+            val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
+            assertThat(foundSharedGroup?.pendingInvitations).containsExactlyInAnyOrder(pendingInvitationExpiresTomorrow)
         }
     }
 

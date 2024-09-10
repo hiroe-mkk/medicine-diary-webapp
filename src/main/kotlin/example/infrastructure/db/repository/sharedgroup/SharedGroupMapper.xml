@@ -88,6 +88,11 @@
         WHERE shared_group_id = #{sharedGroupId};
     </delete>
 
+    <delete id="deleteExpiredPendingInvitation">
+        DELETE FROM pending_invitations
+        WHERE invited_on &gt;= DATE_SUB(CURRENT_DATE, INTERVAL #{expirationDays}+1 DAY);
+    </delete>
+
 
     <sql id="AllColumns">
         members.shared_group_id AS shared_group_id,

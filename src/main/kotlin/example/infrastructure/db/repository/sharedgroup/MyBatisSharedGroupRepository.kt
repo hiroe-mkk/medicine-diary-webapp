@@ -60,4 +60,8 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         sharedGroupMapper.deleteAllPendingInvitations(sharedGroupId.value)
         sharedGroupMapper.deleteSharedGroup(sharedGroupId.value)
     }
+
+    override fun deleteExpiredPendingInvitation() {
+        sharedGroupMapper.deleteExpiredPendingInvitation(PendingInvitation.EXPIRATION_DAYS)
+    }
 }

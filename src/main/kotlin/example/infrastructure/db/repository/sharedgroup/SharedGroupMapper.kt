@@ -22,4 +22,6 @@ interface SharedGroupMapper {
     fun deleteAllMembers(sharedGroupId: String)
 
     fun deleteAllPendingInvitations(sharedGroupId: String)
+
+    fun deleteExpiredPendingInvitation(expirationDays: Int)
 }

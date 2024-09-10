@@ -80,4 +80,11 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     fun isJoinedSharedGroup(userSession: UserSession): Boolean {
         return getJoinedSharedGroup(userSession) != null
     }
+
+    /**
+     * 有効期限が切れた招待を削除する
+     */
+    fun deleteExpiredPendingInvitation() {
+        sharedGroupRepository.deleteExpiredPendingInvitation()
+    }
 }

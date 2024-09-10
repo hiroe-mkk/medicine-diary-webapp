@@ -16,4 +16,7 @@ interface SharedGroupRepository {
     fun save(sharedGroup: SharedGroup)
 
     fun deleteById(sharedGroupId: SharedGroupId)
+
+    // TODO: 削除単位に問題ないか再考する
+    fun deleteExpiredPendingInvitation()
 }
