@@ -22,8 +22,7 @@
             members
             LEFT OUTER JOIN profiles ON members.member = profiles.account_id
         WHERE
-            members.shared_group_id = #{sharedGroupId}
-            AND members.member != #{accountId};
+            members.shared_group_id = #{sharedGroupId};
     </select>
 
     <resultMap id="JSONUserResultMap" type="example.application.query.user.JSONUser">

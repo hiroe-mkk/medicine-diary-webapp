@@ -30,7 +30,6 @@ class UsersApiController(private val jsonUserQueryService: JSONUserQueryService,
     @ResponseBody
     fun getSharedGroupMember(@RequestParam sharedGroupId: SharedGroupId): JSONUsers {
         // TODO: sharedGroupId の有効性チェック
-        return jsonUserQueryService.findJSONSharedGroupMember(sharedGroupId,
-                                                              userSessionProvider.getUserSessionOrElseThrow())
+        return jsonUserQueryService.findJSONSharedGroupMember(sharedGroupId)
     }
 }

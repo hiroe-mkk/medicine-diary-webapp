@@ -48,11 +48,13 @@ internal class MyBatisJSONUserQueryServiceTest(@Autowired private val jsonUserQu
                                                                          member2.accountId))
 
         //when:
-        val actual = jsonUserQueryService.findJSONSharedGroupMember(sharedGroup.id, userSession)
+        val actual = jsonUserQueryService.findJSONSharedGroupMember(sharedGroup.id)
 
         //then:
         assertThat(actual.users)
             .extracting("accountId")
-            .containsExactlyInAnyOrder(member1.accountId.value, member2.accountId.value)
+            .containsExactlyInAnyOrder(requesterProfile.accountId.value,
+                                       member1.accountId.value,
+                                       member2.accountId.value)
     }
 }

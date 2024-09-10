@@ -2,7 +2,6 @@ package example.infrastructure.db.query.user
 
 import example.application.query.user.*
 import example.application.service.account.*
-import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
@@ -15,7 +14,7 @@ class MyBatisJSONUserQueryService(private val jsonUserMapper: JSONUserMapper) : 
         return jsonUserMapper.findOneByAccountId(accountId.value) ?: throw AccountNotFoundException(accountId)
     }
 
-    override fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId, userSession: UserSession): JSONUsers {
-        return JSONUsers(jsonUserMapper.findAllBySharedGroupId(sharedGroupId.value, userSession.accountId.value))
+    override fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId): JSONUsers {
+        return JSONUsers(jsonUserMapper.findAllBySharedGroupId(sharedGroupId.value))
     }
 }
