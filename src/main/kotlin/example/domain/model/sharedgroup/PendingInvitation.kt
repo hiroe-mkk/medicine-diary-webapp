@@ -3,7 +3,7 @@ package example.domain.model.sharedgroup
 import java.time.*
 
 /**
- * 招待中
+ * 招待
  */
 data class PendingInvitation(val inviteCode: String,
                              val invitedOn: LocalDate) {
