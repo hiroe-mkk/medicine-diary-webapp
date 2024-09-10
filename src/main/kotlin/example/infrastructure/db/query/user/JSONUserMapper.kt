@@ -5,7 +5,5 @@ import org.apache.ibatis.annotations.*
 
 @Mapper
 interface JSONUserMapper {
-    fun findOneByAccountId(accountId: String): JSONUser?
-
     fun findAllBySharedGroupId(sharedGroupId: String): List<JSONUser>
 }

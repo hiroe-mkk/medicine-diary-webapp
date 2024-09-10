@@ -2,13 +2,11 @@ package example.testhelper.springframework.autoconfigure
 
 import example.application.query.medicationrecord.*
 import example.application.query.medicine.*
-import example.application.query.sharedgroup.*
 import example.application.query.user.*
 import example.domain.model.medicine.*
 import example.domain.model.sharedgroup.*
 import example.infrastructure.db.query.medicationrecord.*
 import example.infrastructure.db.query.medicine.*
-import example.infrastructure.db.query.sharedgroup.*
 import example.infrastructure.db.query.user.*
 import org.springframework.context.annotation.*
 

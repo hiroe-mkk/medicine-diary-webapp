@@ -2,17 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="example.infrastructure.db.query.user.JSONUserMapper">
-    <select id="findOneByAccountId" resultMap="JSONUserResultMap">
-        SELECT
-            account_id,
-            username,
-            CONCAT(profile_image_url_endpoint, profile_image_url_path) AS profile_image_url
-        FROM
-            profiles
-        WHERE
-            account_id = #{accountId};
-    </select>
-
     <select id="findAllBySharedGroupId" resultMap="JSONUserResultMap">
         SELECT
             profiles.account_id AS account_id,

@@ -19,31 +19,6 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc,
     }
 
     @Nested
-    inner class GetUserTest {
-        @Test
-        @WithMockAuthenticatedAccount
-        @DisplayName("ユーザーを取得する")
-        fun getUser() {
-            //when:
-            val actions = mockMvc.perform(get("${PATH}?self"))
-
-            //then:
-            actions.andExpect(status().isOk)
-                .andExpect(header().string("Content-Type", "application/json"))
-        }
-
-        @Test
-        @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
-        fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
-            //when:
-            val actions = mockMvc.perform(get("${PATH}?own"))
-
-            //then:
-            actions.andExpect(status().isUnauthorized)
-        }
-    }
-
-    @Nested
     inner class GetSharedGroupMemberTest {
         @Test
         @WithMockAuthenticatedAccount

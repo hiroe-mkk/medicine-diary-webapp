@@ -10,32 +10,6 @@
       <div class="is-flex is-align-items-center">
         <div
           class="is-clickable mx-2"
-          :class="{ opacity: !isUserEnabled(self.value.accountId) }"
-          @click="toggleUserActive(self.value.accountId)"
-          v-if="self.value !== undefined"
-        >
-          <div class="is-flex is-justify-content-center">
-            <figure class="image is-48x48 m-0">
-              <img
-                class="is-rounded"
-                :src="self.value.profileImageURL"
-                alt=""
-                v-if="self.value.profileImageURL !== undefined"
-              />
-              <img
-                class="is-rounded"
-                src="@main/images/no_profile_image.png"
-                alt=""
-                v-if="self.value.profileImageURL === undefined"
-              />
-            </figure>
-          </div>
-          <p class="is-size-7 has-text-weight-bold has-text-grey-dark m-0 p-0">
-            {{ self.value.username }}
-          </p>
-        </div>
-        <div
-          class="is-clickable mx-2"
           :class="{ opacity: !isUserEnabled(member.accountId) }"
           @click="toggleUserActive(member.accountId)"
           v-for="member in members"
@@ -44,15 +18,8 @@
             <figure class="image is-48x48 m-0">
               <img
                 class="is-rounded"
-                :src="member.profileImageURL"
+                :src="member.profileImageURL || noProfileImage"
                 alt=""
-                v-if="member.profileImageURL !== undefined"
-              />
-              <img
-                class="is-rounded"
-                src="@main/images/no_profile_image.png"
-                alt=""
-                v-if="member.profileImageURL === undefined"
               />
             </figure>
           </div>
@@ -77,10 +44,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, inject } from 'vue';
-import { Filter } from '@main/js/composables/model/MedicationRecords.js';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import noProfileImage from '@main/images/no_profile_image.png';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { Filter } from '@main/js/composables/model/MedicationRecords.js';
+import { inject, onMounted, reactive, ref } from 'vue';
 
 const props = defineProps({
   joinedSharedGroupId: { type: String, default: undefined },
@@ -88,24 +56,11 @@ const props = defineProps({
 });
 const activateResultMessage = inject('activateResultMessage');
 
-const self = reactive({ value: undefined });
 const members = reactive([]);
 const filter = reactive(new Filter());
 const filteredMedicationRecords = ref(null);
 
 onMounted(() => {
-  HttpRequestClient.submitGetRequest('/api/users?self')
-    .then((data) => {
-      self.value = data;
-    })
-    .catch(() => {
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
-
   if (props.joinedSharedGroupId !== undefined) {
     HttpRequestClient.submitGetRequest(
       `/api/users?sharedGroupId=${props.joinedSharedGroupId}`
