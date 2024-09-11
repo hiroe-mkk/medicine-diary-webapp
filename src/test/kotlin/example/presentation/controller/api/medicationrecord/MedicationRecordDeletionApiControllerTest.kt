@@ -1,6 +1,5 @@
 package example.presentation.controller.api.medicationrecord
 
-import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
@@ -45,7 +44,7 @@ internal class MedicationRecordDeletionApiControllerTest(@Autowired private val 
     @DisplayName("服用記録が見つからなかった場合、ステータスコード204のレスポンスを返す")
     fun medicationRecordNotFound_returnsResponseWithStatus404() {
         //then:
-        val nonexistentMedicationRecordId = MedicationRecordId(EntityIdHelper.generate())
+        val nonexistentMedicationRecordId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(post(PATH, nonexistentMedicationRecordId)
@@ -60,7 +59,7 @@ internal class MedicationRecordDeletionApiControllerTest(@Autowired private val 
     @DisplayName("無効な形式の服用記録IDの場合、ステータスコード400のレスポンスを返す")
     fun invalidMedicationRecordId_returnsResponseWithStatus400() {
         //given:
-        val invalidMedicationRecordId = MedicationRecordId("invalidMedicationRecordId")
+        val invalidMedicationRecordId = "invalidMedicationRecordId"
 
         //when:
         val actions = mockMvc.perform(post(PATH, invalidMedicationRecordId)
@@ -74,7 +73,7 @@ internal class MedicationRecordDeletionApiControllerTest(@Autowired private val 
     @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val medicationRecordId = MedicationRecordId(EntityIdHelper.generate())
+        val medicationRecordId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(post(PATH, medicationRecordId)

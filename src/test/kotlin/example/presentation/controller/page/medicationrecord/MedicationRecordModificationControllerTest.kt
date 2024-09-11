@@ -47,7 +47,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("服用記録が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicationRecordNotFound_displayNotFoundErrorPage() {
             //then:
-            val nonexistentMedicationRecordId = MedicationRecordId(EntityIdHelper.generate())
+            val nonexistentMedicationRecordId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(get(PATH, nonexistentMedicationRecordId))
@@ -62,7 +62,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("無効な形式の服用記録IDの場合、NotFoundエラー画面を表示する")
         fun invalidMedicationRecordId_displayNotFoundErrorPage() {
             //given:
-            val invalidMedicationRecordId = MedicationRecordId("invalidMedicationRecordId")
+            val invalidMedicationRecordId = "invalidMedicationRecordId"
 
             //when:
             val actions = mockMvc.perform(get(PATH, invalidMedicationRecordId))
@@ -76,7 +76,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectsToHomePage() {
             //given:
-            val medicationRecordId = MedicationRecordId(EntityIdHelper.generate())
+            val medicationRecordId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(get(PATH, medicationRecordId))
@@ -164,7 +164,7 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
             //given:
             val userSession = userSessionProvider.getUserSessionOrElseThrow()
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
-            val nonexistentMedicationRecordId = MedicationRecordId(EntityIdHelper.generate())
+            val nonexistentMedicationRecordId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(post(PATH, nonexistentMedicationRecordId)
@@ -189,16 +189,13 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicineNotFound_redirectToLastRequestedPage() {
             //given:
-            val medicationRecordId = MedicationRecordId(EntityIdHelper.generate())
-            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
-            mockMvc.perform(get("/medicines"))
-                .andExpect(status().isOk())
-                .andReturn()
+            val medicationRecordId = EntityIdHelper.generate()
+            val nonexistentMedicineId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(post(PATH, medicationRecordId)
                                               .with(csrf())
-                                              .param("takenMedicine", nonexistentMedicineId.toString())
+                                              .param("takenMedicine", nonexistentMedicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)
@@ -218,13 +215,13 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("無効な形式の服用記録IDの場合、NotFoundエラー画面を表示する")
         fun invalidMedicationRecordId_displayNotFoundErrorPage() {
             //given:
-            val invalidMedicationRecordId = MedicationRecordId("invalidMedicationRecordId")
-            val medicineId = MedicineId(EntityIdHelper.generate())
+            val invalidMedicationRecordId = "invalidMedicationRecordId"
+            val medicineId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(get(PATH, invalidMedicationRecordId)
                                               .with(csrf())
-                                              .param("takenMedicine", medicineId.value)
+                                              .param("takenMedicine", medicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)
@@ -243,13 +240,13 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectToHomePage() {
             //given:
-            val medicineId = MedicineId(EntityIdHelper.generate())
-            val medicationRecordId = MedicationRecordId(EntityIdHelper.generate())
+            val medicineId = EntityIdHelper.generate()
+            val medicationRecordId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(post(PATH, medicationRecordId)
                                               .with(csrf())
-                                              .param("takenMedicine", medicineId.toString())
+                                              .param("takenMedicine", medicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)

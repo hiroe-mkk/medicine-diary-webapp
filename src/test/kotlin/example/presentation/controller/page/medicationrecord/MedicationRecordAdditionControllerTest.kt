@@ -133,15 +133,12 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
         fun medicineNotFound_redirectToLastRequestedPage() {
             //given:
-            val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
-            mockMvc.perform(get("/medicines"))
-                .andExpect(status().isOk())
-                .andReturn()
+            val nonexistentMedicineId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("takenMedicine", nonexistentMedicineId.toString())
+                                              .param("takenMedicine", nonexistentMedicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)
@@ -159,12 +156,12 @@ internal class MedicationRecordAdditionControllerTest(@Autowired private val moc
         @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
         fun requestedByUnauthenticatedUser_redirectToHomePage() {
             //given:
-            val medicineId = MedicineId(EntityIdHelper.generate())
+            val medicineId = EntityIdHelper.generate()
 
             //when:
             val actions = mockMvc.perform(post(PATH)
                                               .with(csrf())
-                                              .param("takenMedicine", medicineId.toString())
+                                              .param("takenMedicine", medicineId)
                                               .param("quantity", quantity.toString())
                                               .param("symptom", symptom)
                                               .param("beforeMedication", beforeMedication.name)

@@ -1,6 +1,5 @@
 package example.presentation.controller.page
 
-import example.domain.model.account.*
 import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
@@ -43,7 +42,7 @@ internal class UserPageControllerTest(@Autowired private val mockMvc: MockMvc,
     @DisplayName("アカウントが見つからなかった場合、NotFoundエラー画面を表示する")
     fun accountNotFound_displayNotFoundErrorPage() {
         //given:
-        val nonexistentAccountId = AccountId(EntityIdHelper.generate())
+        val nonexistentAccountId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(get(PATH, nonexistentAccountId))
@@ -55,10 +54,10 @@ internal class UserPageControllerTest(@Autowired private val mockMvc: MockMvc,
 
     @Test
     @WithMockAuthenticatedAccount
-    @DisplayName("無効な形式の薬IDの場合、NotFoundエラー画面を表示する")
+    @DisplayName("無効な形式のアカウントIDの場合、NotFoundエラー画面を表示する")
     fun invalidAccountId_displayNotFoundErrorPage() {
         //given:
-        val invalidAccountId = AccountId("invalidAccountId")
+        val invalidAccountId = "invalidAccountId"
 
         //when:
         val actions = mockMvc.perform(get(PATH, invalidAccountId))
@@ -72,7 +71,7 @@ internal class UserPageControllerTest(@Autowired private val mockMvc: MockMvc,
     @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
     fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //given:
-        val accountId = AccountId(EntityIdHelper.generate())
+        val accountId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(get(PATH, accountId))
