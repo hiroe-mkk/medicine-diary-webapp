@@ -12,6 +12,10 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         return SharedGroupId(EntityIdHelper.generate())
     }
 
+    override fun isValidSharedGroupId(sharedGroupId: SharedGroupId): Boolean {
+        return EntityIdHelper.isValid(sharedGroupId)
+    }
+
     override fun createInviteCode(): String {
         var inviteCode: String
         do {

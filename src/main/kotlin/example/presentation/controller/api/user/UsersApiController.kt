@@ -1,14 +1,17 @@
 package example.presentation.controller.api.user
 
 import example.application.query.user.*
+import example.application.service.sharedgroup.*
 import example.domain.model.sharedgroup.*
+import example.domain.shared.exception.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/users")
-class UsersApiController(private val jsonUserQueryService: JSONUserQueryService) {
+class UsersApiController(private val sharedGroupService: SharedGroupService,
+                         private val jsonUserQueryService: JSONUserQueryService) {
     /**
      * 共有グループのメンバー覧を取得する
      */
@@ -16,7 +19,8 @@ class UsersApiController(private val jsonUserQueryService: JSONUserQueryService)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getSharedGroupMember(@RequestParam sharedGroupId: SharedGroupId): JSONUsers {
-        // TODO: sharedGroupId の有効性チェック
+        if (!sharedGroupService.isValidAccountId(sharedGroupId)) throw InvalidEntityIdException(sharedGroupId)
+
         return jsonUserQueryService.findJSONSharedGroupMember(sharedGroupId)
     }
 }

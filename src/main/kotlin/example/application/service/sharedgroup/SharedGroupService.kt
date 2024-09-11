@@ -1,6 +1,7 @@
 package example.application.service.sharedgroup
 
 import example.application.shared.usersession.*
+import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import org.springframework.stereotype.*
@@ -57,6 +58,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 招待されていて、なおかつ参加可能な共有グループの ID を取得する
      */
+    @Transactional(readOnly = true)
     fun getJoinableInvitedSharedGroupId(inviteCode: String, userSession: UserSession): SharedGroupId {
         val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode)
                                  ?: throw InvalidInvitationException(inviteCode, "招待が確認できません。")
@@ -68,8 +70,17 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     }
 
     /**
+     * 有効なアカウント ID か
+     */
+    @Transactional(readOnly = true)
+    fun isValidAccountId(sharedGroupId: SharedGroupId): Boolean {
+        return sharedGroupRepository.isValidSharedGroupId(sharedGroupId)
+    }
+
+    /**
      * 参加している共有グループの ID を取得する
      */
+    @Transactional(readOnly = true)
     fun getJoinedSharedGroup(userSession: UserSession): SharedGroupId? {
         return sharedGroupRepository.findByMember(userSession.accountId)?.id
     }
@@ -77,6 +88,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
     /**
      * 共有グループに参加しているか
      */
+    @Transactional(readOnly = true)
     fun isJoinedSharedGroup(userSession: UserSession): Boolean {
         return getJoinedSharedGroup(userSession) != null
     }

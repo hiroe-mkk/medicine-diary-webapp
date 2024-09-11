@@ -5,6 +5,8 @@ import example.domain.model.account.*
 interface SharedGroupRepository {
     fun createSharedGroupId(): SharedGroupId
 
+    fun isValidSharedGroupId(sharedGroupId: SharedGroupId): Boolean
+
     fun createInviteCode(): String
 
     fun findById(sharedGroupId: SharedGroupId): SharedGroup?

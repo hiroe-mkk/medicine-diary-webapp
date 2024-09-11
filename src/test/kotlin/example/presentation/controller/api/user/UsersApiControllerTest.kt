@@ -1,5 +1,6 @@
 package example.presentation.controller.api.user
 
+import example.infrastructure.db.repository.shared.*
 import example.presentation.shared.usersession.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
@@ -29,7 +30,8 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc,
             val sharedGroup = testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
             //when:
-            val actions = mockMvc.perform(get("${PATH}?sharedGroupId=${sharedGroup.id}"))
+            val actions = mockMvc.perform(get(PATH)
+                                              .queryParam("sharedGroupId", sharedGroup.id.toString()))
 
             //then:
             actions.andExpect(status().isOk)
@@ -37,10 +39,30 @@ internal class UsersApiControllerTest(@Autowired private val mockMvc: MockMvc,
         }
 
         @Test
+        @WithMockAuthenticatedAccount
+        @DisplayName("無効な形式の共有グループIDの場合、ステータスコード400のレスポンスを返す")
+        fun invalidSharedGroupId_returnsResponseWithStatus400() {
+            //given:
+            val invalidSharedGroupId = "invalidSharedGroupId"
+
+            //when:
+            val actions = mockMvc.perform(get(PATH)
+                                              .queryParam("sharedGroupId", invalidSharedGroupId))
+
+            //then:
+            actions.andExpect(status().isBadRequest)
+        }
+
+
+        @Test
         @DisplayName("未認証ユーザによるリクエストの場合、ステータスコード401のレスポンスを返す")
         fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
+            //given:
+            val sharedGroupId = EntityIdHelper.generate()
+
             //when:
-            val actions = mockMvc.perform(get("${PATH}?member"))
+            val actions = mockMvc.perform(get(PATH)
+                                              .queryParam("sharedGroupId", sharedGroupId))
 
             //then:
             actions.andExpect(status().isUnauthorized)
