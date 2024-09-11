@@ -21,20 +21,12 @@
             :href="`/users/${medicationRecord.value.recorder.accountId}`"
           >
             <img
-              :src="medicationRecord.value.recorder.profileImageURL"
-              alt=""
               class="is-rounded"
-              v-if="
-                medicationRecord.value.recorder.profileImageURL !== undefined
+              :src="
+                medicationRecord.value.recorder.profileImageURL ||
+                noProfileImage
               "
-            />
-            <img
-              src="@main/images/no_profile_image.png"
               alt=""
-              class="is-rounded"
-              v-if="
-                medicationRecord.value.recorder.profileImageURL === undefined
-              "
             />
           </a>
           <span class="is-size-7 has-text-weight-bold ml-2">
@@ -187,12 +179,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineEmits, inject } from 'vue';
+import noProfileImage from '@main/images/no_profile_image.png';
 import {
   HttpRequestClient,
   HttpRequestFailedError,
 } from '@main/js/composables/HttpRequestClient.js';
 import { MedicationRecordUtils } from '@main/js/composables/model/MedicationRecords.js';
+import { defineEmits, defineExpose, inject, reactive, ref } from 'vue';
 
 const props = defineProps({
   displayRecorder: Boolean,

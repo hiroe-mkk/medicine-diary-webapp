@@ -22,16 +22,9 @@
           :href="`/users/${medicationRecord.recorder.accountId}`"
         >
           <img
-            :src="medicationRecord.recorder.profileImageURL"
-            alt=""
             class="is-rounded"
-            v-if="medicationRecord.recorder.profileImageURL !== undefined"
-          />
-          <img
-            src="@main/images/no_profile_image.png"
+            :src="medicationRecord.recorder.profileImageURL || noProfileImage"
             alt=""
-            class="is-rounded"
-            v-if="medicationRecord.recorder.profileImageURL === undefined"
           />
         </a>
       </div>
@@ -139,12 +132,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineEmits, inject } from 'vue';
+import noProfileImage from '@main/images/no_profile_image.png';
+import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
 import {
   MedicationRecords,
   MedicationRecordUtils,
 } from '@main/js/composables/model/MedicationRecords.js';
-import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
+import { defineEmits, defineExpose, inject, reactive, ref } from 'vue';
 
 const props = defineProps({
   isJoinedSharedGroup: Boolean,

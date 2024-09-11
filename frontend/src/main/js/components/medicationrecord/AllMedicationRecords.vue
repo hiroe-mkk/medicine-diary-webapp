@@ -23,8 +23,14 @@
               />
             </figure>
           </div>
-          <p class="is-size-7 has-text-weight-bold has-text-grey-dark m-0 p-0">
+          <p
+            class="is-size-7 has-text-weight-bold has-text-grey-dark"
+            v-if="member.username !== ''"
+          >
             {{ member.username }}
+          </p>
+          <p class="is-size-7 has-text-weight-bold has-text-grey" v-else>
+            ( unknown )
           </p>
         </div>
       </div>

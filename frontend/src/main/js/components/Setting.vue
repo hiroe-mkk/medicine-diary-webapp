@@ -12,14 +12,11 @@
     ></ChangeableImage>
     <p
       class="is-size-4 has-text-weight-bold has-text-grey-dark m-0"
-      v-if="username !== undefined"
+      v-if="username !== ''"
     >
       {{ username }}
     </p>
-    <p
-      class="is-size-5 has-text-weight-bold has-text-grey m-0"
-      v-if="username === undefined"
-    >
+    <p class="is-size-5 has-text-weight-bold has-text-grey m-0" v-else>
       ( unknown )
     </p>
   </div>

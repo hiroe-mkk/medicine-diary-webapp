@@ -1,10 +1,10 @@
 <template>
-  <div class="content m-2">
+  <div class="content has-text-centered m-2">
     <div
       class="is-flex is-align-items-center is-justify-content-center"
       v-if="members.length !== 0"
     >
-      <div class="has-text-centered mx-2" v-for="member in members">
+      <div v-for="member in members">
         <div class="is-flex is-justify-content-center">
           <component
             :is="props.isClickable ? 'a' : 'p'"
@@ -20,12 +20,20 @@
             />
           </component>
         </div>
-        <p class="has-text-weight-bold has-text-grey-dark m-0 p-0">
+
+        <p
+          class="is-size-7 has-text-weight-bold has-text-grey-dark"
+          v-if="member.username !== ''"
+        >
           {{ member.username }}
+        </p>
+        <p class="is-size-7 has-text-weight-bold has-text-grey" v-else>
+          ( unknown )
         </p>
       </div>
     </div>
-    <div class="has-text-centered py-2" v-if="members.length === 0">
+
+    <div v-if="members.length === 0">
       <p class="is-size-7 has-text-weight-semibold has-text-grey">
         メンバーがいません。
       </p>
