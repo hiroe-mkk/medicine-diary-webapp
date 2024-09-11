@@ -45,14 +45,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue';
-import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import FullCalendar from '@fullcalendar/vue3';
+import { inject, onMounted, ref } from 'vue';
 
-import { Filter } from '@main/js/composables/model/MedicationRecords.js';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 
 const props = defineProps({
   accountId: String,
@@ -147,9 +147,8 @@ function dateSelected(dateStr) {
 
   const filter = new Filter();
   filter.accountId = props.accountId;
-  const slashDateStr = dateStr.replace(/-/g, '/');
-  filter.start = slashDateStr;
-  filter.end = slashDateStr;
+  filter.start = dateStr;
+  filter.end = dateStr;
 
   filteredMedicationRecords.value.loadMedicationRecords(filter);
   isMedicationRecordsModalActive.value = true;
