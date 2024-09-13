@@ -34,9 +34,13 @@
           @deleted="medicationRecordDeleted"
         >
           <a
-            class="button is-small is-rounded is-link px-5"
+            class="button is-small is-link is-rounded is-outlined px-4"
             :href="`/medication-records/add?date=${selectedDateStr}`"
-            >追加する
+          >
+            追加する
+            <span class="icon fas fa-lg is-flex is-align-items-center m-0">
+              <i class="fa-solid fa-file-pen"></i>
+            </span>
           </a>
         </FilteredMedicationRecords>
       </div>
