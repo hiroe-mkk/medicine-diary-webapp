@@ -25,18 +25,18 @@
     <div class="modal-content is-flex is-justify-content-center">
       <div class="content">
         <button
-          class="button is-dark is-fullwidth is-small mb-1"
-          v-if="image != undefined"
-          @click="deleteImage()"
-        >
-          <strong class="mx-6">現在の画像を削除する</strong>
-        </button>
-        <button
           type="button"
           class="button is-dark is-fullwidth is-small mb-1"
           @click="activateTrimmingModal()"
         >
           <strong class="mx-6">画像を変更する</strong>
+        </button>
+        <button
+          class="button is-dark is-fullwidth is-small mb-1"
+          v-if="image != undefined"
+          @click="deleteImage()"
+        >
+          <strong class="mx-6">現在の画像を削除する</strong>
         </button>
         <button
           type="button"
