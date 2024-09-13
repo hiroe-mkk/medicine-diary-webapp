@@ -12,7 +12,7 @@
             @click="medicineType = 'OWNED'"
           >
             <a>
-              <small class="has-text-weight-bold">　 あなた 　</small>
+              <small class="has-text-weight-bold px-2">あなた</small>
             </a>
           </li>
           <li
@@ -20,7 +20,7 @@
             @click="medicineType = 'SHARED_GROUP'"
           >
             <a>
-              <small class="has-text-weight-bold">　　共有　　</small>
+              <small class="has-text-weight-bold px-3">共有</small>
             </a>
           </li>
           <li
@@ -28,7 +28,7 @@
             @click="medicineType = 'MEMBERS'"
           >
             <a>
-              <small class="has-text-weight-bold">　メンバー　</small>
+              <small class="has-text-weight-bold px-2">メンバー</small>
             </a>
           </li>
         </ul>
