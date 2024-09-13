@@ -61,7 +61,7 @@
         <div class="field my-3">
           <div class="control">
             <input
-              class="input is-info"
+              class="input is-info is-rounded"
               type="text"
               list="effectOptions"
               placeholder="その他"

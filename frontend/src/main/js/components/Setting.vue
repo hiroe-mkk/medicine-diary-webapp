@@ -116,7 +116,7 @@
           <div class="field my-3">
             <div class="control">
               <input
-                class="input is-info"
+                class="input is-info is-rounded"
                 type="text"
                 name="username"
                 v-model="editingUsername"
