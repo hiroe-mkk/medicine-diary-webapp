@@ -30,11 +30,12 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
      * 服用記録追加画面を表示する
      */
     @GetMapping
-    fun displayMedicationRecordAdditionPage(@Validated form: MedicationRecordAdditionFormInitialValue,
+    fun displayMedicationRecordAdditionPage(@Validated formInitialValues: MedicationRecordAdditionFormInitialValues,
                                             model: Model): String {
-        val command = medicationRecordService.getAdditionMedicationRecordEditCommand(form.validatedMedicine,
-                                                                                     form.date,
-                                                                                     userSessionProvider.getUserSessionOrElseThrow())
+        val command =
+                medicationRecordService.getAdditionMedicationRecordEditCommand(formInitialValues.validatedMedicine,
+                                                                               formInitialValues.date,
+                                                                               userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"
     }
