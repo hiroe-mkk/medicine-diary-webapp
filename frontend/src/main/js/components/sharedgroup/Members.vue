@@ -42,14 +42,15 @@
 </template>
 
 <script setup>
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
-import { onMounted, reactive } from 'vue';
 import noProfileImage from '@main/images/no_profile_image.png';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { inject, onMounted, reactive } from 'vue';
 
 const props = defineProps({
   isClickable: { type: Boolean, default: false },
   sharedGroupId: { type: String, default: undefined },
 });
+const activateResultMessage = inject('activateResultMessage');
 
 const members = reactive([]);
 
@@ -57,17 +58,10 @@ onMounted(() => {
   if (props.sharedGroupId === undefined) return;
 
   HttpRequestClient.submitGetRequest(
-    `/api/users?sharedGroupId=${props.sharedGroupId}`
-  )
-    .then((data) => {
-      members.push(...data.users);
-    })
-    .catch(() => {
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+    `/api/users?sharedGroupId=${props.sharedGroupId}`,
+    activateResultMessage
+  ).then((data) => {
+    members.push(...data.users);
+  });
 });
 </script>

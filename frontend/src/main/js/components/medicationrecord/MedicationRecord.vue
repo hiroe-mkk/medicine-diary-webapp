@@ -180,10 +180,7 @@
 
 <script setup>
 import noProfileImage from '@main/images/no_profile_image.png';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import { MedicationRecordUtils } from '@main/js/composables/model/MedicationRecords.js';
 import { defineEmits, defineExpose, inject, reactive, ref } from 'vue';
 
@@ -209,41 +206,12 @@ function deleteMedicationRecord(medicationRecordId) {
 
   HttpRequestClient.submitPostRequest(
     `/api/medication-records/${medicationRecordId}/delete`,
-    form
-  )
-    .then(() => {
-      activateResultMessage('INFO', `服用記録の削除が完了しました。`);
-      isSelectedMedicationRecordModalActive.value = false;
-      emits('deleted', medicationRecordId);
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+    form,
+    activateResultMessage
+  ).then(() => {
+    activateResultMessage('INFO', `服用記録の削除が完了しました。`);
+    isSelectedMedicationRecordModalActive.value = false;
+    emits('deleted', medicationRecordId);
+  });
 }
 </script>

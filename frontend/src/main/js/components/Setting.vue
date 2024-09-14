@@ -207,14 +207,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, inject } from 'vue';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
-import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
-import ChangeableImage from '@main/js/components/ChangeableImage.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
+import ChangeableImage from '@main/js/components/ChangeableImage.vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
+import { inject, reactive, ref } from 'vue';
 
 const props = defineProps({
   username: String,
@@ -239,63 +236,21 @@ function activateUsernameChangeModal() {
 }
 
 function submitUsernameChangeForm() {
+  fieldErrors.clear();
+
   const form = new URLSearchParams();
   form.set('username', editingUsername.value);
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest('/api/profile/username/change', form)
-    .then(() => {
-      changeUsernameCompleted();
-      return;
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 400) {
-          // バインドエラーが発生した場合
-          if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
-            fieldErrors.set(error.body.fieldErrors);
-            return;
-          }
-        } else if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 409) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
-}
-
-function changeUsernameCompleted() {
-  username.value = editingUsername.value;
-  isUsernameChangeModalActive.value = false;
-  activateResultMessage('INFO', 'ユーザー名の変更が完了しました。');
+  HttpRequestClient.submitPostRequest(
+    '/api/profile/username/change',
+    form,
+    activateResultMessage,
+    fieldErrors
+  ).then(() => {
+    username.value = editingUsername.value;
+    activateResultMessage('INFO', 'ユーザー名の変更が完了しました。');
+  });
 }
 
 function activateProfileImageMenuModal() {

@@ -8,7 +8,7 @@
         </p>
       </div>
     </div>
-    
+
     <form class="form" method="post" @submit.prevent="submitInviteForm()">
       <div class="field has-text-left my-3">
         <label class="label">メールアドレス</label>
@@ -55,8 +55,7 @@
 
 <script setup>
 import {
-    HttpRequestClient,
-    HttpRequestFailedError,
+  HttpRequestClient
 } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import { inject, reactive, ref } from 'vue';
@@ -76,48 +75,17 @@ function submitInviteForm() {
   form.set('emailAddress', editingEmailAddress.value);
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest('/api/shared-group/invite', form)
-    .then(() => {
-      activateResultMessage(
-        'INFO',
-        '共有グループに招待するメールを送信しました。',
-        'メールが届かない場合は、メールアドレスが正しく入力されているか、または迷惑メールフォルダを確認してください。'
-      );
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 400) {
-          // バインドエラーが発生した場合
-          if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
-            fieldErrors.set(error.body.fieldErrors);
-            return;
-          }
-        } else if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  HttpRequestClient.submitPostRequest(
+    '/api/shared-group/invite',
+    form,
+    activateResultMessage,
+    fieldErrors
+  ).then(() => {
+    activateResultMessage(
+      'INFO',
+      '共有グループに招待するメールを送信しました。',
+      'メールが届かない場合は、メールアドレスが正しく入力されているか、または迷惑メールフォルダを確認してください。'
+    );
+  });
 }
 </script>

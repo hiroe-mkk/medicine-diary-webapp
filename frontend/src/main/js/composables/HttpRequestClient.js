@@ -1,12 +1,90 @@
 export class HttpRequestClient {
-  static async submitPostRequest(url, from) {
-    const response = await fetch(url, { method: 'POST', body: from });
-    return parseResponse(response);
+  static async submitPostRequest(
+    url,
+    from,
+    activateResultMessage,
+    fieldErrors
+  ) {
+    try {
+      const response = await fetch(url, { method: 'POST', body: from });
+      return await parseResponse(response);
+    } catch (error) {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status === 400) {
+          // バインドエラーが発生した場合
+          if (
+            fieldErrors &&
+            !error.isBodyEmpty() &&
+            error.body.fieldErrors !== undefined
+          ) {
+            fieldErrors.set(error.body.fieldErrors);
+            throw error;
+          }
+        } else if (error.status === 401) {
+          throw error;
+        } else if (error.status === 500) {
+          activateResultMessage(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          throw error;
+        } else if (error.hasMessage()) {
+          activateResultMessage(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          throw error;
+        }
+      }
+
+      activateResultMessage(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+
+      // 呼び出し元にもエラーを伝えるためにエラーを再スローする
+      throw error;
+    }
   }
 
-  static async submitGetRequest(url) {
-    const response = await fetch(url, { method: 'GET' });
-    return parseResponse(response);
+  static async submitGetRequest(url, activateResultMessage) {
+    try {
+      const response = await fetch(url, { method: 'GET' });
+      return await parseResponse(response);
+    } catch (error) {
+      if (error instanceof HttpRequestFailedError) {
+        if (error.status === 401) {
+          location.reload();
+          throw error;
+        } else if (error.status === 500) {
+          activateResultMessage(
+            'ERROR',
+            'システムエラーが発生しました。',
+            'お手数ですが、再度お試しください。'
+          );
+          throw error;
+        } else if (error.hasMessage()) {
+          activateResultMessage(
+            'ERROR',
+            'エラーが発生しました。',
+            error.getMessage()
+          );
+          throw error;
+        }
+      }
+
+      activateResultMessage(
+        'ERROR',
+        'エラーが発生しました。',
+        '通信状態をご確認のうえ、再度お試しください。'
+      );
+
+      // 呼び出し元にもエラーを伝えるためにエラーを再スローする
+      throw error;
+    }
   }
 }
 
@@ -56,7 +134,7 @@ async function parseResponse(response) {
 // ボディが空だった場合は、undefined を返す。
 async function extractJsonBody(response) {
   const contentType = response.headers.get('Content-Type');
-  if (contentType != null && contentType.indexOf('json') != -1) {
+  if (contentType != null && contentType.includes('json')) {
     return await response.json();
   }
   return undefined;

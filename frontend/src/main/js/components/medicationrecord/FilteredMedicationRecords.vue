@@ -109,7 +109,7 @@
     >
       <p
         class="is-size-7 has-text-link is-clickable"
-        @click="loadMoreMedicationRecords()"
+        @click="medicationRecords.loadMore()"
       >
         さらに表示する
       </p>
@@ -156,23 +156,7 @@ const medicationRecords = reactive(new MedicationRecords());
 const medicationRecord = ref(null);
 
 function loadMedicationRecords(filter) {
-  medicationRecords.load(filter).catch(() => {
-    activateResultMessage(
-      'ERROR',
-      'エラーが発生しました。',
-      '通信状態をご確認のうえ、再度お試しください。'
-    );
-  });
-}
-
-function loadMoreMedicationRecords() {
-  medicationRecords.loadMore().catch(() => {
-    activateResultMessage(
-      'ERROR',
-      'エラーが発生しました。',
-      '通信状態をご確認のうえ、再度お試しください。'
-    );
-  });
+  medicationRecords.load(filter, activateResultMessage);
 }
 
 function activateMedicationRecordModal(medicationRecordId) {

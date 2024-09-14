@@ -50,7 +50,10 @@
       <p class="has-text-weight-semibold has-text-grey-dark pb-4">
         現在参加している共有グループ
       </p>
-      <Members :isClickable="true" :sharedGroupId="joinedSharedGroupId"></Members>
+      <Members
+        :isClickable="true"
+        :sharedGroupId="joinedSharedGroupId"
+      ></Members>
 
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">
@@ -125,12 +128,9 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
 import Members from '@main/js/components/sharedgroup/Members.vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { inject, ref } from 'vue';
 
 const props = defineProps({
   joinedSharedGroupId: { type: String, default: undefined },
@@ -146,40 +146,14 @@ function leaveSharedGroup() {
   const form = new FormData();
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest('/api/shared-group/leave', form)
-    .then(() => {
-      activateResultMessage('INFO', `共有グループから脱退しました。`);
-      isLeaveSharedGroupConfirmationModalActive.value = false;
-      joinedSharedGroupId.value = undefined;
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  HttpRequestClient.submitPostRequest(
+    '/api/shared-group/leave',
+    form,
+    activateResultMessage
+  ).then(() => {
+    activateResultMessage('INFO', `共有グループから脱退しました。`);
+    isLeaveSharedGroupConfirmationModalActive.value = false;
+    joinedSharedGroupId.value = undefined;
+  });
 }
 </script>

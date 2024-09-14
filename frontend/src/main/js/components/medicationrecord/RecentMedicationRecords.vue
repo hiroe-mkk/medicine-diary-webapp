@@ -32,15 +32,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, inject } from 'vue';
-import { Filter } from '@main/js/composables/model/MedicationRecords.js';
 import FilteredMedicationRecords from '@main/js/components/medicationrecord/FilteredMedicationRecords.vue';
+import { Filter } from '@main/js/composables/model/MedicationRecords.js';
+import { onMounted, reactive, ref } from 'vue';
 
 const props = defineProps({
   isJoinedSharedGroup: Boolean,
   csrf: String,
 });
-const activateResultMessage = inject('activateResultMessage');
 
 const filter = reactive(new Filter());
 const filteredMedicationRecords = ref(null);

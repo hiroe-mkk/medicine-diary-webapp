@@ -28,7 +28,7 @@
               {{ inventory.value.remainingQuantity }}
             </strong>
             <strong class="is-size-4">
-               / {{ inventory.value.quantityPerPackage }}
+              / {{ inventory.value.quantityPerPackage }}
             </strong>
             <span class="has-text-weight-semibold pl-1">
               {{ props.doseUnit }}
@@ -558,19 +558,16 @@
 </template>
 
 <script setup>
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import {
-  ref,
-  reactive,
-  onMounted,
   defineEmits,
   defineExpose,
   inject,
+  onMounted,
+  reactive,
+  ref,
 } from 'vue';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
-import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 
 const props = defineProps({
   medicineId: String,
@@ -637,6 +634,8 @@ function isExpirationNear() {
 }
 
 function adjustInventory() {
+  fieldErrors.clear();
+
   const form = new URLSearchParams();
   form.set('remainingQuantity', editingInventory.value.remainingQuantity);
   form.set('quantityPerPackage', editingInventory.value.quantityPerPackage);
@@ -649,73 +648,31 @@ function adjustInventory() {
 
   HttpRequestClient.submitPostRequest(
     `/api/medicines/${props.medicineId}/inventory/adjust`,
-    form
-  )
-    .then(() => {
-      let message;
-      if (inventory.value !== undefined) {
-        message = '在庫の修正が完了しました。';
-      } else {
-        message = '在庫管理を開始しました。';
-      }
+    form,
+    activateResultMessage,
+    fieldErrors
+  ).then(() => {
+    let message;
+    if (inventory.value !== undefined) {
+      message = '在庫の修正が完了しました。';
+    } else {
+      message = '在庫管理を開始しました。';
+    }
 
-      inventory.value = {
-        remainingQuantity: editingInventory.value.remainingQuantity,
-        quantityPerPackage: editingInventory.value.quantityPerPackage,
-        startedOn: editingInventory.value.startedOn,
-        expirationOn: editingInventory.value.expirationOn,
-        unusedPackage: editingInventory.value.unusedPackage,
-      };
-      isInventoryAdjustmentModalActive.value = false;
-      isUsingPackageModalActive.value = false;
-      isUnusedPackageModalActive.value = false;
+    inventory.value = {
+      remainingQuantity: editingInventory.value.remainingQuantity,
+      quantityPerPackage: editingInventory.value.quantityPerPackage,
+      startedOn: editingInventory.value.startedOn,
+      expirationOn: editingInventory.value.expirationOn,
+      unusedPackage: editingInventory.value.unusedPackage,
+    };
+    isInventoryAdjustmentModalActive.value = false;
+    isUsingPackageModalActive.value = false;
+    isUnusedPackageModalActive.value = false;
 
-      activateResultMessage('INFO', message);
-      emits('updated:is-enabled', true);
-      return;
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 400) {
-          // バインドエラーが発生した場合
-          if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
-            fieldErrors.set(error.body.fieldErrors);
-            return;
-          }
-        } else if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 409) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+    activateResultMessage('INFO', message);
+    emits('updated:is-enabled', true);
+  });
 }
 
 function stopInventoryManagement() {
@@ -724,43 +681,14 @@ function stopInventoryManagement() {
 
   HttpRequestClient.submitPostRequest(
     `/api/medicines/${props.medicineId}/inventory/stop`,
-    form
-  )
-    .then(() => {
-      inventory.value = undefined;
-      activateResultMessage('INFO', `在庫管理を終了しました。`);
-      isStoppageConfirmationModalActive.value = false;
-      emits('updated:is-enabled', false);
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+    form,
+    activateResultMessage
+  ).then(() => {
+    inventory.value = undefined;
+    activateResultMessage('INFO', `在庫管理を終了しました。`);
+    isStoppageConfirmationModalActive.value = false;
+    emits('updated:is-enabled', false);
+  });
 }
 
 function activateAdjustmentModal() {

@@ -69,21 +69,13 @@ const filteredMedicationRecords = ref(null);
 onMounted(() => {
   if (props.joinedSharedGroupId !== undefined) {
     HttpRequestClient.submitGetRequest(
-      `/api/users?sharedGroupId=${props.joinedSharedGroupId}`
-    )
-      .then((data) => {
-        members.push(...data.users);
-      })
-      .catch(() => {
-        activateResultMessage(
-          'ERROR',
-          'エラーが発生しました。',
-          '通信状態をご確認のうえ、再度お試しください。'
-        );
-      });
+      `/api/users?sharedGroupId=${props.joinedSharedGroupId}`,
+      activateResultMessage
+    ).then((data) => {
+      members.push(...data.users);
+      filteredMedicationRecords.value.loadMedicationRecords(filter);
+    });
   }
-
-  filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
 
 function toggleUserActive(accountId) {

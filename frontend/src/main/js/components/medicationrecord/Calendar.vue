@@ -94,7 +94,8 @@ const calendarOptions = {
     const params = filter.createParams();
     try {
       const result = await HttpRequestClient.submitGetRequest(
-        '/api/medication-records?' + params.toString()
+        '/api/medication-records?' + params.toString(),
+        activateResultMessage
       );
 
       const dates = result.medicationRecords
