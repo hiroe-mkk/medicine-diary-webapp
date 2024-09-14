@@ -31,10 +31,10 @@
               "
               hidden
             />
-            <p class="help is-danger" v-for="error in medicineIdErrors">
-              {{ error }}
-            </p>
           </div>
+          <p class="help is-danger" v-for="error in medicineIdErrors">
+            {{ error }}
+          </p>
         </div>
       </div>
 

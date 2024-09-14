@@ -1,6 +1,7 @@
 package example.presentation.controller.page.medicationrecord
 
 import example.application.service.medicationrecord.*
+import example.application.service.medicine.*
 import example.domain.model.medicationrecord.*
 import example.domain.shared.exception.*
 import example.domain.shared.message.*
@@ -55,12 +56,21 @@ class MedicationRecordModificationController(private val medicationRecordService
             throw InvalidEntityIdException(medicationRecordId)
         if (bindingResult.hasErrors()) return "medicationrecord/form"
 
-        medicationRecordService.modifyMedicationRecord(medicationRecordId,
-                                                       medicationRecordEditCommand,
-                                                       userSessionProvider.getUserSessionOrElseThrow())
+        try {
+            medicationRecordService.modifyMedicationRecord(medicationRecordId,
+                                                           medicationRecordEditCommand,
+                                                           userSessionProvider.getUserSessionOrElseThrow())
+        } catch (ex: MedicineNotFoundException) {
+            // トランザクションの関係で、薬の存在チェックは @Validated ではなく、この段階で例外処理を行う
+            bindingResult.rejectValue("takenMedicine",
+                                      "NotFoundTakenMedicine",
+                                      arrayOf<Any>("takenMedicine"), "※お薬が見つかりませんでした。")
+
+            return "medicationrecord/form"
+        }
+
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("服用記録の修正が完了しました。"))
-
         return "redirect:${lastRequestedPage.path}"
     }
 }

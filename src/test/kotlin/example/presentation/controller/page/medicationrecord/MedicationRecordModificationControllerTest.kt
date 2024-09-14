@@ -186,8 +186,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
 
         @Test
         @WithMockAuthenticatedAccount
-        @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
-        fun medicineNotFound_redirectToLastRequestedPage() {
+        @DisplayName("薬が見つからなかった場合、服用記録修正画面を再表示する")
+        fun medicineNotFound_redisplayMedicationRecordModificationPage() {
             //given:
             val medicationRecordId = EntityIdHelper.generate()
             val nonexistentMedicineId = EntityIdHelper.generate()
@@ -206,8 +206,8 @@ internal class MedicationRecordModificationControllerTest(@Autowired private val
                                               .param("onsetEffectAt", onsetEffectAt))
 
             //then:
-            actions.andExpect(status().isNotFound)
-                .andExpect(view().name("error/notFoundError"))
+            actions.andExpect(status().isOk)
+                .andExpect(view().name("medicationrecord/form"))
         }
 
         @Test
