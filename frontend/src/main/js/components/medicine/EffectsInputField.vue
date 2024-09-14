@@ -140,7 +140,7 @@ const editingEffect = reactive({ value: '', index: 0 });
 
 onMounted(() => {
   effects.push(...ArrayConverter.fromString(props.effects));
-  errors.push(...ArrayConverter.fromString(props.errors));
+  errors.push(...new Set(ArrayConverter.fromString(props.errors)));
 });
 
 function addEffect() {
