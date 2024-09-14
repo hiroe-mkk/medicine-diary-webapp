@@ -136,7 +136,7 @@
             <p class="control">
               <button
                 class="button is-small is-rounded is-link"
-                :disabled="username === editingUsername"
+                :disabled="!editingUsername.trim() || username === editingUsername"
               >
                 完了
               </button>
