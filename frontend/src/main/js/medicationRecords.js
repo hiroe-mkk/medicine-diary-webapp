@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import MedicationRecords from '@main/js/components/medicationrecord/AllMedicationRecords.vue';
+import MedicationRecords from '@main/js/components/medicationrecord/MedicationRecordsByUserOptional.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 
 createApp({
