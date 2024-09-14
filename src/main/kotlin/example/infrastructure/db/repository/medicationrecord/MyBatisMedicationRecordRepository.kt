@@ -49,17 +49,17 @@ class MyBatisMedicationRecordRepository(private val medicationRecordMapper: Medi
         if (medicationRecords.isEmpty()) return
         medicationRecordMapper.upsertAll(medicationRecords.map {
             MedicationRecordSaveEntity(it.id.value,
-                                                                                             it.recorder.value,
-                                                                                             it.takenMedicine.value,
-                                                                                             it.dose.quantity,
-                                                                                             it.followUp.symptom,
-                                                                                             it.followUp.beforeMedication,
-                                                                                             it.followUp.afterMedication,
-                                                                                             it.note,
-                                                                                             it.takenMedicineOn,
-                                                                                             it.takenMedicineAt,
-                                                                                             it.symptomOnsetAt,
-                                                                                             it.onsetEffectAt)
+                                       it.recorder.value,
+                                       it.takenMedicine.value,
+                                       it.dose.quantity,
+                                       it.followUp.symptom,
+                                       it.followUp.beforeMedication,
+                                       it.followUp.afterMedication,
+                                       it.note,
+                                       it.takenMedicineOn,
+                                       it.takenMedicineAt,
+                                       it.symptomOnsetAt,
+                                       it.onsetEffectAt)
         })
     }
 

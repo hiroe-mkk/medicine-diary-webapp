@@ -1,7 +1,6 @@
 package example.application.service.sharedgroup
 
 import example.application.shared.usersession.*
-import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import example.domain.shared.type.*
 import org.springframework.stereotype.*

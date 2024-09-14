@@ -36,8 +36,8 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
      */
     @GetMapping
     fun displayMedicineRegistrationPage(model: Model): String {
-        val form =
-                medicineService.getRegistrationMedicineBasicInfoEditCommand(userSessionProvider.getUserSessionOrElseThrow())
+        val form = medicineService.getRegistrationMedicineBasicInfoEditCommand(
+                userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", form)
         return "medicine/form"
     }

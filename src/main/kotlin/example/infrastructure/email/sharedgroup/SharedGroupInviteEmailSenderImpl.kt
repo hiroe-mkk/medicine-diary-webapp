@@ -48,7 +48,7 @@ class SharedGroupInviteEmailSenderImpl(private val applicationProperties: Applic
         try {
             emailSenderClient.send(Email(header, body))
         } catch (exception: EmailSendException) {
-            throw SharedGroupInviteEmailSendFailedException(sharedGroupInviteForm, exception);
+            throw SharedGroupInviteEmailSendFailedException(sharedGroupInviteForm, exception)
         }
     }
 }

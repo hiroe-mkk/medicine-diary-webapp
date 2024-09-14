@@ -11,9 +11,9 @@ interface MedicationRecordMapper {
 
     fun findAllByMedicineIdAndAccountId(medicineId: String, accountId: String): Set<MedicationRecord>
 
-    fun upsert(medicationRecords: example.infrastructure.db.repository.medicationrecord.MedicationRecordSaveEntity)
+    fun upsert(medicationRecords: MedicationRecordSaveEntity)
 
-    fun upsertAll(medicationRecords: Collection<example.infrastructure.db.repository.medicationrecord.MedicationRecordSaveEntity>)
+    fun upsertAll(medicationRecords: Collection<MedicationRecordSaveEntity>)
 
     fun deleteOneByMedicationRecordId(medicationRecordId: String)
 

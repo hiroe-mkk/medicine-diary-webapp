@@ -14,5 +14,4 @@ data class MedicationRecordFilter(@field:UUID val medicine: String?,
                                   val end: LocalDate?) {
     val validatedMedicine: MedicineId? = medicine?.let { MedicineId(it) }
     val validatedAccount: AccountId? = account?.let { AccountId(it) }
-
 }
