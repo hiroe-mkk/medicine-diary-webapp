@@ -117,34 +117,6 @@
             </p>
             <div class="notification has-background-white-bis pt-3 pb-4 px-5">
               <div class="field">
-                <label class="label has-text-grey">残量</label>
-                <div class="control has-icons-right mb-1">
-                  <input
-                    class="input is-info is-rounded"
-                    type="number"
-                    name="remainingQuantity"
-                    v-model="editingInventory.value.remainingQuantity"
-                    min="0"
-                    step="0.001"
-                    max="10000"
-                    :class="{
-                      'is-danger': fieldErrors.contains('remainingQuantity'),
-                    }"
-                  />
-                  <span
-                    class="icon is-small is-right has-text-grey has-text-weight-bold"
-                  >
-                    {{ props.doseUnit }}
-                  </span>
-                  <p
-                    class="help is-danger"
-                    v-for="error in fieldErrors.get('remainingQuantity')"
-                  >
-                    {{ error }}
-                  </p>
-                </div>
-              </div>
-              <div class="field">
                 <label class="label has-text-grey">内容量</label>
                 <div class="control has-icons-right mb-1">
                   <input
@@ -167,6 +139,34 @@
                   <p
                     class="help is-danger"
                     v-for="error in fieldErrors.get('quantityPerPackage')"
+                  >
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label has-text-grey">残量</label>
+                <div class="control has-icons-right mb-1">
+                  <input
+                    class="input is-info is-rounded"
+                    type="number"
+                    name="remainingQuantity"
+                    v-model="editingInventory.value.remainingQuantity"
+                    min="0"
+                    step="0.001"
+                    max="10000"
+                    :class="{
+                      'is-danger': fieldErrors.contains('remainingQuantity'),
+                    }"
+                  />
+                  <span
+                    class="icon is-small is-right has-text-grey has-text-weight-bold"
+                  >
+                    {{ props.doseUnit }}
+                  </span>
+                  <p
+                    class="help is-danger"
+                    v-for="error in fieldErrors.get('remainingQuantity')"
                   >
                     {{ error }}
                   </p>
