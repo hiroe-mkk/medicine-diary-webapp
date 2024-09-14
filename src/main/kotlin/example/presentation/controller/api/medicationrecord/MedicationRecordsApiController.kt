@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medication-records")
-class MedicationRecordApiController(private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
-                                    private val userSessionProvider: UserSessionProvider) {
+class MedicationRecordsApiController(private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
+                                     private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用記録一覧を取得する
      */

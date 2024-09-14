@@ -12,11 +12,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class MedicationRecordApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                 @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                 @Autowired private val testAccountInserter: TestAccountInserter,
-                                                 @Autowired private val sharedGroupInserter: TestSharedGroupInserter,
-                                                 @Autowired private val userSessionProvider: UserSessionProvider) {
+internal class MedicationRecordsApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                                  @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                  @Autowired private val testAccountInserter: TestAccountInserter,
+                                                  @Autowired private val sharedGroupInserter: TestSharedGroupInserter,
+                                                  @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/medication-records"
     }
