@@ -15,11 +15,11 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/medication-records/add")
-class MedicationRecordAdditionController(private val medicationRecordService: MedicationRecordService,
+class MedicationRecordAdditionController(private val medicationRecordAdditionService: MedicationRecordAdditionService,
                                          private val userSessionProvider: UserSessionProvider,
                                          private val lastRequestedPage: LastRequestedPage) {
     @ModelAttribute("conditionLevels")
-    fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.values()
+    fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.entries.toTypedArray()
 
     @ModelAttribute("title")
     fun title(): String = "服用記録追加"
@@ -34,9 +34,9 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
     fun displayMedicationRecordAdditionPage(@Validated formInitialValues: MedicationRecordAdditionFormInitialValues,
                                             model: Model): String {
         val command =
-                medicationRecordService.getAdditionMedicationRecordEditCommand(formInitialValues.validatedMedicine,
-                                                                               formInitialValues.date,
-                                                                               userSessionProvider.getUserSessionOrElseThrow())
+                medicationRecordAdditionService.getAdditionMedicationRecordEditCommand(formInitialValues.validatedMedicine,
+                                                                                       formInitialValues.date,
+                                                                                       userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"
     }
@@ -51,8 +51,8 @@ class MedicationRecordAdditionController(private val medicationRecordService: Me
         if (bindingResult.hasErrors()) return "medicationrecord/form"
 
         try {
-            medicationRecordService.addMedicationRecord(medicationRecordEditCommand,
-                                                        userSessionProvider.getUserSessionOrElseThrow())
+            medicationRecordAdditionService.addMedicationRecord(medicationRecordEditCommand,
+                                                                userSessionProvider.getUserSessionOrElseThrow())
         } catch (ex: MedicineNotFoundException) {
             // トランザクションの関係で、薬の存在チェックは @Validated ではなく、この段階で例外処理を行う
             bindingResult.rejectValue("takenMedicine",

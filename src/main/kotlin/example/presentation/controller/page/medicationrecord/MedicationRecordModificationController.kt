@@ -16,11 +16,12 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/medication-records/{medicationRecordId}/modify")
-class MedicationRecordModificationController(private val medicationRecordService: MedicationRecordService,
+class MedicationRecordModificationController(private val medicationRecordQueryService: MedicationRecordQueryService,
+                                             private val medicationRecordModificationService: MedicationRecordModificationService,
                                              private val userSessionProvider: UserSessionProvider,
                                              private val lastRequestedPage: LastRequestedPage) {
     @ModelAttribute("conditionLevels")
-    fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.values()
+    fun conditionLevels(): Array<ConditionLevel> = ConditionLevel.entries.toTypedArray()
 
     @ModelAttribute("title")
     fun title(): String = "服用記録修正"
@@ -35,11 +36,11 @@ class MedicationRecordModificationController(private val medicationRecordService
     @GetMapping
     fun displayMedicationRecordModificationPage(@PathVariable medicationRecordId: MedicationRecordId,
                                                 model: Model): String {
-        if (!medicationRecordService.isValidMedicationRecordId(medicationRecordId))
+        if (!medicationRecordQueryService.isValidMedicationRecordId(medicationRecordId))
             throw InvalidEntityIdException(medicationRecordId)
 
-        val command = medicationRecordService.getModificationEditCommand(medicationRecordId,
-                                                                         userSessionProvider.getUserSessionOrElseThrow())
+        val command = medicationRecordModificationService.getModificationEditCommand(medicationRecordId,
+                                                                                     userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicationrecord/form"
     }
@@ -52,14 +53,14 @@ class MedicationRecordModificationController(private val medicationRecordService
                                @ModelAttribute("form") @Validated medicationRecordEditCommand: MedicationRecordEditCommand,
                                bindingResult: BindingResult,
                                redirectAttributes: RedirectAttributes): String {
-        if (!medicationRecordService.isValidMedicationRecordId(medicationRecordId))
+        if (!medicationRecordQueryService.isValidMedicationRecordId(medicationRecordId))
             throw InvalidEntityIdException(medicationRecordId)
         if (bindingResult.hasErrors()) return "medicationrecord/form"
 
         try {
-            medicationRecordService.modifyMedicationRecord(medicationRecordId,
-                                                           medicationRecordEditCommand,
-                                                           userSessionProvider.getUserSessionOrElseThrow())
+            medicationRecordModificationService.modifyMedicationRecord(medicationRecordId,
+                                                                       medicationRecordEditCommand,
+                                                                       userSessionProvider.getUserSessionOrElseThrow())
         } catch (ex: MedicineNotFoundException) {
             // トランザクションの関係で、薬の存在チェックは @Validated ではなく、この段階で例外処理を行う
             bindingResult.rejectValue("takenMedicine",

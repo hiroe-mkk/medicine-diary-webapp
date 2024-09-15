@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medication-records/{medicationRecordId}/delete")
-class MedicationRecordDeletionApiController(private val medicationRecordService: MedicationRecordService,
+class MedicationRecordDeletionApiController(private val medicationRecordQueryService: MedicationRecordQueryService,
+                                            private val medicationRecordDeletionService: MedicationRecordDeletionService,
                                             private val userSessionProvider: UserSessionProvider) {
     /**
      * 服用記録を削除する
@@ -18,10 +19,10 @@ class MedicationRecordDeletionApiController(private val medicationRecordService:
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteMedicationRecord(@PathVariable medicationRecordId: MedicationRecordId) {
-        if (!medicationRecordService.isValidMedicationRecordId(medicationRecordId))
+        if (!medicationRecordQueryService.isValidMedicationRecordId(medicationRecordId))
             throw InvalidEntityIdException(medicationRecordId)
 
-        medicationRecordService.deleteMedicationRecord(medicationRecordId,
-                                                       userSessionProvider.getUserSessionOrElseThrow())
+        medicationRecordDeletionService.deleteMedicationRecord(medicationRecordId,
+                                                               userSessionProvider.getUserSessionOrElseThrow())
     }
 }
