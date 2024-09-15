@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.*
 internal class MedicineServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                    @Autowired private val localDateTimeProvider: LocalDateTimeProvider,
                                    @Autowired private val medicineFinder: MedicineFinder,
-                                   @Autowired private val medicineCreationService: MedicineCreationService,
+                                   @Autowired private val medicineOwnerFactory: MedicineOwnerFactory,
                                    @Autowired private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
                                    @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
@@ -23,7 +23,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
     private val medicineService: MedicineService = MedicineService(medicineRepository,
                                                                    localDateTimeProvider,
                                                                    medicineFinder,
-                                                                   medicineCreationService,
+                                                                   medicineOwnerFactory,
                                                                    medicineBasicInfoUpdateService,
                                                                    medicineDeletionCoordinator)
 

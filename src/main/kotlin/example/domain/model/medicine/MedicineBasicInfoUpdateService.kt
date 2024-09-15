@@ -10,7 +10,7 @@ import org.springframework.stereotype.*
 class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRepository,
                                      private val medicationRecordRepository: MedicationRecordRepository,
                                      private val medicineImageStorage: MedicineImageStorage,
-                                     private val medicineOwnerCreationService: MedicineOwnerCreationService,
+                                     private val medicineOwnerFactory: MedicineOwnerFactory,
                                      private val medicineFinder: MedicineFinder) {
     fun update(id: MedicineId,
                medicineName: MedicineName,
@@ -57,7 +57,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                                                                       newPrecautions: String,
                                                                       newIsPublic: Boolean,
                                                                       registrant: AccountId) {
-        registrantMedicine.changeOwner(medicineOwnerCreationService.createSharedGroupOwner(registrant))
+        registrantMedicine.changeOwner(medicineOwnerFactory.create(registrant, true))
         updateBasicInfo(registrantMedicine,
                         newMedicineName,
                         newDosageAndAdministration,
@@ -73,7 +73,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                                                                       newPrecautions: String,
                                                                       newIsPublic: Boolean,
                                                                       registrant: AccountId) {
-        sharedGroupMedicine.changeOwner(medicineOwnerCreationService.createAccountOwner(registrant))
+        sharedGroupMedicine.changeOwner(medicineOwnerFactory.create(registrant, false))
         updateBasicInfo(sharedGroupMedicine,
                         newMedicineName,
                         newDosageAndAdministration,
@@ -87,7 +87,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
         if (medicationRecordsByOthers.isEmpty()) return
 
         medicationRecordsByOthers.keys.forEach { recorder ->
-            val newMedicineOwner = medicineOwnerCreationService.createAccountOwner(recorder)
+            val newMedicineOwner = medicineOwnerFactory.create(recorder, false)
             val newMedicineImageURL = sharedGroupMedicine.medicineImageURL?.let {
                 val newMedicineImageURL = medicineImageStorage.createURL()
                 medicineImageStorage.copy(it, newMedicineImageURL)

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.*
 class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
                       private val medicineFinder: MedicineFinder,
-                      private val medicineCreationService: MedicineCreationService,
+                      private val medicineOwnerFactory: MedicineOwnerFactory,
                       private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
                       private val medicineDeletionCoordinator: MedicineDeletionCoordinator) {
     /**
@@ -53,15 +53,16 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     fun registerMedicine(command: MedicineBasicInfoEditCommand,
                          userSession: UserSession): MedicineId {
-        val medicine = medicineCreationService.create(medicineRepository.createMedicineId(),
-                                                      command.validatedMedicineName,
-                                                      command.validatedDosageAndAdministration,
-                                                      command.validatedEffects,
-                                                      command.validatedPrecautions,
-                                                      command.isOwnedBySharedGroup,
-                                                      command.isPublic,
-                                                      localDateTimeProvider.now(),
-                                                      userSession.accountId)
+        val medicineOwner = medicineOwnerFactory.create(userSession.accountId, command.isOwnedBySharedGroup)
+        val medicine = Medicine.create(medicineRepository.createMedicineId(),
+                                       medicineOwner,
+                                       command.validatedMedicineName,
+                                       command.validatedDosageAndAdministration,
+                                       command.validatedEffects,
+                                       command.validatedPrecautions,
+                                       command.isPublic,
+                                       localDateTimeProvider.now())
+
         medicineRepository.save(medicine)
         return medicine.id
     }

@@ -25,13 +25,13 @@ annotation class EnableDomainServiceAutoConfiguration {
                                     medicationRecordRepository: MedicationRecordRepository,
                                     medicineFinder: MedicineFinder,
                                     medicineDeletionCoordinator: MedicineDeletionCoordinator,
-                                    medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupLeaveService {
+                                    medicineOwnerFactory: MedicineOwnerFactory): SharedGroupLeaveService {
             return SharedGroupLeaveService(sharedGroupRepository,
                                            medicineRepository,
                                            medicineImageStorage,
                                            medicationRecordRepository,
                                            medicineFinder,
-                                           medicineOwnerCreationService,
+                                           medicineOwnerFactory,
                                            medicineDeletionCoordinator)
         }
 
@@ -55,26 +55,21 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineCreationService(medicineOwnerCreationService: MedicineOwnerCreationService): MedicineCreationService {
-            return MedicineCreationService(medicineOwnerCreationService)
-        }
-
-        @Bean
         fun medicineBasicInfoUpdateService(medicineRepository: MedicineRepository,
                                            medicationRecordRepository: MedicationRecordRepository,
                                            medicineImageStorage: MedicineImageStorage,
                                            medicineFinder: MedicineFinder,
-                                           medicineOwnerCreationService: MedicineOwnerCreationService): MedicineBasicInfoUpdateService {
+                                           medicineOwnerFactory: MedicineOwnerFactory): MedicineBasicInfoUpdateService {
             return MedicineBasicInfoUpdateService(medicineRepository,
                                                   medicationRecordRepository,
                                                   medicineImageStorage,
-                                                  medicineOwnerCreationService,
+                                                  medicineOwnerFactory,
                                                   medicineFinder)
         }
 
         @Bean
-        fun medicineOwnerCreationService(sharedGroupRepository: SharedGroupRepository): MedicineOwnerCreationService {
-            return MedicineOwnerCreationService(sharedGroupRepository)
+        fun medicineOwnerFactory(sharedGroupRepository: SharedGroupRepository): MedicineOwnerFactory {
+            return MedicineOwnerFactory(sharedGroupRepository)
         }
 
         @Bean
