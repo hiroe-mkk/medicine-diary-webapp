@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.*
 class AccountDeletionService(private val accountRepository: AccountRepository,
                              private val profileRepository: ProfileRepository,
                              private val medicationRecordRepository: MedicationRecordRepository,
-                             private val sharedGroupLeaveService: SharedGroupLeaveService,
+                             private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator,
                              private val medicineDeletionCoordinator: MedicineDeletionCoordinator) {
     /**
      * アカウントを削除する
@@ -24,7 +24,7 @@ class AccountDeletionService(private val accountRepository: AccountRepository,
 
         medicationRecordRepository.deleteByRecorder(account.id)
         medicineDeletionCoordinator.deleteAllOwnedMedicinesAndMedicationRecords(userSession.accountId)
-        sharedGroupLeaveService.leaveSharedGroup(userSession.accountId)
+        sharedGroupLeaveCoordinator.leaveSharedGroup(userSession.accountId)
 
         profileRepository.deleteByAccountId(account.id)
         accountRepository.deleteById(account.id)

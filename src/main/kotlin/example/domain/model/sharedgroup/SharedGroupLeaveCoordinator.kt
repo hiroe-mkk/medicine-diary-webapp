@@ -7,13 +7,13 @@ import example.domain.model.medicine.medicineimage.*
 import org.springframework.stereotype.*
 
 @Component
-class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepository,
-                              private val medicineRepository: MedicineRepository,
-                              private val medicineImageStorage: MedicineImageStorage,
-                              private val medicationRecordRepository: MedicationRecordRepository,
-                              private val medicineFinder: MedicineFinder,
-                              private val medicineOwnerFactory: MedicineOwnerFactory,
-                              private val medicineDeletionCoordinator: MedicineDeletionCoordinator) {
+class SharedGroupLeaveCoordinator(private val sharedGroupRepository: SharedGroupRepository,
+                                  private val medicineRepository: MedicineRepository,
+                                  private val medicineImageStorage: MedicineImageStorage,
+                                  private val medicationRecordRepository: MedicationRecordRepository,
+                                  private val medicineFinder: MedicineFinder,
+                                  private val medicineOwnerFactory: MedicineOwnerFactory,
+                                  private val medicineDeletionCoordinator: MedicineDeletionCoordinator) {
     fun leaveSharedGroupAndCloneMedicines(accountId: AccountId) {
         val sharedGroupMedicines = medicineFinder.findAllSharedGroupMedicines(accountId)
         sharedGroupMedicines.forEach { sharedGroupMedicine ->

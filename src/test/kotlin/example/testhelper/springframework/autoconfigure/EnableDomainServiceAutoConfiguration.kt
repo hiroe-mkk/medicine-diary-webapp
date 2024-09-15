@@ -24,20 +24,20 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun sharedGroupLeaveService(sharedGroupRepository: SharedGroupRepository,
-                                    medicineRepository: MedicineRepository,
-                                    medicineImageStorage: MedicineImageStorage,
-                                    medicationRecordRepository: MedicationRecordRepository,
-                                    medicineFinder: MedicineFinder,
-                                    medicineDeletionCoordinator: MedicineDeletionCoordinator,
-                                    medicineOwnerFactory: MedicineOwnerFactory): SharedGroupLeaveService {
-            return SharedGroupLeaveService(sharedGroupRepository,
-                                           medicineRepository,
-                                           medicineImageStorage,
-                                           medicationRecordRepository,
-                                           medicineFinder,
-                                           medicineOwnerFactory,
-                                           medicineDeletionCoordinator)
+        fun sharedGroupLeaveCoordinator(sharedGroupRepository: SharedGroupRepository,
+                                        medicineRepository: MedicineRepository,
+                                        medicineImageStorage: MedicineImageStorage,
+                                        medicationRecordRepository: MedicationRecordRepository,
+                                        medicineFinder: MedicineFinder,
+                                        medicineDeletionCoordinator: MedicineDeletionCoordinator,
+                                        medicineOwnerFactory: MedicineOwnerFactory): SharedGroupLeaveCoordinator {
+            return SharedGroupLeaveCoordinator(sharedGroupRepository,
+                                               medicineRepository,
+                                               medicineImageStorage,
+                                               medicationRecordRepository,
+                                               medicineFinder,
+                                               medicineOwnerFactory,
+                                               medicineDeletionCoordinator)
         }
 
         @Bean

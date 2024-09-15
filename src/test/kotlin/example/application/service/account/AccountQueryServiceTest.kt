@@ -18,7 +18,7 @@ class AccountQueryServiceTest(@Autowired private val accountRepository: AccountR
                               @Autowired private val sharedGroupRepository: SharedGroupRepository,
                               @Autowired private val medicineRepository: MedicineRepository,
                               @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                              @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
+                              @Autowired private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator,
                               @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
                               @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                               @Autowired private val testAccountInserter: TestAccountInserter,
@@ -27,7 +27,7 @@ class AccountQueryServiceTest(@Autowired private val accountRepository: AccountR
     private val accountDeletionService = AccountDeletionService(accountRepository,
                                                                 profileRepository,
                                                                 medicationRecordRepository,
-                                                                sharedGroupLeaveService,
+                                                                sharedGroupLeaveCoordinator,
                                                                 medicineDeletionCoordinator)
 
     @Test

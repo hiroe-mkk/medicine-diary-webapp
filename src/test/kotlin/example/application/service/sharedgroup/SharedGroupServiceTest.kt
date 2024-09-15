@@ -19,7 +19,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                       @Autowired private val localDateTimeProvider: LocalDateTimeProvider,
                                       @Autowired private val emailSenderClient: EmailSenderClient,
                                       @Autowired private val sharedGroupFinder: SharedGroupFinder,
-                                      @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
+                                      @Autowired private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator,
                                       @Autowired private val sharedGroupInviteService: SharedGroupInviteService,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
@@ -27,7 +27,7 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
                                                                             localDateTimeProvider,
                                                                             sharedGroupFinder,
                                                                             sharedGroupInviteService,
-                                                                            sharedGroupLeaveService)
+                                                                            sharedGroupLeaveCoordinator)
 
     private lateinit var userSession: UserSession
     private lateinit var user1AccountId: AccountId

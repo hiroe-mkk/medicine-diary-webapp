@@ -11,22 +11,22 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
-internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
-                                           @Autowired private val medicineRepository: MedicineRepository,
-                                           @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                                           @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
-                                           @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                           @Autowired private val testAccountInserter: TestAccountInserter,
-                                           @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                           @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
+class SharedGroupLeaveCoordinatorTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                      @Autowired private val medicineRepository: MedicineRepository,
+                                      @Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                      @Autowired private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator,
+                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                      @Autowired private val testAccountInserter: TestAccountInserter,
+                                      @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                      @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
-    private lateinit var userAccountIds: List<AccountId>
+    private lateinit var otherUserAccountIds: List<AccountId>
 
     @BeforeEach
     internal fun setUp() {
         requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
-        userAccountIds = listOf(testAccountInserter.insertAccountAndProfile().first.id,
-                                testAccountInserter.insertAccountAndProfile().first.id)
+        otherUserAccountIds = listOf(testAccountInserter.insertAccountAndProfile().first.id,
+                                     testAccountInserter.insertAccountAndProfile().first.id)
     }
 
     @Test
@@ -34,14 +34,14 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     fun leaveSharedGroup() {
         //given:
         val participatingSharedGroup =
-                testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
+                testSharedGroupInserter.insert(members = setOf(requesterAccountId, otherUserAccountIds[0]))
 
         //when:
-        sharedGroupLeaveService.leaveSharedGroup(requesterAccountId)
+        sharedGroupLeaveCoordinator.leaveSharedGroup(requesterAccountId)
 
         //then:
         val foundParticipatedSharedGroup = sharedGroupRepository.findById(participatingSharedGroup.id)
-        assertThat(foundParticipatedSharedGroup?.members).containsExactlyInAnyOrder(userAccountIds[0])
+        assertThat(foundParticipatedSharedGroup?.members).containsExactlyInAnyOrder(otherUserAccountIds[0])
     }
 
     @Test
@@ -49,16 +49,16 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
     fun leaveSharedGroupAndCloneMedicines() {
         //given:
         val joinedSharedGroup =
-                testSharedGroupInserter.insert(members = setOf(requesterAccountId, userAccountIds[0]))
+                testSharedGroupInserter.insert(members = setOf(requesterAccountId, otherUserAccountIds[0]))
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(joinedSharedGroup.id))
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, sharedGroupMedicine.id)
 
         //when:
-        sharedGroupLeaveService.leaveSharedGroupAndCloneMedicines(requesterAccountId)
+        sharedGroupLeaveCoordinator.leaveSharedGroupAndCloneMedicines(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)
-        assertThat(foundSharedGroup?.members).containsExactly(userAccountIds[0])
+        assertThat(foundSharedGroup?.members).containsExactly(otherUserAccountIds[0])
         val foundSharedGroupMedicine = medicineRepository.findById(sharedGroupMedicine.id)
         assertThat(foundSharedGroupMedicine).usingRecursiveComparison().isEqualTo(sharedGroupMedicine)
         val foundOwnedMedicine = medicineRepository.findByOwner(requesterAccountId).first()
@@ -80,7 +80,7 @@ internal class SharedGroupLeaveServiceTest(@Autowired private val sharedGroupRep
         val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(joinedSharedGroup.id))
 
         //when:
-        sharedGroupLeaveService.leaveSharedGroupAndCloneMedicines(requesterAccountId)
+        sharedGroupLeaveCoordinator.leaveSharedGroupAndCloneMedicines(requesterAccountId)
 
         //then:
         val foundSharedGroup = sharedGroupRepository.findById(joinedSharedGroup.id)

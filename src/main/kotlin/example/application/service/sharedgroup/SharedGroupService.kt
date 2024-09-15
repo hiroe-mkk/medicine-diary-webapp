@@ -12,7 +12,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
                          private val localDateTimeProvider: LocalDateTimeProvider,
                          private val sharedGroupFinder: SharedGroupFinder,
                          private val sharedGroupInviteService: SharedGroupInviteService,
-                         private val sharedGroupLeaveService: SharedGroupLeaveService) {
+                         private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator) {
     /**
      * 共有グループに招待する
      */
@@ -56,7 +56,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループから脱退する
      */
     fun leaveSharedGroup(userSession: UserSession) {
-        return sharedGroupLeaveService.leaveSharedGroupAndCloneMedicines(userSession.accountId)
+        return sharedGroupLeaveCoordinator.leaveSharedGroupAndCloneMedicines(userSession.accountId)
     }
 
     /**
