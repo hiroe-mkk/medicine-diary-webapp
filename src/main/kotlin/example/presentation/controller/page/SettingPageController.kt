@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/setting")
-class SettingPageController(private val profileService: ProfileService,
+class SettingPageController(private val profileQueryService: ProfileQueryService,
                             private val userSessionProvider: UserSessionProvider,
                             private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -17,7 +17,7 @@ class SettingPageController(private val profileService: ProfileService,
      */
     @GetMapping
     fun displaySettingPage(model: Model): String {
-        val profile = profileService.findProfile(userSessionProvider.getUserSessionOrElseThrow())
+        val profile = profileQueryService.findProfile(userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("profile", profile)
 
         lastRequestedPage.path = "/setting"

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/profile/username/change")
-class UsernameChangeApiController(private val profileService: ProfileService,
+class UsernameChangeApiController(private val profileUpdateService: ProfileUpdateService,
                                   private val userSessionProvider: UserSessionProvider) {
     /**
      * ユーザー名を変更する
@@ -17,7 +17,7 @@ class UsernameChangeApiController(private val profileService: ProfileService,
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeUsername(@Validated usernameEditCommand: UsernameEditCommand) {
-        profileService.changeUsername(usernameEditCommand,
-                                      userSessionProvider.getUserSessionOrElseThrow())
+        profileUpdateService.changeUsername(usernameEditCommand,
+                                            userSessionProvider.getUserSessionOrElseThrow())
     }
 }
