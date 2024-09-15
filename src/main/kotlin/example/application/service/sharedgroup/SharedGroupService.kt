@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class SharedGroupService(private val sharedGroupRepository: SharedGroupRepository,
                          private val localDateTimeProvider: LocalDateTimeProvider,
+                         private val sharedGroupFinder: SharedGroupFinder,
                          private val sharedGroupInviteService: SharedGroupInviteService,
                          private val sharedGroupLeaveService: SharedGroupLeaveService) {
     /**
@@ -17,7 +18,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     fun inviteToSharedGroup(sharedGroupInviteFormCommand: SharedGroupInviteFormCommand,
                             userSession: UserSession): SharedGroupId {
-        val sharedGroup = sharedGroupRepository.findByMember(userSession.accountId)
+        val sharedGroup = sharedGroupFinder.findJoinedSharedGroup(userSession.accountId)
                           ?: SharedGroup.create(sharedGroupRepository.createSharedGroupId(),
                                                 userSession.accountId)
 
@@ -29,11 +30,14 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループに参加する
      */
     fun joinSharedGroup(inviteCode: String, userSession: UserSession) {
-        if (isJoinedSharedGroup(userSession)) throw SharedGroupJoinFailedException("参加できる共有グループは1つまでです。")
-        val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode)
+        if (sharedGroupFinder.isJoinedSharedGroup(userSession.accountId))
+            throw SharedGroupJoinFailedException("参加できる共有グループは1つまでです。")
+
+        val today = localDateTimeProvider.today()
+        val invitedSharedGroup = sharedGroupFinder.findInvitedSharedGroup(inviteCode, today)
                                  ?: throw SharedGroupJoinFailedException("現在、このグループからは招待されていません。")
 
-        invitedSharedGroup.join(inviteCode, userSession.accountId, localDateTimeProvider.today())
+        invitedSharedGroup.join(inviteCode, userSession.accountId, today)
         sharedGroupRepository.save(invitedSharedGroup)
     }
 
@@ -41,7 +45,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      * 共有グループへの招待を拒否する
      */
     fun rejectInvitationToSharedGroup(inviteCode: String, userSession: UserSession) {
-        val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode) ?: return
+        val invitedSharedGroup = sharedGroupFinder.findInvitedSharedGroup(inviteCode,
+                                                                          localDateTimeProvider.today()) ?: return
 
         invitedSharedGroup.reject(inviteCode)
         sharedGroupRepository.save(invitedSharedGroup)
@@ -59,12 +64,8 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     @Transactional(readOnly = true)
     fun getJoinableInvitedSharedGroupId(inviteCode: String, userSession: UserSession): SharedGroupId {
-        val invitedSharedGroup = sharedGroupRepository.findByInviteCode(inviteCode)
+        val invitedSharedGroup = sharedGroupFinder.findInvitedSharedGroup(inviteCode, localDateTimeProvider.today())
                                  ?: throw InvalidInvitationException(inviteCode, "招待が確認できません。")
-        invitedSharedGroup.validateInviteCode(inviteCode,
-                                              userSession.accountId,
-                                              localDateTimeProvider.today())
-
         return invitedSharedGroup.id
     }
 
@@ -81,7 +82,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     @Transactional(readOnly = true)
     fun getJoinedSharedGroup(userSession: UserSession): SharedGroupId? {
-        return sharedGroupRepository.findByMember(userSession.accountId)?.id
+        return sharedGroupFinder.findJoinedSharedGroup(userSession.accountId)?.id
     }
 
     /**
@@ -89,7 +90,7 @@ class SharedGroupService(private val sharedGroupRepository: SharedGroupRepositor
      */
     @Transactional(readOnly = true)
     fun isJoinedSharedGroup(userSession: UserSession): Boolean {
-        return getJoinedSharedGroup(userSession) != null
+        return sharedGroupFinder.isJoinedSharedGroup(userSession.accountId)
     }
 
     /**

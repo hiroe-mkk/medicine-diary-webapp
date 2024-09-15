@@ -19,6 +19,11 @@ import java.time.*
 annotation class EnableDomainServiceAutoConfiguration {
     class Configuration {
         @Bean
+        fun sharedGroupFinder(sharedGroupRepository: SharedGroupRepository): SharedGroupFinder {
+            return SharedGroupFinder(sharedGroupRepository)
+        }
+
+        @Bean
         fun sharedGroupLeaveService(sharedGroupRepository: SharedGroupRepository,
                                     medicineRepository: MedicineRepository,
                                     medicineImageStorage: MedicineImageStorage,

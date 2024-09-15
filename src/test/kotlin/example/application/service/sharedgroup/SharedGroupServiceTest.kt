@@ -18,12 +18,14 @@ import java.time.*
 internal class SharedGroupServiceTest(@Autowired private val sharedGroupRepository: SharedGroupRepository,
                                       @Autowired private val localDateTimeProvider: LocalDateTimeProvider,
                                       @Autowired private val emailSenderClient: EmailSenderClient,
+                                      @Autowired private val sharedGroupFinder: SharedGroupFinder,
                                       @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
                                       @Autowired private val sharedGroupInviteService: SharedGroupInviteService,
                                       @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                                       @Autowired private val testAccountInserter: TestAccountInserter) {
     private val sharedGroupService: SharedGroupService = SharedGroupService(sharedGroupRepository,
                                                                             localDateTimeProvider,
+                                                                            sharedGroupFinder,
                                                                             sharedGroupInviteService,
                                                                             sharedGroupLeaveService)
 
@@ -156,69 +158,6 @@ internal class SharedGroupServiceTest(@Autowired private val sharedGroupReposito
             //then:
             val foundSharedGroup = sharedGroupRepository.findById(sharedGroup.id)
             assertThat(foundSharedGroup?.pendingInvitations).isEmpty()
-        }
-    }
-
-    @Nested
-    inner class GetJoinableInvitedSharedGroupIdTest {
-        @Test
-        @DisplayName("参加可能な招待された共有グループIDを取得する")
-        fun getJoinableInvitedSharedGroupId() {
-            //given:
-            val pendingInvitation = SharedGroupFactory.createPendingInvitation()
-            val sharedGroup = testSharedGroupInserter.insert(members = setOf(user1AccountId),
-                                                             pendingInvitations = setOf(pendingInvitation))
-
-            //when:
-            val actual = sharedGroupService.getJoinableInvitedSharedGroupId(pendingInvitation.inviteCode, userSession)
-
-            //then:
-            assertThat(actual).isEqualTo(sharedGroup.id)
-        }
-
-        @Test
-        @DisplayName("招待されている共有グループが見つからなかった場合、参加可能な招待された共有グループIDの取得に失敗する")
-        fun invitedSharedGroupNotFound_joinableInvitedSharedGroupRetrievalFails() {
-            //when:
-            val target: () -> Unit = { sharedGroupService.getJoinableInvitedSharedGroupId("", userSession) }
-
-            //then:
-            assertThrows<InvalidInvitationException>(target)
-        }
-
-        @Test
-        @DisplayName("既にその共有グループに参加している場合、参加可能な招待された共有グループIDの取得に失敗する")
-        fun alreadyJoinedShredGroup_joinableInvitedSharedGroupRetrievalFails() {
-            //given:
-            val pendingInvitation = SharedGroupFactory.createPendingInvitation()
-            testSharedGroupInserter.insert(members = setOf(userSession.accountId),
-                                           pendingInvitations = setOf(pendingInvitation))
-
-            //when:
-            val target: () -> Unit = {
-                sharedGroupService.getJoinableInvitedSharedGroupId(pendingInvitation.inviteCode, userSession)
-            }
-
-            //then:
-            assertThrows<InvalidInvitationException>(target)
-        }
-
-        @Test
-        @DisplayName("招待コードの有効期限が過ぎている場合、参加可能な招待された共有グループIDの取得に失敗する")
-        fun inviteCodeHasExpired_joinableInvitedSharedGroupRetrievalFails() {
-            //given:
-            val pendingInvitation =
-                    SharedGroupFactory.createPendingInvitation(invitedOn = localDateTimeProvider.today().minusDays(9))
-            testSharedGroupInserter.insert(members = setOf(createAccount().id),
-                                           pendingInvitations = setOf(pendingInvitation))
-
-            //when:
-            val target: () -> Unit = {
-                sharedGroupService.getJoinableInvitedSharedGroupId(pendingInvitation.inviteCode, userSession)
-            }
-
-            //then:
-            assertThrows<InvalidInvitationException>(target)
         }
     }
 

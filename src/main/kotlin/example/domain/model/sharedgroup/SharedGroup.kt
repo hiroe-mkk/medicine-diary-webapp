@@ -27,6 +27,11 @@ class SharedGroup(val id: SharedGroupId,
             throw InvalidInvitationException(inviteCode, "有効期限が切れています。")
     }
 
+    fun isValidInviteCode(inviteCode: String, date: LocalDate): Boolean {
+        val pendingInvitation = getPendingInvitation(inviteCode) ?: return false
+        return pendingInvitation.isValid(date)
+    }
+
     companion object {
         fun create(id: SharedGroupId, accountId: AccountId): SharedGroup {
             return SharedGroup(id, setOf(accountId), emptySet())
