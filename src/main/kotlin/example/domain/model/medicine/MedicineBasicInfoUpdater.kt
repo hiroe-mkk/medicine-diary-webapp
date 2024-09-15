@@ -7,11 +7,11 @@ import example.domain.model.medicine.medicineimage.*
 import org.springframework.stereotype.*
 
 @Component
-class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRepository,
-                                     private val medicationRecordRepository: MedicationRecordRepository,
-                                     private val medicineImageStorage: MedicineImageStorage,
-                                     private val medicineOwnerFactory: MedicineOwnerFactory,
-                                     private val medicineFinder: MedicineFinder) {
+class MedicineBasicInfoUpdater(private val medicineRepository: MedicineRepository,
+                               private val medicationRecordRepository: MedicationRecordRepository,
+                               private val medicineImageStorage: MedicineImageStorage,
+                               private val medicineOwnerFactory: MedicineOwnerFactory,
+                               private val medicineFinder: MedicineFinder) {
     fun update(id: MedicineId,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,

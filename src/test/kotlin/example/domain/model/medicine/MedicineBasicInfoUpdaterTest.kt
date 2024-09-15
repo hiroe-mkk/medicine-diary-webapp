@@ -9,13 +9,13 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
-internal class MedicineBasicInfoUpdateServiceTest(@Autowired private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
-                                                  @Autowired private val medicineRepository: MedicineRepository,
-                                                  @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                                                  @Autowired private val testAccountInserter: TestAccountInserter,
-                                                  @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                  @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
-                                                  @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+class MedicineBasicInfoUpdaterTest(@Autowired private val medicineBasicInfoUpdater: MedicineBasicInfoUpdater,
+                                   @Autowired private val medicineRepository: MedicineRepository,
+                                   @Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                   @Autowired private val testAccountInserter: TestAccountInserter,
+                                   @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                   @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
+                                   @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var requesterAccountId: AccountId
     private val newMedicineName: MedicineName = MedicineName("ロキソニンSプレミアム")
     private val newDosageAndAdministration: DosageAndAdministration = DosageAndAdministration(Dose(2.0),
@@ -41,14 +41,14 @@ internal class MedicineBasicInfoUpdateServiceTest(@Autowired private val medicin
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
         //when:
-        medicineBasicInfoUpdateService.update(medicine.id,
-                                              newMedicineName,
-                                              newDosageAndAdministration,
-                                              newEffects,
-                                              newPrecautions,
-                                              true,
-                                              newIsPublic,
-                                              requesterAccountId)
+        medicineBasicInfoUpdater.update(medicine.id,
+                                        newMedicineName,
+                                        newDosageAndAdministration,
+                                        newEffects,
+                                        newPrecautions,
+                                        true,
+                                        newIsPublic,
+                                        requesterAccountId)
 
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)!!
@@ -76,14 +76,14 @@ internal class MedicineBasicInfoUpdateServiceTest(@Autowired private val medicin
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
         //when:
-        medicineBasicInfoUpdateService.update(medicine.id,
-                                              newMedicineName,
-                                              newDosageAndAdministration,
-                                              newEffects,
-                                              newPrecautions,
-                                              false,
-                                              newIsPublic,
-                                              requesterAccountId)
+        medicineBasicInfoUpdater.update(medicine.id,
+                                        newMedicineName,
+                                        newDosageAndAdministration,
+                                        newEffects,
+                                        newPrecautions,
+                                        false,
+                                        newIsPublic,
+                                        requesterAccountId)
 
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)!!
@@ -115,14 +115,14 @@ internal class MedicineBasicInfoUpdateServiceTest(@Autowired private val medicin
         val medicationRecord3 = testMedicationRecordInserter.insert(user1AccountId, medicine.id)
 
         //when:
-        medicineBasicInfoUpdateService.update(medicine.id,
-                                              newMedicineName,
-                                              newDosageAndAdministration,
-                                              newEffects,
-                                              newPrecautions,
-                                              false,
-                                              newIsPublic,
-                                              requesterAccountId)
+        medicineBasicInfoUpdater.update(medicine.id,
+                                        newMedicineName,
+                                        newDosageAndAdministration,
+                                        newEffects,
+                                        newPrecautions,
+                                        false,
+                                        newIsPublic,
+                                        requesterAccountId)
 
         //then:
         val foundMedicationRecord1 = medicationRecordRepository.findById(medicationRecord1.id)!!

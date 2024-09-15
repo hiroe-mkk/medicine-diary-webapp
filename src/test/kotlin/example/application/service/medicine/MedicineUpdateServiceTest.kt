@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.*
 @DomainLayerTest
 class MedicineUpdateServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                 @Autowired private val medicineFinder: MedicineFinder,
-                                @Autowired private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
+                                @Autowired private val medicineBasicInfoUpdater: MedicineBasicInfoUpdater,
                                 @Autowired private val testAccountInserter: TestAccountInserter,
                                 @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val medicineRegistrationService = MedicineUpdateService(medicineRepository,
                                                                     medicineFinder,
-                                                                    medicineBasicInfoUpdateService)
+                                                                    medicineBasicInfoUpdater)
 
     private lateinit var userSession: UserSession
 

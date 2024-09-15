@@ -55,16 +55,16 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineBasicInfoUpdateService(medicineRepository: MedicineRepository,
-                                           medicationRecordRepository: MedicationRecordRepository,
-                                           medicineImageStorage: MedicineImageStorage,
-                                           medicineFinder: MedicineFinder,
-                                           medicineOwnerFactory: MedicineOwnerFactory): MedicineBasicInfoUpdateService {
-            return MedicineBasicInfoUpdateService(medicineRepository,
-                                                  medicationRecordRepository,
-                                                  medicineImageStorage,
-                                                  medicineOwnerFactory,
-                                                  medicineFinder)
+        fun medicineBasicInfoUpdater(medicineRepository: MedicineRepository,
+                                     medicationRecordRepository: MedicationRecordRepository,
+                                     medicineImageStorage: MedicineImageStorage,
+                                     medicineFinder: MedicineFinder,
+                                     medicineOwnerFactory: MedicineOwnerFactory): MedicineBasicInfoUpdater {
+            return MedicineBasicInfoUpdater(medicineRepository,
+                                            medicationRecordRepository,
+                                            medicineImageStorage,
+                                            medicineOwnerFactory,
+                                            medicineFinder)
         }
 
         @Bean

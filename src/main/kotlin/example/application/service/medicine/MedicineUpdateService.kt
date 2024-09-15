@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class MedicineUpdateService(private val medicineRepository: MedicineRepository,
                             private val medicineFinder: MedicineFinder,
-                            private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService) {
+                            private val medicineBasicInfoUpdater: MedicineBasicInfoUpdater) {
     /**
      * 更新用の薬基本情報編集コマンドを取得する
      */
@@ -26,14 +26,14 @@ class MedicineUpdateService(private val medicineRepository: MedicineRepository,
     fun updateMedicineBasicInfo(medicineId: MedicineId,
                                 command: MedicineBasicInfoEditCommand,
                                 userSession: UserSession) {
-        medicineBasicInfoUpdateService.update(medicineId,
-                                              command.validatedMedicineName,
-                                              command.validatedDosageAndAdministration,
-                                              command.validatedEffects,
-                                              command.validatedPrecautions,
-                                              command.isOwnedBySharedGroup,
-                                              command.isPublic,
-                                              userSession.accountId)
+        medicineBasicInfoUpdater.update(medicineId,
+                                        command.validatedMedicineName,
+                                        command.validatedDosageAndAdministration,
+                                        command.validatedEffects,
+                                        command.validatedPrecautions,
+                                        command.isOwnedBySharedGroup,
+                                        command.isPublic,
+                                        userSession.accountId)
     }
 
     /**
