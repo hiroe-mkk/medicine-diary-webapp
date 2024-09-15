@@ -11,14 +11,14 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
-internal class MedicineDeletionServiceTest(@Autowired private val medicineRepository: MedicineRepository,
-                                           @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                                           @Autowired private val medicineImageStorage: MedicineImageStorage,
-                                           @Autowired private val medicineDeletionService: MedicineDeletionService,
-                                           @Autowired private val testAccountInserter: TestAccountInserter,
-                                           @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                                           @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                           @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
+class MedicineDeletionCoordinatorTest(@Autowired private val medicineRepository: MedicineRepository,
+                                      @Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                      @Autowired private val medicineImageStorage: MedicineImageStorage,
+                                      @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
+                                      @Autowired private val testAccountInserter: TestAccountInserter,
+                                      @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                      @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                      @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
 
     @BeforeEach
@@ -36,7 +36,7 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, medicine.id)
 
         //when:
-        medicineDeletionService.deleteOwnedMedicineAndMedicationRecords(medicine.id, requesterAccountId)
+        medicineDeletionCoordinator.deleteOwnedMedicineAndMedicationRecords(medicine.id, requesterAccountId)
 
         //then:
         val foundMedicine = medicineRepository.findById(medicine.id)
@@ -57,7 +57,7 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         }
 
         //when:
-        medicineDeletionService.deleteAllOwnedMedicinesAndMedicationRecords(requesterAccountId)
+        medicineDeletionCoordinator.deleteAllOwnedMedicinesAndMedicationRecords(requesterAccountId)
 
         //then:
         val foundMedicines = medicineRepository.findByOwner(requesterAccountId)
@@ -78,7 +78,7 @@ internal class MedicineDeletionServiceTest(@Autowired private val medicineReposi
         }
 
         //when:
-        medicineDeletionService.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)
+        medicineDeletionCoordinator.deleteAllSharedGroupMedicinesAndMedicationRecords(sharedGroup.id)
 
         //then:
         val foundMedicines = medicineRepository.findByOwner(sharedGroup.id)

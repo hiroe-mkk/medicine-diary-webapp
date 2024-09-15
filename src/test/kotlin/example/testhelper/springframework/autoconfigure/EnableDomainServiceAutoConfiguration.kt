@@ -24,7 +24,7 @@ annotation class EnableDomainServiceAutoConfiguration {
                                     medicineImageStorage: MedicineImageStorage,
                                     medicationRecordRepository: MedicationRecordRepository,
                                     medicineFinder: MedicineFinder,
-                                    medicineDeletionService: MedicineDeletionService,
+                                    medicineDeletionCoordinator: MedicineDeletionCoordinator,
                                     medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupLeaveService {
             return SharedGroupLeaveService(sharedGroupRepository,
                                            medicineRepository,
@@ -32,7 +32,7 @@ annotation class EnableDomainServiceAutoConfiguration {
                                            medicationRecordRepository,
                                            medicineFinder,
                                            medicineOwnerCreationService,
-                                           medicineDeletionService)
+                                           medicineDeletionCoordinator)
         }
 
         @Bean
@@ -78,14 +78,14 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineDeletionService(medicineRepository: MedicineRepository,
-                                    medicationRecordRepository: MedicationRecordRepository,
-                                    medicineImageStorage: MedicineImageStorage,
-                                    medicineFinder: MedicineFinder): MedicineDeletionService {
-            return MedicineDeletionService(medicineRepository,
-                                           medicineImageStorage,
-                                           medicationRecordRepository,
-                                           medicineFinder)
+        fun medicineDeletionCoordinator(medicineRepository: MedicineRepository,
+                                        medicationRecordRepository: MedicationRecordRepository,
+                                        medicineImageStorage: MedicineImageStorage,
+                                        medicineFinder: MedicineFinder): MedicineDeletionCoordinator {
+            return MedicineDeletionCoordinator(medicineRepository,
+                                               medicineImageStorage,
+                                               medicationRecordRepository,
+                                               medicineFinder)
         }
 
         @Bean

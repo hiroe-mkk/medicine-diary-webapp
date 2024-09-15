@@ -15,7 +15,7 @@ class AccountDeletionService(private val accountRepository: AccountRepository,
                              private val profileRepository: ProfileRepository,
                              private val medicationRecordRepository: MedicationRecordRepository,
                              private val sharedGroupLeaveService: SharedGroupLeaveService,
-                             private val medicineDeletionService: MedicineDeletionService) {
+                             private val medicineDeletionCoordinator: MedicineDeletionCoordinator) {
     /**
      * アカウントを削除する
      */
@@ -23,7 +23,7 @@ class AccountDeletionService(private val accountRepository: AccountRepository,
         val account = accountRepository.findById(userSession.accountId) ?: return
 
         medicationRecordRepository.deleteByRecorder(account.id)
-        medicineDeletionService.deleteAllOwnedMedicinesAndMedicationRecords(userSession.accountId)
+        medicineDeletionCoordinator.deleteAllOwnedMedicinesAndMedicationRecords(userSession.accountId)
         sharedGroupLeaveService.leaveSharedGroup(userSession.accountId)
 
         profileRepository.deleteByAccountId(account.id)

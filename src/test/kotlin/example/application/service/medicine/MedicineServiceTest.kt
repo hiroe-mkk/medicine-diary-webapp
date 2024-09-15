@@ -17,7 +17,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                    @Autowired private val medicineFinder: MedicineFinder,
                                    @Autowired private val medicineCreationService: MedicineCreationService,
                                    @Autowired private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
-                                   @Autowired private val medicineDeletionService: MedicineDeletionService,
+                                   @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
                                    @Autowired private val testAccountInserter: TestAccountInserter,
                                    @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val medicineService: MedicineService = MedicineService(medicineRepository,
@@ -25,7 +25,7 @@ internal class MedicineServiceTest(@Autowired private val medicineRepository: Me
                                                                    medicineFinder,
                                                                    medicineCreationService,
                                                                    medicineBasicInfoUpdateService,
-                                                                   medicineDeletionService)
+                                                                   medicineDeletionCoordinator)
 
     private lateinit var userSession: UserSession
     private lateinit var user1AccountId: AccountId

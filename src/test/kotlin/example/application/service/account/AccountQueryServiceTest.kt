@@ -19,7 +19,7 @@ class AccountQueryServiceTest(@Autowired private val accountRepository: AccountR
                               @Autowired private val medicineRepository: MedicineRepository,
                               @Autowired private val medicationRecordRepository: MedicationRecordRepository,
                               @Autowired private val sharedGroupLeaveService: SharedGroupLeaveService,
-                              @Autowired private val medicineDeletionService: MedicineDeletionService,
+                              @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
                               @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
                               @Autowired private val testAccountInserter: TestAccountInserter,
                               @Autowired private val testMedicineInserter: TestMedicineInserter,
@@ -28,7 +28,7 @@ class AccountQueryServiceTest(@Autowired private val accountRepository: AccountR
                                                                 profileRepository,
                                                                 medicationRecordRepository,
                                                                 sharedGroupLeaveService,
-                                                                medicineDeletionService)
+                                                                medicineDeletionCoordinator)
 
     @Test
     @DisplayName("アカウントを削除する")

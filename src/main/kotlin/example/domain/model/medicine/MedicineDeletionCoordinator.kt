@@ -7,10 +7,10 @@ import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 
 @Component
-class MedicineDeletionService(private val medicineRepository: MedicineRepository,
-                              private val medicineImageStorage: MedicineImageStorage,
-                              private val medicationRecordRepository: MedicationRecordRepository,
-                              private val medicineFinder: MedicineFinder) {
+class MedicineDeletionCoordinator(private val medicineRepository: MedicineRepository,
+                                  private val medicineImageStorage: MedicineImageStorage,
+                                  private val medicationRecordRepository: MedicationRecordRepository,
+                                  private val medicineFinder: MedicineFinder) {
     fun deleteOwnedMedicineAndMedicationRecords(medicineId: MedicineId, accountId: AccountId) {
         val medicine = medicineFinder.findAvailableMedicine(medicineId, accountId) ?: return
         medicationRecordRepository.deleteAllByTakenMedicine(medicineId)
