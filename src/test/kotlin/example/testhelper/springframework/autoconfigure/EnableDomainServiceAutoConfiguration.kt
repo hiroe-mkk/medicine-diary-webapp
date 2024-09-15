@@ -84,8 +84,8 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicationRecordQueryService(medicationRecordRepository: MedicationRecordRepository): MedicationRecordQueryService {
-            return MedicationRecordQueryService(medicationRecordRepository)
+        fun medicationRecordFinder(medicationRecordRepository: MedicationRecordRepository): MedicationRecordFinder {
+            return MedicationRecordFinder(medicationRecordRepository)
         }
 
         @Bean

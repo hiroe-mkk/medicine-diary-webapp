@@ -12,7 +12,7 @@ import java.time.*
 @Transactional
 class MedicationRecordService(private val medicationRecordRepository: MedicationRecordRepository,
                               private val medicineRepository: MedicineRepository,
-                              private val medicationRecordQueryService: MedicationRecordQueryService,
+                              private val medicationRecordFinder: MedicationRecordFinder,
                               private val medicineFinder: MedicineFinder) {
     /**
      * 有効な服用記録 ID か
@@ -91,15 +91,15 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
      * 服用記録を削除する
      */
     fun deleteMedicationRecord(medicationRecordId: MedicationRecordId, userSession: UserSession) {
-        val medicationRecord = medicationRecordQueryService.findRecordedMedicationRecord(medicationRecordId,
-                                                                                         userSession.accountId)
+        val medicationRecord = medicationRecordFinder.findRecordedMedicationRecord(medicationRecordId,
+                                                                                   userSession.accountId)
                                ?: return
         medicationRecordRepository.deleteById(medicationRecord.id)
     }
 
     private fun findRecordedMedicationRecordOrElseThrowException(medicationRecordId: MedicationRecordId,
                                                                  userSession: UserSession): MedicationRecord {
-        return medicationRecordQueryService.findRecordedMedicationRecord(medicationRecordId, userSession.accountId)
+        return medicationRecordFinder.findRecordedMedicationRecord(medicationRecordId, userSession.accountId)
                ?: throw MedicationRecordNotFoundException(medicationRecordId)
     }
 

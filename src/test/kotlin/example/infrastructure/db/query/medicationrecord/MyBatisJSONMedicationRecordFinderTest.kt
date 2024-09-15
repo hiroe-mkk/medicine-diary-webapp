@@ -16,11 +16,11 @@ import org.springframework.data.domain.*
 import java.time.format.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
-                                                           @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
-                                                           @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                           @Autowired private val testAccountInserter: TestAccountInserter,
-                                                           @Autowired private val sharedGroupInserter: TestSharedGroupInserter) {
+internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
+                                                     @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
+                                                     @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                     @Autowired private val testAccountInserter: TestAccountInserter,
+                                                     @Autowired private val sharedGroupInserter: TestSharedGroupInserter) {
     @Test
     @DisplayName("服用記録一覧を取得する")
     fun getMedicationRecords() {

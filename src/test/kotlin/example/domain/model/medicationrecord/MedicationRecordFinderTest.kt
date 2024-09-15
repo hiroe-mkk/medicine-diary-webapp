@@ -9,10 +9,10 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
-internal class MedicationRecordQueryServiceTest(@Autowired private val medicationRecordQueryService: MedicationRecordQueryService,
-                                                @Autowired private val testAccountInserter: TestAccountInserter,
-                                                @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
+class MedicationRecordFinderTest(@Autowired private val medicationRecordFinder: MedicationRecordFinder,
+                                 @Autowired private val testAccountInserter: TestAccountInserter,
+                                 @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                 @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private lateinit var requesterAccountId: AccountId
     private lateinit var requesterMedicine: Medicine
 
@@ -29,7 +29,7 @@ internal class MedicationRecordQueryServiceTest(@Autowired private val medicatio
         val medicationRecord = testMedicationRecordInserter.insert(requesterAccountId, requesterMedicine.id)
 
         //when:
-        val actual = medicationRecordQueryService.findRecordedMedicationRecord(medicationRecord.id, requesterAccountId)
+        val actual = medicationRecordFinder.findRecordedMedicationRecord(medicationRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).usingRecursiveComparison().isEqualTo(medicationRecord)
@@ -43,7 +43,7 @@ internal class MedicationRecordQueryServiceTest(@Autowired private val medicatio
         val medicationRecord = testMedicationRecordInserter.insert(user1AccountId, requesterMedicine.id)
 
         //when:
-        val actual = medicationRecordQueryService.findRecordedMedicationRecord(medicationRecord.id, requesterAccountId)
+        val actual = medicationRecordFinder.findRecordedMedicationRecord(medicationRecord.id, requesterAccountId)
 
         //then:
         assertThat(actual).isNull()

@@ -16,13 +16,13 @@ import org.springframework.beans.factory.annotation.*
 internal class MedicationRecordServiceTest(@Autowired private val medicationRecordRepository: MedicationRecordRepository,
                                            @Autowired private val medicineRepository: MedicineRepository,
                                            @Autowired private val medicineFinder: MedicineFinder,
-                                           @Autowired private val medicationRecordQueryService: MedicationRecordQueryService,
+                                           @Autowired private val medicationRecordFinder: MedicationRecordFinder,
                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
                                            @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private val medicationRecordService: MedicationRecordService = MedicationRecordService(medicationRecordRepository,
                                                                                            medicineRepository,
-                                                                                           medicationRecordQueryService,
+                                                                                           medicationRecordFinder,
                                                                                            medicineFinder)
 
     private lateinit var userSession: UserSession
