@@ -9,7 +9,7 @@ import org.springframework.stereotype.*
 import java.time.*
 
 @Component
-abstract class JSONMedicationRecordQueryService(private val medicineQueryService: MedicineQueryService,
+abstract class JSONMedicationRecordQueryService(private val medicineFinder: MedicineFinder,
                                                 private val sharedGroupRepository: SharedGroupRepository) {
     // TODO: ドメインサービスを呼び出さないように変更する
 
@@ -38,7 +38,7 @@ abstract class JSONMedicationRecordQueryService(private val medicineQueryService
 
     private fun filteredMedicineIds(filter: MedicationRecordFilter,
                                     userSession: UserSession): Collection<MedicineId> {
-        val medicineIds = medicineQueryService.findAllViewableMedicines(userSession.accountId).map { it.id }
+        val medicineIds = medicineFinder.findAllViewableMedicines(userSession.accountId).map { it.id }
         if (filter.validatedMedicine == null) return medicineIds
 
         return if (medicineIds.contains(filter.validatedMedicine)) listOf(filter.validatedMedicine) else emptyList()

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class MedicineService(private val medicineRepository: MedicineRepository,
                       private val localDateTimeProvider: LocalDateTimeProvider,
-                      private val medicineQueryService: MedicineQueryService,
+                      private val medicineFinder: MedicineFinder,
                       private val medicineCreationService: MedicineCreationService,
                       private val medicineBasicInfoUpdateService: MedicineBasicInfoUpdateService,
                       private val medicineDeletionService: MedicineDeletionService) {
@@ -19,7 +19,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun findMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
-        val medicine = medicineQueryService.findViewableMedicine(medicineId, userSession.accountId)
+        val medicine = medicineFinder.findViewableMedicine(medicineId, userSession.accountId)
                        ?: throw MedicineNotFoundException(medicineId)
         return MedicineDto.from(medicine)
     }
@@ -37,7 +37,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      */
     @Transactional(readOnly = true)
     fun isAvailableMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
-        return medicineQueryService.isAvailableMedicine(medicineId, userSession.accountId)
+        return medicineFinder.isAvailableMedicine(medicineId, userSession.accountId)
     }
 
     /**
@@ -107,7 +107,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
      * 在庫管理を終了する
      */
     fun stopInventoryManagement(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
+        val medicine = medicineFinder.findAvailableMedicine(medicineId, userSession.accountId) ?: return
         medicine.stopInventoryManagement()
         medicineRepository.save(medicine)
     }
@@ -121,7 +121,7 @@ class MedicineService(private val medicineRepository: MedicineRepository,
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
-        return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
+        return medicineFinder.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }

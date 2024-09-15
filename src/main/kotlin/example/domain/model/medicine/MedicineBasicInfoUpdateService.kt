@@ -11,7 +11,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                                      private val medicationRecordRepository: MedicationRecordRepository,
                                      private val medicineImageStorage: MedicineImageStorage,
                                      private val medicineOwnerCreationService: MedicineOwnerCreationService,
-                                     private val medicineQueryService: MedicineQueryService) {
+                                     private val medicineFinder: MedicineFinder) {
     fun update(id: MedicineId,
                medicineName: MedicineName,
                dosageAndAdministration: DosageAndAdministration,
@@ -20,7 +20,7 @@ class MedicineBasicInfoUpdateService(private val medicineRepository: MedicineRep
                isOwnedBySharedGroup: Boolean,
                isPublic: Boolean,
                registrant: AccountId) {
-        val medicine = medicineQueryService.findAvailableMedicine(id, registrant)
+        val medicine = medicineFinder.findAvailableMedicine(id, registrant)
                        ?: throw MedicineNotFoundException(id)
 
         if (medicine.owner.isSharedGroup) {

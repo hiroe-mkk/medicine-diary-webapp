@@ -23,14 +23,14 @@ annotation class EnableDomainServiceAutoConfiguration {
                                     medicineRepository: MedicineRepository,
                                     medicineImageStorage: MedicineImageStorage,
                                     medicationRecordRepository: MedicationRecordRepository,
-                                    medicineQueryService: MedicineQueryService,
+                                    medicineFinder: MedicineFinder,
                                     medicineDeletionService: MedicineDeletionService,
                                     medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupLeaveService {
             return SharedGroupLeaveService(sharedGroupRepository,
                                            medicineRepository,
                                            medicineImageStorage,
                                            medicationRecordRepository,
-                                           medicineQueryService,
+                                           medicineFinder,
                                            medicineOwnerCreationService,
                                            medicineDeletionService)
         }
@@ -49,9 +49,9 @@ annotation class EnableDomainServiceAutoConfiguration {
         }
 
         @Bean
-        fun medicineQueryService(medicineRepository: MedicineRepository,
-                                 sharedGroupRepository: SharedGroupRepository): MedicineQueryService {
-            return MedicineQueryService(medicineRepository, sharedGroupRepository)
+        fun medicineFinder(medicineRepository: MedicineRepository,
+                           sharedGroupRepository: SharedGroupRepository): MedicineFinder {
+            return MedicineFinder(medicineRepository, sharedGroupRepository)
         }
 
         @Bean
@@ -63,13 +63,13 @@ annotation class EnableDomainServiceAutoConfiguration {
         fun medicineBasicInfoUpdateService(medicineRepository: MedicineRepository,
                                            medicationRecordRepository: MedicationRecordRepository,
                                            medicineImageStorage: MedicineImageStorage,
-                                           medicineQueryService: MedicineQueryService,
+                                           medicineFinder: MedicineFinder,
                                            medicineOwnerCreationService: MedicineOwnerCreationService): MedicineBasicInfoUpdateService {
             return MedicineBasicInfoUpdateService(medicineRepository,
                                                   medicationRecordRepository,
                                                   medicineImageStorage,
                                                   medicineOwnerCreationService,
-                                                  medicineQueryService)
+                                                  medicineFinder)
         }
 
         @Bean
@@ -81,11 +81,11 @@ annotation class EnableDomainServiceAutoConfiguration {
         fun medicineDeletionService(medicineRepository: MedicineRepository,
                                     medicationRecordRepository: MedicationRecordRepository,
                                     medicineImageStorage: MedicineImageStorage,
-                                    medicineQueryService: MedicineQueryService): MedicineDeletionService {
+                                    medicineFinder: MedicineFinder): MedicineDeletionService {
             return MedicineDeletionService(medicineRepository,
                                            medicineImageStorage,
                                            medicationRecordRepository,
-                                           medicineQueryService)
+                                           medicineFinder)
         }
 
         @Bean

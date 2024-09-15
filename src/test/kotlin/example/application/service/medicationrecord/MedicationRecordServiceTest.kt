@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.*
 @DomainLayerTest
 internal class MedicationRecordServiceTest(@Autowired private val medicationRecordRepository: MedicationRecordRepository,
                                            @Autowired private val medicineRepository: MedicineRepository,
-                                           @Autowired private val medicineQueryService: MedicineQueryService,
+                                           @Autowired private val medicineFinder: MedicineFinder,
                                            @Autowired private val medicationRecordQueryService: MedicationRecordQueryService,
                                            @Autowired private val testAccountInserter: TestAccountInserter,
                                            @Autowired private val testMedicineInserter: TestMedicineInserter,
@@ -23,7 +23,7 @@ internal class MedicationRecordServiceTest(@Autowired private val medicationReco
     private val medicationRecordService: MedicationRecordService = MedicationRecordService(medicationRecordRepository,
                                                                                            medicineRepository,
                                                                                            medicationRecordQueryService,
-                                                                                           medicineQueryService)
+                                                                                           medicineFinder)
 
     private lateinit var userSession: UserSession
     private lateinit var requesterMedicine: Medicine

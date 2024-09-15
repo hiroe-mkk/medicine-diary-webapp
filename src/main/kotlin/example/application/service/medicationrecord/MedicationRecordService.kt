@@ -13,7 +13,7 @@ import java.time.*
 class MedicationRecordService(private val medicationRecordRepository: MedicationRecordRepository,
                               private val medicineRepository: MedicineRepository,
                               private val medicationRecordQueryService: MedicationRecordQueryService,
-                              private val medicineQueryService: MedicineQueryService) {
+                              private val medicineFinder: MedicineFinder) {
     /**
      * 有効な服用記録 ID か
      */
@@ -29,7 +29,7 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
     fun getAdditionMedicationRecordEditCommand(medicineId: MedicineId?,
                                                date: LocalDate?,
                                                userSession: UserSession): MedicationRecordEditCommand? {
-        val availableMedicineIds = medicineQueryService.findAllAvailableMedicines(userSession.accountId).map { it.id }
+        val availableMedicineIds = medicineFinder.findAllAvailableMedicines(userSession.accountId).map { it.id }
         if (availableMedicineIds.isEmpty()) return null
 
         return if (medicineId != null && availableMedicineIds.contains(medicineId)) {
@@ -105,7 +105,7 @@ class MedicationRecordService(private val medicationRecordRepository: Medication
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
-        return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
+        return medicineFinder.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }

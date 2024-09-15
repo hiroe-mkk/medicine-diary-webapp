@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.*
 class MedicineImageServiceTest(@Autowired private val medicineRepository: MedicineRepository,
                                @Autowired private val medicineImageStorage: MedicineImageStorage,
                                @Autowired private val objectStorageClient: ObjectStorageClient,
-                               @Autowired private val medicineQueryService: MedicineQueryService,
+                               @Autowired private val medicineFinder: MedicineFinder,
                                @Autowired private val testAccountInserter: TestAccountInserter,
                                @Autowired private val testMedicineInserter: TestMedicineInserter) {
     private val medicineImageService = MedicineImageService(medicineRepository,
                                                             medicineImageStorage,
-                                                            medicineQueryService)
+                                                            medicineFinder)
 
     private lateinit var userSession: UserSession
 

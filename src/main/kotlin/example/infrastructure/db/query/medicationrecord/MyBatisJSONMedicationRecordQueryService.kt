@@ -13,8 +13,8 @@ import java.time.*
 @Transactional(readOnly = true)
 class MyBatisJSONMedicationRecordQueryService(private val jsonMedicationRecordMapper: JSONMedicationRecordMapper,
                                               sharedGroupRepository: SharedGroupRepository,
-                                              medicineQueryService: MedicineQueryService)
-    : JSONMedicationRecordQueryService(medicineQueryService, sharedGroupRepository) {
+                                              medicineFinder: MedicineFinder)
+    : JSONMedicationRecordQueryService(medicineFinder, sharedGroupRepository) {
     override fun findFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,
                                                    medicineIds: Collection<MedicineId>,
                                                    startedDate: LocalDate?,

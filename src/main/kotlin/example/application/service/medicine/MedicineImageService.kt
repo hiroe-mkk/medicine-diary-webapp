@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.*
 @Transactional
 class MedicineImageService(private val medicineRepository: MedicineRepository,
                            private val medicineImageStorage: MedicineImageStorage,
-                           private val medicineQueryService: MedicineQueryService) {
+                           private val medicineFinder: MedicineFinder) {
     /**
      * 薬画像を変更する
      */
@@ -34,7 +34,7 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
      * 薬画像を削除する
      */
     fun deleteMedicineImage(medicineId: MedicineId, userSession: UserSession) {
-        val medicine = medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId) ?: return
+        val medicine = medicineFinder.findAvailableMedicine(medicineId, userSession.accountId) ?: return
         if (medicine.medicineImageURL == null) return
 
         medicineImageStorage.delete(medicine.medicineImageURL!!)
@@ -44,7 +44,7 @@ class MedicineImageService(private val medicineRepository: MedicineRepository,
 
     private fun findAvailableMedicineOrElseThrowException(medicineId: MedicineId,
                                                           userSession: UserSession): Medicine {
-        return medicineQueryService.findAvailableMedicine(medicineId, userSession.accountId)
+        return medicineFinder.findAvailableMedicine(medicineId, userSession.accountId)
                ?: throw MedicineNotFoundException(medicineId)
     }
 }

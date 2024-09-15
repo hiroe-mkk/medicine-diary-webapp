@@ -26,10 +26,10 @@ annotation class MyBatisQueryServiceTest {
         fun medicationRecordQueryService(jsonMedicationRecordMapper: JSONMedicationRecordMapper,
                                          medicineRepository: MedicineRepository,
                                          sharedGroupRepository: SharedGroupRepository): JSONMedicationRecordQueryService {
-            val medicineQueryService = MedicineQueryService(medicineRepository, sharedGroupRepository)
+            val medicineFinder = MedicineFinder(medicineRepository, sharedGroupRepository)
             return MyBatisJSONMedicationRecordQueryService(jsonMedicationRecordMapper,
                                                            sharedGroupRepository,
-                                                           medicineQueryService)
+                                                           medicineFinder)
         }
 
         @Bean

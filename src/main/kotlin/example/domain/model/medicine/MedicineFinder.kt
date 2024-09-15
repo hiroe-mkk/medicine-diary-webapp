@@ -5,8 +5,8 @@ import example.domain.model.sharedgroup.*
 import org.springframework.stereotype.*
 
 @Component
-class MedicineQueryService(private val medicineRepository: MedicineRepository,
-                           private val sharedGroupRepository: SharedGroupRepository) {
+class MedicineFinder(private val medicineRepository: MedicineRepository,
+                     private val sharedGroupRepository: SharedGroupRepository) {
     fun findAllOwnedMedicines(accountId: AccountId): Set<Medicine> {
         return medicineRepository.findByOwner(accountId)
     }

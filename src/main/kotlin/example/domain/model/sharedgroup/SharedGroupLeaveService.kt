@@ -11,11 +11,11 @@ class SharedGroupLeaveService(private val sharedGroupRepository: SharedGroupRepo
                               private val medicineRepository: MedicineRepository,
                               private val medicineImageStorage: MedicineImageStorage,
                               private val medicationRecordRepository: MedicationRecordRepository,
-                              private val medicineQueryService: MedicineQueryService,
+                              private val medicineFinder: MedicineFinder,
                               private val medicineOwnerCreationService: MedicineOwnerCreationService,
                               private val medicineDeletionService: MedicineDeletionService) {
     fun leaveSharedGroupAndCloneMedicines(accountId: AccountId) {
-        val sharedGroupMedicines = medicineQueryService.findAllSharedGroupMedicines(accountId)
+        val sharedGroupMedicines = medicineFinder.findAllSharedGroupMedicines(accountId)
         sharedGroupMedicines.forEach { sharedGroupMedicine ->
             val newMedicineOwner = medicineOwnerCreationService.createAccountOwner(accountId)
             val newMedicineImageURL = sharedGroupMedicine.medicineImageURL?.let {

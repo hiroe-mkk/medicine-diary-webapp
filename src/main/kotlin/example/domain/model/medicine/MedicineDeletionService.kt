@@ -10,16 +10,16 @@ import org.springframework.stereotype.*
 class MedicineDeletionService(private val medicineRepository: MedicineRepository,
                               private val medicineImageStorage: MedicineImageStorage,
                               private val medicationRecordRepository: MedicationRecordRepository,
-                              private val medicineQueryService: MedicineQueryService) {
+                              private val medicineFinder: MedicineFinder) {
     fun deleteOwnedMedicineAndMedicationRecords(medicineId: MedicineId, accountId: AccountId) {
-        val medicine = medicineQueryService.findAvailableMedicine(medicineId, accountId) ?: return
+        val medicine = medicineFinder.findAvailableMedicine(medicineId, accountId) ?: return
         medicationRecordRepository.deleteAllByTakenMedicine(medicineId)
         medicineRepository.deleteById(medicine.id)
         medicine.medicineImageURL?.let { medicineImageStorage.delete(it) }
     }
 
     fun deleteAllOwnedMedicinesAndMedicationRecords(accountId: AccountId) {
-        val ownedMedicines = medicineQueryService.findAllOwnedMedicines(accountId)
+        val ownedMedicines = medicineFinder.findAllOwnedMedicines(accountId)
         if (ownedMedicines.isEmpty()) return
 
         ownedMedicines.forEach { medicationRecordRepository.deleteAllByTakenMedicine(it.id) }
