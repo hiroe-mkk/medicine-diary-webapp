@@ -1,6 +1,5 @@
-package example.application.service.medicineimage
+package example.application.service.medicine
 
-import example.application.service.medicine.*
 import example.application.shared.command.*
 import example.application.shared.usersession.*
 import example.domain.model.medicine.*

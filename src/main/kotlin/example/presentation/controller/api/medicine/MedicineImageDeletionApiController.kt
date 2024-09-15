@@ -1,7 +1,6 @@
 package example.presentation.controller.api.medicine
 
 import example.application.service.medicine.*
-import example.application.service.medicineimage.*
 import example.domain.model.medicine.*
 import example.domain.shared.exception.*
 import example.presentation.shared.usersession.*
