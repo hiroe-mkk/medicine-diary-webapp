@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/users/{accountId}")
 class UserPageController(private val userQueryService: UserQueryService,
-                         private val accountService: AccountService,
+                         private val accountQueryService: AccountQueryService,
                          private val userSessionProvider: UserSessionProvider,
                          private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -21,7 +21,7 @@ class UserPageController(private val userQueryService: UserQueryService,
      */
     @GetMapping
     fun displayUserPage(@PathVariable accountId: AccountId, model: Model): String {
-        if (!accountService.isValidAccountId(accountId)) throw InvalidEntityIdException(accountId)
+        if (!accountQueryService.isValidAccountId(accountId)) throw InvalidEntityIdException(accountId)
 
         model.addAttribute("user", userQueryService.findSharedGroupMember(accountId,
                                                                           userSessionProvider.getUserSessionOrElseThrow()))
