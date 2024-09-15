@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medicines/{medicineId}/image/change")
-class MedicineImageChangeApiController(private val medicineService: MedicineService,
+class MedicineImageChangeApiController(private val medicineQueryService: MedicineQueryService,
                                        private val medicineImageService: MedicineImageService,
                                        private val userSessionProvider: UserSessionProvider) {
     /**
@@ -22,7 +22,7 @@ class MedicineImageChangeApiController(private val medicineService: MedicineServ
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changeMedicineImage(@PathVariable medicineId: MedicineId,
                             @Validated imageUploadCommand: ImageUploadCommand) {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
         medicineImageService.changeMedicineImage(medicineId,
                                                  imageUploadCommand,

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medicines/{medicineId}/image/delete")
-class MedicineImageDeletionApiController(private val medicineService: MedicineService,
+class MedicineImageDeletionApiController(private val medicineQueryService: MedicineQueryService,
                                          private val medicineImageService: MedicineImageService,
                                          private val userSessionProvider: UserSessionProvider) {
     /**
@@ -19,7 +19,7 @@ class MedicineImageDeletionApiController(private val medicineService: MedicineSe
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteMedicineImage(@PathVariable medicineId: MedicineId) {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
         medicineImageService.deleteMedicineImage(medicineId,
                                                  userSessionProvider.getUserSessionOrElseThrow())

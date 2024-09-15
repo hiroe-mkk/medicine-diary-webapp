@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medicines/{medicineId}/inventory/adjust")
-class InventoryAdjustmentApiController(private val medicineService: MedicineService,
+class InventoryAdjustmentApiController(private val medicineQueryService: MedicineQueryService,
+                                       private val medicineUpdateService: MedicineUpdateService,
                                        private val userSessionProvider: UserSessionProvider) {
     /**
      * 在庫を修正する
@@ -20,10 +21,10 @@ class InventoryAdjustmentApiController(private val medicineService: MedicineServ
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun adjustInventory(@PathVariable medicineId: MedicineId,
                         @Validated inventoryAdjustmentCommand: InventoryAdjustmentCommand) {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
-        medicineService.adjustInventory(medicineId,
-                                        inventoryAdjustmentCommand,
-                                        userSessionProvider.getUserSessionOrElseThrow())
+        medicineUpdateService.adjustInventory(medicineId,
+                                              inventoryAdjustmentCommand,
+                                              userSessionProvider.getUserSessionOrElseThrow())
     }
 }

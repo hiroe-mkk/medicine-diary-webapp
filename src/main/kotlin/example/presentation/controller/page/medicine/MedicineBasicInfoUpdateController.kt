@@ -15,11 +15,12 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/medicines/{medicineId}/basicinfo/update")
-class MedicineBasicInfoUpdateController(private val medicineService: MedicineService,
+class MedicineBasicInfoUpdateController(private val medicineQueryService: MedicineQueryService,
+                                        private val medicineUpdateService: MedicineUpdateService,
                                         private val sharedGroupService: SharedGroupService,
                                         private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("timings")
-    fun timings(): Array<Timing> = Timing.values()
+    fun timings(): Array<Timing> = Timing.entries.toTypedArray()
 
     @ModelAttribute("isJoinedSharedGroup")
     fun isJoinedSharedGroup(): Boolean {
@@ -38,10 +39,10 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
     @GetMapping
     fun displayMedicineBasicInfoUpdatePage(@PathVariable medicineId: MedicineId,
                                            model: Model): String {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
-        val command = medicineService.getUpdateMedicineBasicInfoEditCommand(medicineId,
-                                                                            userSessionProvider.getUserSessionOrElseThrow())
+        val command = medicineUpdateService.getUpdateMedicineBasicInfoEditCommand(medicineId,
+                                                                                  userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", command)
         return "medicine/form"
     }
@@ -54,12 +55,12 @@ class MedicineBasicInfoUpdateController(private val medicineService: MedicineSer
                                 @ModelAttribute("form") @Validated medicineBasicInfoEditCommand: MedicineBasicInfoEditCommand,
                                 bindingResult: BindingResult,
                                 redirectAttributes: RedirectAttributes): String {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
         if (bindingResult.hasErrors()) return "medicine/form"
 
-        medicineService.updateMedicineBasicInfo(medicineId,
-                                                medicineBasicInfoEditCommand,
-                                                userSessionProvider.getUserSessionOrElseThrow())
+        medicineUpdateService.updateMedicineBasicInfo(medicineId,
+                                                      medicineBasicInfoEditCommand,
+                                                      userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬基本情報の更新が完了しました。"))
         redirectAttributes.addAttribute("medicineId", medicineId)

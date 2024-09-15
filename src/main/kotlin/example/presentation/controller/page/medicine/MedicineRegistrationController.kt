@@ -14,11 +14,11 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/medicines/register")
-class MedicineRegistrationController(private val medicineService: MedicineService,
+class MedicineRegistrationController(private val medicineRegistrationService: MedicineRegistrationService,
                                      private val sharedGroupService: SharedGroupService,
                                      private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("timings")
-    fun timings(): Array<Timing> = Timing.values()
+    fun timings(): Array<Timing> = Timing.entries.toTypedArray()
 
     @ModelAttribute("isJoinedSharedGroup")
     fun isJoinedSharedGroup(): Boolean {
@@ -36,7 +36,7 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
      */
     @GetMapping
     fun displayMedicineRegistrationPage(model: Model): String {
-        val form = medicineService.getRegistrationMedicineBasicInfoEditCommand(
+        val form = medicineRegistrationService.getRegistrationMedicineBasicInfoEditCommand(
                 userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("form", form)
         return "medicine/form"
@@ -51,8 +51,8 @@ class MedicineRegistrationController(private val medicineService: MedicineServic
                          redirectAttributes: RedirectAttributes): String {
         if (bindingResult.hasErrors()) return "medicine/form"
 
-        val medicineId = medicineService.registerMedicine(medicineBasicInfoEditCommand,
-                                                          userSessionProvider.getUserSessionOrElseThrow())
+        val medicineId = medicineRegistrationService.registerMedicine(medicineBasicInfoEditCommand,
+                                                                      userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の登録が完了しました。"))
         redirectAttributes.addAttribute("medicineId", medicineId)
