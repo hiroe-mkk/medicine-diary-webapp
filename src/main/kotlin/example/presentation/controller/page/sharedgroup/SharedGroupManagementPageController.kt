@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/shared-group")
-class SharedGroupManagementPageController(private val sharedGroupService: SharedGroupService,
+class SharedGroupManagementPageController(private val sharedGroupQueryService: SharedGroupQueryService,
                                           private val userSessionProvider: UserSessionProvider,
                                           private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -18,7 +18,7 @@ class SharedGroupManagementPageController(private val sharedGroupService: Shared
     @GetMapping
     fun displaySharedGroupManagementPage(model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        model.addAttribute("joinedSharedGroupId", sharedGroupService.getJoinedSharedGroup(userSession))
+        model.addAttribute("joinedSharedGroupId", sharedGroupQueryService.getJoinedSharedGroup(userSession))
 
         lastRequestedPage.path = "/shared-group"
         return "sharedgroup/management"

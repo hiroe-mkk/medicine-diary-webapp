@@ -17,14 +17,14 @@ import org.springframework.web.servlet.mvc.support.*
 @RequestMapping("/medicines/{medicineId}/basicinfo/update")
 class MedicineBasicInfoUpdateController(private val medicineQueryService: MedicineQueryService,
                                         private val medicineUpdateService: MedicineUpdateService,
-                                        private val sharedGroupService: SharedGroupService,
+                                        private val sharedGroupQueryService: SharedGroupQueryService,
                                         private val userSessionProvider: UserSessionProvider) {
     @ModelAttribute("timings")
     fun timings(): Array<Timing> = Timing.entries.toTypedArray()
 
     @ModelAttribute("isJoinedSharedGroup")
     fun isJoinedSharedGroup(): Boolean {
-        return sharedGroupService.isJoinedSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
+        return sharedGroupQueryService.isJoinedSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 
     @ModelAttribute("title")

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/medicines")
-class MedicineOverviewsPageController(private val sharedGroupService: SharedGroupService,
+class MedicineOverviewsPageController(private val sharedGroupQueryService: SharedGroupQueryService,
                                       private val userSessionProvider: UserSessionProvider,
                                       private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -20,7 +20,7 @@ class MedicineOverviewsPageController(private val sharedGroupService: SharedGrou
     fun displayMedicineOverviewsPage(medicineFilter: MedicineFilter, model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("isJoinedSharedGroup",
-                           sharedGroupService.isJoinedSharedGroup(userSession))
+                           sharedGroupQueryService.isJoinedSharedGroup(userSession))
         model.addAttribute("medicineFilter", medicineFilter)
 
         lastRequestedPage.path = "/medicines"

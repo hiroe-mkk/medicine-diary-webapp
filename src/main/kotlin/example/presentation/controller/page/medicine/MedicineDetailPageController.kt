@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/medicines/{medicineId}")
 class MedicineDetailPageController(private val medicineQueryService: MedicineQueryService,
-                                   private val sharedGroupService: SharedGroupService,
+                                   private val sharedGroupQueryService: SharedGroupQueryService,
                                    private val userSessionProvider: UserSessionProvider,
                                    private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -27,7 +27,7 @@ class MedicineDetailPageController(private val medicineQueryService: MedicineQue
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
         model.addAttribute("medicine", medicineQueryService.findMedicine(medicineId, userSession))
         model.addAttribute("isJoinedSharedGroup",
-                           sharedGroupService.isJoinedSharedGroup(userSession))
+                           sharedGroupQueryService.isJoinedSharedGroup(userSession))
         model.addAttribute("isAvailableMedicine", medicineQueryService.isAvailableMedicine(medicineId, userSession))
 
         lastRequestedPage.path = "/medicines/${medicineId}"

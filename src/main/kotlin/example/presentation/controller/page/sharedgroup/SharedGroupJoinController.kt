@@ -9,14 +9,14 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/shared-group/join")
-class SharedGroupJoinController(private val sharedGroupService: SharedGroupService,
+class SharedGroupJoinController(private val sharedGroupInviteResponseService: SharedGroupInviteResponseService,
                                 private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループに参加する
      */
     @PostMapping
     fun joinSharedGroup(code: String, redirectAttributes: RedirectAttributes): String {
-        sharedGroupService.joinSharedGroup(code, userSessionProvider.getUserSessionOrElseThrow())
+        sharedGroupInviteResponseService.joinSharedGroup(code, userSessionProvider.getUserSessionOrElseThrow())
 
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("共有グループに参加しました。"))

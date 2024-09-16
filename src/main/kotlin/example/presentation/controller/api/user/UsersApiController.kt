@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/users")
-class UsersApiController(private val sharedGroupService: SharedGroupService,
+class UsersApiController(private val sharedGroupQueryService: SharedGroupQueryService,
                          private val jsonUserQueryService: JSONUserQueryService) {
     /**
      * 共有グループのメンバー覧を取得する
@@ -19,7 +19,7 @@ class UsersApiController(private val sharedGroupService: SharedGroupService,
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getSharedGroupMember(@RequestParam sharedGroupId: SharedGroupId): JSONUsers {
-        if (!sharedGroupService.isValidAccountId(sharedGroupId)) throw InvalidEntityIdException(sharedGroupId)
+        if (!sharedGroupQueryService.isValidSharedGroupId(sharedGroupId)) throw InvalidEntityIdException(sharedGroupId)
 
         return jsonUserQueryService.findJSONSharedGroupMember(sharedGroupId)
     }

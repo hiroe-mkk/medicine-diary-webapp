@@ -9,14 +9,15 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/shared-group/reject")
-class SharedGroupRejectController(private val sharedGroupService: SharedGroupService,
+class SharedGroupRejectController(private val sharedGroupInviteResponseService: SharedGroupInviteResponseService,
                                   private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループへの招待を拒否する
      */
     @PostMapping
     fun rejectInvitationToSharedGroup(code: String, redirectAttributes: RedirectAttributes): String {
-        sharedGroupService.rejectInvitationToSharedGroup(code, userSessionProvider.getUserSessionOrElseThrow())
+        sharedGroupInviteResponseService.rejectInvitationToSharedGroup(code,
+                                                                       userSessionProvider.getUserSessionOrElseThrow())
 
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("共有グループへの参加を拒否しました。"))

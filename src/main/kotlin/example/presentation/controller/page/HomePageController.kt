@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/")
 class HomePageController(private val profileQueryService: ProfileQueryService,
-                         private val sharedGroupService: SharedGroupService,
+                         private val sharedGroupQueryService: SharedGroupQueryService,
                          private val userSessionProvider: UserSessionProvider,
                          private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -23,7 +23,7 @@ class HomePageController(private val profileQueryService: ProfileQueryService,
         if (userSession != null) {
             model.addAttribute("profile", profileQueryService.findProfile(userSession))
             model.addAttribute("joinedSharedGroupId",
-                               sharedGroupService.getJoinedSharedGroup(userSession))
+                               sharedGroupQueryService.getJoinedSharedGroup(userSession))
         }
 
         lastRequestedPage.path = "/"

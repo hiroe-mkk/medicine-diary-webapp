@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/shared-group/leave")
-class SharedGroupLeaveApiController(private val sharedGroupService: SharedGroupService,
+class SharedGroupLeaveApiController(private val sharedGroupLeaveService: SharedGroupLeaveService,
                                     private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループから脱退する
@@ -16,6 +16,6 @@ class SharedGroupLeaveApiController(private val sharedGroupService: SharedGroupS
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun leaveSharedGroup() {
-        sharedGroupService.leaveSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
+        sharedGroupLeaveService.leaveSharedGroup(userSessionProvider.getUserSessionOrElseThrow())
     }
 }

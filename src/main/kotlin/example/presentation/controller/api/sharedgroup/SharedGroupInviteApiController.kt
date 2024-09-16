@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/shared-group/invite")
-class SharedGroupInviteApiController(private val sharedGroupService: SharedGroupService,
+class SharedGroupInviteApiController(private val sharedGroupInviteService: SharedGroupInviteService,
                                      private val userSessionProvider: UserSessionProvider) {
     /**
      * 共有グループに招待する
@@ -17,7 +17,7 @@ class SharedGroupInviteApiController(private val sharedGroupService: SharedGroup
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun inviteToSharedGroup(@Valid sharedGroupInviteFormCommand: SharedGroupInviteFormCommand) {
-        sharedGroupService.inviteToSharedGroup(sharedGroupInviteFormCommand,
-                                               userSessionProvider.getUserSessionOrElseThrow())
+        sharedGroupInviteService.inviteToSharedGroup(sharedGroupInviteFormCommand,
+                                                     userSessionProvider.getUserSessionOrElseThrow())
     }
 }

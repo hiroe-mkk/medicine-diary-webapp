@@ -29,7 +29,7 @@ class SharedGroupInviteEmailSenderImpl(private val applicationProperties: Applic
             append(title)
 
             append("以下のリンクから、共有グループに参加してください。\n")
-            append("${sharedGroupInviteForm.inviteLink}\n\n")
+            append("${createInviteLink(sharedGroupInviteForm.inviteCode)}\n\n")
 
             append("※共有グループに参加するには、ログインが必要です。\n")
             append("※このリンクは、発行日から${sharedGroupInviteForm.expirationPeriodText}有効です。\n\n")
@@ -50,5 +50,9 @@ class SharedGroupInviteEmailSenderImpl(private val applicationProperties: Applic
         } catch (exception: EmailSendException) {
             throw SharedGroupInviteEmailSendFailedException(sharedGroupInviteForm, exception)
         }
+    }
+
+    private fun createInviteLink(inviteCode: String): String {
+        return "${applicationProperties.endpoint.web}/shared-group/join?code=${inviteCode}"
     }
 }
