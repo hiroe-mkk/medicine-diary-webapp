@@ -2,16 +2,13 @@ package example.infrastructure.db.query.medicine
 
 import example.application.query.medicine.*
 import example.application.shared.usersession.*
-import example.domain.model.account.*
 import example.domain.model.medicine.*
-import example.domain.model.sharedgroup.*
 import example.testhelper.factory.*
 import example.testhelper.inserter.*
 import example.testhelper.springframework.autoconfigure.*
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
-import java.time.format.*
 
 @MyBatisQueryServiceTest
 internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private val jsonMedicineOverviewsQueryService: JSONMedicineOverviewsQueryService,
@@ -19,80 +16,77 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
                                                             @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                             @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var userSession: UserSession
-    private lateinit var sharedGroupId: SharedGroupId
-    private lateinit var memberAccountId: AccountId
 
-    private lateinit var ownedMedicines: List<Medicine>
-    private lateinit var sharedGroupMedicines: List<Medicine>
-    private lateinit var membersMedicines: List<Medicine>
+    private lateinit var requesterPublicMedicineId: MedicineId
+    private lateinit var requesterPrivateMedicineId: MedicineId
+    private lateinit var memberPublicMedicineId: MedicineId
+    private lateinit var memberPrivateMedicineId: MedicineId
+    private lateinit var sharedGroupMedicineId: MedicineId
 
     @BeforeEach
     internal fun setUp() {
         val requesterAccountId = testAccountInserter.insertAccountAndProfile().first.id
         userSession = UserSessionFactory.create(requesterAccountId)
-        memberAccountId = testAccountInserter.insertAccountAndProfile().first.id
-        sharedGroupId = testSharedGroupInserter.insert(members = setOf(userSession.accountId, memberAccountId)).id
+        val memberAccountId = testAccountInserter.insertAccountAndProfile().first.id
+        val sharedGroupId = testSharedGroupInserter.insert(members = setOf(userSession.accountId, memberAccountId)).id
 
-        ownedMedicines = createMedicines(MedicineOwner.create(userSession.accountId))
-        sharedGroupMedicines = createMedicines(MedicineOwner.create(sharedGroupId))
-        membersMedicines = createMedicines(MedicineOwner.create(memberAccountId))
+        val requester = MedicineOwner.create(userSession.accountId)
+        requesterPublicMedicineId = testMedicineInserter.insert(owner = requester, isPublic = true).id
+        requesterPrivateMedicineId = testMedicineInserter.insert(owner = requester, isPublic = false).id
+
+        val member = MedicineOwner.create(memberAccountId)
+        memberPublicMedicineId = testMedicineInserter.insert(owner = member, isPublic = true).id
+        memberPrivateMedicineId = testMedicineInserter.insert(owner = member, isPublic = false).id
+
+        val sharedGroup = MedicineOwner.create(sharedGroupId)
+        sharedGroupMedicineId = testMedicineInserter.insert(owner = sharedGroup, isPublic = true).id
     }
 
     @Test
     @DisplayName("薬概要一覧を取得する")
-    fun findMedicineOverviews() {
+    fun getMedicineOverviews() {
         //when:
-        val actual = jsonMedicineOverviewsQueryService.getMedicineOverviews(MedicineFilter("頭痛"), userSession)
+        val actual = jsonMedicineOverviewsQueryService.getMedicineOverviews(MedicineFilter(""),
+                                                                            userSession)
 
         //then:
         assertThat(actual.ownedMedicines).extracting("medicineId")
-            .containsExactlyInAnyOrder(*ownedMedicines.map { it.id.toString() }.toTypedArray())
+            .containsExactlyInAnyOrder(requesterPublicMedicineId.value, requesterPrivateMedicineId.value)
         assertThat(actual.sharedGroupMedicines).extracting("medicineId")
-            .containsExactlyInAnyOrder(*sharedGroupMedicines.map { it.id.toString() }.toTypedArray())
-        val expectMemberMedicineIds = membersMedicines.filter { it.isPublic }.map { it.id.toString() }
+            .containsExactlyInAnyOrder(sharedGroupMedicineId.value)
         assertThat(actual.membersMedicines).extracting("medicineId")
-            .containsExactlyInAnyOrder(*expectMemberMedicineIds.toTypedArray())
+            .containsExactlyInAnyOrder(memberPublicMedicineId.value)
+    }
+
+    @Test
+    @DisplayName("フィルタリングされた薬概要一覧を取得する")
+    fun getFilteredMedicineOverviews() {
+        //given:
+        val requester = MedicineOwner.create(userSession.accountId)
+        val stomachacheMedicineId = testMedicineInserter.insert(owner = requester,
+                                                                effects = Effects(listOf("腹痛"))).id
+
+        //when:
+        val actual = jsonMedicineOverviewsQueryService.getMedicineOverviews(MedicineFilter("腹痛"),
+                                                                            userSession)
+
+        //then:
+        assertThat(actual.ownedMedicines).extracting("medicineId")
+            .containsExactlyInAnyOrder(stomachacheMedicineId.value)
+        assertThat(actual.sharedGroupMedicines).isEmpty()
+        assertThat(actual.membersMedicines).isEmpty()
     }
 
     @Test
     @DisplayName("服用可能な薬概要一覧を取得する")
-    fun findAvailableMedicineOverviews() {
+    fun getAvailableMedicineOverviews() {
         //when:
         val actual = jsonMedicineOverviewsQueryService.getAvailableMedicineOverviews(userSession)
 
         //then:
         assertThat(actual.medicines).extracting("medicineId")
-            .containsExactlyInAnyOrder(*ownedMedicines.map { it.id.toString() }.toTypedArray(),
-                                       *sharedGroupMedicines.map { it.id.toString() }.toTypedArray())
-    }
-
-    private fun createMedicines(medicineOwner: MedicineOwner): List<Medicine> {
-        return listOf(testMedicineInserter.insert(owner = medicineOwner, isPublic = true),
-                      testMedicineInserter.insert(owner = medicineOwner, isPublic = false))
-    }
-
-    private fun createJSONMedicineOverview(medicine: Medicine): JSONMedicineOverview {
-        val jsonDosageAndAdministration =
-                JSONDosageAndAdministration(medicine.dosageAndAdministration.dose.quantity.toString(),
-                                            medicine.dosageAndAdministration.doseUnit,
-                                            medicine.dosageAndAdministration.timesPerDay.toString(),
-                                            medicine.dosageAndAdministration.timingOptions)
-        val jsonInventory = medicine.inventory?.let {
-            val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            val startedOn = it.startedOn?.let { startedOn -> dateTimeFormatter.format(startedOn) }
-            val expirationOn = it.expirationOn?.let { expirationOn -> dateTimeFormatter.format(expirationOn) }
-            JSONInventory(it.remainingQuantity,
-                          it.quantityPerPackage,
-                          startedOn,
-                          expirationOn,
-                          it.unusedPackage)
-        }
-        return JSONMedicineOverview(medicine.id.toString(),
-                                    medicine.medicineName.toString(),
-                                    medicine.medicineImageURL?.toString(),
-                                    medicine.isPublic,
-                                    jsonDosageAndAdministration,
-                                    medicine.effects.values,
-                                    jsonInventory)
+            .containsExactlyInAnyOrder(requesterPublicMedicineId.value,
+                                       requesterPrivateMedicineId.value,
+                                       sharedGroupMedicineId.value)
     }
 }

@@ -44,11 +44,10 @@
         FROM
             <include refid="AllTables"/>
         WHERE
-            medicines.account_id IN(
-             SELECT account_id
-             FROM members
-             WHERE members.member = #{accountId}
-            )
+            medicines.account_id IN (
+                SELECT member
+                FROM members
+                WHERE members.shared_group_id IN (SELECT shared_group_id FROM members WHERE members.member = #{accountId}))
             AND NOT medicines.account_id = #{accountId}
             AND medicines.is_public = true
             <include refid="Filtering"/>
