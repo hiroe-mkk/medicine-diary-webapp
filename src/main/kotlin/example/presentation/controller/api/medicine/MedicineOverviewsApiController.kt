@@ -18,7 +18,7 @@ class MedicineOverviewsApiController(private val jsonMedicineOverviewsQueryServi
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getMedicineOverviews(@Validated medicineFilter: MedicineFilter): JSONOwnerBaseMedicineOverviews {
-        return jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession(), medicineFilter)
+        return jsonMedicineOverviewsQueryService.getMedicineOverviews(medicineFilter, userSession())
     }
 
     /**
@@ -28,7 +28,7 @@ class MedicineOverviewsApiController(private val jsonMedicineOverviewsQueryServi
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     fun getAvailableMedicineOverviews(): JSONMedicineOverviews {
-        return jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession())
+        return jsonMedicineOverviewsQueryService.getAvailableMedicineOverviews(userSession())
     }
 
     private fun userSession() = userSessionProvider.getUserSessionOrElseThrow()

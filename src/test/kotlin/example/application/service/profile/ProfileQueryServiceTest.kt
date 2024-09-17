@@ -17,14 +17,14 @@ class ProfileQueryServiceTest(@Autowired private val profileRepository: ProfileR
     @DisplayName("プロフィールを取得する")
     fun getProfile() {
         //given:
-        val requesterProfile = testAccountInserter.insertAccountAndProfile().second
-        val userSession = UserSessionFactory.create(requesterProfile.accountId)
+        val profile = testAccountInserter.insertAccountAndProfile().second
+        val userSession = UserSessionFactory.create(profile.accountId)
 
         //when:
-        val actual = profileService.findProfile(userSession)
+        val actual = profileService.getProfile(userSession)
 
         //then:
-        val expected = ProfileDto(requesterProfile.username, requesterProfile.profileImageURL)
-        assertThat(actual).isEqualTo(expected)
+        assertThat(actual).isEqualTo(ProfileDto(profile.username,
+                                                profile.profileImageURL))
     }
 }

@@ -12,7 +12,7 @@ class ProfileQueryService(private val profileRepository: ProfileRepository) {
     /**
      * プロフィールを取得する
      */
-    fun findProfile(userSession: UserSession): ProfileDto {
+    fun getProfile(userSession: UserSession): ProfileDto {
         val profile = profileRepository.findByAccountId(userSession.accountId)
                       ?: throw AccountNotFoundException(userSession.accountId)
         return ProfileDto.from(profile)

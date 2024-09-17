@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.*
 @Component
 @Transactional(readOnly = true)
 class MyBatisUserQueryService(private val userMapper: UserMapper) : UserQueryService {
-    override fun findSharedGroupMember(accountId: AccountId, userSession: UserSession): User {
+    override fun getUser(accountId: AccountId, userSession: UserSession): User {
+        // ユーザーが参加している共有グループのメンバーのみが正常に取得できる
         return userMapper.findOneSharedGroupMemberByAccountId(accountId.value,
                                                               userSession.accountId.value)
                ?: throw AccountNotFoundException(accountId)

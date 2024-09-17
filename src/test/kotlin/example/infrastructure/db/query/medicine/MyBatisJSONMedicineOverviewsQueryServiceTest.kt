@@ -42,8 +42,7 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
     @DisplayName("薬概要一覧を取得する")
     fun findMedicineOverviews() {
         //when:
-        val actual = jsonMedicineOverviewsQueryService.findMedicineOverviews(userSession,
-                                                                             MedicineFilter("頭痛"))
+        val actual = jsonMedicineOverviewsQueryService.getMedicineOverviews(MedicineFilter("頭痛"), userSession)
 
         //then:
         assertThat(actual.ownedMedicines).extracting("medicineId")
@@ -59,7 +58,7 @@ internal class MyBatisJSONMedicineOverviewsQueryServiceTest(@Autowired private v
     @DisplayName("服用可能な薬概要一覧を取得する")
     fun findAvailableMedicineOverviews() {
         //when:
-        val actual = jsonMedicineOverviewsQueryService.findJSONAvailableMedicineOverviews(userSession)
+        val actual = jsonMedicineOverviewsQueryService.getAvailableMedicineOverviews(userSession)
 
         //then:
         assertThat(actual.medicines).extracting("medicineId")

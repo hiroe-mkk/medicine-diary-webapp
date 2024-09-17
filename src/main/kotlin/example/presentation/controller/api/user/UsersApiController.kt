@@ -21,6 +21,6 @@ class UsersApiController(private val sharedGroupQueryService: SharedGroupQuerySe
     fun getSharedGroupMember(@RequestParam sharedGroupId: SharedGroupId): JSONUsers {
         if (!sharedGroupQueryService.isValidSharedGroupId(sharedGroupId)) throw InvalidEntityIdException(sharedGroupId)
 
-        return jsonUserQueryService.findJSONSharedGroupMember(sharedGroupId)
+        return jsonUserQueryService.getSharedGroupMembers(sharedGroupId)
     }
 }

@@ -17,7 +17,7 @@ class SharedGroupJoinPageController(private val sharedGroupQueryService: SharedG
     @GetMapping(params = ["code"])
     fun displaySharedGroupJoinPage(code: String, model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        val joinedSharedGroupId = sharedGroupQueryService.getJoinedSharedGroup(userSession)
+        val joinedSharedGroupId = sharedGroupQueryService.getJoinedSharedGroupId(userSession)
         model.addAttribute("joinedSharedGroupId", joinedSharedGroupId)
 
         try {

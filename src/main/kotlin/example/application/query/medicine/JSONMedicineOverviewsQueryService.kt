@@ -6,10 +6,10 @@ interface JSONMedicineOverviewsQueryService {
     /**
      * 薬概要一覧を取得する
      */
-    fun findMedicineOverviews(userSession: UserSession, medicineFilter: MedicineFilter?): JSONOwnerBaseMedicineOverviews
+    fun getMedicineOverviews(filter: MedicineFilter?, userSession: UserSession): JSONOwnerBaseMedicineOverviews
 
     /**
      * 服用可能な薬概要一覧を取得する
      */
-    fun findJSONAvailableMedicineOverviews(userSession: UserSession): JSONMedicineOverviews
+    fun getAvailableMedicineOverviews(userSession: UserSession): JSONMedicineOverviews
 }

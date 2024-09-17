@@ -18,7 +18,7 @@ class SharedGroupManagementPageController(private val sharedGroupQueryService: S
     @GetMapping
     fun displaySharedGroupManagementPage(model: Model): String {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        model.addAttribute("joinedSharedGroupId", sharedGroupQueryService.getJoinedSharedGroup(userSession))
+        model.addAttribute("joinedSharedGroupId", sharedGroupQueryService.getJoinedSharedGroupId(userSession))
 
         lastRequestedPage.path = "/shared-group"
         return "sharedgroup/management"

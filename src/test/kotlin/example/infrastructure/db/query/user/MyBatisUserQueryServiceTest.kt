@@ -24,14 +24,14 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
 
 
     @Test
-    @DisplayName("共有グループメンバーを取得する")
-    fun getSharedGroupMember() {
+    @DisplayName("共有グループのメンバーの場合、ユーザーの取得に成功する")
+    fun targetIsSharedGroupMember_gettingUserSucceeds() {
         //given:
         val member = testAccountInserter.insertAccountAndProfile().second
         testSharedGroupInserter.insert(members = setOf(userSession.accountId,
                                                        member.accountId))
         //when:
-        val actual = userQueryService.findSharedGroupMember(member.accountId, userSession)
+        val actual = userQueryService.getUser(member.accountId, userSession)
 
         //then:
         assertThat(actual).isEqualTo(User(member.accountId,
@@ -40,15 +40,15 @@ internal class MyBatisUserQueryServiceTest(@Autowired private val userQueryServi
     }
 
     @Test
-    @DisplayName("ユーザーがメンバーではない場合、共有グループメンバーの取得に失敗する")
-    fun userIsNotMember_gettingSharedGroupMemberFails() {
+    @DisplayName("共有グループのメンバーではない場合、ユーザーの取得に失敗する")
+    fun targetIsNotSharedGroupMember_gettingUserFails() {
         //given:
         val user = testAccountInserter.insertAccountAndProfile().second
         testSharedGroupInserter.insert(members = setOf(userSession.accountId))
 
         //when:
         val target: () -> Unit = {
-            userQueryService.findSharedGroupMember(user.accountId, userSession)
+            userQueryService.getUser(user.accountId, userSession)
         }
 
         //then:

@@ -15,12 +15,12 @@ class MyBatisJSONMedicationRecordQueryService(private val jsonMedicationRecordMa
                                               sharedGroupRepository: SharedGroupRepository,
                                               medicineFinder: MedicineFinder)
     : JSONMedicationRecordQueryService(medicineFinder, sharedGroupRepository) {
-    override fun findFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,
-                                                   medicineIds: Collection<MedicineId>,
-                                                   startedDate: LocalDate?,
-                                                   endDate: LocalDate?,
-                                                   pageable: Pageable,
-                                                   requester: AccountId): Page<JSONMedicationRecord> {
+    override fun getFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,
+                                                  medicineIds: Collection<MedicineId>,
+                                                  startedDate: LocalDate?,
+                                                  endDate: LocalDate?,
+                                                  pageable: Pageable,
+                                                  requester: AccountId): Page<JSONMedicationRecord> {
         val accountIdValues = accountIds.map { it.value }
         val medicineIdValues = medicineIds.map { it.value }
 

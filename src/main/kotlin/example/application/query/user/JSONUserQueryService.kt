@@ -6,5 +6,5 @@ interface JSONUserQueryService {
     /**
      * 共有グループのメンバー一覧を取得する
      */
-    fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId): JSONUsers
+    fun getSharedGroupMembers(sharedGroupId: SharedGroupId): JSONUsers
 }

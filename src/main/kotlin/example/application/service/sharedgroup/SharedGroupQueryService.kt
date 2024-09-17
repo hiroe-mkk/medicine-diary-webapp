@@ -30,7 +30,7 @@ class SharedGroupQueryService(private val sharedGroupRepository: SharedGroupRepo
     /**
      * 参加している共有グループの ID を取得する
      */
-    fun getJoinedSharedGroup(userSession: UserSession): SharedGroupId? {
+    fun getJoinedSharedGroupId(userSession: UserSession): SharedGroupId? {
         return sharedGroupFinder.findJoinedSharedGroup(userSession.accountId)?.id
     }
 

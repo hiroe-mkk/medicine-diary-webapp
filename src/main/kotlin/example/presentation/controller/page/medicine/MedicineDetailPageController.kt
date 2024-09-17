@@ -25,7 +25,7 @@ class MedicineDetailPageController(private val medicineQueryService: MedicineQue
         if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        model.addAttribute("medicine", medicineQueryService.findMedicine(medicineId, userSession))
+        model.addAttribute("medicine", medicineQueryService.getMedicine(medicineId, userSession))
         model.addAttribute("isJoinedSharedGroup",
                            sharedGroupQueryService.isJoinedSharedGroup(userSession))
         model.addAttribute("isAvailableMedicine", medicineQueryService.isAvailableMedicine(medicineId, userSession))

@@ -4,7 +4,7 @@ import example.application.query.medicine.*
 import org.apache.ibatis.annotations.*
 
 @Mapper
-interface JsonMedicineOverviewsMapper {
+interface JSONMedicineOverviewsMapper {
     fun findAllAvailableMedicineOverviews(accountId: String): List<JSONMedicineOverview>
 
     fun findAllOwnedMedicineOverviews(accountId: String, effect: String?): List<JSONMedicineOverview>

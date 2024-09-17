@@ -12,17 +12,10 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
     /**
      * 薬を取得する
      */
-    fun findMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
+    fun getMedicine(medicineId: MedicineId, userSession: UserSession): MedicineDto {
         val medicine = medicineFinder.findViewableMedicine(medicineId, userSession.accountId)
                        ?: throw MedicineNotFoundException(medicineId)
         return MedicineDto.from(medicine)
-    }
-
-    /**
-     * 有効な薬 ID か
-     */
-    fun isValidMedicineId(medicineId: MedicineId): Boolean {
-        return medicineRepository.isValidMedicineId(medicineId)
     }
 
     /**
@@ -30,5 +23,12 @@ class MedicineQueryService(private val medicineRepository: MedicineRepository,
      */
     fun isAvailableMedicine(medicineId: MedicineId, userSession: UserSession): Boolean {
         return medicineFinder.isAvailableMedicine(medicineId, userSession.accountId)
+    }
+
+    /**
+     * 有効な薬 ID か
+     */
+    fun isValidMedicineId(medicineId: MedicineId): Boolean {
+        return medicineRepository.isValidMedicineId(medicineId)
     }
 }

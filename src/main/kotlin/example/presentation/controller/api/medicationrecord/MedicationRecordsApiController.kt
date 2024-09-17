@@ -23,8 +23,8 @@ class MedicationRecordsApiController(private val jsonMedicationRecordQueryServic
                              @PageableDefault(page = 0,
                                               size = 10) pageable: Pageable): JSONMedicationRecords {
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        return jsonMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
-                                                                              medicationRecordFilter,
-                                                                              pageable)
+        return jsonMedicationRecordQueryService.getMedicationRecordsPage(medicationRecordFilter,
+                                                                         pageable,
+                                                                         userSession)
     }
 }

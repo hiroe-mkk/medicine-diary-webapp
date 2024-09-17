@@ -41,12 +41,12 @@ internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val json
                                             null, null)
 
         //when:
-        val actualPage1 = jsonMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
-                                                                                         filter,
-                                                                                         PageRequest.of(0, 3))
-        val actualPage2 = jsonMedicationRecordQueryService.findJSONMedicationRecordsPage(userSession,
-                                                                                         filter,
-                                                                                         PageRequest.of(1, 3))
+        val actualPage1 = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
+                                                                                    PageRequest.of(0, 3),
+                                                                                    userSession)
+        val actualPage2 = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
+                                                                                    PageRequest.of(1, 3),
+                                                                                    userSession)
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(1)

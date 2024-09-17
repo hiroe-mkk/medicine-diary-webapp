@@ -32,7 +32,7 @@ class MedicineQueryServiceTest(@Autowired private val medicineRepository: Medici
             val medicine = testMedicineInserter.insert(MedicineOwner.create(userSession.accountId))
 
             //when:
-            val actual = medicineRegistrationService.findMedicine(medicine.id, userSession)
+            val actual = medicineRegistrationService.getMedicine(medicine.id, userSession)
 
             //then:
             val expected = MedicineDto(medicine.id,
@@ -56,7 +56,7 @@ class MedicineQueryServiceTest(@Autowired private val medicineRepository: Medici
             val medicine = testMedicineInserter.insert(owner = MedicineOwner.create(otherUserAccountId))
 
             //when:
-            val target: () -> Unit = { medicineRegistrationService.findMedicine(medicine.id, userSession) }
+            val target: () -> Unit = { medicineRegistrationService.getMedicine(medicine.id, userSession) }
 
             //then:
             val medicineNotFoundException = assertThrows<MedicineNotFoundException>(target)

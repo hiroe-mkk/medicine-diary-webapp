@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.*
 @Component
 @Transactional(readOnly = true)
 class MyBatisJSONUserQueryService(private val jsonUserMapper: JSONUserMapper) : JSONUserQueryService {
-    override fun findJSONSharedGroupMember(sharedGroupId: SharedGroupId): JSONUsers {
+    override fun getSharedGroupMembers(sharedGroupId: SharedGroupId): JSONUsers {
         return JSONUsers(jsonUserMapper.findAllBySharedGroupId(sharedGroupId.value))
     }
 }

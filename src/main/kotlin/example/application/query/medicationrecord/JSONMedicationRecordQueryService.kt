@@ -16,19 +16,19 @@ abstract class JSONMedicationRecordQueryService(private val medicineFinder: Medi
     /**
      * 服用記録一覧ページを取得する
      */
-    fun findJSONMedicationRecordsPage(userSession: UserSession,
-                                      filter: MedicationRecordFilter,
-                                      pageable: Pageable): JSONMedicationRecords {
+    fun getMedicationRecordsPage(filter: MedicationRecordFilter,
+                                 pageable: Pageable,
+                                 userSession: UserSession): JSONMedicationRecords {
         val filteredAccountIds = filteredAccountIds(filter, userSession)
         val filteredMedicineIds = filteredMedicineIds(filter, userSession)
 
         val page = if (filteredMedicineIds.isNotEmpty()) {
-            findFilteredMedicationRecordsPage(filteredAccountIds,
-                                              filteredMedicineIds,
-                                              filter.start,
-                                              filter.end,
-                                              pageable,
-                                              userSession.accountId)
+            getFilteredMedicationRecordsPage(filteredAccountIds,
+                                             filteredMedicineIds,
+                                             filter.start,
+                                             filter.end,
+                                             pageable,
+                                             userSession.accountId)
         } else {
             Page.empty()
         }
@@ -53,10 +53,10 @@ abstract class JSONMedicationRecordQueryService(private val medicineFinder: Medi
         return if (accountIds.contains(filter.validatedAccount)) listOf(filter.validatedAccount) else emptyList()
     }
 
-    abstract fun findFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,
-                                                   medicineIds: Collection<MedicineId>,
-                                                   startedDate: LocalDate?,
-                                                   endDate: LocalDate?,
-                                                   pageable: Pageable,
-                                                   requester: AccountId): Page<JSONMedicationRecord>
+    abstract fun getFilteredMedicationRecordsPage(accountIds: Collection<AccountId>,
+                                                  medicineIds: Collection<MedicineId>,
+                                                  startedDate: LocalDate?,
+                                                  endDate: LocalDate?,
+                                                  pageable: Pageable,
+                                                  requester: AccountId): Page<JSONMedicationRecord>
 }

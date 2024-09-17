@@ -17,7 +17,7 @@ class SettingPageController(private val profileQueryService: ProfileQueryService
      */
     @GetMapping
     fun displaySettingPage(model: Model): String {
-        val profile = profileQueryService.findProfile(userSessionProvider.getUserSessionOrElseThrow())
+        val profile = profileQueryService.getProfile(userSessionProvider.getUserSessionOrElseThrow())
         model.addAttribute("profile", profile)
 
         lastRequestedPage.path = "/setting"

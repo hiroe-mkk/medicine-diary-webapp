@@ -13,17 +13,17 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 
 @DomainLayerTest
-class AccountQueryServiceTest(@Autowired private val accountRepository: AccountRepository,
-                              @Autowired private val profileRepository: ProfileRepository,
-                              @Autowired private val sharedGroupRepository: SharedGroupRepository,
-                              @Autowired private val medicineRepository: MedicineRepository,
-                              @Autowired private val medicationRecordRepository: MedicationRecordRepository,
-                              @Autowired private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator,
-                              @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
-                              @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
-                              @Autowired private val testAccountInserter: TestAccountInserter,
-                              @Autowired private val testMedicineInserter: TestMedicineInserter,
-                              @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
+class AccountDeletionServiceTest(@Autowired private val accountRepository: AccountRepository,
+                                 @Autowired private val profileRepository: ProfileRepository,
+                                 @Autowired private val sharedGroupRepository: SharedGroupRepository,
+                                 @Autowired private val medicineRepository: MedicineRepository,
+                                 @Autowired private val medicationRecordRepository: MedicationRecordRepository,
+                                 @Autowired private val sharedGroupLeaveCoordinator: SharedGroupLeaveCoordinator,
+                                 @Autowired private val medicineDeletionCoordinator: MedicineDeletionCoordinator,
+                                 @Autowired private val testSharedGroupInserter: TestSharedGroupInserter,
+                                 @Autowired private val testAccountInserter: TestAccountInserter,
+                                 @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                 @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter) {
     private val accountDeletionService = AccountDeletionService(accountRepository,
                                                                 profileRepository,
                                                                 medicationRecordRepository,

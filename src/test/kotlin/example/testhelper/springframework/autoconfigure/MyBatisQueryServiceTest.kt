@@ -18,7 +18,7 @@ import org.springframework.context.annotation.*
 annotation class MyBatisQueryServiceTest {
     class Configuration {
         @Bean
-        fun medicineOverviewsQueryService(jsonMedicineOverviewsMapper: JsonMedicineOverviewsMapper): JSONMedicineOverviewsQueryService {
+        fun medicineOverviewsQueryService(jsonMedicineOverviewsMapper: JSONMedicineOverviewsMapper): JSONMedicineOverviewsQueryService {
             return MyBatisJSONMedicineOverviewsQueryService(jsonMedicineOverviewsMapper)
         }
 
