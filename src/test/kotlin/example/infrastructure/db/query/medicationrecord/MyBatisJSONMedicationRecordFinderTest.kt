@@ -2,6 +2,7 @@ package example.infrastructure.db.query.medicationrecord
 
 import example.application.query.medicationrecord.*
 import example.application.query.user.*
+import example.application.shared.usersession.*
 import example.domain.model.account.*
 import example.domain.model.account.profile.*
 import example.domain.model.medicationrecord.*
@@ -20,46 +21,132 @@ internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val json
                                                      @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
                                                      @Autowired private val testMedicineInserter: TestMedicineInserter,
                                                      @Autowired private val testAccountInserter: TestAccountInserter,
-                                                     @Autowired private val sharedGroupInserter: TestSharedGroupInserter) {
+                                                     @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+    private lateinit var userSession: UserSession
+    private lateinit var requester: Profile
+    private lateinit var member: Profile
+
+    private lateinit var requesterPublicMedicine: Medicine
+    private lateinit var requesterPrivateMedicine: Medicine
+    private lateinit var memberPublicMedicine: Medicine
+    private lateinit var memberPrivateMedicine: Medicine
+    private lateinit var sharedGroupMedicine: Medicine
+
+    private lateinit var requesterPublicMedicineRecord: MedicationRecord
+    private lateinit var requesterPrivateMedicineRecord: MedicationRecord
+    private lateinit var memberPublicMedicineRecord: MedicationRecord
+    private lateinit var memberPrivateMedicineRecord: MedicationRecord
+    private lateinit var requesterSharedGroupMedicineRecord: MedicationRecord
+
+    @BeforeEach
+    internal fun setUp() {
+        requester = testAccountInserter.insertAccountAndProfile().second
+        userSession = UserSessionFactory.create(requester.accountId)
+        member = testAccountInserter.insertAccountAndProfile().second
+        val sharedGroupId = testSharedGroupInserter.insert(members = setOf(userSession.accountId, member.accountId)).id
+
+        val requesterMedicineOwner = MedicineOwner.create(userSession.accountId)
+        requesterPublicMedicine = testMedicineInserter.insert(owner = requesterMedicineOwner, isPublic = true)
+        requesterPublicMedicineRecord = testMedicationRecordInserter.insert(userSession.accountId,
+                                                                            requesterPublicMedicine.id)
+        requesterPrivateMedicine = testMedicineInserter.insert(owner = requesterMedicineOwner, isPublic = false)
+        requesterPrivateMedicineRecord = testMedicationRecordInserter.insert(userSession.accountId,
+                                                                             requesterPrivateMedicine.id)
+
+        val memberMedicineOwner = MedicineOwner.create(member.accountId)
+        memberPublicMedicine = testMedicineInserter.insert(owner = memberMedicineOwner, isPublic = true)
+        memberPublicMedicineRecord = testMedicationRecordInserter.insert(member.accountId,
+                                                                         memberPublicMedicine.id)
+        memberPrivateMedicine = testMedicineInserter.insert(owner = memberMedicineOwner, isPublic = false)
+        memberPrivateMedicineRecord = testMedicationRecordInserter.insert(member.accountId,
+                                                                          memberPrivateMedicine.id)
+
+        val sharedGroupMedicineOwner = MedicineOwner.create(sharedGroupId)
+        sharedGroupMedicine = testMedicineInserter.insert(owner = sharedGroupMedicineOwner, isPublic = true)
+        requesterSharedGroupMedicineRecord = testMedicationRecordInserter.insert(userSession.accountId,
+                                                                                 sharedGroupMedicine.id)
+    }
+
     @Test
     @DisplayName("服用記録一覧を取得する")
     fun getMedicationRecords() {
         //given:
-        val requesterProfile = testAccountInserter.insertAccountAndProfile().second
-        val userSession = UserSessionFactory.create(requesterProfile.accountId)
-        val requesterMedicine = testMedicineInserter.insert(MedicineOwner.create(requesterProfile.accountId))
-
-        val (_, member) = testAccountInserter.insertAccountAndProfile()
-        val sharedGroup = sharedGroupInserter.insert(members = setOf(requesterProfile.accountId, member.accountId))
-        val sharedGroupMedicine = testMedicineInserter.insert(MedicineOwner.create(sharedGroup.id))
-
-        val requesterMedicationRecord = testMedicationRecordInserter.insert(requesterProfile.accountId,
-                                                                            sharedGroupMedicine.id)
-        val memberMedicationRecord = testMedicationRecordInserter.insert(member.accountId, sharedGroupMedicine.id)
-        val filter = MedicationRecordFilter(sharedGroupMedicine.id.toString(),
-                                            member.accountId.toString(),
-                                            null, null)
+        val filter = MedicationRecordFilter("", "", null, null)
 
         //when:
         val actualPage1 = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
-                                                                                    PageRequest.of(0, 3),
+                                                                                    PageRequest.of(0, 5),
                                                                                     userSession)
         val actualPage2 = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
-                                                                                    PageRequest.of(1, 3),
+                                                                                    PageRequest.of(1, 5),
                                                                                     userSession)
 
         //then:
         assertThat(actualPage1.totalPages).isEqualTo(1)
         assertThat(actualPage1.number).isEqualTo(0)
-        val expectedDisplayMedicationRecord = createJSONMedicationRecord(member,
-                                                                         sharedGroupMedicine,
-                                                                         memberMedicationRecord,
-                                                                         requesterProfile.accountId)
+        val expectedRequesterPublicMedicationRecord = createJSONMedicationRecord(requester,
+                                                                                 requesterPrivateMedicine,
+                                                                                 requesterPrivateMedicineRecord,
+                                                                                 userSession.accountId)
+        val expectedRequesterPrivateMedicationRecord = createJSONMedicationRecord(requester,
+                                                                                  requesterPublicMedicine,
+                                                                                  requesterPublicMedicineRecord,
+                                                                                  userSession.accountId)
+        val expectedMemberPublicMedicationRecord = createJSONMedicationRecord(member,
+                                                                              memberPublicMedicine,
+                                                                              memberPublicMedicineRecord,
+                                                                              userSession.accountId)
+        val expectedRequesterSharedGroupMedicineRecord = createJSONMedicationRecord(requester,
+                                                                                    sharedGroupMedicine,
+                                                                                    requesterSharedGroupMedicineRecord,
+                                                                                    userSession.accountId)
         assertThat(actualPage1.medicationRecords)
             .usingRecursiveFieldByFieldElementComparator()
-            .containsExactly(expectedDisplayMedicationRecord)
+            .containsExactlyInAnyOrder(expectedRequesterPublicMedicationRecord,
+                                       expectedRequesterPrivateMedicationRecord,
+                                       expectedMemberPublicMedicationRecord,
+                                       expectedRequesterSharedGroupMedicineRecord)
         assertThat(actualPage2.number).isEqualTo(1)
         assertThat(actualPage2.medicationRecords).isEmpty()
+    }
+
+
+    @Test
+    @DisplayName("アカウントでフィルタリングされた服用記録一覧を取得する")
+    fun getMedicationRecordsByAccount() {
+        //given:
+        val filter = MedicationRecordFilter(null, requester.accountId.value, null, null)
+
+        //when:
+        val actual = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
+                                                                               PageRequest.of(0, 5),
+                                                                               userSession)
+
+        //then:
+        assertThat(actual.totalPages).isEqualTo(1)
+        assertThat(actual.medicationRecords)
+            .extracting("medicationRecordId")
+            .containsExactlyInAnyOrder(requesterPublicMedicineRecord.id.value,
+                                       requesterPrivateMedicineRecord.id.value,
+                                       requesterSharedGroupMedicineRecord.id.value)
+    }
+
+    @Test
+    @DisplayName("薬でフィルタリングされた服用記録一覧を取得する")
+    fun getMedicationRecordsByMedicine() {
+        //given:
+        val filter = MedicationRecordFilter(requesterPublicMedicine.id.value, null, null, null)
+
+        //when:
+        val actual = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
+                                                                               PageRequest.of(0, 5),
+                                                                               userSession)
+
+        //then:
+        assertThat(actual.totalPages).isEqualTo(1)
+        assertThat(actual.medicationRecords)
+            .extracting("medicationRecordId")
+            .containsExactlyInAnyOrder(requesterPublicMedicineRecord.id.value)
     }
 
     fun createJSONMedicationRecord(profile: Profile,

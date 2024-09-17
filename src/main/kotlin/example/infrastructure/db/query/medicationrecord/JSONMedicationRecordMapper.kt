@@ -6,16 +6,21 @@ import java.time.*
 
 @Mapper
 interface JSONMedicationRecordMapper {
-    fun countByAccountIdsAndMedicineIdsAndRecorderAt(accountIds: Collection<String>,
-                                                     medicineIds: Collection<String>,
-                                                     start: LocalDate?,
-                                                     end: LocalDate?): Long
+    fun countAll(requester: String): Long
 
-    fun findAllByAccountIdsAndMedicineIdsAndRecorderAt(accountIds: Collection<String>,
-                                                       medicineIds: Collection<String>,
-                                                       start: LocalDate?,
-                                                       end: LocalDate?,
-                                                       pageSize: Int,
-                                                       offset: Long,
-                                                       requester: String): List<JSONMedicationRecord>
+    fun countAllByAccountIdAndMedicineIdAndRecorderAt(medicineId: String?,
+                                                      accountId: String?,
+                                                      start: LocalDate?,
+                                                      end: LocalDate?,
+                                                      requester: String): Long
+
+    fun findAll(pageSize: Int, offset: Long, requester: String): List<JSONMedicationRecord>
+
+    fun findAllByAccountIdAndMedicineIdAndRecorderAt(medicineId: String?,
+                                                     accountId: String?,
+                                                     start: LocalDate?,
+                                                     end: LocalDate?,
+                                                     pageSize: Int,
+                                                     offset: Long,
+                                                     requester: String): List<JSONMedicationRecord>
 }
