@@ -73,9 +73,10 @@ onMounted(() => {
       activateResultMessage
     ).then((data) => {
       members.push(...data.users);
-      filteredMedicationRecords.value.loadMedicationRecords(filter);
     });
   }
+
+  filteredMedicationRecords.value.loadMedicationRecords(filter);
 });
 
 function toggleUserActive(accountId) {

@@ -67,29 +67,30 @@
     </sql>
 
     <sql id="AllTables">
-        (SELECT *
-         FROM
-            medicines
-         WHERE
-            medicines.account_id = #{requester}
-            OR medicines.shared_group_id = (
-                SELECT shared_group_id
-                FROM members
-                WHERE members.member = #{requester})
-            OR (medicines.account_id IN (
-                    SELECT member
+        medication_records
+        INNER JOIN
+            (SELECT *
+             FROM
+                medicines
+             WHERE
+                medicines.account_id = #{requester}
+                OR medicines.shared_group_id = (
+                    SELECT shared_group_id
                     FROM members
-                    WHERE members.shared_group_id IN (SELECT shared_group_id FROM members WHERE members.member = #{requester}))
-                AND medicines.is_public = true)
-        ) AS viewableMedicines
-        LEFT OUTER JOIN medication_records ON viewableMedicines.medicine_id = medication_records.taken_medicine
+                    WHERE members.member = #{requester})
+                OR (medicines.account_id IN (
+                        SELECT member
+                        FROM members
+                        WHERE members.shared_group_id IN (SELECT shared_group_id FROM members WHERE members.member = #{requester}))
+                    AND medicines.is_public = true)
+            ) AS viewableMedicines ON viewableMedicines.medicine_id = medication_records.taken_medicine
         LEFT OUTER JOIN profiles ON medication_records.recorder = profiles.account_id
     </sql>
 
     <sql id="Filtering">
         <if test="accountId!=null">
             medication_records.recorder = #{accountId}
-            <if test="medicineId!=null">
+            <if test="medicineId!=null or start!=null or end!=null">
                 AND
             </if>
         </if>

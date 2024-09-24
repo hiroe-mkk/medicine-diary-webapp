@@ -14,14 +14,15 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.data.domain.*
+import java.time.*
 import java.time.format.*
 
 @MyBatisQueryServiceTest
-internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
-                                                     @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
-                                                     @Autowired private val testMedicineInserter: TestMedicineInserter,
-                                                     @Autowired private val testAccountInserter: TestAccountInserter,
-                                                     @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
+internal class MyBatisJSONMedicationRecordQueryServiceTest(@Autowired private val jsonMedicationRecordQueryService: JSONMedicationRecordQueryService,
+                                                           @Autowired private val testMedicationRecordInserter: TestMedicationRecordInserter,
+                                                           @Autowired private val testMedicineInserter: TestMedicineInserter,
+                                                           @Autowired private val testAccountInserter: TestAccountInserter,
+                                                           @Autowired private val testSharedGroupInserter: TestSharedGroupInserter) {
     private lateinit var userSession: UserSession
     private lateinit var requester: Profile
     private lateinit var member: Profile
@@ -38,6 +39,8 @@ internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val json
     private lateinit var memberPrivateMedicineRecord: MedicationRecord
     private lateinit var requesterSharedGroupMedicineRecord: MedicationRecord
 
+    private val date = LocalDate.of(2020, 1, 1)
+
     @BeforeEach
     internal fun setUp() {
         requester = testAccountInserter.insertAccountAndProfile().second
@@ -48,30 +51,35 @@ internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val json
         val requesterMedicineOwner = MedicineOwner.create(userSession.accountId)
         requesterPublicMedicine = testMedicineInserter.insert(owner = requesterMedicineOwner, isPublic = true)
         requesterPublicMedicineRecord = testMedicationRecordInserter.insert(userSession.accountId,
-                                                                            requesterPublicMedicine.id)
+                                                                            requesterPublicMedicine.id,
+                                                                            takenMedicineOn = date)
         requesterPrivateMedicine = testMedicineInserter.insert(owner = requesterMedicineOwner, isPublic = false)
         requesterPrivateMedicineRecord = testMedicationRecordInserter.insert(userSession.accountId,
-                                                                             requesterPrivateMedicine.id)
+                                                                             requesterPrivateMedicine.id,
+                                                                             takenMedicineOn = date.plusDays(1))
 
         val memberMedicineOwner = MedicineOwner.create(member.accountId)
         memberPublicMedicine = testMedicineInserter.insert(owner = memberMedicineOwner, isPublic = true)
         memberPublicMedicineRecord = testMedicationRecordInserter.insert(member.accountId,
-                                                                         memberPublicMedicine.id)
+                                                                         memberPublicMedicine.id,
+                                                                         takenMedicineOn = date.plusDays(2))
         memberPrivateMedicine = testMedicineInserter.insert(owner = memberMedicineOwner, isPublic = false)
         memberPrivateMedicineRecord = testMedicationRecordInserter.insert(member.accountId,
-                                                                          memberPrivateMedicine.id)
+                                                                          memberPrivateMedicine.id,
+                                                                          takenMedicineOn = date.plusDays(3))
 
         val sharedGroupMedicineOwner = MedicineOwner.create(sharedGroupId)
         sharedGroupMedicine = testMedicineInserter.insert(owner = sharedGroupMedicineOwner, isPublic = true)
         requesterSharedGroupMedicineRecord = testMedicationRecordInserter.insert(userSession.accountId,
-                                                                                 sharedGroupMedicine.id)
+                                                                                 sharedGroupMedicine.id,
+                                                                                 takenMedicineOn = date.plusDays(4))
     }
 
     @Test
     @DisplayName("服用記録一覧を取得する")
     fun getMedicationRecords() {
         //given:
-        val filter = MedicationRecordFilter("", "", null, null)
+        val filter = MedicationRecordFilter(null, null, null, null)
 
         //when:
         val actualPage1 = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
@@ -147,6 +155,26 @@ internal class MyBatisJSONMedicationRecordFinderTest(@Autowired private val json
         assertThat(actual.medicationRecords)
             .extracting("medicationRecordId")
             .containsExactlyInAnyOrder(requesterPublicMedicineRecord.id.value)
+    }
+
+    @Test
+    @DisplayName("日付でフィルタリングされた服用記録一覧を取得する")
+    fun getMedicationRecordsByDate() {
+        //given:
+        val filter = MedicationRecordFilter(null, null, date, date.plusDays(2))
+
+        //when:
+        val actual = jsonMedicationRecordQueryService.getMedicationRecordsPage(filter,
+                                                                               PageRequest.of(0, 5),
+                                                                               userSession)
+
+        //then:
+        assertThat(actual.totalPages).isEqualTo(1)
+        assertThat(actual.medicationRecords)
+            .extracting("medicationRecordId")
+            .containsExactlyInAnyOrder(requesterPublicMedicineRecord.id.value,
+                                       requesterPrivateMedicineRecord.id.value,
+                                       memberPublicMedicineRecord.id.value)
     }
 
     fun createJSONMedicationRecord(profile: Profile,
