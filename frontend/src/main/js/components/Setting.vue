@@ -136,7 +136,7 @@
             <p class="control">
               <button
                 class="button is-small is-rounded is-link"
-                :disabled="!editingUsername.trim() || username === editingUsername"
+                :disabled="!editingUsername?.trim() || username === editingUsername"
               >
                 完了
               </button>
@@ -248,8 +248,9 @@ function submitUsernameChangeForm() {
     activateResultMessage,
     fieldErrors
   ).then(() => {
-    username.value = editingUsername.value;
     activateResultMessage('INFO', 'ユーザー名の変更が完了しました。');
+    isUsernameChangeModalActive.value = false;
+    username.value = editingUsername.value;
   });
 }
 
