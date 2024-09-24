@@ -4,7 +4,7 @@
       <p class="is-size-4 has-text-weight-bold has-text-grey-dark">お薬一覧</p>
       <div
         class="tabs is-toggle is-toggle-rounded is-centered is-small mb-0"
-        v-if="isParticipatingInSharedGroup"
+        v-if="isJoinedSharedGroup"
       >
         <ul class="m-0">
           <li
@@ -12,7 +12,7 @@
             @click="medicineType = 'OWNED'"
           >
             <a>
-              <small class="has-text-weight-bold">　 あなた 　</small>
+              <small class="has-text-weight-bold px-2">あなた</small>
             </a>
           </li>
           <li
@@ -20,7 +20,7 @@
             @click="medicineType = 'SHARED_GROUP'"
           >
             <a>
-              <small class="has-text-weight-bold">　　共有　　</small>
+              <small class="has-text-weight-bold px-3">共有</small>
             </a>
           </li>
           <li
@@ -28,7 +28,7 @@
             @click="medicineType = 'MEMBERS'"
           >
             <a>
-              <small class="has-text-weight-bold">　メンバー　</small>
+              <small class="has-text-weight-bold px-2">メンバー</small>
             </a>
           </li>
         </ul>
@@ -65,30 +65,28 @@
     >
       <MedicineOverviews
         :medicineOverviews="ownedMedicines.value"
-        :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        :isJoinedSharedGroup="props.isJoinedSharedGroup"
         @searched="loadMedicineOverviews"
       ></MedicineOverviews>
     </div>
     <div
       class="notification has-background-white p-3"
-      v-show="
-        props.isParticipatingInSharedGroup && medicineType === 'SHARED_GROUP'
-      "
+      v-show="props.isJoinedSharedGroup && medicineType === 'SHARED_GROUP'"
     >
       <MedicineOverviews
         :medicineOverviews="sharedGroupMedicines.value"
-        :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        :isJoinedSharedGroup="props.isJoinedSharedGroup"
         @searched="loadMedicineOverviews"
       >
       </MedicineOverviews>
     </div>
     <div
       class="notification has-background-white p-3"
-      v-show="props.isParticipatingInSharedGroup && medicineType === 'MEMBERS'"
+      v-show="props.isJoinedSharedGroup && medicineType === 'MEMBERS'"
     >
       <MedicineOverviews
         :medicineOverviews="membersMedicines.value"
-        :isParticipatingInSharedGroup="props.isParticipatingInSharedGroup"
+        :isJoinedSharedGroup="props.isJoinedSharedGroup"
         @searched="loadMedicineOverviews"
       >
       </MedicineOverviews>
@@ -97,12 +95,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, inject } from 'vue';
-import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import MedicineOverviews from '@main/js/components/medicine/MedicineOverviews.vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { inject, onMounted, reactive, ref } from 'vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   filterEffect: { type: String, default: '' },
 });
 const activateResultMessage = inject('activateResultMessage');
@@ -123,18 +121,13 @@ function loadMedicineOverviews(effect) {
   const params = new URLSearchParams();
   params.append('effect', effect);
 
-  HttpRequestClient.submitGetRequest('/api/medicines?' + params.toString())
-    .then((data) => {
-      ownedMedicines.value = data.ownedMedicines;
-      sharedGroupMedicines.value = data.sharedGroupMedicines;
-      membersMedicines.value = data.membersMedicines;
-    })
-    .catch(() => {
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  HttpRequestClient.submitGetRequest(
+    '/api/medicines?' + params.toString(),
+    activateResultMessage
+  ).then((data) => {
+    ownedMedicines.value = data.ownedMedicines;
+    sharedGroupMedicines.value = data.sharedGroupMedicines;
+    membersMedicines.value = data.membersMedicines;
+  });
 }
 </script>

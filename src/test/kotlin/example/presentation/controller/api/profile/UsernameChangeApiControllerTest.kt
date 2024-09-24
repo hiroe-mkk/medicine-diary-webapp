@@ -13,9 +13,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class UsernameChangeApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                               @Autowired private val accountService: AccountService,
-                                               @Autowired private val userSessionProvider: UserSessionProvider) {
+class UsernameChangeApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                      @Autowired private val accountDeletionService: AccountDeletionService,
+                                      @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/profile"
     }
@@ -59,7 +59,7 @@ internal class UsernameChangeApiControllerTest(@Autowired private val mockMvc: M
     fun accountHasBeenDeleted_returnsResponseWithStatus404() {
         //then:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        accountService.deleteAccount(userSession)
+        accountDeletionService.deleteAccount(userSession)
 
         //when:
         val actions = mockMvc.perform(post(PATH)

@@ -33,7 +33,7 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
         try {
             emailSenderClient.send(Email(header, body))
         } catch (exception: EmailSendException) {
-            throw ContactFailedException(contactForm, exception);
+            throw ContactFailedException(contactForm, exception)
         }
     }
 
@@ -69,7 +69,7 @@ class ContactEmailSenderImpl(private val applicationProperties: ApplicationPrope
         try {
             emailSenderClient.send(Email(header, body))
         } catch (exception: EmailSendException) {
-            throw ContactFailedException(contactForm, exception);
+            throw ContactFailedException(contactForm, exception)
         }
     }
 }

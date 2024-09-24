@@ -3,7 +3,7 @@ import Navbar from '@main/js/components/Navbar.vue';
 import ResultMessage from '@main/js/components/ResultMessage.vue';
 import noProfileImage from '@main/images/no_profile_image.png';
 import Authentication from '@main/js/components/Authentication.vue';
-import MedicationRecords from '@main/js/components/medicationrecord/MedicationRecordsByDate.vue';
+import MedicationRecords from '@main/js/components/medicationrecord/RecentMedicationRecords.vue';
 import Members from '@main/js/components/sharedgroup/Members.vue';
 
 createApp({

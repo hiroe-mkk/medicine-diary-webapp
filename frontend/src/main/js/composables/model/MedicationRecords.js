@@ -5,6 +5,7 @@ export class MedicationRecords {
     this._idToMedicationRecord = {};
     this._isLoaded = false;
     this._filter = undefined;
+    this._activateResultMessage = undefined;
 
     this.__currentPage = 0;
     this._totalPages = 0;
@@ -34,10 +35,11 @@ export class MedicationRecords {
     return this._idToMedicationRecord[medicationRecordId];
   }
 
-  async load(filter) {
+  async load(filter, activateResultMessage) {
     this._isLoaded = false;
     this._filter = filter.copy();
     this._idToMedicationRecord = {};
+    this._activateResultMessage = activateResultMessage;
 
     this.__currentPage = 0;
     this._totalPages = 0;
@@ -50,7 +52,8 @@ export class MedicationRecords {
     params.append('page', this.__currentPage);
 
     await HttpRequestClient.submitGetRequest(
-      '/api/medication-records?' + params.toString()
+      '/api/medication-records?' + params.toString(),
+      this._activateResultMessage
     ).then((data) => {
       data.medicationRecords.forEach((medicationRecord) => {
         this._idToMedicationRecord[medicationRecord.medicationRecordId] =
@@ -91,8 +94,7 @@ export class Filter {
     const params = new URLSearchParams();
     if (this.medicineId !== undefined)
       params.append('medicine', this.medicineId);
-    if (this.accountId !== undefined)
-      params.append('account', this.accountId);
+    if (this.accountId !== undefined) params.append('account', this.accountId);
     if (this.start !== undefined) params.append('start', this.start);
     if (this.end !== undefined) params.append('end', this.end);
     params.append('size', this.sizePerPage);

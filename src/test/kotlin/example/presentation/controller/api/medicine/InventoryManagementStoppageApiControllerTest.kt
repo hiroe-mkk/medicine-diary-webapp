@@ -42,7 +42,7 @@ internal class InventoryManagementStoppageApiControllerTest(@Autowired private v
     @DisplayName("薬が見つからなかった場合、ステータスコード204のレスポンスを返す")
     fun medicineNotFound_returnsResponseWithStatus204() {
         //given:
-        val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
+        val nonexistentMedicineId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(post(PATH, nonexistentMedicineId)
@@ -57,7 +57,7 @@ internal class InventoryManagementStoppageApiControllerTest(@Autowired private v
     @DisplayName("無効な形式の薬IDの場合、ステータスコード400のレスポンスを返す")
     fun invalidMedicineId_returnsResponseWithStatus400() {
         //given:
-        val invalidMedicineId = MedicineId("invalidMedicineId")
+        val invalidMedicineId = "invalidMedicineId"
 
         //when:
         val actions = mockMvc.perform(post(PATH, invalidMedicineId)
@@ -71,7 +71,7 @@ internal class InventoryManagementStoppageApiControllerTest(@Autowired private v
     @DisplayName("未認証ユーザからリクエストされた場合、ステータスコード401のレスポンスを返す")
     fun requestedByUnauthenticatedUser_returnsResponseWithStatus401() {
         //given:
-        val medicineId = MedicineId(EntityIdHelper.generate())
+        val medicineId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(post(PATH, medicineId)

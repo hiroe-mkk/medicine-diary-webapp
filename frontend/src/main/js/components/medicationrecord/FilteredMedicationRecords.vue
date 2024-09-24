@@ -22,16 +22,9 @@
           :href="`/users/${medicationRecord.recorder.accountId}`"
         >
           <img
-            :src="medicationRecord.recorder.profileImageURL"
-            alt=""
             class="is-rounded"
-            v-if="medicationRecord.recorder.profileImageURL !== undefined"
-          />
-          <img
-            src="@main/images/no_profile_image.png"
+            :src="medicationRecord.recorder.profileImageURL || noProfileImage"
             alt=""
-            class="is-rounded"
-            v-if="medicationRecord.recorder.profileImageURL === undefined"
           />
         </a>
       </div>
@@ -116,7 +109,7 @@
     >
       <p
         class="is-size-7 has-text-link is-clickable"
-        @click="loadMoreMedicationRecords()"
+        @click="medicationRecords.loadMore()"
       >
         さらに表示する
       </p>
@@ -139,15 +132,16 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineEmits, inject } from 'vue';
+import noProfileImage from '@main/images/no_profile_image.png';
+import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
 import {
   MedicationRecords,
   MedicationRecordUtils,
 } from '@main/js/composables/model/MedicationRecords.js';
-import MedicationRecord from '@main/js/components/medicationrecord/MedicationRecord.vue';
+import { defineEmits, defineExpose, inject, reactive, ref } from 'vue';
 
 const props = defineProps({
-  isParticipatingInSharedGroup: Boolean,
+  isJoinedSharedGroup: Boolean,
   displayRecorder: Boolean,
   isAllowLoadMore: Boolean,
   isShowAppendButton: Boolean,
@@ -162,23 +156,7 @@ const medicationRecords = reactive(new MedicationRecords());
 const medicationRecord = ref(null);
 
 function loadMedicationRecords(filter) {
-  medicationRecords.load(filter).catch(() => {
-    activateResultMessage(
-      'ERROR',
-      'エラーが発生しました。',
-      '通信状態をご確認のうえ、再度お試しください。'
-    );
-  });
-}
-
-function loadMoreMedicationRecords() {
-  medicationRecords.loadMore().catch(() => {
-    activateResultMessage(
-      'ERROR',
-      'エラーが発生しました。',
-      '通信状態をご確認のうえ、再度お試しください。'
-    );
-  });
+  medicationRecords.load(filter, activateResultMessage);
 }
 
 function activateMedicationRecordModal(medicationRecordId) {

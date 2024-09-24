@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" th:remove="tag" />
+  </head>
+
+  <body>
+    <div id="sharedGroupInvite" layout:fragment="content">
+      <result-message ref="resultMessage"></result-message>
+
+      <div class="container has-text-centered is-max-desktop p-3">
+        <div class="content has-text-centered">
+          <p class="icon-text is-size-4 is-flex is-justify-content-center">
+            <strong class="has-text-grey-dark">共有グループに招待する</strong>
+            <span class="icon has-text-grey-dark mx-2">
+              <i class="fa-solid fa-user-group"></i>
+            </span>
+          </p>
+        </div>
+
+        <shared-group-invite
+          th:attr="csrf=${_csrf.token}"
+        ></shared-group-invite>
+      </div>
+
+      <script th:src="@{/dist/js/sharedGroupInvite.bundle.js}"></script>
+    </div>
+  </body>
+</html>

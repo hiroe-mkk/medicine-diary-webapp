@@ -43,7 +43,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     @DisplayName("薬が見つからなかった場合、お薬一覧画面にリダイレクトする")
     fun medicineNotFound_redirectToMedicineOverviewsPage() {
         //given:
-        val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
+        val nonexistentMedicineId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(post(PATH, nonexistentMedicineId)
@@ -59,7 +59,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     @DisplayName("無効な形式の薬IDの場合、NotFoundエラー画面を表示する")
     fun invalidMedicineId_displayNotFoundErrorPage() {
         //given:
-        val invalidMedicineId = MedicineId("invalidMedicineId")
+        val invalidMedicineId = "invalidMedicineId"
 
         //when:
         val actions = mockMvc.perform(post(PATH, invalidMedicineId)
@@ -74,7 +74,7 @@ internal class MedicineDeletionControllerTest(@Autowired private val mockMvc: Mo
     @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面にリダイレクトする")
     fun requestedByUnauthenticatedUser_redirectToHomePage() {
         //given:
-        val medicineId = MedicineId(EntityIdHelper.generate())
+        val medicineId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(post(PATH, medicineId)

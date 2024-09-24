@@ -7,13 +7,13 @@ import org.springframework.security.oauth2.core.oidc.user.*
 import org.springframework.stereotype.*
 
 @Component
-class OidcUserAccountService(private val accountService: AccountService) : OidcUserService() {
+class OidcUserAccountService(private val accountAuthenticationService: AccountAuthenticationService) : OidcUserService() {
     override fun loadUser(userRequest: OidcUserRequest): OidcUser {
         val oidcUser = super.loadUser(userRequest)
 
         val idP = IdP.from(userRequest.clientRegistration.registrationId)
         val oAuth2Credential = OAuth2Credential(idP, oidcUser.subject)
-        val account = accountService.findOrElseCreateAccount(oAuth2Credential)
+        val account = accountAuthenticationService.findOrElseCreateAccount(oAuth2Credential)
 
         return OidcUserAccount(account.id, oidcUser)
     }

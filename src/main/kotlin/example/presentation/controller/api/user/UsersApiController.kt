@@ -1,45 +1,26 @@
 package example.presentation.controller.api.user
 
 import example.application.query.user.*
-import example.presentation.shared.usersession.*
+import example.application.service.sharedgroup.*
+import example.domain.model.sharedgroup.*
+import example.domain.shared.exception.*
 import org.springframework.http.*
 import org.springframework.stereotype.*
-import org.springframework.validation.annotation.*
 import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/users")
-class UsersApiController(private val jsonUserQueryService: JSONUserQueryService,
-                         private val userSessionProvider: UserSessionProvider) {
+class UsersApiController(private val sharedGroupQueryService: SharedGroupQueryService,
+                         private val jsonUserQueryService: JSONUserQueryService) {
     /**
-     * ユーザーを取得する
+     * 共有グループのメンバー覧を取得する
      */
-    @GetMapping(params = ["self"])
+    @GetMapping(params = ["sharedGroupId"])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun getUser(): JSONUser {
-        val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        return jsonUserQueryService.findJSONUser(userSession.accountId)
-    }
+    fun getSharedGroupMember(@RequestParam sharedGroupId: SharedGroupId): JSONUsers {
+        if (!sharedGroupQueryService.isValidSharedGroupId(sharedGroupId)) throw InvalidEntityIdException(sharedGroupId)
 
-    /**
-     * キーワードでユーザー一覧を取得する
-     */
-    @GetMapping(params = ["keyword"])
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    fun getUsersByKeyword(@Validated keywordFilter: KeywordFilter): JSONUsers {
-        return jsonUserQueryService.findJSONUsersByKeyword(keywordFilter.keyword,
-                                                           userSessionProvider.getUserSessionOrElseThrow())
-    }
-
-    /**
-     * メンバーユーザー一覧を取得する
-     */
-    @GetMapping(params = ["members"])
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    fun getMemberUsers(): JSONUsers {
-        return jsonUserQueryService.findJSONMemberUsers(userSessionProvider.getUserSessionOrElseThrow())
+        return jsonUserQueryService.getSharedGroupMembers(sharedGroupId)
     }
 }

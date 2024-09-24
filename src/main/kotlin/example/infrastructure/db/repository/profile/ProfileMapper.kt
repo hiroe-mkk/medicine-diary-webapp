@@ -7,8 +7,6 @@ import org.apache.ibatis.annotations.*
 interface ProfileMapper {
     fun findOneByAccountId(accountId: String): Profile?
 
-    fun findOneByUsername(username: String): Profile?
-
     fun upsertProfile(accountId: String,
                       username: String,
                       profileImageURLEndpoint: String?,

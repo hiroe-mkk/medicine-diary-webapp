@@ -10,11 +10,6 @@ class MyBatisProfileRepository(private val profileMapper: ProfileMapper) : Profi
         return profileMapper.findOneByAccountId(accountId.value)
     }
 
-    override fun findByUsername(username: Username): Profile? {
-        if (username.isDefaultValue()) return null
-        return profileMapper.findOneByUsername(username.value)
-    }
-
     override fun save(profile: Profile) {
         profileMapper.upsertProfile(profile.accountId.value,
                                     profile.username.value,

@@ -41,7 +41,7 @@ internal class MedicineDetailPageControllerTest(@Autowired private val mockMvc: 
     @DisplayName("薬が見つからなかった場合、NotFoundエラー画面を表示する")
     fun medicineNotFound_displayNotFoundErrorPage() {
         //given:
-        val nonexistentMedicineId = MedicineId(EntityIdHelper.generate())
+        val nonexistentMedicineId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(get(PATH, nonexistentMedicineId))
@@ -56,7 +56,7 @@ internal class MedicineDetailPageControllerTest(@Autowired private val mockMvc: 
     @DisplayName("無効な形式の薬IDの場合、NotFoundエラー画面を表示する")
     fun invalidMedicineId_displayNotFoundErrorPage() {
         //given:
-        val invalidMedicineId = MedicineId("invalidMedicineId")
+        val invalidMedicineId = "invalidMedicineId"
 
         //when:
         val actions = mockMvc.perform(get(PATH, invalidMedicineId))
@@ -70,7 +70,7 @@ internal class MedicineDetailPageControllerTest(@Autowired private val mockMvc: 
     @DisplayName("未認証ユーザによるリクエストの場合、ホーム画面へリダイレクトする")
     fun requestedByUnauthenticatedUser_redirectsToHomePage() {
         //given:
-        val medicineId = MedicineId(EntityIdHelper.generate())
+        val medicineId = EntityIdHelper.generate()
 
         //when:
         val actions = mockMvc.perform(get(PATH, medicineId))

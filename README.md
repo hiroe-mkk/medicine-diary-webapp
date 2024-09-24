@@ -4,47 +4,49 @@
 
 服用したお薬の記録をサポートする Web アプリケーションです。
 
-URL：[https://okusuri-nikki-kk.link](https://okusuri-nikki-kk.link)
+アプリケーションのコンセプトや技術選定理由などについては、[こちらの記事](https://qiita.com/hiroe-mkk/items/fb49783b346944961b04) をご参照ください。
 
 ## 機能一覧
 
 ### メイン機能
 
-- **服用記録追加機能**
-  - 服用記録の一覧表示 (薬・日付・ユーザーなどによるフィルタリング)
-  - 服用記録のカレンダー表示
 - **薬情報登録機能**
-  - 薬の画像のトリミングとアップロード
-  - 在庫情報の設定 (服用記録追加に伴う在庫数の自動更新)
-  - 薬の一覧表示 (症状によるフィルタリング)
+    - 薬情報の登録・更新・削除
+    - 薬の画像のトリミングとアップロード
+    - 在庫情報の設定 (服用記録追加に伴う在庫数の自動更新)
+    - 薬の一覧表示 (症状やユーザーによる検索)
+- **服用記録追加機能**
+    - 服用記録の追加・修正・削除
+    - 服用記録の一覧表示 (薬・日付・ユーザーなどによる検索)
+    - 服用記録のカレンダー表示
 - **共有機能**
-  - ユーザー検索
-  - 共有グループへの招待
-  - 薬情報並びに服用記録の公開・非公開設定
+    - 共有グループへの招待メール送信
+    - 共有グループへの参加・脱退
+    - 共有グループ内におけるアクセス権限管理 (薬の公開設定に基づく)
 
 ### その他
 
 - **認証機能**
-  - ソーシャルログイン (初回ログイン時にアカウント自動作成)
+    - ソーシャルログイン (初回ログイン時にアカウント自動作成)
 - **プロフィール設定機能**
-  - プロフィール画像のトリミングとアップロード
+    - プロフィール情報の設定
+    - プロフィール画像のトリミングとアップロード
 - **お問い合わせ機能**
-  - お問い合わせ内容の確認メールを送信
+    - お問い合わせ内容の確認メール送信
 
 # 使用技術
 
 ## バックエンド
 
-- **Kotlin 1.8.2**
-- **Spring Boot 3.1.2**
-- **Spring Security (spring-boot-starter-security) 3.0.6**
-- **Spring Boot Actuator (spring-boot-starter-actuator) 3.1.0**
+- **Kotlin 1.9.25**
+- **Gradle 7.6.1**
+- **Spring Boot 3.3.3**
+- **Spring Security (spring-boot-starter-security)**
+- **MyBatis (mybatis-spring-boot-starter)**
+- **Thymeleaf (spring-boot-starter-thymeleaf)**
 - **Flyway 9.21.0**
-- **MyBatis (mybatis-spring-boot-starter) 3.0.0**
-- **Thymeleaf (spring-boot-starter-thymeleaf) 3.0.6**
 - **JUnit (AssertJ) 3.23.1**
 - **SpringMockK 4.0.2**
-- **Gradle 7.6.1**
 
 ### 設計
 
@@ -54,32 +56,39 @@ URL：[https://okusuri-nikki-kk.link](https://okusuri-nikki-kk.link)
 
 #### パッケージ構成
 
-![architecture](https://github.com/hiroe-mkk/medicine-diary-webapp/assets/145527696/994ac768-92e2-4cb3-8908-8e24e8166d1e)
-
 ```
 ├── application
 │   ├── query (クエリサービス: 読み取り専用のデータ取得ロジックを提供する)
 │   └── service (アプリケーションサービス: ユースケースを実装し、ドメインモデルを調整・連携する)
 ├── domain
-│   └── model (ドメインモデル: エンティティ、値オブジェクト、ドメインサービス、およびリポジトリインターフェースを含む)
+│   └── model (ドメインモデル: エンティティ、値オブジェクト、ドメインサービス、リポジトリインターフェースなどを含む)
 ├── infrastructure
 |   ├── db (データベース実装: リポジトリインターフェースの実装やデータベースへのアクセスを管理する)
-|   ├── email (メール実装: メール送信に関する実装を行う
+|   ├── email (メール実装: メール送信に関する実装を行う)
 |   └── objectstorage (オブジェクトストレージ実装: オブジェクトストレージサービスへのアクセスを管理する)
 └── presentation
     └── controller
-        ├── api (APIコントローラ: APIエンドポイントを提供し、リクエストの処理とレスポンスの生成を行う)
-        └── page (Pageコントローラ: HTMLページのレンダリングとユーザーインタラクションを処理する)
+        ├── api (APIコントローラ: APIエンドポイントを提供する)
+        └── page (Pageコントローラ: HTMLページのレンダリングを行う)
 ```
+
+![architecture](https://github.com/hiroe-mkk/medicine-diary-webapp/assets/145527696/994ac768-92e2-4cb3-8908-8e24e8166d1e)
+
+#### モデリング成果物
+
+- [エンドポイント一覧](https://github.com/hiroe-mkk/medicine-diary-webapp/blob/main/docs/endpoints.svg)
+- [画面遷移図](https://github.com/hiroe-mkk/medicine-diary-webapp/blob/main/docs/screen-transition-map.svg)
+- [ドメインモデル図](https://github.com/hiroe-mkk/medicine-diary-webapp/blob/main/docs/domain-model.svg)
+- [ロバストネス図](https://github.com/hiroe-mkk/medicine-diary-webapp/blob/main/docs/robustness.svg)
+- [E-R図](https://github.com/hiroe-mkk/medicine-diary-webapp/blob/main/docs/er.svg)
 
 ## フロントエンド
 
-- **Vue.js 3.2.47**
-- **Node.js 18.14.1**
-- **npm 9.6.7**
-- **Jest 29.5.0**
+- **Node.js 18.18.0**
 - **Webpack 5.82.0**
 - **Babel 7.21.8**
+- **Vue.js 3.2.47**
+- **Jest 29.5.0**
 - **Bulma 0.9.4**
 
 ## インフラ

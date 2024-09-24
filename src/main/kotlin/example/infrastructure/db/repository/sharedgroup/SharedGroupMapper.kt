@@ -1,5 +1,6 @@
 package example.infrastructure.db.repository.sharedgroup
 
+import example.domain.model.sharedgroup.*
 import org.apache.ibatis.annotations.*
 
 @Mapper
@@ -8,13 +9,19 @@ interface SharedGroupMapper {
 
     fun findOneByMember(accountId: String): SharedGroupResultEntity?
 
-    fun findAllByInvitee(accountId: String): Set<SharedGroupResultEntity>
+    fun findOneByInviteCode(inviteCode: String): SharedGroupResultEntity?
+
+    fun insertSharedGroup(sharedGroupId: String)
 
     fun insertAllMembers(sharedGroupId: String, members: Collection<String>)
 
-    fun insertAllInvitees(sharedGroupId: String, invitees: Collection<String>)
+    fun insertAllPendingInvitations(sharedGroupId: String, pendingInvitations: Collection<PendingInvitation>)
+
+    fun deleteSharedGroup(sharedGroupId: String)
 
     fun deleteAllMembers(sharedGroupId: String)
 
-    fun deleteAllInvitees(sharedGroupId: String)
+    fun deleteAllPendingInvitations(sharedGroupId: String)
+
+    fun deleteExpiredPendingInvitation(expirationDays: Int)
 }

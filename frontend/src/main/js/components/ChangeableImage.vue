@@ -25,18 +25,18 @@
     <div class="modal-content is-flex is-justify-content-center">
       <div class="content">
         <button
-          class="button is-dark is-fullwidth is-small mb-1"
-          v-if="image != undefined"
-          @click="deleteImage()"
-        >
-          <strong class="mx-6">現在の画像を削除する</strong>
-        </button>
-        <button
           type="button"
           class="button is-dark is-fullwidth is-small mb-1"
           @click="activateTrimmingModal()"
         >
           <strong class="mx-6">画像を変更する</strong>
+        </button>
+        <button
+          class="button is-dark is-fullwidth is-small mb-1"
+          v-if="image != undefined"
+          @click="deleteImage()"
+        >
+          <strong class="mx-6">現在の画像を削除する</strong>
         </button>
         <button
           type="button"
@@ -131,13 +131,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, inject } from 'vue';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import { FieldErrors } from '@main/js/composables/model/FieldErrors.js';
 import { ImageTrimmingManager } from '@main/js/composables/model/ImageTrimmingManager.js';
+import { defineExpose, inject, reactive, ref } from 'vue';
 
 const props = defineProps({
   image: String,
@@ -190,94 +187,39 @@ function fileSelected(event) {
 }
 
 async function submitForm() {
+  fieldErrors.clear();
+
   const result = await imageTrimmingManager.result();
   const form = new FormData();
   form.set('image', result);
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest(`${props.executeRootPath}/change`, form)
-    .then(() => {
-      image.value = URL.createObjectURL(result);
-      isTrimmingModalActive.value = false;
-      isMenuModalActive.value = false;
-      activateResultMessage('INFO', `${props.imageName}の変更が完了しました。`);
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 400) {
-          // バインドエラーが発生した場合
-          if (!error.isBodyEmpty() && error.body.fieldErrors !== undefined) {
-            fieldErrors.set(error.body.fieldErrors);
-            return;
-          }
-        } else if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  HttpRequestClient.submitPostRequest(
+    `${props.executeRootPath}/change`,
+    form,
+    activateResultMessage,
+    fieldErrors
+  ).then(() => {
+    image.value = URL.createObjectURL(result);
+    isTrimmingModalActive.value = false;
+    isMenuModalActive.value = false;
+    activateResultMessage('INFO', `${props.imageName}の変更が完了しました。`);
+  });
 }
 
 function deleteImage() {
   const form = new FormData();
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest(`${props.executeRootPath}/delete`, form)
-    .then(() => {
-      activateResultMessage('INFO', `画像の削除が完了しました。`);
-      isMenuModalActive.value = false;
-      image.value = undefined;
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  HttpRequestClient.submitPostRequest(
+    `${props.executeRootPath}/delete`,
+    form,
+    activateResultMessage
+  ).then(() => {
+    activateResultMessage('INFO', `画像の削除が完了しました。`);
+    isMenuModalActive.value = false;
+    image.value = undefined;
+  });
 }
 </script>
 

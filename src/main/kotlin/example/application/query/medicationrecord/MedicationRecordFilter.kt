@@ -1,7 +1,5 @@
 package example.application.query.medicationrecord
 
-import example.domain.model.account.*
-import example.domain.model.medicine.*
 import org.hibernate.validator.constraints.*
 import org.springframework.format.annotation.*
 import java.time.*
@@ -12,7 +10,10 @@ data class MedicationRecordFilter(@field:UUID val medicine: String?,
                                   val start: LocalDate?,
                                   @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                   val end: LocalDate?) {
-    val validatedMedicine: MedicineId? = medicine?.let { MedicineId(it) }
-    val validatedAccount: AccountId? = account?.let { AccountId(it) }
+    val nonBlankMedicineId: String? = if (medicine?.isNotBlank() == true) medicine else null
+    val nonBlankAccountId: String? = if (account?.isNotBlank() == true) account else null
 
+    fun isEmpty(): Boolean {
+        return nonBlankMedicineId == null && nonBlankAccountId == null && start == null && end == null
+    }
 }

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/medicines/{medicineId}/inventory/stop")
-class InventoryManagementStoppageApiController(private val medicineService: MedicineService,
+class InventoryManagementStoppageApiController(private val medicineQueryService: MedicineQueryService,
+                                               private val medicineUpdateService: MedicineUpdateService,
                                                private val userSessionProvider: UserSessionProvider) {
     /**
      * 在庫管理を終了する
@@ -18,9 +19,9 @@ class InventoryManagementStoppageApiController(private val medicineService: Medi
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun stopInventoryManagement(@PathVariable medicineId: MedicineId) {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
-        medicineService.stopInventoryManagement(medicineId,
-                                                userSessionProvider.getUserSessionOrElseThrow())
+        medicineUpdateService.stopInventoryManagement(medicineId,
+                                                      userSessionProvider.getUserSessionOrElseThrow())
     }
 }

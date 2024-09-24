@@ -1,11 +1,13 @@
 package example.testhelper.springframework.autoconfigure
 
-import example.domain.model.account.profile.*
 import example.domain.model.medicationrecord.*
 import example.domain.model.medicine.*
 import example.domain.model.medicine.medicineimage.*
 import example.domain.model.sharedgroup.*
+import example.domain.shared.type.*
+import io.mockk.*
 import org.springframework.context.annotation.*
+import java.time.*
 
 /**
  * ドメインサービスの AutoConfiguration を有効にするアノテーション
@@ -14,77 +16,73 @@ import org.springframework.context.annotation.*
 annotation class EnableDomainServiceAutoConfiguration {
     class Configuration {
         @Bean
-        fun sharedGroupQueryService(sharedGroupRepository: SharedGroupRepository): SharedGroupQueryService =
-                SharedGroupQueryService(sharedGroupRepository)
-
-        @Bean
-        fun sharedGroupParticipationService(sharedGroupQueryService: SharedGroupQueryService,
-                                            profileRepository: ProfileRepository): SharedGroupParticipationService {
-            return SharedGroupParticipationService(sharedGroupQueryService, profileRepository)
+        fun sharedGroupFinder(sharedGroupRepository: SharedGroupRepository): SharedGroupFinder {
+            return SharedGroupFinder(sharedGroupRepository)
         }
 
         @Bean
-        fun sharedGroupUnshareService(sharedGroupRepository: SharedGroupRepository,
-                                      medicineRepository: MedicineRepository,
-                                      medicineImageStorage: MedicineImageStorage,
-                                      medicationRecordRepository: MedicationRecordRepository,
-                                      medicineQueryService: MedicineQueryService,
-                                      medicineDeletionService: MedicineDeletionService,
-                                      sharedGroupQueryService: SharedGroupQueryService,
-                                      medicineOwnerCreationService: MedicineOwnerCreationService): SharedGroupUnshareService {
-            return SharedGroupUnshareService(sharedGroupRepository,
-                                             medicineRepository,
-                                             medicineImageStorage,
-                                             medicationRecordRepository,
-                                             sharedGroupQueryService,
-                                             medicineQueryService,
-                                             medicineOwnerCreationService,
-                                             medicineDeletionService)
+        fun sharedGroupLeaveCoordinator(sharedGroupRepository: SharedGroupRepository,
+                                        medicineRepository: MedicineRepository,
+                                        medicineImageStorage: MedicineImageStorage,
+                                        medicationRecordRepository: MedicationRecordRepository,
+                                        medicineFinder: MedicineFinder,
+                                        medicineDeletionCoordinator: MedicineDeletionCoordinator,
+                                        medicineOwnerFactory: MedicineOwnerFactory): SharedGroupLeaveCoordinator {
+            return SharedGroupLeaveCoordinator(sharedGroupRepository,
+                                               medicineRepository,
+                                               medicineImageStorage,
+                                               medicationRecordRepository,
+                                               medicineFinder,
+                                               medicineOwnerFactory,
+                                               medicineDeletionCoordinator)
         }
 
         @Bean
-        fun medicineQueryService(medicineRepository: MedicineRepository,
-                                 sharedGroupRepository: SharedGroupRepository): MedicineQueryService {
-            return MedicineQueryService(medicineRepository, sharedGroupRepository)
+        fun medicineFinder(medicineRepository: MedicineRepository,
+                           sharedGroupRepository: SharedGroupRepository): MedicineFinder {
+            return MedicineFinder(medicineRepository, sharedGroupRepository)
         }
 
         @Bean
-        fun medicineOwnerCreationService(sharedGroupQueryService: SharedGroupQueryService): MedicineOwnerCreationService {
-            return MedicineOwnerCreationService(sharedGroupQueryService)
+        fun medicineBasicInfoUpdater(medicineRepository: MedicineRepository,
+                                     medicationRecordRepository: MedicationRecordRepository,
+                                     medicineImageStorage: MedicineImageStorage,
+                                     medicineFinder: MedicineFinder,
+                                     medicineOwnerFactory: MedicineOwnerFactory): MedicineBasicInfoUpdater {
+            return MedicineBasicInfoUpdater(medicineRepository,
+                                            medicationRecordRepository,
+                                            medicineImageStorage,
+                                            medicineOwnerFactory,
+                                            medicineFinder)
         }
 
         @Bean
-        fun medicineCreationService(medicineOwnerCreationService: MedicineOwnerCreationService): MedicineCreationService {
-            return MedicineCreationService(medicineOwnerCreationService)
+        fun medicineOwnerFactory(sharedGroupRepository: SharedGroupRepository): MedicineOwnerFactory {
+            return MedicineOwnerFactory(sharedGroupRepository)
         }
 
         @Bean
-        fun medicineBasicInfoUpdateService(medicineRepository: MedicineRepository,
-                                           medicationRecordRepository: MedicationRecordRepository,
-                                           medicineImageStorage: MedicineImageStorage,
-                                           medicineQueryService: MedicineQueryService,
-                                           medicineOwnerCreationService: MedicineOwnerCreationService): MedicineBasicInfoUpdateService {
-            return MedicineBasicInfoUpdateService(medicineRepository,
-                                                  medicationRecordRepository,
-                                                  medicineImageStorage,
-                                                  medicineOwnerCreationService,
-                                                  medicineQueryService)
+        fun medicineDeletionCoordinator(medicineRepository: MedicineRepository,
+                                        medicationRecordRepository: MedicationRecordRepository,
+                                        medicineImageStorage: MedicineImageStorage,
+                                        medicineFinder: MedicineFinder): MedicineDeletionCoordinator {
+            return MedicineDeletionCoordinator(medicineRepository,
+                                               medicineImageStorage,
+                                               medicationRecordRepository,
+                                               medicineFinder)
         }
 
         @Bean
-        fun medicineDeletionService(medicineRepository: MedicineRepository,
-                                    medicationRecordRepository: MedicationRecordRepository,
-                                    medicineImageStorage: MedicineImageStorage,
-                                    medicineQueryService: MedicineQueryService): MedicineDeletionService {
-            return MedicineDeletionService(medicineRepository,
-                                           medicineImageStorage,
-                                           medicationRecordRepository,
-                                           medicineQueryService)
+        fun medicationRecordFinder(medicationRecordRepository: MedicationRecordRepository): MedicationRecordFinder {
+            return MedicationRecordFinder(medicationRecordRepository)
         }
 
         @Bean
-        fun medicationRecordQueryService(medicationRecordRepository: MedicationRecordRepository): MedicationRecordQueryService {
-            return MedicationRecordQueryService(medicationRecordRepository)
+        fun localDateTimeProvider(): LocalDateTimeProvider {
+            val localDateTimeProvider: LocalDateTimeProvider = mockk();
+            every { localDateTimeProvider.now() } returns LocalDateTime.of(2020, 1, 1, 0, 0)
+            every { localDateTimeProvider.today() } returns LocalDate.of(2020, 1, 1)
+            return localDateTimeProvider
         }
     }
 }

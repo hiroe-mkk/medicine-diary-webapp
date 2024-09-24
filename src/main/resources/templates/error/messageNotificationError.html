@@ -11,15 +11,11 @@
   <body>
     <div layout:fragment="content" th:remove="tag">
       <div class="content has-text-centered">
-        <p class="subtitle is-4 has-text-weight-semibold">
-          [[${errorMessage}]]
-        </p>
-        <p class="subtitle has-text-danger is-6">[[${errorDetails}]]</p>
+        <p class="title is-4 is-spaced">[[${errorMessage}]]</p>
+        <p class="subtitle has-text-danger-dark is-6">[[${errorDetails}]]</p>
+
         <div class="block">
-          <a
-            class="is-underlined has-text-info has-text-weight-semibold"
-            th:href="@{/}"
-          >
+          <a class="is-underlined has-text-info" th:href="@{/}">
             ホームに戻る
           </a>
         </div>

@@ -21,20 +21,12 @@
             :href="`/users/${medicationRecord.value.recorder.accountId}`"
           >
             <img
-              :src="medicationRecord.value.recorder.profileImageURL"
-              alt=""
               class="is-rounded"
-              v-if="
-                medicationRecord.value.recorder.profileImageURL !== undefined
+              :src="
+                medicationRecord.value.recorder.profileImageURL ||
+                noProfileImage
               "
-            />
-            <img
-              src="@main/images/no_profile_image.png"
               alt=""
-              class="is-rounded"
-              v-if="
-                medicationRecord.value.recorder.profileImageURL === undefined
-              "
             />
           </a>
           <span class="is-size-7 has-text-weight-bold ml-2">
@@ -187,12 +179,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineEmits, inject } from 'vue';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
+import noProfileImage from '@main/images/no_profile_image.png';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
 import { MedicationRecordUtils } from '@main/js/composables/model/MedicationRecords.js';
+import { defineEmits, defineExpose, inject, reactive, ref } from 'vue';
 
 const props = defineProps({
   displayRecorder: Boolean,
@@ -216,41 +206,12 @@ function deleteMedicationRecord(medicationRecordId) {
 
   HttpRequestClient.submitPostRequest(
     `/api/medication-records/${medicationRecordId}/delete`,
-    form
-  )
-    .then(() => {
-      activateResultMessage('INFO', `服用記録の削除が完了しました。`);
-      isSelectedMedicationRecordModalActive.value = false;
-      emits('deleted', medicationRecordId);
-    })
-    .catch((error) => {
-      if (error instanceof HttpRequestFailedError) {
-        if (error.status == 401) {
-          // 認証エラーが発生した場合
-          location.reload();
-          return;
-        } else if (error.status == 500) {
-          activateResultMessage(
-            'ERROR',
-            'システムエラーが発生しました。',
-            'お手数ですが、再度お試しください。'
-          );
-          return;
-        } else if (error.hasMessage()) {
-          activateResultMessage(
-            'ERROR',
-            'エラーが発生しました。',
-            error.getMessage()
-          );
-          return;
-        }
-      }
-
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+    form,
+    activateResultMessage
+  ).then(() => {
+    activateResultMessage('INFO', `服用記録の削除が完了しました。`);
+    isSelectedMedicationRecordModalActive.value = false;
+    emits('deleted', medicationRecordId);
+  });
 }
 </script>

@@ -12,9 +12,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class ProfileImageDeletionApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                     @Autowired private val accountService: AccountService,
-                                                     @Autowired private val userSessionProvider: UserSessionProvider) {
+class ProfileImageDeletionApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                            @Autowired private val accountDeletionService: AccountDeletionService,
+                                            @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/profile/image/delete"
     }
@@ -37,7 +37,7 @@ internal class ProfileImageDeletionApiControllerTest(@Autowired private val mock
     fun accountHasBeenDeleted_returnsResponseWithStatus204() {
         //then:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        accountService.deleteAccount(userSession)
+        accountDeletionService.deleteAccount(userSession)
 
         //when:
         val actions = mockMvc.perform(post(PATH)

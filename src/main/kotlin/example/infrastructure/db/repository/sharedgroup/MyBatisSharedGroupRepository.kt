@@ -3,6 +3,7 @@ package example.infrastructure.db.repository.sharedgroup
 import example.domain.model.account.*
 import example.domain.model.sharedgroup.*
 import example.infrastructure.db.repository.shared.*
+import org.apache.commons.lang3.*
 import org.springframework.stereotype.*
 
 @Repository
@@ -11,21 +12,35 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
         return SharedGroupId(EntityIdHelper.generate())
     }
 
+    override fun isValidSharedGroupId(sharedGroupId: SharedGroupId): Boolean {
+        return EntityIdHelper.isValid(sharedGroupId)
+    }
+
+    override fun createInviteCode(): String {
+        var inviteCode: String
+        do {
+            inviteCode = RandomStringUtils.randomAlphanumeric(8).uppercase()
+        } while (sharedGroupMapper.findOneByInviteCode(inviteCode) != null)
+
+        return inviteCode
+    }
+
     override fun findById(sharedGroupId: SharedGroupId): SharedGroup? {
         return sharedGroupMapper.findOneBySharedGroupId(sharedGroupId.value)?.toSharedGroup()
+    }
+
+    override fun findByInviteCode(inviteCode: String): SharedGroup? {
+        return sharedGroupMapper.findOneByInviteCode(inviteCode)?.toSharedGroup()
     }
 
     override fun findByMember(accountId: AccountId): SharedGroup? {
         return sharedGroupMapper.findOneByMember(accountId.value)?.toSharedGroup()
     }
 
-    override fun findByInvitee(accountId: AccountId): Set<SharedGroup> {
-        return sharedGroupMapper.findAllByInvitee(accountId.value).map { it.toSharedGroup() }.toSet()
-    }
-
-    override fun save(sharedGroup: SharedGroup) {
+    override fun save(sharedGroup: SharedGroup) { // TODO: 他の方法を考える
+        sharedGroupMapper.insertSharedGroup(sharedGroup.id.value)
         upsertAllMembers(sharedGroup)
-        upsertAllInvitees(sharedGroup)
+        upsertAllPendingInvitations(sharedGroup)
     }
 
     private fun upsertAllMembers(sharedGroup: SharedGroup) {
@@ -36,16 +51,21 @@ class MyBatisSharedGroupRepository(private val sharedGroupMapper: SharedGroupMap
                                            sharedGroup.members.map { it.value })
     }
 
-    private fun upsertAllInvitees(sharedGroup: SharedGroup) {
-        sharedGroupMapper.deleteAllInvitees(sharedGroup.id.value)
-        if (sharedGroup.invitees.isEmpty()) return
+    private fun upsertAllPendingInvitations(sharedGroup: SharedGroup) {
+        sharedGroupMapper.deleteAllPendingInvitations(sharedGroup.id.value)
+        if (sharedGroup.pendingInvitations.isEmpty()) return
 
-        sharedGroupMapper.insertAllInvitees(sharedGroup.id.value,
-                                            sharedGroup.invitees.map { it.value })
+        sharedGroupMapper.insertAllPendingInvitations(sharedGroup.id.value,
+                                                      sharedGroup.pendingInvitations)
     }
 
     override fun deleteById(sharedGroupId: SharedGroupId) {
         sharedGroupMapper.deleteAllMembers(sharedGroupId.value)
-        sharedGroupMapper.deleteAllInvitees(sharedGroupId.value)
+        sharedGroupMapper.deleteAllPendingInvitations(sharedGroupId.value)
+        sharedGroupMapper.deleteSharedGroup(sharedGroupId.value)
+    }
+
+    override fun deleteExpiredPendingInvitation() {
+        sharedGroupMapper.deleteExpiredPendingInvitation(PendingInvitation.EXPIRATION_DAYS)
     }
 }

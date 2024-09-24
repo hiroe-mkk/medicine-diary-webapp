@@ -107,4 +107,4 @@ infrastructure:
       user: root
       password: root-password
       endpoint: http://${devEnv.servers.minio.host}:${devEnv.servers.minio.port}
-      bucketName: progress-management
+      bucketName: medicine-diary

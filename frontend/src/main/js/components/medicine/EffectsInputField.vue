@@ -61,7 +61,7 @@
         <div class="field my-3">
           <div class="control">
             <input
-              class="input is-info"
+              class="input is-info is-rounded"
               type="text"
               list="effectOptions"
               placeholder="その他"
@@ -140,7 +140,7 @@ const editingEffect = reactive({ value: '', index: 0 });
 
 onMounted(() => {
   effects.push(...ArrayConverter.fromString(props.effects));
-  errors.push(...ArrayConverter.fromString(props.errors));
+  errors.push(...new Set(ArrayConverter.fromString(props.errors)));
 });
 
 function addEffect() {

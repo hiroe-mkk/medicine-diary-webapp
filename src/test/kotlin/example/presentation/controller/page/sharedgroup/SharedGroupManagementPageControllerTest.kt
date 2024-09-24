@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @ControllerTest
 internal class SharedGroupManagementPageControllerTest(@Autowired private val mockMvc: MockMvc) {
     companion object {
-        private const val PATH = "/shared-group/management"
+        private const val PATH = "/shared-group"
     }
 
     @Test

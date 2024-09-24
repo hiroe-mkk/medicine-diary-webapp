@@ -5,7 +5,7 @@ import example.domain.model.account.*
 
 interface UserQueryService {
     /**
-     * メンバーユーザーを取得する
+     * ユーザーを取得する
      */
-    fun findMemberUser(accountId: AccountId, userSession: UserSession): User
+    fun getUser(accountId: AccountId, userSession: UserSession): User
 }

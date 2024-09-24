@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/medicines/{medicineId}")
-class MedicineDetailPageController(private val medicineService: MedicineService,
-                                   private val sharedGroupService: SharedGroupService,
+class MedicineDetailPageController(private val medicineQueryService: MedicineQueryService,
+                                   private val sharedGroupQueryService: SharedGroupQueryService,
                                    private val userSessionProvider: UserSessionProvider,
                                    private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -22,13 +22,13 @@ class MedicineDetailPageController(private val medicineService: MedicineService,
     @GetMapping
     fun displayMedicineDetailPage(@PathVariable medicineId: MedicineId,
                                   model: Model): String {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        model.addAttribute("medicine", medicineService.findMedicine(medicineId, userSession))
-        model.addAttribute("isParticipatingInSharedGroup",
-                           sharedGroupService.isParticipatingInSharedGroup(userSession))
-        model.addAttribute("isAvailableMedicine", medicineService.isAvailableMedicine(medicineId, userSession))
+        model.addAttribute("medicine", medicineQueryService.getMedicine(medicineId, userSession))
+        model.addAttribute("isJoinedSharedGroup",
+                           sharedGroupQueryService.isJoinedSharedGroup(userSession))
+        model.addAttribute("isAvailableMedicine", medicineQueryService.isAvailableMedicine(medicineId, userSession))
 
         lastRequestedPage.path = "/medicines/${medicineId}"
         return "medicine/detail"

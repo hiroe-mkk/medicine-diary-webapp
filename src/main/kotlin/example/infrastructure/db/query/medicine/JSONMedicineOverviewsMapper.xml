@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.infrastructure.db.query.medicine.JSONMedicineOverviewsMapper">
+    <select id="findAllAvailableMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            <include refid="AllTables"/>
+        WHERE
+            medicines.account_id = #{accountId}
+            OR  medicines.shared_group_id = (SELECT shared_group_id FROM members WHERE members.member = #{accountId})
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <select id="findAllOwnedMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            <include refid="AllTables"/>
+        WHERE
+            medicines.account_id = #{accountId}
+            <include refid="Filtering"/>
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <select id="findAllSharedGroupMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            <include refid="AllTables"/>
+        WHERE
+            medicines.shared_group_id = (SELECT shared_group_id FROM members WHERE members.member = #{accountId})
+            <include refid="Filtering"/>
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <select id="findAllMembersMedicineOverviews" resultMap="JSONMedicineOverviewResultMap">
+        SELECT
+            <include refid="AllColumns"/>
+        FROM
+            <include refid="AllTables"/>
+        WHERE
+            medicines.account_id IN (
+                SELECT member
+                FROM members
+                WHERE members.shared_group_id IN (SELECT shared_group_id FROM members WHERE members.member = #{accountId}))
+            AND NOT medicines.account_id = #{accountId}
+            AND medicines.is_public = true
+            <include refid="Filtering"/>
+        ORDER BY
+            registered_at DESC
+    </select>
+
+    <sql id="AllColumns">
+        medicines.medicine_id AS medicine_id,
+        medicines.medicine_name AS medicine_name,
+        medicines.quantity AS quantity,
+        medicines.dose_unit AS dose_unit,
+        medicines.times_per_day AS times_per_day,
+        timing_options.timing_option AS timing_option,
+        CONCAT(medicines.medicine_image_url_endpoint, medicines.medicine_image_url_path) AS medicine_image_url,
+        medicines.is_public AS is_public,
+        effects.effect AS effect,
+        inventories.medicine_id AS medicine_id,
+        inventories.remaining_quantity AS remaining_quantity,
+        inventories.quantity_per_package AS quantity_per_package,
+        DATE_FORMAT(inventories.started_on, '%Y/%m/%d') AS started_on,
+        DATE_FORMAT(inventories.expiration_on, '%Y/%m/%d') AS expiration_on,
+        inventories.unused_package AS unused_package
+    </sql>
+
+    <sql id="AllTables">
+        medicines
+        LEFT OUTER JOIN effects USING(medicine_id)
+        LEFT OUTER JOIN timing_options USING(medicine_id)
+        LEFT OUTER JOIN inventories USING(medicine_id)
+    </sql>
+
+    <sql id="Filtering">
+        <if test="effect != null and effect != ''">
+            AND medicines.medicine_id IN(
+             SELECT medicine_id
+             FROM effects
+             WHERE effect LIKE CONCAT('%', REPLACE(REPLACE(#{effect}, '!', '!!'), '%', '!%'), '%') ESCAPE '!'
+            )
+        </if>
+    </sql>
+
+    <resultMap id="JSONMedicineOverviewResultMap" type="example.application.query.medicine.JSONMedicineOverview">
+        <constructor>
+            <idArg column="medicine_id" javaType="String"/>
+            <arg column="medicine_name" javaType="String"/>
+            <arg column="medicine_image_url" javaType="String"/>
+            <arg column="is_public" javaType="_boolean"/>
+        </constructor>
+        <id column="medicine_id"/>
+        <association column="{quantity, dose_unit, times_per_day, timing_option}" property="dosageAndAdministrationForMapping"
+                     javaType="example.application.query.medicine.JSONDosageAndAdministration" resultMap="JSONDosageAndAdministrationResultMap"/>
+        <association column="{remaining_quantity, quantity_per_package, started_on, expiration_on, unused_package}" property="inventoryForMapping"
+                     javaType="example.application.query.medicine.JSONInventory" resultMap="JSONInventoryResultMap"/>
+        <collection column="effect" property="effectsForMapping" resultMap="EffectResultMap"/>
+    </resultMap>
+
+    <resultMap id="JSONDosageAndAdministrationResultMap" type="example.application.query.medicine.JSONDosageAndAdministration">
+        <constructor>
+            <arg column="quantity" javaType="String"/>
+            <arg column="dose_unit" javaType="String"/>
+            <arg column="times_per_day" javaType="String"/>
+        </constructor>
+        <id column="medicine_id"/>
+        <collection column="timing_option" property="timingOptionsForMapping" resultMap="TimingOptionsResultMap"/>
+    </resultMap>
+
+    <resultMap id="TimingOptionsResultMap" type="Timing">
+        <constructor>
+            <idArg column="timing_option" javaType="Timing"/>
+        </constructor>
+    </resultMap>
+
+    <!--  本来は必要ないはずだが、resultMapを経由しないと適切に値が格納されなかった  -->
+    <resultMap id="EffectResultMap" type="String">
+        <constructor>
+            <idArg column="effect" javaType="String"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="JSONInventoryResultMap" type="example.application.query.medicine.JSONInventory">
+        <constructor>
+            <idArg column="remaining_quantity" javaType="_double"/>
+            <idArg column="quantity_per_package" javaType="_double"/>
+            <idArg column="started_on" javaType="String"/>
+            <idArg column="expiration_on" javaType="String"/>
+            <idArg column="unused_package" javaType="_int"/>
+        </constructor>
+    </resultMap>
+</mapper>

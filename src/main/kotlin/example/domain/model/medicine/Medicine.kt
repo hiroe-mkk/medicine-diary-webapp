@@ -36,6 +36,28 @@ class Medicine(val id: MedicineId,
     var inventory: Inventory? = inventory
         private set
 
+    companion object {
+        fun create(id: MedicineId,
+                   owner: MedicineOwner,
+                   medicineName: MedicineName,
+                   dosageAndAdministration: DosageAndAdministration,
+                   effects: Effects,
+                   precautions: String,
+                   isPublic: Boolean,
+                   registeredAt: LocalDateTime): Medicine {
+            return Medicine(id,
+                            owner,
+                            medicineName,
+                            dosageAndAdministration,
+                            effects,
+                            precautions,
+                            null,
+                            if (owner.isSharedGroup) true else isPublic,
+                            null,
+                            registeredAt)
+        }
+    }
+
     fun isOwnedBy(accountId: AccountId): Boolean = owner.accountId == accountId
 
     fun isOwnedBy(sharedGroupId: SharedGroupId): Boolean = owner.sharedGroupId == sharedGroupId

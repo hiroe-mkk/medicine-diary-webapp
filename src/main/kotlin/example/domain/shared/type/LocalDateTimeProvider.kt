@@ -4,4 +4,6 @@ import java.time.*
 
 interface LocalDateTimeProvider {
     fun now(): LocalDateTime
+
+    fun today(): LocalDate
 }

@@ -12,26 +12,26 @@
     <div id="user" layout:fragment="content">
       <result-message ref="resultMessage"></result-message>
 
-      <div class="content m-0">
+      <div class="content">
         <div class="is-flex is-justify-content-center">
-          <figure class="image is-96x96 m-0">
+          <figure class="image is-96x96 m-2">
             <img
               th:src="${user.profileImageURL}"
-              alt=""
               class="is-rounded"
+              alt=""
               th:if="${user.profileImageURL != null}"
             />
             <img
               :src="noProfileImage"
-              alt=""
               class="is-rounded"
+              alt=""
               th:if="${user.profileImageURL == null}"
             />
           </figure>
         </div>
-        <div class="icon-text is-flex is-justify-content-center">
+        <div class="icon-text is-flex is-justify-content-center my-1">
           <strong
-            class="is-size-5 has-text-grey-dark"
+            class="is-size-4 has-text-grey-dark"
             th:text="${user.username}"
             th:if="${!user.username.isDefaultValue()}"
           >

@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ControllerTest
-internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMvc: MockMvc,
-                                                   @Autowired private val accountService: AccountService,
-                                                   @Autowired private val userSessionProvider: UserSessionProvider) {
+class ProfileImageChangeApiControllerTest(@Autowired private val mockMvc: MockMvc,
+                                          @Autowired private val accountDeletionService: AccountDeletionService,
+                                          @Autowired private val userSessionProvider: UserSessionProvider) {
     companion object {
         private const val PATH = "/api/profile/image/change"
     }
@@ -62,7 +62,7 @@ internal class ProfileImageChangeApiControllerTest(@Autowired private val mockMv
     fun accountHasBeenDeleted_returnsResponseWithStatus404() {
         //then:
         val userSession = userSessionProvider.getUserSessionOrElseThrow()
-        accountService.deleteAccount(userSession)
+        accountDeletionService.deleteAccount(userSession)
 
         //when:
         val actions = mockMvc.perform(multipart(PATH)

@@ -1,53 +1,5 @@
 <template>
-  <div class="content" v-if="invitedSharedGroups.length !== 0">
-    <div
-      class="message is-link is-inline-block"
-      v-for="invitedSharedGroup in invitedSharedGroups"
-    >
-      <div class="message-header is-flex is-justify-content-center">
-        <p>
-          以下の共有グループに招待されています。<br />
-          参加しますか？<br />
-        </p>
-      </div>
-      <div class="message-body has-background-white">
-        <div class="is-flex is-align-items-end is-justify-content-center">
-          <SharedGroup
-            :sharedGroup="invitedSharedGroup"
-            :isParticipating="false"
-            :csrf="props.csrf"
-          ></SharedGroup>
-        </div>
-        <p class="help" v-if="participatingSharedGroup.value !== undefined">
-          ※参加できる共有グループは1つまでです。<br />
-          　この共有グループに参加するためには、現在参加している共有グループでの共有を停止してください。
-        </p>
-        <div class="field is-grouped is-grouped-centered p-2">
-          <p class="control">
-            <button
-              type="button"
-              class="button is-small is-rounded is-outlined is-link"
-              @click="participateIn(invitedSharedGroup.sharedGroupId)"
-              :disabled="participatingSharedGroup.value !== undefined"
-            >
-              参加する
-            </button>
-          </p>
-          <p class="control">
-            <button
-              type="button"
-              class="button is-small is-rounded is-outlined is-danger"
-              @click="reject(invitedSharedGroup.sharedGroupId)"
-            >
-              拒否する
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="content" v-if="participatingSharedGroup.value === undefined">
+  <div class="content" v-if="joinedSharedGroupId === undefined">
     <div class="notification is-white py-5 px-6">
       <div class="block">
         <p>
@@ -77,58 +29,50 @@
         </p>
         <p class="is-size-7 has-text-weight-semibold mb-4">
           共有したくないお薬とその服用記録は、簡単に非公開設定にできます。<br />
-          また、いつでも共有を停止できるので安心してください。
+          また、いつでも共有グループから脱退できるので安心してください。
         </p>
       </div>
-      <button
+
+      <a
         class="button is-link is-rounded is-outlined"
-        @click="activateUserSearchModal()"
+        href="/shared-group/invite"
       >
-        <strong>共有する</strong>
+        <strong>共有グループをつくる</strong>
         <span class="icon fas fa-lg is-flex is-align-items-center mr-0">
           <i class="fa-solid fa-user-plus"></i>
         </span>
-      </button>
+      </a>
     </div>
-    <UserSearch
-      ref="userSearch"
-      :csrf="props.csrf"
-      @update="loadSharedGroup()"
-    ></UserSearch>
   </div>
 
-  <div v-if="participatingSharedGroup.value !== undefined">
+  <div v-if="joinedSharedGroupId !== undefined">
     <div class="notification is-white is-inline-block py-4 px-6">
-      <p
-        class="has-text-weight-semibold has-text-grey-dark pb-4"
-        v-if="invitedSharedGroups.length !== 0"
-      >
+      <p class="has-text-weight-semibold has-text-grey-dark pb-4">
         現在参加している共有グループ
       </p>
-      <SharedGroup
-        :sharedGroup="participatingSharedGroup.value"
-        :isParticipating="true"
-        :csrf="props.csrf"
-        @update="loadSharedGroup()"
-      ></SharedGroup>
+      <Members
+        :isClickable="true"
+        :sharedGroupId="joinedSharedGroupId"
+      ></Members>
+
       <div class="field is-grouped is-grouped-centered pt-4 pb-2">
         <p class="control">
-          <span
+          <a
             class="button is-small is-rounded is-outlined is-link"
-            @click="activateUserSearchModal()"
+            href="/shared-group/invite"
           >
             <strong>ユーザーを招待する</strong>
             <span class="icon fas fa-lg is-flex is-align-items-center m-0">
               <i class="fa-solid fa-plus"></i>
             </span>
-          </span>
+          </a>
         </p>
         <p class="control">
           <span
             class="button is-small is-rounded is-outlined is-danger"
-            @click="isUnshareConfirmationModalActive = true"
+            @click="isLeaveSharedGroupConfirmationModalActive = true"
           >
-            <strong>共有を停止する</strong>
+            <strong>共有グループから脱退する</strong>
             <span class="icon fas fa-lg is-flex is-align-items-center m-0">
               <i class="fa-solid fa-users-slash"></i>
             </span>
@@ -137,27 +81,22 @@
       </div>
     </div>
 
-    <UserSearch
-      ref="userSearch"
-      :sharedGroupId="participatingSharedGroup.value.sharedGroupId"
-      :csrf="props.csrf"
-      @update="loadSharedGroup()"
-    >
-    </UserSearch>
     <div
       class="modal"
-      :class="{ 'is-active': isUnshareConfirmationModalActive }"
+      :class="{ 'is-active': isLeaveSharedGroupConfirmationModalActive }"
     >
       <div
         class="modal-background"
-        @click="isUnshareConfirmationModalActive = false"
+        @click="isLeaveSharedGroupConfirmationModalActive = false"
       ></div>
       <div class="modal-content is-flex is-justify-content-center">
         <div class="message is-inline-block is-info">
           <div class="message-body">
             <div class="content">
               <p class="has-text-centered mb-2">
-                <strong class="is-size-5 mb-1"> 共有を停止しますか？ </strong>
+                <strong class="is-size-5 mb-1">
+                  ほんとうに共有グループから脱退してよろしいですか？
+                </strong>
                 <br />
               </p>
               <div class="field is-grouped is-grouped-centered p-2">
@@ -165,16 +104,16 @@
                   <button
                     type="button"
                     class="button is-small is-rounded is-link"
-                    @click="unshare()"
+                    @click="leaveSharedGroup()"
                   >
-                    停止する
+                    共有グループから脱退する
                   </button>
                 </p>
                 <p class="control">
                   <button
                     type="button"
                     class="button is-small is-rounded is-outlined is-danger"
-                    @click="isUnshareConfirmationModalActive = false"
+                    @click="isLeaveSharedGroupConfirmationModalActive = false"
                   >
                     キャンセル
                   </button>
@@ -189,120 +128,32 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, inject } from 'vue';
-import {
-  HttpRequestClient,
-  HttpRequestFailedError,
-} from '@main/js/composables/HttpRequestClient.js';
-import UserSearch from '@main/js/components/sharedgroup/UserSearch.vue';
-import SharedGroup from '@main/js/components/sharedgroup/SharedGroup.vue';
+import Members from '@main/js/components/sharedgroup/Members.vue';
+import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { inject, ref } from 'vue';
 
-const props = defineProps({ csrf: String });
+const props = defineProps({
+  joinedSharedGroupId: { type: String, default: undefined },
+  csrf: String,
+});
 const activateResultMessage = inject('activateResultMessage');
 
-const participatingSharedGroup = reactive({ value: undefined });
-const invitedSharedGroups = reactive([]);
+const joinedSharedGroupId = ref(props.joinedSharedGroupId);
 
-const isUnshareConfirmationModalActive = ref(false);
-const userSearch = ref(null);
+const isLeaveSharedGroupConfirmationModalActive = ref(false);
 
-onMounted(async () => {
-  loadSharedGroup();
-});
-
-function loadSharedGroup() {
-  participatingSharedGroup.value = undefined;
-  invitedSharedGroups.splice(0, invitedSharedGroups.length);
-
-  HttpRequestClient.submitGetRequest('/api/shared-group')
-    .then((data) => {
-      participatingSharedGroup.value = data.participatingSharedGroup;
-      invitedSharedGroups.push(...data.invitedSharedGroups);
-    })
-    .catch(() => {
-      handleError(error);
-    });
-}
-
-function participateIn(sharedGroupId) {
-  const form = new FormData();
-  form.set('_csrf', props.csrf);
-  form.set('sharedGroupId', sharedGroupId);
-
-  HttpRequestClient.submitPostRequest('/api/shared-group/participate', form)
-    .then(() => {
-      activateResultMessage('INFO', `共有グループに参加しました。`);
-      loadSharedGroup();
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-}
-
-function reject(sharedGroupId) {
-  const form = new FormData();
-  form.set('_csrf', props.csrf);
-  form.set('sharedGroupId', sharedGroupId);
-
-  HttpRequestClient.submitPostRequest('/api/shared-group/reject', form)
-    .then(() => {
-      activateResultMessage(
-        'INFO',
-        `共有グループへの招待を拒否しました。`
-      );
-      loadSharedGroup();
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-}
-
-function unshare() {
+function leaveSharedGroup() {
   const form = new FormData();
   form.set('_csrf', props.csrf);
 
-  HttpRequestClient.submitPostRequest('/api/shared-group/unshare', form)
-    .then(() => {
-      activateResultMessage('INFO', `共有を停止しました。`);
-      isUnshareConfirmationModalActive.value = false;
-      loadSharedGroup();
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-}
-
-function handleError(error) {
-  if (error instanceof HttpRequestFailedError) {
-    if (error.status == 401) {
-      // 認証エラーが発生した場合
-      location.reload();
-      return;
-    } else if (error.status == 500) {
-      activateResultMessage(
-        'ERROR',
-        'システムエラーが発生しました。',
-        'お手数ですが、再度お試しください。'
-      );
-      return;
-    } else if (error.hasMessage()) {
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        error.getMessage()
-      );
-      return;
-    }
-  }
-
-  activateResultMessage(
-    'ERROR',
-    'エラーが発生しました。',
-    '通信状態をご確認のうえ、再度お試しください。'
-  );
-}
-
-function activateUserSearchModal() {
-  userSearch.value.activateSearchModal();
+  HttpRequestClient.submitPostRequest(
+    '/api/shared-group/leave',
+    form,
+    activateResultMessage
+  ).then(() => {
+    activateResultMessage('INFO', `共有グループから脱退しました。`);
+    isLeaveSharedGroupConfirmationModalActive.value = false;
+    joinedSharedGroupId.value = undefined;
+  });
 }
 </script>

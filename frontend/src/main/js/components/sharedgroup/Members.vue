@@ -1,29 +1,39 @@
 <template>
-  <div class="content m-2">
-    <div class="is-flex is-align-items-center" v-if="members.length !== 0">
-      <div class="has-text-centered mx-2" v-for="member in members">
+  <div class="content has-text-centered m-2">
+    <div
+      class="is-flex is-align-items-center is-justify-content-center"
+      v-if="members.length !== 0"
+    >
+      <div v-for="member in members">
         <div class="is-flex is-justify-content-center">
-          <a class="image is-64x64 m-0" :href="`/users/${member.accountId}`">
+          <component
+            :is="props.isClickable ? 'a' : 'p'"
+            class="image is-64x64 m-0"
+            v-bind="
+              props.isClickable ? { href: `/users/${member.accountId}` } : {}
+            "
+          >
             <img
               class="is-rounded"
-              :src="member.profileImageURL"
+              :src="member.profileImageURL || noProfileImage"
               alt=""
-              v-if="member.profileImageURL !== undefined"
             />
-            <img
-              src="@main/images/no_profile_image.png"
-              alt=""
-              class="is-rounded"
-              v-if="member.profileImageURL === undefined"
-            />
-          </a>
+          </component>
         </div>
-        <p class="has-text-weight-bold has-text-grey-dark m-0 p-0">
+
+        <p
+          class="is-size-7 has-text-weight-bold has-text-grey-dark"
+          v-if="member.username !== ''"
+        >
           {{ member.username }}
+        </p>
+        <p class="is-size-7 has-text-weight-bold has-text-grey" v-else>
+          ( unknown )
         </p>
       </div>
     </div>
-    <div class="has-text-centered py-2" v-if="members.length === 0">
+
+    <div v-if="members.length === 0">
       <p class="is-size-7 has-text-weight-semibold has-text-grey">
         メンバーがいません。
       </p>
@@ -32,22 +42,26 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import noProfileImage from '@main/images/no_profile_image.png';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { inject, onMounted, reactive } from 'vue';
+
+const props = defineProps({
+  isClickable: { type: Boolean, default: false },
+  sharedGroupId: { type: String, default: undefined },
+});
+const activateResultMessage = inject('activateResultMessage');
 
 const members = reactive([]);
 
 onMounted(() => {
-  HttpRequestClient.submitGetRequest('/api/users?members')
-    .then((data) => {
-      members.push(...data.users);
-    })
-    .catch(() => {
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  if (props.sharedGroupId === undefined) return;
+
+  HttpRequestClient.submitGetRequest(
+    `/api/users?sharedGroupId=${props.sharedGroupId}`,
+    activateResultMessage
+  ).then((data) => {
+    members.push(...data.users);
+  });
 });
 </script>

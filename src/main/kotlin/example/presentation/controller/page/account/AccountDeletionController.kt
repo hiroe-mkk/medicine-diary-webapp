@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/account/delete")
-class AccountDeletionController(private val accountService: AccountService,
+class AccountDeletionController(private val accountDeletionService: AccountDeletionService,
                                 private val userSessionProvider: UserSessionProvider) {
     /**
      * アカウントを削除する
@@ -21,14 +21,17 @@ class AccountDeletionController(private val accountService: AccountService,
     fun deleteAccount(httpServletRequest: HttpServletRequest,
                       httpServletResponse: HttpServletResponse,
                       redirectAttributes: RedirectAttributes): String {
-        accountService.deleteAccount(userSessionProvider.getUserSessionOrElseThrow())
-        redirectAttributes.addFlashAttribute("resultMessage",
-                                             ResultMessage.info("アカウントの削除が完了しました。",
-                                                                "ご利用ありがとうございました。"))
+        accountDeletionService.deleteAccount(userSessionProvider.getUserSessionOrElseThrow())
+
         val logoutHandler = SecurityContextLogoutHandler()
         logoutHandler.logout(httpServletRequest,
                              httpServletResponse,
                              SecurityContextHolder.getContext().authentication)
+
+        redirectAttributes.addFlashAttribute("resultMessage",
+                                             ResultMessage.info("アカウントの削除が完了しました。",
+                                                                "ご利用ありがとうございました。"))
+
         return "redirect:/"
     }
 }

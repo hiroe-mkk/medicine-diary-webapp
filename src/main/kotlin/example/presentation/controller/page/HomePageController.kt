@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/")
-class HomePageController(private val profileService: ProfileService,
-                         private val sharedGroupService: SharedGroupService,
+class HomePageController(private val profileQueryService: ProfileQueryService,
+                         private val sharedGroupQueryService: SharedGroupQueryService,
                          private val userSessionProvider: UserSessionProvider,
                          private val lastRequestedPage: LastRequestedPage) {
     /**
@@ -21,9 +21,9 @@ class HomePageController(private val profileService: ProfileService,
     fun displayHomePage(model: Model): String {
         val userSession = userSessionProvider.getUserSession()
         if (userSession != null) {
-            model.addAttribute("profile", profileService.findProfile(userSession))
-            model.addAttribute("isParticipatingInSharedGroup",
-                               sharedGroupService.isParticipatingInSharedGroup(userSession))
+            model.addAttribute("profile", profileQueryService.getProfile(userSession))
+            model.addAttribute("joinedSharedGroupId",
+                               sharedGroupQueryService.getJoinedSharedGroupId(userSession))
         }
 
         lastRequestedPage.path = "/"

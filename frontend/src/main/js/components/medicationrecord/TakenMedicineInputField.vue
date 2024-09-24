@@ -31,10 +31,10 @@
               "
               hidden
             />
-            <p class="help is-danger" v-for="error in medicineIdErrors">
-              {{ error }}
-            </p>
           </div>
+          <p class="help is-danger" v-for="error in medicineIdErrors">
+            {{ error }}
+          </p>
         </div>
       </div>
 
@@ -72,9 +72,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
 import { ArrayConverter } from '@main/js/composables/ArrayConverter.js';
 import { HttpRequestClient } from '@main/js/composables/HttpRequestClient.js';
+import { inject, onMounted, reactive } from 'vue';
 
 const props = defineProps({
   medicineId: String,
@@ -82,6 +82,7 @@ const props = defineProps({
   medicineIdErrors: { type: String, default: '[]' },
   quantityErrors: { type: String, default: '[]' },
 });
+const activateResultMessage = inject('activateResultMessage');
 
 const takenMedicine = reactive({
   medicine: undefined,
@@ -111,16 +112,11 @@ onMounted(async () => {
 });
 
 function loadMedicines() {
-  return HttpRequestClient.submitGetRequest('/api/medicines?available')
-    .then((data) => {
-      medicines.push(...data.medicines);
-    })
-    .catch((error) => {
-      activateResultMessage(
-        'ERROR',
-        'エラーが発生しました。',
-        '通信状態をご確認のうえ、再度お試しください。'
-      );
-    });
+  return HttpRequestClient.submitGetRequest(
+    '/api/medicines?available',
+    activateResultMessage
+  ).then((data) => {
+    medicines.push(...data.medicines);
+  });
 }
 </script>

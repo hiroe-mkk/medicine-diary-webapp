@@ -11,7 +11,8 @@ import org.springframework.web.servlet.mvc.support.*
 
 @Controller
 @RequestMapping("/medicines/{medicineId}/delete")
-class MedicineDeletionController(private val medicineService: MedicineService,
+class MedicineDeletionController(private val medicineDeletionService: MedicineDeletionService,
+                                 private val medicineQueryService: MedicineQueryService,
                                  private val userSessionProvider: UserSessionProvider) {
     /**
      * 薬を削除する
@@ -19,10 +20,10 @@ class MedicineDeletionController(private val medicineService: MedicineService,
     @PostMapping
     fun deleteMedicine(@PathVariable medicineId: MedicineId,
                        redirectAttributes: RedirectAttributes): String {
-        if (!medicineService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
+        if (!medicineQueryService.isValidMedicineId(medicineId)) throw InvalidEntityIdException(medicineId)
 
-        medicineService.deleteMedicine(medicineId,
-                                       userSessionProvider.getUserSessionOrElseThrow())
+        medicineDeletionService.deleteMedicine(medicineId,
+                                               userSessionProvider.getUserSessionOrElseThrow())
         redirectAttributes.addFlashAttribute("resultMessage",
                                              ResultMessage.info("お薬の削除が完了しました。"))
         return "redirect:/medicines"
